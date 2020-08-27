@@ -36,7 +36,7 @@
 
     bbb();
 
-//}(this));
+}(this));
 
 
 //(function(G) {
