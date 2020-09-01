@@ -5,9 +5,9 @@
  * 
  * CodeType.js : CodeType, CodeValue, CodeTable, CodeTableCollection
  * 
- * [ ] Item.js : Item, ItemCollection
+ * [ ] Items.js : Item, ItemCollection
  * 
- * [ ] BindCommand.js : BindCommand, InternalCommand, ViewCommand
+ * [ ] BindCommands.js : BindCommand, InternalCommand, ViewCommand
  *
  * [ ] UpdateCmd.js : UpdateCmd
  * [ ] CreateCmd.js : CreateCmd
