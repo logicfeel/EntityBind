@@ -48,8 +48,33 @@
 
 //}(this));
 
+var _value;
+
+function _setPropertie(pIdx) {
+
+    var obj = {
+        get: function() { return _value; },
+        set: function(newValue) { _value = newValue;},
+        enumerable: true,
+        configurable: true
+    };
+    return obj;        
+}
+
+function AAA(){
+    
+    var index = 1;
+
+    Object.defineProperty(this, [index], _setPropertie(index));
+    Object.defineProperty(this, "one", _setPropertie(index));
+}
+
+
+var aaa = new AAA();
+
+
 //*********************************/
 // IIFE 사용시 순서가 중요함 로딩과 관련있음
-console.log('test');
+console.log('-End-');
 
 
