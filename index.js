@@ -73,6 +73,28 @@ function AAA(){
 var aaa = new AAA();
 
 
+///////////////////////////////
+// 옵서버 테스트
+var Observer = require("./observer");
+
+var o = new Observer(this, this)
+
+var f1 = function(){
+    console.log("chage 되성요..");
+};
+
+o.subscribe("change", f1);
+
+o.subscribe("change", function(){
+    console.log("chage 되성요2..");
+});
+
+// o.unsubscribe("change", f1);
+
+o.publish("change");
+
+
+
 //*********************************/
 // IIFE 사용시 순서가 중요함 로딩과 관련있음
 console.log('-End-');
