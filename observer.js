@@ -48,12 +48,12 @@
          * @summary 이벤트 "p_code"를 입력하지 않으면 전역(any)에 등록 된다.
          */
         Observer.prototype.subscribe = function(p_fn, p_code) {
-            
+            p_code = p_code || 'any';
+
             var subscribers = null;
             
             if (typeof p_fn === "undefined") throw new Error("p_fn param request fail...");
-
-            p_code = p_code || 'any';
+            
             if (typeof this.subscribers[p_code] === "undefined") {
                 this.subscribers[p_code] = [];
             }
@@ -69,10 +69,9 @@
          * @summary 이벤트 "p_code"를 입력하지 않으면 전역(any)에서 취소 된다.
          */
         Observer.prototype.unsubscribe = function(p_fn, p_code) {
+            p_code = p_code || "any";
 
             if (typeof p_fn === "undefined") throw new Error("p_fn param request fail...");
-
-            p_code = p_code || "any";
 
             if (this.subscribers[p_code]) {
                 for (var i = 0; i < this.subscribers[p_code].length; i++) {
@@ -84,13 +83,14 @@
         };
 
         /**
-         * 전체 구독 취소
+         * @description 전체 구독 취소
          * @param {String} p_code 이벤트 코드명
          * @summary 
          *  - p_code 입력하면 해당 콜백함수들 구독 취소한다.
          *  - p_code 를 입력하지 않으면 전체 등록된 이벤트가 취소된다.
          */
         Observer.prototype.unsubscribeAll = function(p_code) {
+
             if (typeof p_code === "undefined") {     // 전체 구독 삭제
                 this.subscribers = {any: []};
             } else {                        // 코드명 구독(함수) 전체 삭제
