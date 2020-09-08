@@ -83,17 +83,68 @@ var f1 = function(){
     console.log("chage 되성요..");
 };
 
-o.subscribe("change", f1);
+// o.subscribe("change", f1);
 
-o.subscribe("change", function(){
+o.subscribe(f1);
+
+o.subscribe(function(){
     console.log("chage 되성요2..");
-});
+}, "change");
 
 // o.unsubscribe("change", f1);
+// o.unsubscribe();
+// o.unsubscribeAll();
+// o.unsubscribeAll("change");
 
 o.publish("change");
+o.publish();
+
+var Animal = require("./template-클래스").Animal;
+var Dog = require("./template-클래스").Dog;
 
 
+var d = new Dog("도그");
+
+// d.move();
+// d.subMove();
+d.subMove("뭘까요");
+
+
+///////////////////////////////
+// 컬렉션 테스트
+var BaseCollection = require("./base-collection");
+
+var b = new BaseCollection();
+
+b.add("AAA", 10);
+b.add("BBB", 20);
+
+var get_set = 100;
+
+var getter = function() {return get_set};
+var setter = function(newValue) { get_set = newValue };
+
+b.setProperty("CCC", getter, setter);
+
+b.setProperty("DDD");
+
+b.delProperty("DDD");
+
+
+b.remove("AAA");
+
+b.clear();
+
+///////////////////////////////
+// 컬렉션 이벤트 테스트
+var cf = function(){
+    console.log("add 되성..");
+};
+
+b.onAdd = cf;
+
+b.add("EEE");
+b.add("FFF");
 
 //*********************************/
 // IIFE 사용시 순서가 중요함 로딩과 관련있음

@@ -11,8 +11,8 @@
     
     //--------------------------------------------------------------
     // 2. 모듈 가져오기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util = require("util");
+    if (typeof module === "object" && typeof module.exports === "object") {
+        util = {};
     } else {
         global._W = global._W || {};
         util = global._W.util || {};
@@ -20,8 +20,7 @@
 
     //--------------------------------------------------------------
     // 3. 의존성 검사
-    if (false) throw new Error("[XXX] module  load fail...");
-
+    if (typeof util === "undefined") throw new Error("[XXX] module  load fail...");
 
     //--------------------------------------------------------------
     // 4. 모듈 구현    
@@ -33,7 +32,7 @@
             // implementation from standard node.js 'util' module
             return function(ctor, superCtor) {
                 if (superCtor) {
-                    ctor.super_ = superCtor
+                    ctor.super = superCtor
                     ctor.prototype = Object.create(superCtor.prototype, {
                         constructor: {
                         value: ctor,
@@ -48,7 +47,7 @@
             // old school shim for old browsers
             return function (ctor, superCtor) {
                 if (superCtor) {
-                    ctor.super_ = superCtor
+                    ctor.super = superCtor
                     var TempCtor = function () {}
                     TempCtor.prototype = superCtor.prototype
                     ctor.prototype = new TempCtor()

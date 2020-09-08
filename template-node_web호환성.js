@@ -20,7 +20,7 @@
 
     //--------------------------------------------------------------
     // 3. 의존성 검사
-    if (false) throw new Error("[XXX] module  load fail...");
+    // if (typeof util === "undefined") throw new Error("[XXX] module  load fail...");
 
 
     //--------------------------------------------------------------
