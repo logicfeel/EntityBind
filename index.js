@@ -75,7 +75,7 @@ var aaa = new AAA();
 
 ///////////////////////////////
 // 옵서버 테스트
-var Observer = require("./observer");
+var Observer = require("./src/observer");
 
 var o = new Observer(this, this)
 
@@ -112,7 +112,7 @@ d.subMove("뭘까요");
 
 ///////////////////////////////
 // 컬렉션 테스트
-var BaseCollection = require("./base-collection");
+var BaseCollection = require("./src/base-collection");
 
 var b = new BaseCollection();
 
@@ -138,7 +138,7 @@ b.clear();
 ///////////////////////////////
 // 컬렉션 이벤트 테스트
 var cf = function(){
-    console.log("add 되성..");
+    console.log("event add 되성..");
 };
 
 b.onAdd = cf;

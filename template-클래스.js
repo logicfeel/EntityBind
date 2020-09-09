@@ -1,4 +1,4 @@
-var util = require("./utils");
+var util = require("./src/utils");
 
 var Animal  = (function () {
     /**
