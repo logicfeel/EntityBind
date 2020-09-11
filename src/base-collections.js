@@ -13,19 +13,18 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        Observer = require("./observer");
-        util = require("./utils");
+        Observer    = require("./observer");
+        util        = require("./utils");
     } else {
-        global._W = global._W || {};
-        Observer =  global._W.Observer;
-        util =  global._W.util;
+        global._W   = global._W || {};
+        Observer    = global._W.Observer;
+        util        = global._W.util;
     }
 
     //==============================================================
     // 3. 의존성 검사
     if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
-
 
     //==============================================================
     // 4. 모듈 구현    
@@ -42,7 +41,7 @@
 
             this.__onwer    = p_onwer;
     
-            this.__items     = [];
+            this.__items    = [];
 
             this._event     = new Observer(this, this);
             
@@ -79,6 +78,7 @@
                 enumerable: true,
                 configurable: true
             };
+            
             return obj;
         };
 
@@ -180,17 +180,17 @@
          */
         function ArrayCollection(p_onwer) {
             _super.call(this, p_onwer); 
-    
+
         }
-        util.inherits(BaseCollection, _super);     // 상속(대상, 부모)    
+        util.inherits(ArrayCollection, _super);     // 상속(대상, 부모)    
 
         /**
          * @description 배열속성 삭제 (내부처리)
          * @param {*} p_idx 인덱스 번호
          */
         ArrayCollection.prototype._remove = function(p_idx) {
-            delete this[idx];                       // 내부 idx 삭제
-            delete this.__items[idx];               // 내부 참조 삭제
+            delete this[p_idx];                      // 내부 idx 삭제
+            delete this.__items[p_idx];              // 내부 참조 삭제
         };
 
         /**
@@ -279,15 +279,15 @@
 
     //---------------------------------------
     // 클래스 정의
-    var PropertyCollection  = (function () {
+    var PropertyCollection  = (function (_super) {
         /**
          * @description 속성타입 컬렉션 클래스
          */
-        function PropertyCollection() {
+        function PropertyCollection(p_onwer) {
             _super.call(this, p_onwer); 
     
         }
-        util.inherits(BaseCollection, _super);     // 상속(대상, 부모)    
+        util.inherits(PropertyCollection, _super);     // 상속(대상, 부모)    
 
         /**
          * @description 배열속성 삭제 (내부처리)
@@ -311,7 +311,8 @@
          * @param {*} p_value 속성값
          */
         PropertyCollection.prototype.add = function(p_name, p_value) {
-        
+            p_value = p_value || "";
+            
             var index   = -1;
         
             if (typeof p_name === "undefined") throw new Error("p_name param request fail...");
@@ -378,7 +379,7 @@
          * @returns {Boolean}
          */
         PropertyCollection.prototype.contains = function(p_name) {
-            return typeof this.__items[p_name] !== "undefined";
+            return typeof this[p_name] !== "undefined";
         };
 
         /**
@@ -413,16 +414,16 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    var namespace = {
-        BaseCollection: BaseCollection,
-        ArrayCollection: BaseCollection,
-        PropertyCollection: PropertyCollection
-    };
-
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = namespace;
+        module.exports = {
+            BaseCollection: BaseCollection,
+            ArrayCollection: ArrayCollection,
+            PropertyCollection: PropertyCollection
+        };
     } else {
-        global._W = namespace;
+        global._W.BaseCollection = BaseCollection;
+        global._W.ArrayCollection = ArrayCollection;
+        global._W.PropertyCollection = PropertyCollection;
     }
 
 }(this));

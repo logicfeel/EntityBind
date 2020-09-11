@@ -14,8 +14,8 @@
     if (typeof module === "object" && typeof module.exports === "object") {
         util = {};
     } else {
-        global._W = global._W || {};
-        util = global._W.util || {};
+        global._W   = global._W || {};
+        util        = global._W.util || {};
     }
 
     //==============================================================

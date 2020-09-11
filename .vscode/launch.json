@@ -5,9 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "커서-크롬",
+            "request": "launch",
+            "type": "pwa-chrome",
+            "file": "${file}"
+        },
+        {
             "type": "node",
             "request": "launch",
-            "name": "현재파일 실행",
+            "name": "커서-노드",
             "skipFiles": [
                 "<node_internals>/**"
             ],
