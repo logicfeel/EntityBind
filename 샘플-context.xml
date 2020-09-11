@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<context name="body">
+    <context name="content">
+        <item name="userName" />
+    </context>
+    <rows name="list">
+        <row>
+            <item />
+        </row>
+    </rows>
+</context>
+
+<!-- 
+    주석... 
+    어떤식으로 이용할지는 해봐야할지는 대략 윤각은 나옴
+
+    스키마에는 아이템을 가지고 있으며
+    
+-->
