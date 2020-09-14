@@ -39,30 +39,63 @@
     
             this.isDebug    = false;       // 디버깅 플래그
 
+            // Private
+            this._event     = new Observer(this, this);
+
+            // Protected
             this.__onwer    = p_onwer;
     
             this.__items    = [];
 
-            this._event     = new Observer(this, this);
+            // Property
+            this.setProperty("count", 
+                function() {
+                    return this.__items.length;
+                }, 
+                null
+            );
+
+            // Property
+            this.setProperty("list", 
+                function() {
+                    return this.__items;
+                }, 
+                null
+            );
             
-            this.setProperty("onAdd", 
+            // Event
+            this.setProperty("onAdd",       // 등록
                 null, 
                 function(p_fn) {
                     this._event.subscribe(p_fn, "add");
                 }
             );
             
-            this.setProperty("onRemove", 
+            this.setProperty("onRemove",    // 삭제
                 null, 
                 function(p_fn) {
                     this._event.subscribe(p_fn, "remove");
                 }
             );
 
-            this.setProperty("onClear", 
+            this.setProperty("onClear",     // 전체삭제
                 null, 
                 function(p_fn) {
                     this._event.subscribe(p_fn, "clear");
+                }
+            );
+
+            this.setProperty("onChanging", // 변경전 (등록,삭제시)
+                null, 
+                function(p_fn) {
+                    this._event.subscribe(p_fn, "changing");
+                }
+            );
+
+            this.setProperty("onChanged", // 변경후 (등록,삭제시)
+                null, 
+                function(p_fn) {
+                    this._event.subscribe(p_fn, "changed");
                 }
             );
         }
@@ -124,49 +157,49 @@
          * @description 배열속성 등록 및 값 설정
          */
         BaseCollection.prototype.add = function() {
-            throw new Error("[ add() ] abstract load fail...");
+            throw new Error("[ add() ] Abstract method definition, fail...");
         };
 
         /**
          * @description 배열속성 삭제
          */
         BaseCollection.prototype.remove = function() {
-            throw new Error("[ remove() ] abstract load fail...");
+            throw new Error("[ remove() ] Abstract method definition, fail...");
         };
         
         /**
          * @description 배열속성 삭제
          */
         BaseCollection.prototype.removeAt = function() {
-            throw new Error("[ removeAt() ] abstract load fail...");
+            throw new Error("[ removeAt() ] Abstract method definition, fail...");
         };
         
         /**
          * @description 배열속성 전체 삭제
          */
         BaseCollection.prototype.clear = function() {
-            throw new Error("[ clear() ] abstract load fail...");
+            throw new Error("[ clear() ] Abstract method definition, fail...");
         };
         
         /**
          * @description 배열속성 + 고정속성 여부 검사 
          */
         BaseCollection.prototype.contains = function() {
-            throw new Error("[ contains() ] abstract load fail...");
+            throw new Error("[ contains() ] Abstract method definition, fail...");
         };
 
         /**
          * @description 속성 인덱스 번호 얻기
          */
         BaseCollection.prototype.indexOf = function() {
-            throw new Error("[ indexOf() ] abstract load fail...");
+            throw new Error("[ indexOf() ] Abstract method definition, fail...");
         };
 
         /**
          * @description 속성 배열속성 이름 얻기
          */
         BaseCollection.prototype.propertyOf = function() {
-            throw new Error("[ propertyOf() ] abstract load fail...");
+            throw new Error("[ propertyOf() ] Abstract method definition, fail...");
         };
 
         return BaseCollection;
@@ -216,12 +249,15 @@
          * @returns {Number} 삭제한 인덱스
          */
         ArrayCollection.prototype.remove = function(p_obj) {
-
+            
             var idx = this.indexOf(p_obj);
+            
+            this._event.publish("changing");        // 이벤트 발생 : 변경전
             
             if (this.contains(p_obj)) this._remove(idx);
             
-            this._event.publish("remove");          // 이벤트 발생
+            this._event.publish("remove");          // 이벤트 발생 : 삭제
+            this._event.publish("changed");         // 이벤트 발생 : 변경후
 
             return idx;
         };
@@ -234,9 +270,12 @@
 
             var obj = this.__items[p_idx];
             
+            this._event.publish("changing");        // 이벤트 발생 : 변경전
+            
             if (typeof obj !== "undefined") this._remove(p_idx);
 
-            this._event.publish("remove");          // 이벤트 발생            
+            this._event.publish("remove");          // 이벤트 발생 : 삭제
+            this._event.publish("changed");         // 이벤트 발생 : 변경후            
         };
         
         /**
@@ -246,13 +285,16 @@
             
             var obj;
             
+            this._event.publish("changing");        // 이벤트 발생 : 변경전
+
             for (var i = 0; i < this.__items.length; i++) {
                 obj = this.indexOf(i);
                 if (typeof obj !== "undefined") this._remove(i);
             }
             this.__items = [];
         
-            this._event.publish("clear");           // 이벤트 발생
+            this._event.publish("clear");           // 이벤트 발생 : 전체삭제
+            this._event.publish("changed");         // 이벤트 발생 : 변경후            
         };
         
         /**
@@ -337,9 +379,12 @@
 
             var idx;
 
+            this._event.publish("changing");        // 이벤트 발생 : 변경전
+
             if (this.contains(p_name)) idx = this._remove(p_name);
             
-            this._event.publish("remove");          // 이벤트 발생
+            this._event.publish("remove");          // 이벤트 발생 : 삭제
+            this._event.publish("changed");         // 이벤트 발생 : 변경후
 
             return idx;
         };
@@ -352,9 +397,12 @@
 
             var propName = this.propertyOf(p_idx);
             
+            this._event.publish("changing");        // 이벤트 발생 : 변경전
+
             if (typeof propName === "string") this._remove(propName);
 
-            this._event.publish("remove");          // 이벤트 발생
+            this._event.publish("remove");          // 이벤트 발생 : 삭제
+            this._event.publish("changed");         // 이벤트 발생 : 변경후
         };
         
         /**
@@ -364,13 +412,16 @@
             
             var propName;
             
+            this._event.publish("changing");        // 이벤트 발생 : 변경전
+
             for (var i = 0; i < this.__items.length; i++) {
                 propName = this.propertyOf(i);
                 if (typeof propName === "string") this._remove(propName);
             }
             this.__items = [];
 
-            this._event.publish("clear");           // 이벤트 발생
+            this._event.publish("clear");           // 이벤트 발생 : 전체삭제
+            this._event.publish("changed");         // 이벤트 발생 : 변경후            
         };
         
         /**

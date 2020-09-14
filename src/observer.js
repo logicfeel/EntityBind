@@ -108,7 +108,7 @@
             if (p_code in this.subscribers) {
                 for (var i = 0; i < this.subscribers[p_code].length; i++) {
                     if (typeof this.subscribers[p_code][i] === "function") {
-                        this.subscribers[p_code][i].call(this._this, this._onwer);
+                        this.subscribers[p_code][i].call(this._this, this._onwer);  // REVIEW:: _onwer 인수 확인필요!
                     }
                 }
             }

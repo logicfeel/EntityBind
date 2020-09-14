@@ -25,10 +25,10 @@ a.add("BBB");
 a.add("CCC");
 
 // 검사
-console.log("contains(100) :   true=" + a.contains(100));
-console.log("contains('AAA') : true=" + a.contains("AAA"));
-console.log("contains(200) :   false=" + a.contains(200));
-console.log("contains('DDD') : false=" + a.contains("DDD"));
+console.log("contains(100) :   true  == " + a.contains(100));
+console.log("contains('AAA') : true  == " + a.contains("AAA"));
+console.log("contains(200) :   false == " + a.contains(200));
+console.log("contains('DDD') : false == " + a.contains("DDD"));
 // 삭제
 a.remove(100);
 
@@ -64,10 +64,12 @@ p.add("BBB");
 p.add("CCC");
 
 // 검사
-console.log("contains('AAA') : true=" + p.contains("AAA"));
-console.log("contains('BBB') : true=" + p.contains("BBB"));
-console.log("contains(100) :   false=" + p.contains(100));
-console.log("contains('DDD') : false=" + p.contains("DDD"));
+console.log("contains('AAA') : true  == " + p.contains("AAA"));
+console.log("contains('BBB') : true  == " + p.contains("BBB"));
+console.log("contains(100) :   false == " + p.contains(100));
+console.log("contains('DDD') : false == " + p.contains("DDD"));
+console.log("this.count : 3 == " + p.count);
+console.log("this.count : [100, , ] == " + p.list.toString());
 // 삭제
 p.remove("AAA");
 

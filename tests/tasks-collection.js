@@ -8,7 +8,7 @@ global.ArrayCollection = BC.ArrayCollection;
 global.PropertyCollection = BC.PropertyCollection;
 
 
-var run = require("./test-collection-inner");
+var run = require("./inner-collection");
 
 console.log("-End-");
 

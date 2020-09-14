@@ -1,5 +1,7 @@
 var util = require("./src/utils");
 
+////////////////////////////////////////////////////////
+// 1. 일반 클래스 선언
 var Animal  = (function () {
     /**
      * @description 부모 클래스..
@@ -31,9 +33,26 @@ var Animal  = (function () {
     // 구현... 메소드
 
     return Animal;
+
 }());
 
-// 상속 클래스 선언
+////////////////////////////////////////////////////////
+// 1-1. 일반 클래스 선언 : 단순
+var Animal  = (function () {
+    function Animal() {
+
+    }
+
+    Animal.prototype.move  = function(p_name) {
+    };
+
+    return Animal;
+
+}());
+
+
+////////////////////////////////////////////////////////
+// 2. 상속 클래스 선언
 var Dog  = (function (_super) {
     
     function Dog(p_param) {
@@ -56,7 +75,25 @@ var Dog  = (function (_super) {
     // 구현... 메소드
 
     return Dog;
+
 }(Animal));     // 부모 클래스 전달
+
+////////////////////////////////////////////////////////
+// 2.1 상속 클래스 : 단순
+var Dog2  = (function (_super) {
+    
+    function Dog2() {
+        _super.call(this);
+    }
+    util.inherits(Dog2, _super);     // 상속(대상, 부모)    
+
+    Dog2.prototype.subMove  = function(p_name) {
+    };
+
+    return Dog2;
+
+}(Animal));     // 부모 클래스 전달
+
 
 
 module.exports = {
