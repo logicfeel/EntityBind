@@ -30,3 +30,21 @@ arrObj2[1].width = 100;
 
 
 
+interface abcd {
+    bac: string;
+    width: number;
+    abcd(p: string): string;
+}
+
+
+class DDD implements abcd {
+
+    abcd() {
+        return "AA";
+    }
+
+    bac = "A";
+    width = 10;
+}
+
+

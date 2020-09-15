@@ -229,6 +229,7 @@
         /**
          * @description 배열속성 속성값 설정
          * @param {*} p_value [필수] 속성값
+         * @returns {*} 입력 속성 참조값
          */
         ArrayCollection.prototype.add = function(p_value) {
         
@@ -241,6 +242,8 @@
             Object.defineProperty(this, [index], this._getPropDesciptor(index));
 
             this._event.publish("add");             // 이벤트 발생
+
+            return [index];
         };
 
         /**
@@ -351,6 +354,7 @@
          * @description 배열속성 설정 및 속성값 등록
          * @param {*} p_name [필수] 속성명
          * @param {*} p_value 속성값
+         * @returns {*} 입력 속성 참조값
          */
         PropertyCollection.prototype.add = function(p_name, p_value) {
             p_value = p_value || "";
@@ -368,6 +372,8 @@
             }
 
             this._event.publish("add");             // 이벤트 발생
+
+            return [index];
         };
 
         /**
