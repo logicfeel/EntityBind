@@ -92,7 +92,7 @@ var Dog2  = (function (_super) {
 
     return Dog2;
 
-}(Animal));     // 부모 클래스 전달
+}(Animal));
 
 
 

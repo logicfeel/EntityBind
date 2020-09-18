@@ -22,6 +22,15 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "커서-mac",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${file}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "index.js 실행",
             "program": "${workspaceFolder}/index.js",
             "skipFiles": [

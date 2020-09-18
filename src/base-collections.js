@@ -16,7 +16,11 @@
         Observer    = require("./observer");
         util        = require("./utils");
     } else {
-        global._W   = global._W || {};
+        // 네임스페이스 구성
+        global._W                   = global._W || {};
+        global._W.Meta              = global._W.Meta || {};
+        global._W.Meta.Collection   = global._W.Meta.Collection || {};
+
         Observer    = global._W.Observer;
         util        = global._W.util;
     }
@@ -478,9 +482,9 @@
             PropertyCollection: PropertyCollection
         };
     } else {
-        global._W.BaseCollection = BaseCollection;
-        global._W.ArrayCollection = ArrayCollection;
-        global._W.PropertyCollection = PropertyCollection;
+        global._W.Meta.Collection.BaseCollection = BaseCollection;
+        global._W.Meta.Collection.ArrayCollection = ArrayCollection;
+        global._W.Meta.Collection.PropertyCollection = PropertyCollection;
     }
 
 }(this));

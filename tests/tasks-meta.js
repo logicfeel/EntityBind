@@ -1,6 +1,6 @@
 
 var util = require("../src/utils");
-var Meta = require("../src/meta");
+var Meta = require("../src/meta-objects");
 
 
 
