@@ -1,5 +1,10 @@
 /**
- * BaseCollection : node, web
+ * _W.Util.Collection.* : 컬렉션
+ * 
+ *  - BaseCollection : 컬렉션 최상위
+ *  - ArrayColleciton : 배열형 컬렉션
+ *  - PerpertyCollection : 속성형 컬렉션
+ * BaseCollection : 
  */
 (function(global) {
 
@@ -7,28 +12,27 @@
 
     //==============================================================
     // 1. 모듈 선언
+    var Util;   
     var Observer;
-    var util;
+
 
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
         Observer    = require("./observer");
-        util        = require("./utils");
+        Util        = require("./utils");
     } else {
-        // 네임스페이스 구성
         global._W                   = global._W || {};
-        global._W.Meta              = global._W.Meta || {};
-        global._W.Meta.Collection   = global._W.Meta.Collection || {};
+        global._W.Collection        = global._W.Collection || {};
 
-        Observer    = global._W.Observer;
-        util        = global._W.util;
+        Util                        = global._W.Util;
+        Observer                    = global._W.Util.Observer;
     }
 
     //==============================================================
     // 3. 의존성 검사
     if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
+    if (typeof Util === "undefined") throw new Error("[Util] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -219,7 +223,7 @@
             _super.call(this, p_onwer); 
 
         }
-        util.inherits(ArrayCollection, _super);     // 상속(대상, 부모)    
+        Util.inherits(ArrayCollection, _super);     // 상속(대상, 부모)    
 
         /**
          * @description 배열속성 삭제 (내부처리)
@@ -336,7 +340,7 @@
             _super.call(this, p_onwer); 
     
         }
-        util.inherits(PropertyCollection, _super);     // 상속(대상, 부모)    
+        Util.inherits(PropertyCollection, _super);     // 상속(대상, 부모)    
 
         /**
          * @description 배열속성 삭제 (내부처리)
@@ -482,9 +486,9 @@
             PropertyCollection: PropertyCollection
         };
     } else {
-        global._W.Meta.Collection.BaseCollection = BaseCollection;
-        global._W.Meta.Collection.ArrayCollection = ArrayCollection;
-        global._W.Meta.Collection.PropertyCollection = PropertyCollection;
+        global._W.Collection.BaseCollection = BaseCollection;
+        global._W.Collection.ArrayCollection = ArrayCollection;
+        global._W.Collection.PropertyCollection = PropertyCollection;
     }
 
 }(this));

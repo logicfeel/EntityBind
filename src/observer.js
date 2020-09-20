@@ -1,5 +1,7 @@
 /**
- * 설명
+ * _W.Util.*
+ * 
+ *  - Observer : 옵서버
  */
 (function(global) {
 
@@ -12,7 +14,8 @@
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
     } else {
-        global._W = global._W || {};
+        global._W           = global._W || {};
+        global._W.Util      = global._W.Util || {};
     }
 
     //==============================================================
@@ -127,7 +130,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = Observer;
     } else {
-        global._W.Observer = Observer;
+        global._W.Util.Observer = Observer;
     }
 
 }(this));

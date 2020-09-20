@@ -8,7 +8,7 @@ var ArrayTest  = (function (_super) {
 
         this.speed = 0;
     }
-    util.inherits(ArrayTest, _super);
+    Util.inherits(ArrayTest, _super);
 
 
     return ArrayTest;
@@ -48,7 +48,7 @@ var PropTest  = (function (_super) {
 
         this.speed = 0;
     }
-    util.inherits(PropTest, _super);
+    Util.inherits(PropTest, _super);
 
 
     return PropTest;

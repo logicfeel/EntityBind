@@ -1,6 +1,7 @@
 /**
- * _W.MetaObject.Base : 메타의 기초/기본
- *  - MetaObject : 메타의 최상위
+ * _W.Meta.Base.* : 메타의 기초/기본
+ * 
+ *  - MetaObject : 메타의 최상위, 객첼 직렬화(파일 <=> 객체)
  *  - MetaObjectElement : 관리되어야 하는 MetaObject 요소 (getObject, 직렬화)
  *  - PropertyElement : 속성 타입의 관리되는 MetaObject 요소
  */
@@ -10,28 +11,27 @@
 
     //==============================================================
     // 1. 의존 모듈 선언
+    var Util;
     var Observer;
-    var util;
 
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        Observer    = require("./observer");
-        util        = require("./utils");
+        Util                    = require("./utils");
+        Observer                = require("./observer");
     } else {
-        // 네임스페이스 구성
         global._W               = global._W || {};
         global._W.Meta          = global._W.Meta || {};
         global._W.Meta.Base     = global._W.Meta.Base || {};
         
-        Observer    = global._W.Observer;
-        util        = global._W.util;
+        Util                    = global._W.Util;
+        Observer                = global._W.Util.Observer;
     }
 
     //==============================================================
     // 3. 의존성 검사
     if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
+    if (typeof Util === "undefined") throw new Error("[Util] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -73,7 +73,7 @@
         function MetaElement() {
             _super.call(this);
         }
-        util.inherits(MetaElement, _super);     // 상속(대상, 부모)    
+        Util.inherits(MetaElement, _super);     // 상속(대상, 부모)    
     
         /**
          * @description 객체 얻기 : 추상메소드
@@ -93,7 +93,7 @@
         function PropertyElement() {
             _super.call(this);
         }
-        util.inherits(PropertyElement, _super);     // 상속(대상, 부모)    
+        Util.inherits(PropertyElement, _super);     // 상속(대상, 부모)    
     
         /**
          * @description 
@@ -110,9 +110,9 @@
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = {
-            MetaObject = MetaObject,
-            MetaElement = MetaElement,
-            PropertyElement = PropertyElement
+            MetaObject: MetaObject,
+            MetaElement: MetaElement,
+            PropertyElement: PropertyElement
         };
     } else {
         global._W.Meta.Base.MetaObject = MetaObject;
