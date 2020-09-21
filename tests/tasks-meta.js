@@ -25,4 +25,6 @@ var d = new Dog2();
 
 console.log("d.getGUID() : " + d.getGUID());
 
+console.log("d.getGUID().length : " + d.getGUID().length);
+
 console.log("-End-");
