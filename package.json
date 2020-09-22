@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/logicfeel/EntityBind/issues"
   },
-  "homepage": "https://github.com/logicfeel/EntityBind#readme"
+  "homepage": "https://github.com/logicfeel/EntityBind#readme",
+  "dependencies": {
+    "jquery": "^3.5.1",
+    "kurento-client": "^6.14.0"
+  }
 }
