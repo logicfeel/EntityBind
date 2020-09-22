@@ -73,8 +73,18 @@
             level = level + this.getArrayLevel(p_elem[0], p_depts);  // 재귀호출을 통해 깊이 얻기
         }
         return level;
-    }
+    };
     
+    /**
+     * @function GUID 생성
+     */
+    var createGUID = function() {
+        function _p8(s) {  
+            var p = (Math.random().toString(16)+"000000000").substr(2,8);  
+            return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;  
+        }
+        return _p8() + _p8(true) + _p8(true) + _p8();
+    };
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)

@@ -48,3 +48,13 @@ class DDD implements abcd {
 }
 
 
+
+namespace  VV {
+    export class cls {
+
+    }
+}
+
+import vv = VV;
+
+let sq = new VV.cls();
