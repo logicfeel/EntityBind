@@ -31,3 +31,5 @@ var s = String()
 var i = new BaseTemplate();
 
 
+// https://doc-kurento.readthedocs.io/en/stable/_static/client-jsdoc/node_modules_kurento-client-core_lib_complexTypes_ElementConnectionData.js.html
+// JSDOC 에시 좋은 곳 참조하기 좋은 사이트

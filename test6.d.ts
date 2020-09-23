@@ -5,8 +5,11 @@ declare var _global : {};
 
 declare namespace _W {
 
-
-    class VElementd {
+    /**
+     * asdfadsfaf
+     * @class aaaa
+     */
+    export class VElementd {
         getGUID(): string;
         getObject(): object;
     }

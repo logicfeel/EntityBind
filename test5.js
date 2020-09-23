@@ -1,13 +1,12 @@
 "use strict";
 
-/// <reference path="test3.d.ts" />
 
 
 
 var f = new MetaElement();
 
 
-var abcd;
+
 
 
 
@@ -36,18 +35,18 @@ function name(params) {
     
 }
 
-var MetaElement = /** @class */ (function () {
-    function MetaElement() {
-    }
-    MetaElement.prototype.getGUID = function () {
-        return "";
-    };
-    // MetaElement.prototype.getObject = function () {
-    //     return {};
-    // };
+// var MetaElement = /** @class */ (function () {
+//     function MetaElement() {
+//     }
+//     MetaElement.prototype.getGUID = function () {
+//         return "";
+//     };
+//     // MetaElement.prototype.getObject = function () {
+//     //     return {};
+//     // };
 
-    return MetaElement;
-}());
+//     return MetaElement;
+// }());
  
 
 function name(params) {
@@ -61,6 +60,6 @@ var a;
 
 a = "A"
 
+// var abcd;
+// abcd.aa = "aa";
 
-
-var myLib.

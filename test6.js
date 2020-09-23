@@ -5,7 +5,7 @@
 var _global = {};
 
 (function (_W) {
-    var VElementd = /** @class */ (function () {
+    var VElementd = (function () {
         function VElementd() {
         }
         VElementd.prototype.getGUID = function () { return ""; };
@@ -30,6 +30,8 @@ var _global = {};
 
 
 })(_W || (_W = {}));
+
+
 
 /**
  * @interface
