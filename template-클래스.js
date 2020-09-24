@@ -47,7 +47,6 @@ var Animal  = (function () {
     };
 
     return Animal;
-
 }());
 
 
@@ -91,7 +90,6 @@ var Dog2  = (function (_super) {
     };
 
     return Dog2;
-
 }(Animal));
 
 
