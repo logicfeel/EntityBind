@@ -62,6 +62,7 @@
      * @param {*} p_depts 
      */
     var getArrayLevel = function (p_elem, p_depts) {
+        
         var MAX     = 10;
         var level   = 0;
         
@@ -91,11 +92,13 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = {
             inherits: inherits,
-            getArrayLevel: getArrayLevel
+            getArrayLevel: getArrayLevel,
+            createGUID: createGUID
         };
     } else {
         global._W.Util.inherits = inherits;
         global._W.Util.getArrayLevel = getArrayLevel;
+        global._W.Util.createGUID = createGUID;
     }
 
 }(this));

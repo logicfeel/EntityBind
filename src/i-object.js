@@ -1,40 +1,48 @@
 /**
- * 설명
+ * _W.Interface.IObject
  */
 (function(global) {
-
     "use strict";
 
     //==============================================================
     // 1. 의존 모듈 선언
-    //var util;
-    
+    var util;
+
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        // util = require("util");
+        util = require("./utils");
+        require("./object-implement.slim"); // 폴리필
     } else {
-        // global._W = global._W || {};
-        // util = global._W.util || {};
+        global._W = global._W || {};
+        util = global._W.util || {};
     }
 
     //==============================================================
     // 3. 의존성 검사
-    // if (typeof util === "undefined") throw new Error("[XXX] module load fail...");
+    if (typeof util === "undefined") throw new Error("[util] module load fail...");
 
 
     //==============================================================
     // 4. 모듈 구현    
-    // util.inherits = (function () {
-    // }());
+    var IObject  = (function () {
+        function IObject() {
+        }
+    
+        IObject.prototype.getGUID  = function() {
+            return util.createGUID();
+        };
+    
+        return IObject;
+    }());
     
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = namespace;
+        module.exports = IObject;
     } else {
-        global._W.namespace = namespace;
+        global._W.Interface.IObject = IObject;
     }
 
 }(this));
