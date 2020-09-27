@@ -15,7 +15,7 @@ var Animal  = (function () {
 
     Animal.prototype.getGUID  = function() {
         // return this.__interface[0].prototype.getGUID.call(this);
-        return this.__interface["IObject"].prototype.getGUID.call(this);
+        return this._interface["IObject"].prototype.getGUID.call(this);
     };
 
     return Animal;

@@ -23,8 +23,8 @@
      * @param {*} p_imp 
      */
     var _isImplementOf = function(p_imp) {
-        for (var i = 0; i < this.__interface.length; i++) {
-            if (this.__interface[i] === p_imp) return true;
+        for (var i = 0; i < this._interface.length; i++) {
+            if (this._interface[i] === p_imp) return true;
         }
         return false;
     };    
@@ -36,7 +36,7 @@
      * @param {Function} a_imps 함수형 인터페이스 목록
      */
     var _implements = function _implements(a_imps) {
-        this.__interface = this.__interface || [];
+        this._interface = this._interface || [];
     
         // var callerFuncName = arguments.callee.name;   // 현재 함수명
         var callerFuncName = "_implements";   // 현재 함수명
@@ -45,8 +45,8 @@
     
         for(var i = 0; i < arguments.length; i++) {
             if (typeof arguments[i] === "function") {
-                this.__interface.push(arguments[i]);
-                this.__interface[arguments[i].name] = arguments[i];    // 프로퍼티 접근자
+                this._interface.push(arguments[i]);
+                this._interface[arguments[i].name] = arguments[i];    // 프로퍼티 접근자
             } else {
                 throw new Error("함수타입민 가능합니다.");
             }
