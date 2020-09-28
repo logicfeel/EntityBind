@@ -9,44 +9,52 @@
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};
 
-    var common;
-    var IObject;
+    var Util;
+    var ICollection;
 
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        common                = require("./utils");
-        IObject             = require("./i-object");
+        Util                = require("./utils");
+        ICollection         = require("./i-collection");
     } else {
-        common                = global._W.common;
-        IObject             = global._W.Interface.IObject;
+        Util                = global._W.Util;
+        ICollection         = global._W.Interface.ICollection;
     }
 
     //==============================================================
     // 3. 의존성 검사
-    if (typeof common === "undefined") throw new Error("[common] module load fail...");
-    if (typeof IObject === "undefined") throw new Error("[IObject] module load fail...");
+    if (typeof Util === "undefined") throw new Error("[Util] module load fail...");
+    if (typeof ICollection === "undefined") throw new Error("[ICollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
-    var IMarshal  = (function (_super) {
-        function IMarshal() {
+    var IControlCollection  = (function (_super) {
+        function IControlCollection() {
             _super.call(this);
         }
     
-        IMarshal.prototype.getObject  = function() {
+        IControlCollection.prototype.concat  = function() {
+            throw new Error("에러:: 구현해야함.");
+        };
+
+        IControlCollection.prototype.copyTo  = function() {
+            throw new Error("에러:: 구현해야함.");
+        };
+
+        IControlCollection.prototype.clone  = function() {
             throw new Error("에러:: 구현해야함.");
         };
     
-        return IMarshal;
-    }(IObject));
+        return IControlCollection;
+    }(ICollection));
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = IMarshal;
+        module.exports = IControlCollection;
     } else {
-        global._W.Interface.IMarshal = IMarshal;
+        global._W.Interface.IControlCollection = IControlCollection;
     }
     
 }(this));

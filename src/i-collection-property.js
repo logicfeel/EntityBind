@@ -10,43 +10,43 @@
     global._W.Interface     = global._W.Interface || {};
 
     var common;
-    var IObject;
+    var ICollection;
 
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        common                = require("./utils");
-        IObject             = require("./i-object");
+        common              = require("./utils");
+        ICollection         = require("./i-collection");
     } else {
-        common                = global._W.common;
-        IObject             = global._W.Interface.IObject;
+        common              = global._W.common;
+        ICollection         = global._W.Interface.ICollection;
     }
 
     //==============================================================
     // 3. 의존성 검사
     if (typeof common === "undefined") throw new Error("[common] module load fail...");
-    if (typeof IObject === "undefined") throw new Error("[IObject] module load fail...");
+    if (typeof ICollection === "undefined") throw new Error("[ICollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
-    var IMarshal  = (function (_super) {
-        function IMarshal() {
+    var IPropertyCollection  = (function (_super) {
+        function IPropertyCollection() {
             _super.call(this);
         }
     
-        IMarshal.prototype.getObject  = function() {
+        IPropertyCollection.prototype.propertyOf  = function() {
             throw new Error("에러:: 구현해야함.");
         };
     
-        return IMarshal;
-    }(IObject));
+        return IPropertyCollection;
+    }(ICollection));
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = IMarshal;
+        module.exports = IPropertyCollection;
     } else {
-        global._W.Interface.IMarshal = IMarshal;
+        global._W.Interface.IPropertyCollection = IPropertyCollection;
     }
     
 }(this));

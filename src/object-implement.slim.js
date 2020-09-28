@@ -24,7 +24,7 @@ if ((typeof Object.prototype._implements === "undefined") ||
         /**
          * 인터페이스 객체 유무 검사
          * @function  
-         * @param {*} p_imp 
+         * @param {Function} p_imp 
          */
         var isImplementOf = function(p_imp) {
             for (var i = 0; i < this._interface.length; i++) {

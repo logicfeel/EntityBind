@@ -5,23 +5,14 @@
     "use strict";
 
     //==============================================================
-    // 1. 의존 모듈 선언
-    require("./object-implement.slim"); // 폴리필
+    // 1. 모듈 및 네임스페이스 선언
     global._W   = global._W || {};
     
-    var util;
-
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {         
-        util        = require("./utils");
-    } else {
-        util        = global._W.util;
-    }
 
     //==============================================================
     // 3. 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -30,7 +21,7 @@
         }
     
         IObject.prototype.getGUID  = function() {
-            return util.createGUID();
+            throw new Error("에러:: 구현해야함.");
         };
     
         return IObject;

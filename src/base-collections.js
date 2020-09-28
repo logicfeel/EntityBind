@@ -7,38 +7,48 @@
  * BaseCollection : 
  */
 (function(global) {
-
     "use strict";
 
     //==============================================================
-    // 1. 모듈 선언
+    // 1. 모듈 | 네임스페이스 | 폴리필 선언
+    require("../src/object-implement.slim"); // _implements() : 폴리필
+
     global._W               = global._W || {};
     global._W.Collection    = global._W.Collection || {};
 
     var Util;   
     var Observer;
+    var ICollection;
+    var IProperyCollection;
 
 
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        Observer                = require("./observer");
         Util                    = require("./utils");
+        Observer                = require("./observer");
+        ICollection             = require("./i-collection");
+        IProperyCollection      = require("./i-collection-property");
     } else {
         Util                    = global._W.Util;
         Observer                = global._W.Util.Observer;
+        ICollection             = global._W.Util.ICollection;
+        IProperyCollection      = global._W.Util.IProperyCollection;
     }
 
     //==============================================================
     // 3. 의존성 검사
-    if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
     if (typeof Util === "undefined") throw new Error("[Util] module load fail...");
+    if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
+    if (typeof ICollection === "undefined") throw new Error("[ICollection] module load fail...");
+    if (typeof IProperyCollection === "undefined") throw new Error("[IProperyCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
     //---------------------------------------
     var BaseCollection  = (function () {
         /**
+         * @abstract 추상클래스
          * @class 속성타입 컬렉션 최상위(부모) 클래스
          */
         function BaseCollection(p_onwer) {
@@ -104,6 +114,12 @@
                     this.__event.subscribe(p_fn, "changed");
                 }
             );
+
+            /**
+             * 인터페이스 선언
+             * @interface
+             */
+            this._implements(ICollection);
         }
     
         /**
@@ -162,51 +178,51 @@
         /**
          * @method 배열속성 등록 및 값 설정
          */
-        BaseCollection.prototype.add = function() {
-            throw new Error("[ add() ] Abstract method definition, fail...");
-        };
+        // BaseCollection.prototype.add = function() {
+        //     throw new Error("[ add() ] Abstract method definition, fail...");
+        // };
 
         /**
          * @method 배열속성 삭제
          */
-        BaseCollection.prototype.remove = function() {
-            throw new Error("[ remove() ] Abstract method definition, fail...");
-        };
+        // BaseCollection.prototype.remove = function() {
+        //     throw new Error("[ remove() ] Abstract method definition, fail...");
+        // };
         
         /**
          * @method 배열속성 삭제
          */
-        BaseCollection.prototype.removeAt = function() {
-            throw new Error("[ removeAt() ] Abstract method definition, fail...");
-        };
+        // BaseCollection.prototype.removeAt = function() {
+        //     throw new Error("[ removeAt() ] Abstract method definition, fail...");
+        // };
         
         /**
          * @method 배열속성 전체 삭제
          */
-        BaseCollection.prototype.clear = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
-        };
+        // BaseCollection.prototype.clear = function() {
+        //     throw new Error("[ clear() ] Abstract method definition, fail...");
+        // };
         
         /**
          * @method 배열속성 + 고정속성 여부 검사 
          */
-        BaseCollection.prototype.contains = function() {
-            throw new Error("[ contains() ] Abstract method definition, fail...");
-        };
+        // BaseCollection.prototype.contains = function() {
+        //     throw new Error("[ contains() ] Abstract method definition, fail...");
+        // };
 
         /**
          * @method 속성 인덱스 번호 얻기
          */
-        BaseCollection.prototype.indexOf = function() {
-            throw new Error("[ indexOf() ] Abstract method definition, fail...");
-        };
+        // BaseCollection.prototype.indexOf = function() {
+        //     throw new Error("[ indexOf() ] Abstract method definition, fail...");
+        // };
 
         /**
          * @method 속성 배열속성 이름 얻기
          */
-        BaseCollection.prototype.propertyOf = function() {
-            throw new Error("[ propertyOf() ] Abstract method definition, fail...");
-        };
+        // BaseCollection.prototype.propertyOf = function() {
+        //     throw new Error("[ propertyOf() ] Abstract method definition, fail...");
+        // };
 
         return BaseCollection;
     }());
@@ -335,7 +351,11 @@
          */
         function PropertyCollection(p_onwer) {
             _super.call(this, p_onwer); 
-    
+
+            /**
+             * @interface IProperyCollection 인터페이스 선언
+             */
+            this._implements(IProperyCollection);            
         }
         Util.inherits(PropertyCollection, _super);     // 상속(대상, 부모)    
 
