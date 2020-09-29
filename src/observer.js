@@ -1,21 +1,20 @@
 /**
- * _W.Util.*
- * 
- *  - Observer : 옵서버
+ * _W.Common.*
+ *      - Observer : 옵서버
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 의존 모듈 선언
+    // 1. 모듈 | 네임스페이스 | 폴리필 선언
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
     } else {
-        global._W           = global._W || {};
-        global._W.Util      = global._W.Util || {};
+        global._W               = global._W || {};
+        global._W.Common        = global._W.Common || {};
     }
 
     //==============================================================
@@ -130,7 +129,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = Observer;
     } else {
-        global._W.Util.Observer = Observer;
+        global._W.Common.Observer = Observer;
     }
 
 }(this));

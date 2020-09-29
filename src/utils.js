@@ -1,8 +1,9 @@
 /**
- * _W.Util.* 
+ * _W.Common.Util.* 
  * 
- *  - inherits() : 상속
- *  - getArrayLevel() : 배열 깊이 얻기
+ *      - inherits() : 상속
+ *      - getArrayLevel() : 배열 깊이 얻기
+ *      - createGUID() : GUID 생성
  */
 (function(global) {
 
@@ -15,8 +16,9 @@
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {
     } else {
-        global._W           = global._W || {};
-        global._W.Util      = global._W.Util || {};
+        global._W               = global._W || {};
+        global._W.Common        = global._W.Common || {};
+        global._W.Common.Util   = global._W.Common.Util || {};
     }
 
     //==============================================================
@@ -90,15 +92,13 @@
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = {
-            inherits: inherits,
-            getArrayLevel: getArrayLevel,
-            createGUID: createGUID
-        };
+        module.exports.inherits = inherits;
+        module.exports.getArrayLevel = getArrayLevel;
+        module.exports.createGUID = createGUID;
     } else {
-        global._W.Util.inherits = inherits;
-        global._W.Util.getArrayLevel = getArrayLevel;
-        global._W.Util.createGUID = createGUID;
+        global._W.Common.Util.inherits = inherits;
+        global._W.Common.Util.getArrayLevel = getArrayLevel;
+        global._W.Common.Util.createGUID = createGUID;
     }
 
 }(this));

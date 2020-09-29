@@ -2,29 +2,30 @@
  * _W.Interface.IMarshal
  */
 (function(global) {
+
     "use strict";
 
     //==============================================================
-    // 1. 의존 모듈 선언
+    // 1. 모듈 | 네임스페이스 선언 (폴리필)
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};
 
-    var Util;
+    var util;
     var ICollection;
 
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        Util                = require("./utils");
+        util                = require("./utils");
         ICollection         = require("./i-collection");
     } else {
-        Util                = global._W.Util;
+        util                = global._W.Common.Util;
         ICollection         = global._W.Interface.ICollection;
     }
 
     //==============================================================
-    // 3. 의존성 검사
-    if (typeof Util === "undefined") throw new Error("[Util] module load fail...");
+    // 3. 모듈 의존성 검사
+    if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof ICollection === "undefined") throw new Error("[ICollection] module load fail...");
 
     //==============================================================
@@ -33,17 +34,18 @@
         function IControlCollection() {
             _super.call(this);
         }
+        util.inherits(IControlCollection, _super);        
     
         IControlCollection.prototype.concat  = function() {
-            throw new Error("에러:: 구현해야함.");
+            throw new Error("[ concat() ] Abstract method definition, fail...");
         };
 
         IControlCollection.prototype.copyTo  = function() {
-            throw new Error("에러:: 구현해야함.");
+            throw new Error("[ copyTo() ] Abstract method definition, fail...");
         };
 
         IControlCollection.prototype.clone  = function() {
-            throw new Error("에러:: 구현해야함.");
+            throw new Error("[ clone() ] Abstract method definition, fail...");
         };
     
         return IControlCollection;

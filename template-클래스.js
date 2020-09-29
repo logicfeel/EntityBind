@@ -25,7 +25,7 @@ var Animal  = (function () {
         
         p_name = p_name || "any";       // 필수값 설정
 
-        if (typeof p_name === "undefined") throw new Error("p_fn param request fail...");
+        if ( p_name === "undefined") throw new Error("p_fn param request fail...");
         
         console.log("부모 move() 호출 :" + p_name);
     };

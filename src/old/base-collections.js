@@ -11,7 +11,7 @@
 
     //==============================================================
     // 1. 모듈 | 네임스페이스 | 폴리필 선언
-    require("../src/object-implement.slim"); // _implements() : 폴리필
+    require("./object-implement"); // _implements() : 폴리필
 
     global._W               = global._W || {};
     global._W.Collection    = global._W.Collection || {};
@@ -37,7 +37,7 @@
     }
 
     //==============================================================
-    // 3. 의존성 검사
+    // 3. 모듈 의존성 검사
     if (typeof Util === "undefined") throw new Error("[Util] module load fail...");
     if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
     if (typeof ICollection === "undefined") throw new Error("[ICollection] module load fail...");

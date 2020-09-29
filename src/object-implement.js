@@ -1,23 +1,24 @@
 /**
  * Object : 폴리필
- *  - Object.prototype.isImplementOf() : [protected] 구현 여부
- *  - Object.prototype._implements() : 인터페이스(클래스 포함) 등록 *다중상속*
+ *      - Object.prototype.isImplementOf() : [protected] 구현 여부
+ *      - Object.prototype._implements() : 인터페이스(클래스 포함) 등록 *다중상속*
 */
 
 if ((typeof Object.prototype._implements === "undefined") ||
     (typeof Object.prototype.isImplementOf === "undefined")) {
 
     (function(global) {
+
         "use strict";
+
         //==============================================================
-        // 1. 의존 모듈 선언
-        //var util;
+        // 1. 모듈 | 네임스페이스 선언 (폴리필)
         
         //==============================================================
         // 2. 모듈 가져오기 (node | web)
 
         //==============================================================
-        // 3. 의존성 검사
+        // 3. 모듈 의존성 검사
 
         //==============================================================
         // 4. 모듈 구현    
