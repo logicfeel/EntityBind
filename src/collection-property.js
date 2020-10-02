@@ -74,7 +74,8 @@
             var index   = -1;
         
             if (typeof p_name === "undefined") throw new Error("p_name param request fail...");
-            
+            if (this.contains(p_name)) return this[p_name];     // 중복 등록 방지
+
             this._items.push(p_value);
             index = (this._items.length === 1) ? 0 : this._items.length  - 1;
             Object.defineProperty(this, [index], this._getPropDesciptor(index));

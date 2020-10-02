@@ -45,9 +45,12 @@
          * @abstract 추상클래스
          * @class
          */
-        function MetaElement() {
+        function MetaElement(p_name) {
             _super.call(this);
             
+            p_name = p_name || "";
+            
+            this.name = p_name;
             /**
              * @interface IMarshal 인터페이스 선언
              */
