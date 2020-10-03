@@ -7,15 +7,17 @@
 
     //==============================================================
     // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // global._W           = global._W || {};
+    // global._W.Meta      = global._W.Meta || {};
+    
     //var util;
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        // util = require("util");
+        // util             = require("util");
     } else {
-        // global._W = global._W || {};
-        // util = global._W.util || {};
+        // util             = global._W.Common.Util;
     }
 
     //==============================================================

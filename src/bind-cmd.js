@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Bind.BindModel
+ * @namespace _W.Meta.Bind.BindCommand
  */
 (function(global) {
 
@@ -14,24 +14,25 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var MetaObject;
-    var Observer;
-    var ItemCollection;
-    var BindCommand;
     var BaseBind;
+    var Observer;
+    var item;
+    var Item;
+    var ItemCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BaseBind            = require("./bind-base");
         Observer            = require("./observer");
-        ItemCollection      = require("./item").ItemCollection;
-        BindCommand         = require("./bind-cmd");
+        item                = require("./item");
+        Item                = item.Item;
+        ItemCollection      = item.ItemCollection;
     } else {
         util                = global._W.Common.Util;
         BaseBind            = global._W.Meta.Bind.BaseBind;
         Observer            = global._W.Util.Observer;
+        Item                = global._W.Meta.Entity.Item;
         ItemCollection      = global._W.Meta.Entity.ItemCollection;
-        BindCommand         = global._W.Meta.Bind.BindCommand;
     }
 
     //==============================================================
@@ -39,25 +40,27 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BaseBind === "undefined") throw new Error("[BaseBind] module load fail...");
     if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
+    if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
     if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
-    if (typeof BindCommand === "undefined") throw new Error("[BindCommand] module load fail...");
-
 
     //==============================================================
     // 4. 모듈 구현    
-    var BindModel  = (function (_super) {
+    var BindCommand  = (function (_super) {
         /**
          * @abstract 추상클래스
          * @class
          */
-        function BindModel() {
+        function BindCommand(p_onwer) {
             _super.call(this);
 
-            /** @private */
-            this.__event     = new Observer(this, this);
+            // TODO:: p_onwer 타입 검사 추가
+            // if (p_onwer instanceof BindModel)
 
-            /** @public 마스터 아이템 (실 동록위치) */
-            this.entity      = new ItemCollection(this);
+            /** @private */
+            // this.__event     = new Observer(this, this);
+
+            /** @protected 소유자 */
+            this._onwer = p_onwer;
             
             // /** @event */
             // Object.defineProperty(this, "onExecute", {
@@ -76,30 +79,26 @@
             //     }
             // });
         }
-        util.inherits(BindModel, _super);
+        util.inherits(BindCommand, _super);
     
         /** @virtual */
-        BindModel.prototype.init = function() {
-            throw new Error("[ init() ] Abstract method definition, fail...");
+        BindCommand.prototype.execute = function() {
+            throw new Error("[ execute() ] Abstract method definition, fail...");
         };
 
-/**
+        /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
          * @param {?Array<String>} a_cmds <선택> 추가할 아이템 명령
          */
-        BindModel.prototype.add = function(p_item, a_cmds) {
-            _super.prototype.add.call(this, BindCommand, p_item, a_cmds);
+        BindCommand.prototype.add = function(p_item, a_cmds) {
+            _super.prototype.add.call(this, ItemCollection, p_item, a_cmds);
 
             // var cmds = [];
 
             // // 유효성 검사
-            // if (!(p_item instanceof Item)) {
-            //     throw new Error("Only [Item] type instances can be added");
-            // }
-            // if (typeof a_cmds !== "undefined" && !Array.isArray(a_cmds)) {
-            //     throw new Error("Only [a_cmd] type Array can be added");
-            // }
+            // if (!(p_item instanceof Item)) throw new Error("Only [Item] type instances can be added");
+            // if (typeof a_cmds !== "undefined" && !Array.isArray(a_cmds)) throw new Error("Only [a_cmd] type Array can be added");
             
             // // 설정 대상 가져오기
             // if (Array.isArray(a_cmds)) {
@@ -113,7 +112,7 @@
             // } else {
             //     // public ItemCollection 프로퍼티 검사
             //     for (var prop in this) {
-            //         if (this[prop] instanceof BindCommand && prop.substr(0, 1) !== "_") {
+            //         if (this[prop] instanceof ItemCollection && prop.substr(0, 1) !== "_") {
             //             cmds.push(prop.toString());
             //         }
             //     }
@@ -125,7 +124,7 @@
             // }
         };
 
-        return BindModel;
+        return BindCommand;
     
     }(BaseBind));
     
@@ -133,9 +132,9 @@
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = BindModel;
+        module.exports = BindCommand;
     } else {
-        global._W.Meta.Bind.BindModel = BindModel;
+        global._W.Meta.Bind.BindCommand = BindCommand;
     }
 
 }(this));

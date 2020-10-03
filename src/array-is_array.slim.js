@@ -3,7 +3,7 @@
  *      - Arrary.prototype.isArray() : 배열 유무
 */
 
-if (typeof Arrary.prototype.isArray === "undefined") {
+if (typeof Arrary.isArray === "undefined") {
 
     (function(global) {
 
@@ -30,7 +30,7 @@ if (typeof Arrary.prototype.isArray === "undefined") {
 
         //==============================================================
         // 5. 모듈 내보내기 (node | web)
-        Object.prototype.isArray = isArray;
+        Arrary.isArray = isArray;
 
     }(this));
 }

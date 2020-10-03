@@ -1,40 +1,74 @@
 /**
- * 설명
+ * @namespace _W.Meta.Bind.BindCommandRead
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 의존 모듈 선언
-    //var util;
+    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    global._W               = global._W || {};
+    global._W.Meta          = global._W.Meta || {};
+    global._W.Meta.Bind     = global._W.Meta.Bind || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
+    var util;
+    var BindCommandView;
+
     if (typeof module === "object" && typeof module.exports === "object") {     
-        // util = require("util");
+        util                = require("util");
+        BindCommandView     = require("./bind-cmd-view");
     } else {
-        // global._W = global._W || {};
-        // util = global._W.util || {};
+        util                = global._W.Common.Util;
+        BindCommandView     = global._W.Meta.Bind.BindCommandView;
     }
 
     //==============================================================
-    // 3. 의존성 검사
-    // if (typeof util === "undefined") throw new Error("[XXX] module  load fail...");
+    // 3. 모듈 의존성 검사
+    if (typeof util === "undefined") throw new Error("[util] module load fail...");
+    if (typeof BindCommandView === "undefined") throw new Error("[BindCommandView] module load fail...");
 
 
     //==============================================================
     // 4. 모듈 구현    
-    // util.inherits = (function () {
-    // }());
+    var BindCommandRead  = (function (_super) {
+        /**
+         * @class
+         */
+        function BindCommandRead(p_onwer) {
+            _super.call(this, p_onwer);
+
+        }
+        util.inherits(BindCommandRead, _super);
+    
+        BindCommandRead.prototype.execValid = function() {
+            // TODO::
+        };
+
+        BindCommandRead.prototype.execBind = function() {
+            // TODO::
+        };
+        
+        BindCommandRead.prototype.execCallback = function() {
+            // TODO::
+        };
+
+        BindCommandRead.prototype.execView = function() {
+            // TODO::
+        };
+
+        return BindCommandRead;
+    
+    }(BindCommandView));
     
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = namespace;
+        module.exports = BindCommandRead;
     } else {
-        global._W.namespace = namespace;
+        global._W.Meta.Bind.BindCommandRead = BindCommandRead;
     }
 
 }(this));

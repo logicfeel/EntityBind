@@ -14,12 +14,12 @@
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Entity   = global._W.Meta.Entity || {};
 
+    //==============================================================
+    // 2. 모듈 가져오기 (node | web)
     var util;
     var MetaElement;
     var PropertyCollection;
     
-    //==============================================================
-    // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
         MetaElement         = require("./meta-element");
@@ -63,6 +63,7 @@
     var ItemCollection  = (function (_super) {
         /**
          * @class
+         * @param {*} p_onwer 소유자 
          */
         function ItemCollection(p_onwer) {
             _super.call(this, p_onwer);
@@ -81,7 +82,7 @@
 
             if (typeof p_object === "string") {      
                 i_name  = p_object;
-                i_value = new Item(itemName);
+                i_value = new Item(i_name);
             } else if (p_object instanceof Item) {
                 i_name  = p_object.name;
                 i_value = p_object;
@@ -91,17 +92,31 @@
 
             if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
 
-            // p_value 값이 없거나, [Item] 인스턴스일 경우 삽입
-            if (typeof i_value === "undefined" || i_value instanceof Item) {
-                // 부모 호출
-                _super.prototype.add.call(this, i_name, i_value);
-            } else {
-                console.warn("Warning:: Only [Item] type instances can be added.");
-            }
+            _super.prototype.add.call(this, i_name, i_value);
 
             return this[i_name];
         };
         
+        /**
+         * Item 타입만 들어가게 제약조건 추가
+         * @override
+         */
+        ItemCollection.prototype._getPropDesciptor = function(p_idx) {
+            return {
+                get: function() { return this._items[p_idx]; },
+                set: function(newValue) { 
+                    if (newValue instanceof Item) {
+                        this._items[p_idx] = newValue;
+                    } else {
+                        throw new Error("Only [Item] type instances can be added");
+                    }
+                },
+                enumerable: true,
+                configurable: true
+            };
+        };
+
+
         // TODO::
         
         return ItemCollection;
@@ -114,13 +129,13 @@
         /**
          * @class
          * @constructor
-          * @param {*} p_onwer 소유자
-          * @param {?ItemCollection} p_base 참조기본 컬렉션
-          */
+         * @param {*} p_onwer 소유자
+         * @param {?ItemCollection} p_base 참조기본 컬렉션
+         */
         function ItemRefCollection(p_onwer, p_base) {
             _super.call(this, p_onwer);
 
-            if (typeof p_base !== "undefined" && p_base instanceof ItemCollection) {
+            if (typeof p_base !== "undefined" && !(p_base instanceof ItemCollection)) {
                 throw new Error("Error!! ItemCollection object [p_base].");
             }
             
@@ -155,7 +170,7 @@
             if (p_object instanceof Item) {
                 i_name = p_object.name;
             } else if (typeof p_object === "string") {
-                i_name = p_object.name;
+                i_name = p_object;
             } else {
                 throw new Error("p_object string | Item instance param request fail...");
             }
@@ -167,10 +182,10 @@
             }
             
             if (collection) {
-                if (collection.contains(p_name)) {
-                    item = collection[p_name];                  // 참조 가져옴
+                if (collection.contains(i_name)) {
+                    item = collection[i_name];                      // 참조 가져옴
                 } else {
-                    item = collection.add(p_object);             // 참조 가져옴
+                    item = collection.add(p_object);                // 참조 가져옴
                 }
                 
                 // 의존성을 낮추기 위해서 검사후 등록
@@ -193,7 +208,7 @@
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports                          = Item;
+        module.exports.Item                     = Item;
         module.exports.ItemCollection           = ItemCollection;
         module.exports.ItemRefCollection        = ItemRefCollection;
     } else {

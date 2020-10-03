@@ -114,15 +114,12 @@
          * @param {Number} p_idx 인덱스
          */
         BaseCollection.prototype._getPropDesciptor = function(p_idx) {
-
-            var obj = {
+            return {
                 get: function() { return this._items[p_idx]; },
                 set: function(newValue) { this._items[p_idx] = newValue; },
                 enumerable: true,
                 configurable: true
             };
-            
-            return obj;
         };
 
         /**
