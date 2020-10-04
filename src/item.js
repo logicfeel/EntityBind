@@ -151,6 +151,9 @@
          *  - base(N),      string | Itme               => this 에 생성후 자신에 등록
          *  - base(Y),      string | Item               => Base 에 생성후 자신에 등록
          * 
+         *  TODO:: filter 옵션 : 충돌방지에 이용
+         *  TODO:: 객체 비교는 string 이 아니고 값과 타입을 비교해야함 (그래야 참조를 사용)
+         * 
          * @param {String, Item} p_object 
          * @param {?ItemCollection} p_refCollection
          */
@@ -175,6 +178,8 @@
                 throw new Error("p_object string | Item instance param request fail...");
             }
 
+            // TODO:: 이름 충돌검사
+
             if (p_refCollection instanceof ItemCollection) {
                 collection = p_refCollection;
             } else if (this._baseCollection instanceof ItemCollection) {
@@ -189,9 +194,9 @@
                 }
                 
                 // 의존성을 낮추기 위해서 검사후 등록
-                // 오너 참조에 검사후 등록하는 루틴 필요
-                if (this._onwer.addReference) {
-                    this._onwer.addReference(collection._onwer);
+                // 오너 참조에 검사후 없을경우 등록하는 루틴 필요
+                if (this._onwer.regRefer) {
+                    this._onwer.regRefer(collection._onwer);
                 }
             }
             

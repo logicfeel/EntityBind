@@ -147,6 +147,8 @@
         };
         
         /**
+         * TODO:: 객체로 오면 컬렉션중 객체를 비교해야 함.
+         * 
          * @method 배열속성 여부
          * @param {String} p_name 속성명
          * @returns {Boolean}
