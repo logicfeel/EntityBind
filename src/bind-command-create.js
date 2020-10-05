@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Bind.BindCommandDelete
+ * @namespace _W.Meta.Bind.BindCommandCreate
  */
 (function(global) {
 
@@ -32,29 +32,30 @@
 
     //==============================================================
     // 4. 모듈 구현    
-    var BindCommandDelete  = (function (_super) {
+    var BindCommandCreate  = (function (_super) {
         /**
          * @class
          */
-        function BindCommandDelete(p_onwer) {
-            _super.call(this, p_onwer);
+        function BindCommandCreate(p_model) {
+            _super.call(this, p_model);
 
         }
-        util.inherits(BindCommandDelete, _super);
+        util.inherits(BindCommandCreate, _super);
     
-        BindCommandDelete.prototype.execValid = function() {
+        BindCommandCreate.prototype.execValid = function() {
             // TODO::
         };
 
-        BindCommandDelete.prototype.execBind = function() {
+        BindCommandCreate.prototype.execBind = function() {
             // TODO::
         };
         
-        BindCommandDelete.prototype.execCallback = function() {
+        BindCommandCreate.prototype.execCallback = function() {
             // TODO::
         };
 
-        return BindCommandDelete;
+
+        return BindCommandCreate;
     
     }(BindCommandInternal));
     
@@ -62,9 +63,9 @@
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = BindCommandDelete;
+        module.exports = BindCommandCreate;
     } else {
-        global._W.Meta.Bind.BindCommandDelete = BindCommandDelete;
+        global._W.Meta.Bind.BindCommandCreate = BindCommandCreate;
     }
 
 }(this));

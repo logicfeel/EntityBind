@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Bind.BindCommandView
+ * @namespace _W.Meta.Bind.BindCommandInternal
  */
 (function(global) {
 
@@ -20,7 +20,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
         BindCommand         = require("./bind-cmd");
-        ItemRefCollection   = require("./item").ItemRefCollection;
+        ItemRefCollection   = require("./item");
     } else {
         util                = global._W.Common.Util;
         BindCommand         = global._W.Meta.Bind.BindCommand;
@@ -36,48 +36,42 @@
 
     //==============================================================
     // 4. 모듈 구현    
-    var BindCommandView  = (function (_super) {
+    var BindCommandInternal  = (function (_super) {
         /**
          * @class
          */
-        function BindCommandView(p_onwer) {
-            _super.call(this, p_onwer);
+        function BindCommandInternal(p_model) {
+            _super.call(this, p_model);
 
             /** @public  */
-            this.valid = new ItemRefCollection(this, p_onwer.entity.items);
+            this.valid = new ItemRefCollection(p_onwer.entity.items);
 
-            this.bind = new ItemRefCollection(this, p_onwer.entity.items);
-
-            this.view = new ItemRefCollection(this, p_onwer.entity.items);
+            this.bind = new ItemRefCollection(p_onwer.entity.items);
             
         }
-        util.inherits(BindCommandView, _super);
+        util.inherits(BindCommandInternal, _super);
     
-        BindCommandView.prototype.execute = function() {
+        BindCommandInternal.prototype.execute = function() {
             if (this.execValid()) this.execBind();
         };
 
         /** @virtual */
-        BindCommandView.prototype.execValid = function() {
+        BindCommandInternal.prototype.execValid = function() {
             throw new Error("[ execValid() ] Abstract method definition, fail...");
         };
 
         /** @virtual */
-        BindCommandView.prototype.execBind = function() {
+        BindCommandInternal.prototype.execBind = function() {
             throw new Error("[ execBind() ] Abstract method definition, fail...");
         };
         
         /** @virtual */
-        BindCommandView.prototype.execCallback = function() {
+        BindCommandInternal.prototype.execCallback = function() {
             throw new Error("[ execCallback() ] Abstract method definition, fail...");
         };
 
-        /** @virtual */
-        BindCommandView.prototype.execView = function() {
-            throw new Error("[ execView() ] Abstract method definition, fail...");
-        };
 
-        return BindCommandView;
+        return BindCommandInternal;
     
     }(BindCommand));
     
@@ -85,9 +79,9 @@
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = BindCommandView;
+        module.exports = BindCommandInternal;
     } else {
-        global._W.Meta.Bind.BindCommandView = BindCommandView;
+        global._W.Meta.Bind.BindCommandInternal = BindCommandInternal;
     }
 
 }(this));

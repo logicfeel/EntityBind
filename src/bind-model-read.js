@@ -46,6 +46,10 @@
 
             /** @public 마스터 아이템 (실 동록위치) */
             this.read       = new BindCommandRead(this);
+
+            /** @public 마스터 아이템 (실 동록위치) */
+            this.first      = new ItemCollection(this);
+            
         }
         util.inherits(BindModelRead, _super);
     

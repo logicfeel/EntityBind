@@ -26,7 +26,7 @@
         util                = require("./utils");
         MetaObject          = require("./meta-object");
         Observer            = require("./observer");
-        item                = require("./item");
+        item                = require("./entity-item");
         Item                = item.Item;
         ItemCollection      = item.ItemCollection;
     } else {
@@ -77,45 +77,22 @@
         }
         util.inherits(BaseBind, _super);
 
+        /** @protected @event */
+        BaseBind.prototype._onExecute = function() {
+            this.__event.publish("execute"); 
+        };
+
+        /** @protected @event */
+        BaseBind.prototype._onExecuted = function() {
+            this.__event.publish("executed"); 
+        };
+
         /**
          * 아이템을 추가하고 명령과 매핑한다.
-         * @param {Item} p_item 등록할 아이템
-         * @param {?Array<String>} a_cmds <선택> 추가할 아이템 명령
+         * @abstract
          */
-        BaseBind.prototype.add = function(p_propType, p_item, a_cmds) {
-
-            var cmds = [];
-
-            // 유효성 검사
-            if (!(p_item instanceof Item)) {
-                throw new Error("Only [Item] type instances can be added");
-            }
-            if (typeof a_cmds !== "undefined" && !Array.isArray(a_cmds)) {
-                throw new Error("Only [a_cmd] type Array can be added");
-            }
-            
-            // 설정 대상 가져오기
-            if (Array.isArray(a_cmds)) {
-                for (var i = 0; i< a_cmds.length; i++) {
-                    if (this[a_cmds[i]]) {
-                        cmds.push(a_cmds[i]);
-                    } else {
-                        console.warn("Warning!! Param a_cmds 에 [" + a_cmds[i] + "]가 없습니다. ");
-                    }
-                }
-            } else {
-                // public ItemCollection 프로퍼티 검사
-                for (var prop in this) {
-                    if (this[prop] instanceof p_propType && prop.substr(0, 1) !== "_") {
-                        cmds.push(prop.toString());
-                    }
-                }
-            }
-
-            // 설정
-            for (var i = 0; i < cmds.length; i++) {
-                this[cmds[i]].add(p_item);
-            }
+        BaseBind.prototype.add = function() {
+            throw new Error("[ add() ] Abstract method definition, fail...");
         };
 
         return BaseBind;

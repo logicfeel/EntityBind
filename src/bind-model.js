@@ -24,7 +24,7 @@
         util                = require("./utils");
         BaseBind            = require("./bind-base");
         Observer            = require("./observer");
-        ItemCollection      = require("./item").ItemCollection;
+        ItemCollection      = require("./entity-item").ItemCollection;
         BindCommand         = require("./bind-cmd");
     } else {
         util                = global._W.Common.Util;
@@ -53,28 +53,6 @@
         function BindModel() {
             _super.call(this);
 
-            /** @private */
-            this.__event     = new Observer(this, this);
-
-            /** @public 마스터 아이템 (실 동록위치) */
-            this.entity      = new ItemCollection(this);
-            
-            // /** @event */
-            // Object.defineProperty(this, "onExecute", {
-            //     enumerable: true,
-            //     configurable: true,
-            //     set: function(p_fn) {
-            //         this.__event.subscribe(p_fn, "execute");
-            //     }
-            // });
-
-            // Object.defineProperty(this, "onExecuted", {
-            //     enumerable: true,
-            //     configurable: true,
-            //     set: function(p_fn) {
-            //         this.__event.subscribe(p_fn, "executed");
-            //     }
-            // });
         }
         util.inherits(BindModel, _super);
     
@@ -89,40 +67,39 @@
          * @param {?Array<String>} a_cmds <선택> 추가할 아이템 명령
          */
         BindModel.prototype.add = function(p_item, a_cmds) {
-            _super.prototype.add.call(this, BindCommand, p_item, a_cmds);
 
-            // var cmds = [];
+            var cmds = [];
 
-            // // 유효성 검사
-            // if (!(p_item instanceof Item)) {
-            //     throw new Error("Only [Item] type instances can be added");
-            // }
-            // if (typeof a_cmds !== "undefined" && !Array.isArray(a_cmds)) {
-            //     throw new Error("Only [a_cmd] type Array can be added");
-            // }
+            // 유효성 검사
+            if (!(p_item instanceof Item)) {
+                throw new Error("Only [Item] type instances can be added");
+            }
+            if (typeof a_cmds !== "undefined" && !Array.isArray(a_cmds)) {
+                throw new Error("Only [a_cmd] type Array can be added");
+            }
             
-            // // 설정 대상 가져오기
-            // if (Array.isArray(a_cmds)) {
-            //     for (var i = 0; i< a_cmds.length; i++) {
-            //         if (this[a_cmds[i]]) {
-            //             cmds.push(a_cmds[i]);
-            //         } else {
-            //             console.warn("Warning!! Param a_cmds 에 [" + a_cmds[i] + "]가 없습니다. ");
-            //         }
-            //     }
-            // } else {
-            //     // public ItemCollection 프로퍼티 검사
-            //     for (var prop in this) {
-            //         if (this[prop] instanceof BindCommand && prop.substr(0, 1) !== "_") {
-            //             cmds.push(prop.toString());
-            //         }
-            //     }
-            // }
+            // 설정 대상 가져오기
+            if (Array.isArray(a_cmds)) {
+                for (var i = 0; i< a_cmds.length; i++) {
+                    if (this[a_cmds[i]]) {
+                        cmds.push(a_cmds[i]);
+                    } else {
+                        console.warn("Warning!! Param a_cmds 에 [" + a_cmds[i] + "]가 없습니다. ");
+                    }
+                }
+            } else {
+                // public ItemCollection 프로퍼티 검사
+                for (var prop in this) {
+                    if (this[prop] instanceof BindCommand && prop.substr(0, 1) !== "_") {
+                        cmds.push(prop.toString());
+                    }
+                }
+            }
 
-            // // 설정
-            // for (var i = 0; i < cmds.length; i++) {
-            //     this[cmds[i]].add(p_item);
-            // }
+            // 설정
+            for (var i = 0; i < cmds.length; i++) {
+                this[cmds[i]].add(p_item);
+            }
         };
 
         return BindModel;

@@ -36,8 +36,8 @@
         /**
          * @class
          */
-        function BindCommandRead(p_onwer) {
-            _super.call(this, p_onwer);
+        function BindCommandRead(p_model) {
+            _super.call(this, p_model);
 
         }
         util.inherits(BindCommandRead, _super);

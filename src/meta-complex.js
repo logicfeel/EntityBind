@@ -13,12 +13,12 @@
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
 
+    //==============================================================
+    // 2. 모듈 가져오기 (node | web)
     var util;
     var MetaElement;
     var IPropertyCollection;
-    
-    //==============================================================
-    // 2. 모듈 가져오기 (node | web)
+
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                    = require("./utils");
         MetaElement             = require("./meta-element");

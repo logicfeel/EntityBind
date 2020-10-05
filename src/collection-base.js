@@ -66,41 +66,50 @@
                 null
             );
             
-            // Event
-            this.setProperty("onAdd",       // 등록
-                null, 
-                function(p_fn) {
+            /** @event */
+            Object.defineProperty(this, "onAdd", {
+                enumerable: true,
+                configurable: true,
+                set: function(p_fn) {
                     this.__event.subscribe(p_fn, "add");
                 }
-            );
-            
-            this.setProperty("onRemove",    // 삭제
-                null, 
-                function(p_fn) {
+            });
+
+            /** @event */
+            Object.defineProperty(this, "onRemove", {
+                enumerable: true,
+                configurable: true,
+                set: function(p_fn) {
                     this.__event.subscribe(p_fn, "remove");
                 }
-            );
+            });
 
-            this.setProperty("onClear",     // 전체삭제
-                null, 
-                function(p_fn) {
+            /** @event */
+            Object.defineProperty(this, "onClear", {
+                enumerable: true,
+                configurable: true,
+                set: function(p_fn) {
                     this.__event.subscribe(p_fn, "clear");
                 }
-            );
+            });
 
-            this.setProperty("onChanging", // 변경전 (등록,삭제시)
-                null, 
-                function(p_fn) {
+            /** @event */
+            Object.defineProperty(this, "onChanging", {
+                enumerable: true,
+                configurable: true,
+                set: function(p_fn) {
                     this.__event.subscribe(p_fn, "changing");
                 }
-            );
+            });
 
-            this.setProperty("onChanged", // 변경후 (등록,삭제시)
-                null, 
-                function(p_fn) {
+            /** @event */
+            Object.defineProperty(this, "onChanged", {
+                enumerable: true,
+                configurable: true,
+                set: function(p_fn) {
                     this.__event.subscribe(p_fn, "changed");
                 }
-            );
+            });
 
             /**
              * 인터페이스 선언
@@ -120,6 +129,31 @@
                 enumerable: true,
                 configurable: true
             };
+        };
+
+        /** @event onAdd 등록 이벤트 발생 */
+        BaseCollection.prototype._onAdd = function() {
+            this.__event.publish("add"); 
+        };
+
+        /** @event onRemove 삭제 이벤트 발생 */
+        BaseCollection.prototype._onRemove = function() {
+            this.__event.publish("remove"); 
+        };
+
+        /** @event onClear 전체삭제 이벤트 발생 */
+        BaseCollection.prototype._onClear = function() {
+            this.__event.publish("clear"); 
+        };
+
+        /** @event onChanging 변경시 이벤트 발생 */
+        BaseCollection.prototype._onChanging = function() {
+            this.__event.publish("changing"); 
+        };
+
+        /** @event onChanged 변경후 이벤트 발생 */
+        BaseCollection.prototype._onChanged = function() {
+            this.__event.publish("changed"); 
         };
 
         /**

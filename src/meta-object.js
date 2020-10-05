@@ -13,11 +13,10 @@
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
 
-    var IObject;
-
-
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
+    var IObject;
+    
     if (typeof module === "object" && typeof module.exports === "object") {     
         IObject             = require("./i-object");
     } else {

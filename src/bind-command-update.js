@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Bind.BindCommandList
+ * @namespace _W.Meta.Bind.BindCommandUpdate
  */
 (function(global) {
 
@@ -14,62 +14,57 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BindCommandView;
+    var BindCommandInternal;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
-        BindCommandView     = require("./bind-cmd-view");
+        BindCommandInternal = require("./bind-cmd-internal");
     } else {
         util                = global._W.Common.Util;
-        BindCommandView     = global._W.Meta.Bind.BindCommandView;
+        BindCommandInternal = global._W.Meta.Bind.BindCommandInternal;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BindCommandView === "undefined") throw new Error("[BindCommandView] module load fail...");
+    if (typeof BindCommandInternal === "undefined") throw new Error("[BindCommandInternal] module load fail...");
 
 
     //==============================================================
     // 4. 모듈 구현    
-    var BindCommandList  = (function (_super) {
+    var BindCommandUpdate  = (function (_super) {
         /**
          * @class
          */
-        function BindCommandList(p_onwer) {
-            _super.call(this, p_onwer);
+        function BindCommandUpdate(p_model) {
+            _super.call(this, p_model);
 
         }
-        util.inherits(BindCommandList, _super);
+        util.inherits(BindCommandUpdate, _super);
     
-        BindCommandList.prototype.execValid = function() {
+        BindCommandUpdate.prototype.execValid = function() {
             // TODO::
         };
 
-        BindCommandList.prototype.execBind = function() {
+        BindCommandUpdate.prototype.execBind = function() {
             // TODO::
         };
         
-        BindCommandList.prototype.execCallback = function() {
+        BindCommandUpdate.prototype.execCallback = function() {
             // TODO::
         };
 
-        BindCommandList.prototype.execView = function() {
-            // TODO::
-        };
-
-
-        return BindCommandList;
+        return BindCommandUpdate;
     
-    }(BindCommandView));
+    }(BindCommandInternal));
     
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = BindCommandList;
+        module.exports = BindCommandUpdate;
     } else {
-        global._W.Meta.Bind.BindCommandList = BindCommandList;
+        global._W.Meta.Bind.BindCommandUpdate = BindCommandUpdate;
     }
 
 }(this));

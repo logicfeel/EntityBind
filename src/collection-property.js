@@ -51,7 +51,7 @@
          * @param {*} p_name 속성명
          * @returns {Number} 삭제한 인덱스
          */
-        PropertyCollection.prototype._remove = function(p_name) {
+        PropertyCollection.prototype.__remove = function(p_name) {
 
             var idx = this.indexOf(p_name);
 
@@ -72,6 +72,8 @@
             p_value = p_value || "";
             
             var index   = -1;
+
+            this._onChanging();                     // 이벤트 발생 : 변경전
         
             if (typeof p_name === "undefined") throw new Error("p_name param request fail...");
             if (this.contains(p_name)) {
@@ -87,7 +89,8 @@
                 Object.defineProperty(this, p_name, this._getPropDesciptor(index));
             }
 
-            this.__event.publish("add");             // 이벤트 발생
+            this._onAdd();                          // 이벤트 발생 : 등록
+            this._onChanged();                      // 이벤트 발생 : 변경후
 
             return [index];
         };
@@ -101,12 +104,12 @@
 
             var idx;
 
-            this.__event.publish("changing");        // 이벤트 발생 : 변경전
+            this._onChanging();                     // 이벤트 발생 : 변경전
 
-            if (this.contains(p_name)) idx = this._remove(p_name);
+            if (this.contains(p_name)) idx = this.__remove(p_name);
             
-            this.__event.publish("remove");          // 이벤트 발생 : 삭제
-            this.__event.publish("changed");         // 이벤트 발생 : 변경후
+            this._onRemove();                       // 이벤트 발생 : 삭제
+            this._onChanged();                      // 이벤트 발생 : 변경후
 
             return idx;
         };
@@ -119,12 +122,12 @@
 
             var propName = this.propertyOf(p_idx);
             
-            this.__event.publish("changing");        // 이벤트 발생 : 변경전
+            this._onChanging();                     // 이벤트 발생 : 변경전
 
-            if (typeof propName === "string") this._remove(propName);
+            if (typeof propName === "string") this.__remove(propName);
 
-            this.__event.publish("remove");          // 이벤트 발생 : 삭제
-            this.__event.publish("changed");         // 이벤트 발생 : 변경후
+            this._onRemove();                       // 이벤트 발생 : 삭제
+            this._onChanged();                      // 이벤트 발생 : 변경후
         };
         
         /**
@@ -134,16 +137,16 @@
             
             var propName;
             
-            this.__event.publish("changing");        // 이벤트 발생 : 변경전
+            this._onChanging();                     // 이벤트 발생 : 변경전
 
             for (var i = 0; i < this._items.length; i++) {
                 propName = this.propertyOf(i);
-                if (typeof propName === "string") this._remove(propName);
+                if (typeof propName === "string") this.__remove(propName);
             }
             this._items = [];
 
-            this.__event.publish("clear");           // 이벤트 발생 : 전체삭제
-            this.__event.publish("changed");         // 이벤트 발생 : 변경후            
+            this._onClear();                        // 이벤트 발생 : 전체삭제
+            this._onChanged();                      // 이벤트 발생 : 변경후                
         };
         
         /**
@@ -153,8 +156,12 @@
          * @param {String} p_name 속성명
          * @returns {Boolean}
          */
-        PropertyCollection.prototype.contains = function(p_name) {
-            return typeof this[p_name] !== "undefined";
+        PropertyCollection.prototype.contains = function(p_obj) {
+            if (typeof p_obj === "string") {
+                return typeof this[p_obj] !== "undefined";
+            } else {
+                return this.indexOf(p_obj) > -1;
+            }
         };
 
         /**
@@ -162,8 +169,11 @@
          * @param {String}} p_name 속성명
          * @returns {Number}
          */
-        PropertyCollection.prototype.indexOf = function(p_name) {
-            return this._items.indexOf(this[p_name]);
+        PropertyCollection.prototype.indexOf = function(p_obj) {
+            
+            var obj = typeof p_obj === "string" ? this[p_obj] : p_obj;
+            
+            return this._items.indexOf(obj);;
         };
 
         /**

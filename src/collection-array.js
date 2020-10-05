@@ -42,7 +42,7 @@
          * @method 배열속성 삭제 (내부처리)
          * @param {*} p_idx 인덱스 번호
          */
-        ArrayCollection.prototype._remove = function(p_idx) {
+        ArrayCollection.prototype.__remove = function(p_idx) {
             delete this[p_idx];                      // 내부 idx 삭제
             delete this._items[p_idx];              // 내부 참조 삭제
         };
@@ -56,13 +56,16 @@
         
             var index   = -1;
 
+            this._onChanging();                     // 이벤트 발생 : 변경전
+
             if (typeof p_value === "undefined") throw new Error("p_value param request fail...");
         
             this._items.push(p_value);
             index = (this._items.length === 1) ? 0 : this._items.length  - 1;
             Object.defineProperty(this, [index], this._getPropDesciptor(index));
 
-            this.__event.publish("add");             // 이벤트 발생
+            this._onAdd();                          // 이벤트 발생 : 등록
+            this._onChanged();                      // 이벤트 발생 : 변경후
 
             return [index];
         };
@@ -76,12 +79,12 @@
             
             var idx = this.indexOf(p_obj);
             
-            this.__event.publish("changing");        // 이벤트 발생 : 변경전
+            this._onChanging();                     // 이벤트 발생 : 변경전
             
-            if (this.contains(p_obj)) this._remove(idx);
+            if (this.contains(p_obj)) this.__remove(idx);
             
-            this.__event.publish("remove");          // 이벤트 발생 : 삭제
-            this.__event.publish("changed");         // 이벤트 발생 : 변경후
+            this._onRemove();                       // 이벤트 발생 : 삭제
+            this._onChanged();                      // 이벤트 발생 : 변경후
 
             return idx;
         };
@@ -94,12 +97,12 @@
 
             var obj = this._items[p_idx];
             
-            this.__event.publish("changing");        // 이벤트 발생 : 변경전
+            this._onChanging();                     // 이벤트 발생 : 변경전
             
-            if (typeof obj !== "undefined") this._remove(p_idx);
+            if (typeof obj !== "undefined") this.__remove(p_idx);
 
-            this.__event.publish("remove");          // 이벤트 발생 : 삭제
-            this.__event.publish("changed");         // 이벤트 발생 : 변경후            
+            this._onRemove();                       // 이벤트 발생 : 삭제
+            this._onChanged();                      // 이벤트 발생 : 변경후
         };
         
         /**
@@ -109,16 +112,16 @@
             
             var obj;
             
-            this.__event.publish("changing");        // 이벤트 발생 : 변경전
+            this._onChanging();                     // 이벤트 발생 : 변경전
 
             for (var i = 0; i < this._items.length; i++) {
                 obj = this.indexOf(i);
-                if (typeof obj !== "undefined") this._remove(i);
+                if (typeof obj !== "undefined") this.__remove(i);
             }
             this._items = [];
         
-            this.__event.publish("clear");           // 이벤트 발생 : 전체삭제
-            this.__event.publish("changed");         // 이벤트 발생 : 변경후            
+            this._onClear();                        // 이벤트 발생 : 전체삭제
+            this._onChanged();                      // 이벤트 발생 : 변경후            
         };
         
         /**
