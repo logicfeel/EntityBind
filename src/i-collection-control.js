@@ -1,5 +1,5 @@
 /**
- * _W.Interface.IMarshal
+ * @namespace _W.Interface.IMarshal
  */
 (function(global) {
 

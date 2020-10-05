@@ -1,5 +1,5 @@
 /**
- * _W.Interface.IObject
+ * @namespace _W.Interface.IImportControl
  */
 (function(global) {
     

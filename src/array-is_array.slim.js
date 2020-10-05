@@ -3,7 +3,7 @@
  *      - Arrary.prototype.isArray() : 배열 유무
 */
 
-if (typeof Arrary.isArray === "undefined") {
+if (typeof Array.isArray === "undefined") {
 
     (function(global) {
 

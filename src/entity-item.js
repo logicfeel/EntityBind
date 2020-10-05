@@ -1,5 +1,5 @@
 /**
- * _W.Meta.Entity
+ * @namespace _W.Meta.Entity
  *      - Item
  *      - ItemCollection
  *      - ItemRefCollection

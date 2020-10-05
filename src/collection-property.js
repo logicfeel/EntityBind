@@ -8,28 +8,31 @@
 
     //==============================================================
     // 1. 모듈 | 네임스페이스 선언 (폴리필)
-    var util;
-    var BaseCollection;
-    var IProperyCollection;
-
+    global._W               = global._W || {};
+    global._W.Collection    = global._W.Collection || {};
+    
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
+    var util;
+    var BaseCollection;
+    var IPropertyCollection;
+
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BaseCollection      = require("./collection-base");
-        IProperyCollection  = require("./i-collection-property");
+        IPropertyCollection = require("./i-collection-property");
     } else {
         util                = global._W.Common.Util;
         BaseCollection      = global._W.Collection.BaseCollection;
-        IProperyCollection  = global._W.Inteface.IProperyCollection;
-
+        IPropertyCollection = global._W.Interface.IPropertyCollection;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BaseCollection === "undefined") throw new Error("[BaseCollection] module load fail...");
-
+    if (typeof IPropertyCollection === "undefined") throw new Error("[IPropertyCollection] module load fail...");
+    
     //==============================================================
     // 4. 모듈 구현    
     var PropertyCollection  = (function (_super) {

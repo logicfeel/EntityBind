@@ -1,5 +1,5 @@
 /**
- * _W.Interface.IObject
+ * @namespace _W.Interface.IPartControl
  */
 (function(global) {
     

@@ -14,8 +14,8 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var MetaObject;
     var Observer;
+    var MetaObject;
     var ItemCollection;
     var item;
     var Item;
@@ -24,15 +24,15 @@
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
-        MetaObject          = require("./meta-object");
         Observer            = require("./observer");
+        MetaObject          = require("./meta-object");
         item                = require("./entity-item");
         Item                = item.Item;
         ItemCollection      = item.ItemCollection;
     } else {
         util                = global._W.Common.Util;
-        MetaObject          = global._W.Meta.Bind.MetaObject;
-        Observer            = global._W.Util.Observer;
+        Observer            = global._W.Common.Observer;
+        MetaObject          = global._W.Meta.MetaObject;
         ItemCollection      = global._W.Meta.Entity.ItemCollection;
         Item                = global._W.Meta.Entity.Item;
         ItemCollection      = global._W.Meta.Entity.ItemCollection;        

@@ -24,7 +24,7 @@
     } else {
         util                = global._W.Common.Util;
         BindCommand         = global._W.Meta.Bind.BindCommand;
-        ItemRefCollection   = global._W.Meta.Bind.ItemRefCollection;
+        ItemRefCollection   = global._W.Meta.Entity.ItemRefCollection;
     }
 
     //==============================================================

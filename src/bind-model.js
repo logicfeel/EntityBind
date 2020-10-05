@@ -15,7 +15,6 @@
     // 2. 모듈 가져오기 (node | web)
     var util;
     var MetaObject;
-    var Observer;
     var ItemCollection;
     var BindCommand;
     var BaseBind;
@@ -23,13 +22,11 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BaseBind            = require("./bind-base");
-        Observer            = require("./observer");
         ItemCollection      = require("./entity-item").ItemCollection;
         BindCommand         = require("./bind-cmd");
     } else {
         util                = global._W.Common.Util;
         BaseBind            = global._W.Meta.Bind.BaseBind;
-        Observer            = global._W.Util.Observer;
         ItemCollection      = global._W.Meta.Entity.ItemCollection;
         BindCommand         = global._W.Meta.Bind.BindCommand;
     }
@@ -38,7 +35,6 @@
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BaseBind === "undefined") throw new Error("[BaseBind] module load fail...");
-    if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
     if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
     if (typeof BindCommand === "undefined") throw new Error("[BindCommand] module load fail...");
 

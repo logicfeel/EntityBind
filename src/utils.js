@@ -1,6 +1,5 @@
 /**
- * _W.Common.Util.* 
- * 
+ * @namespace _W.Common.Util
  *      - inherits() : 상속
  *      - getArrayLevel() : 배열 깊이 얻기
  *      - createGUID() : GUID 생성

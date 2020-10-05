@@ -33,7 +33,7 @@
 
     } else {
         util                = global._W.Common.Util;
-        Entity              = global._W.Meta.Entity;
+        Entity              = global._W.Meta.Entity.Entity;
         ItemRefCollection   = global._W.Meta.Entity.ItemRefCollection;
         PropertyCollection  = global._W.Collection.PropertyCollection;
         ArrayCollection     = global._W.Collection.ArrayCollection;

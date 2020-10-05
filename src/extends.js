@@ -7,13 +7,15 @@
     
     //==============================================================
     // 1. 모듈 | 네임스페이스 선언 (폴리필)
-    require("./object-implement");
+    
 
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-    } else {
+        require("./object-implement");
         require("./array-is_array.slim");
+    } else {
+        
     }
 
 }(this));

@@ -1,13 +1,11 @@
 /**
- * _W.Interface.IMarshal
+ * @namespace _W.Interface.IPropertyCollection
  */
 (function(global) {
     "use strict";
 
     //==============================================================
     // 1. 모듈 | 네임스페이스 선언 (폴리필)
-    require("./object-implement"); // _implements() : 폴리필
-
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};
 
@@ -17,6 +15,8 @@
     var ICollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
+        require("./object-implement"); // _implements() : 폴리필
+
         util                = require("./utils");
         ICollection         = require("./i-collection");
     } else {

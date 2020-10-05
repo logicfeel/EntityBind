@@ -14,9 +14,8 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BaseBind;
-    var Observer;
     var BaseCollection;
+    var BaseBind;
     var Entity;
     var item;
     var Item;
@@ -24,18 +23,16 @@
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
-        BaseBind            = require("./bind-base");
-        Observer            = require("./observer");
-        item                = require("./entity-item");
         BaseCollection      =  require("./collection-base");
+        BaseBind            = require("./bind-base");
+        item                = require("./entity-item");
         Entity              =  require("./entity-base");
         Item                = item.Item;
         ItemCollection      = item.ItemCollection;
     } else {
         util                = global._W.Common.Util;
-        BaseBind            = global._W.Meta.Bind.BaseBind;
-        Observer            = global._W.Util.Observer;
         BaseCollection      = global._W.Collection.BaseCollection;
+        BaseBind            = global._W.Meta.Bind.BaseBind;
         Entity              = global._W.Meta.Entity.Entity;
         Item                = global._W.Meta.Entity.Item;
         ItemCollection      = global._W.Meta.Entity.ItemCollection;
@@ -44,10 +41,9 @@
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
+    if (typeof BaseCollection === "undefined") throw new Error("[BaseCollection] module load fail...");
     if (typeof BaseBind === "undefined") throw new Error("[BaseBind] module load fail...");
-    if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
-    if (typeof BaseCollection === "undefined") throw new Error("[BaseCollection] module load fail...");
-    if (typeof BaseCollection === "undefined") throw new Error("[BaseCollection] module load fail...");
+    if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
     if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
 

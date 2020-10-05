@@ -20,5 +20,12 @@
     "jquery": "^3.5.1",
     "kurento-client": "^6.14.0",
     "typescript": "^4.0.3"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1"
   }
 }

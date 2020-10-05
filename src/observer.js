@@ -1,6 +1,5 @@
 /**
- * _W.Common.*
- *      - Observer : 옵서버
+ * @namespace _W.Common.Observer : 옵서버
  */
 (function(global) {
 

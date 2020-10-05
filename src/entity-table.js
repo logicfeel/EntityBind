@@ -23,8 +23,8 @@
         PropertyCollection  = require("./collection-property");
     } else {
         util                = global._W.Common.Util;
-        Entity              = global._W.Meta.Entity;
-        PropertyCollection  =  global._W.Collection.PropertyCollection;
+        Entity              = global._W.Meta.Entity.Entity;
+        PropertyCollection  = global._W.Collection.PropertyCollection;
     }
 
     //==============================================================

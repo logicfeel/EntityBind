@@ -1,4 +1,5 @@
 /**
+ * @namespace Object.prototype
  * Object : 폴리필
  *      - Object.prototype.isImplementOf() : [protected] 구현 여부
  *      - Object.prototype._implements() : 인터페이스(클래스 포함) 등록 *다중상속*

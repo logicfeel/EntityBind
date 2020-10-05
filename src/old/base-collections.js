@@ -11,8 +11,6 @@
 
     //==============================================================
     // 1. 모듈 | 네임스페이스 | 폴리필 선언
-    require("./object-implement"); // _implements() : 폴리필
-
     global._W               = global._W || {};
     global._W.Collection    = global._W.Collection || {};
 
@@ -25,6 +23,8 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
+        require("./object-implement"); // _implements() : 폴리필
+        
         Util                    = require("./utils");
         Observer                = require("./observer");
         ICollection             = require("./i-collection");

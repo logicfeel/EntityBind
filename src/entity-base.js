@@ -7,8 +7,6 @@
 
     //==============================================================
     // 1. 모듈 | 네임스페이스 선언 (폴리필)
-    require("./object-implement"); // _implements() : 폴리필
-
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Entity   = global._W.Meta.Entity || {};
@@ -22,6 +20,8 @@
     var IAllControl;
     
     if (typeof module === "object" && typeof module.exports === "object") {     
+        require("./object-implement"); // _implements() : 폴리필
+        
         util                    = require("./utils");
         MetaElement             = require("./meta-element");
         IGroupControl           = require("./i-control-group");
