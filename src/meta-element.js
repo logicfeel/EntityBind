@@ -6,18 +6,17 @@
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
-    
-
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
 
+   
+    //==============================================================
+    // 2. 모듈 가져오기 (node | web)
     var util;
     var MetaObject;
     var IMarshal;
-    
-    //==============================================================
-    // 2. 모듈 가져오기 (node | web)
+
     if (typeof module === "object" && typeof module.exports === "object") {     
         require("./object-implement"); // _implements() : 폴리필
 

@@ -10,14 +10,14 @@
 
     //==============================================================
     // 1. 의존 모듈 선언
-    
+    global._W               = global._W || {};
+    global._W.Common        = global._W.Common || {};
+    global._W.Common.Util   = global._W.Common.Util || {};
+
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {
     } else {
-        global._W               = global._W || {};
-        global._W.Common        = global._W.Common || {};
-        global._W.Common.Util   = global._W.Common.Util || {};
     }
 
     //==============================================================

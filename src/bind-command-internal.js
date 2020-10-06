@@ -6,7 +6,7 @@
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -19,7 +19,7 @@
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
-        BindCommand         = require("./bind-cmd");
+        BindCommand         = require("./bind-command");
         ItemRefCollection   = require("./item");
     } else {
         util                = global._W.Common.Util;

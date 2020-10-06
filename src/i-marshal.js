@@ -6,15 +6,15 @@
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};
 
+    //==============================================================
+    // 2. 모듈 가져오기 (node | web)
     var util;
     var IObject;
 
-    //==============================================================
-    // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         IObject             = require("./i-object");

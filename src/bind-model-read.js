@@ -6,7 +6,7 @@
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -16,15 +16,18 @@
     var util;
     var BindModel;
     var BindCommandRead;
+    var EntityTable;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BindModel           = require("./bind-model");
-        BindCommandRead     = require("./bind-cmd-read");
+        BindCommandRead     = require("./bind-command-read");
+        EntityTable         = require("./entity-table").EntityTable;
     } else {
         util                = global._W.Common.Util;
         BindModel           = global._W.Meta.Bind.BindModel;
         BindCommandRead     = global._W.Meta.Bind.BindCommandRead;
+        EntityTable         = global._W.Meta.EntityTable;
     }
 
     //==============================================================
@@ -32,6 +35,7 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
     if (typeof BindCommandRead === "undefined") throw new Error("[BindCommandRead] module load fail...");
+    if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
 
 
     //==============================================================
@@ -45,11 +49,10 @@
             _super.call(this);
 
             /** @public 마스터 아이템 (실 동록위치) */
-            this.read       = new BindCommandRead(this);
+            this.first      = new EntityTable("first");
 
-            /** @public 마스터 아이템 (실 동록위치) */
-            this.first      = new ItemCollection(this);
-            
+            /** @public Command */
+            this.read       = new BindCommandRead(this, this.first);
         }
         util.inherits(BindModelRead, _super);
     

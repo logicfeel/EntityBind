@@ -6,7 +6,7 @@
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -16,26 +16,29 @@
     var util;
     var BaseCollection;
     var BaseBind;
-    var Entity;
     var item;
     var Item;
-    var ItemCollection;
+    var Entity;
+    var BindModel;
+    // var ItemCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
-        BaseCollection      =  require("./collection-base");
+        BaseCollection      = require("./collection-base");
         BaseBind            = require("./bind-base");
         item                = require("./entity-item");
-        Entity              =  require("./entity-base");
         Item                = item.Item;
-        ItemCollection      = item.ItemCollection;
+        Entity              = require("./entity-base");
+        BindModel           = require("./bind-model");
+        // ItemCollection      = item.ItemCollection;
     } else {
         util                = global._W.Common.Util;
         BaseCollection      = global._W.Collection.BaseCollection;
         BaseBind            = global._W.Meta.Bind.BaseBind;
         Entity              = global._W.Meta.Entity.Entity;
         Item                = global._W.Meta.Entity.Item;
-        ItemCollection      = global._W.Meta.Entity.ItemCollection;
+        BindModel           = global._W.Meta.Bind.BindModel;
+        // ItemCollection      = global._W.Meta.Entity.ItemCollection;
     }
 
     //==============================================================
@@ -45,7 +48,8 @@
     if (typeof BaseBind === "undefined") throw new Error("[BaseBind] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
-    if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
+    if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
+    // if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -54,14 +58,15 @@
          * @abstract 추상클래스
          * @class
          */
-        function BindCommand(p_model) {
+        function BindCommand(p_bindModel) {
             _super.call(this);
 
-            // TODO:: p_onwer 타입 검사 추가
-            // if (p_onwer instanceof BindModel)
+            if (typeof p_bindModel !== "undefined" && !(p_bindModel instanceof BindModel)) {
+                throw new Error("Only [p_bindModel] type BindModel can be added");
+            }
 
-            /** @protected 소유자 */
-            this.model = p_model;
+            /** @public 소유자 */
+            this.model = p_bindModel;
             
         }
         util.inherits(BindCommand, _super);
@@ -116,10 +121,9 @@
                     }
                 }
             } else {
-                // 공개(public) Entity | BaseCollection 프로퍼티 검사
+                // 공개(public) Entity 프로퍼티 검사
                 for (var prop in this) {
-                    if ((this[prop] instanceof Entity || this[prop] instanceof BaseCollection) 
-                            && prop.substr(0, 1) !== "_") {
+                    if (this[prop] instanceof Entity && prop.substr(0, 1) !== "_") {
                                 property.push(prop.toString());
                     }
                 }
@@ -127,14 +131,16 @@
 
             // 설정
             for (var i = 0; i < property.length; i++) {
-                if (this[property[i]] instanceof BaseCollection) {
-                    property[i] = property[i] + "[0]"               // 기본 첫번째 배열 설정 
-                }
+                // if (this[property[i]] instanceof BaseCollection) {
+                //     property[i] = property[i] + "[0]"               // 기본 첫번째 배열 설정 
+                // }
                 
                 if (property[i].indexOf("[") > -1 && property[i].indexOf("]") > -1) {
                     collection = eval("this." + property[i]).items;
                 } else if (this[property[i]] instanceof Entity){
                     collection = this[property[i]].items
+                } else {
+                    console.warn("Warning!! [" + property[i] + "]속성이 this 에 없습니다. ");
                 }
 
                 collection.add(p_item);

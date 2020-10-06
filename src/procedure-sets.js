@@ -1,6 +1,6 @@
 /**
- * 설명
- */
+ * @namespace _W.Meta.Procedure.*
+  */
 (function(global) {
 
     "use strict";

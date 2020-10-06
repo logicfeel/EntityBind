@@ -1,8 +1,6 @@
 /**
- * Arrary : 폴리필 (웹전용)
- *      - Arrary.prototype.isArray() : 배열 유무
-*/
-
+ * @namespace Array.isArray : 배열 유무 (폴리필 웹전용)
+ */
 if (typeof Array.isArray === "undefined") {
 
     (function(global) {
@@ -10,7 +8,7 @@ if (typeof Array.isArray === "undefined") {
         "use strict";
 
         //==============================================================
-        // 1. 모듈 | 네임스페이스 선언 (폴리필)
+        // 1. 모듈 네임스페이스 선언
         
         //==============================================================
         // 2. 모듈 가져오기 (node | web)

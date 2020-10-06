@@ -1,5 +1,5 @@
 /**
- * 설명
+ * @namespace _W.Meta.Entity.Context
  */
 (function(global) {
 

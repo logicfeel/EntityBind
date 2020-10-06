@@ -1,13 +1,12 @@
 /**
- * _W.Collection
- *      - PropertyCollection
+ * @namespace _W.Collection.PropertyCollection
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Collection    = global._W.Collection || {};
     
@@ -43,9 +42,9 @@
             _super.call(this, p_onwer); 
 
             /**
-             * @interface IProperyCollection 인터페이스 선언
+             * @interface IPropertyCollection 인터페이스 선언
              */
-            this._implements(IProperyCollection);            
+            this._implements(IPropertyCollection);            
         }
         util.inherits(PropertyCollection, _super);     // 상속(대상, 부모)    
 

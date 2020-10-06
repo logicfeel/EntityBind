@@ -1,5 +1,5 @@
 /**
- * 설명
+ * @namespace _W.Meta.Entity.CodeType
  */
 (function(global) {
 
@@ -31,10 +31,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = namespace;
-    } else {
-        global._W.namespace = namespace;
-    }
+    // if (typeof module === "object" && typeof module.exports === "object") {     
+    //     module.exports = namespace;
+    // } else {
+    //     global._W.namespace = namespace;
+    // }
 
 }(this));

@@ -37,9 +37,11 @@ var paths = {
 
 gulp.task('combine-js', function () {
 	return gulp.src(paths.js)
-		.pipe(concat('script.js'))
+		.pipe(concat('meta-model-0.1.0.js'))
 		.pipe(gulp.dest(dist));
 });
 
 
 gulp.task('default', gulp.series['combine-js']);
+
+// exports.default = 'combine-js';

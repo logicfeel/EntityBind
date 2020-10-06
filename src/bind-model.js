@@ -6,7 +6,7 @@
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -14,7 +14,6 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var MetaObject;
     var ItemCollection;
     var BindCommand;
     var BaseBind;
@@ -23,7 +22,7 @@
         util                = require("./utils");
         BaseBind            = require("./bind-base");
         ItemCollection      = require("./entity-item").ItemCollection;
-        BindCommand         = require("./bind-cmd");
+        BindCommand         = require("./bind-command");
     } else {
         util                = global._W.Common.Util;
         BaseBind            = global._W.Meta.Bind.BaseBind;

@@ -1,12 +1,14 @@
 /**
- * 인터페이스 전체
+ * @namespace _W.Collection.BaseCollection
+ * @namespace _W.Collection.ArrayCollection
+ * @namespace _W.Collection.PropertyCollection
  */
 (function(global) {
     
     "use strict";
     
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Collection    = global._W.Interface || {};
 

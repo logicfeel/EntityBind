@@ -1,15 +1,14 @@
 /**
- * @namespace _W.Meta.Entity
- *      - Item
- *      - ItemCollection
- *      - ItemRefCollection
+ * @namespace _W.Meta.Entity.Item
+ * @namespace _W.Meta.Entity.ItemCollection
+ * @namespace _W.Meta.Entity.ItemRefCollection
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Entity   = global._W.Meta.Entity || {};
@@ -130,19 +129,20 @@
          * @class
          * @constructor
          * @param {*} p_onwer 소유자
-         * @param {?ItemCollection} p_base 참조기본 컬렉션
+         * @param {?ItemCollection} p_refCollection 참조기본 컬렉션
          */
-        function ItemRefCollection(p_onwer, p_base) {
+        function ItemRefCollection(p_onwer, p_refCollection) {
             _super.call(this, p_onwer);
 
-            if (typeof p_base !== "undefined" && !(p_base instanceof ItemCollection)) {
-                throw new Error("Error!! ItemCollection object [p_base].");
+            // if (typeof p_refCollection !== "undefined" && !(p_refCollection instanceof ItemCollection)) {
+            if (p_refCollection && !(p_refCollection instanceof ItemCollection)) {
+                throw new Error("Error!! ItemCollection object [p_refCollection].");
             }
             
             /**
              * @protected @member
              */
-            this._baseCollection = p_base;
+            this._refCollection = p_refCollection;
         }
         util.inherits(ItemRefCollection, _super);
 
@@ -182,8 +182,8 @@
 
             if (p_refCollection instanceof ItemCollection) {
                 collection = p_refCollection;
-            } else if (this._baseCollection instanceof ItemCollection) {
-                collection = this._baseCollection;
+            } else if (this._refCollection instanceof ItemCollection) {
+                collection = this._refCollection;
             }
             
             if (collection) {

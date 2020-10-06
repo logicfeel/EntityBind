@@ -1,12 +1,16 @@
+const { ItemCollection } = require("./entity-item");
+const { RowCollection } = require("./entity-row");
+
 /**
  * @namespace _W.Meta.Entity.EntityTable
+ * @namespace _W.Meta.Entity.EntityTableCollection
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Entity   = global._W.Meta.Entity || {};
@@ -16,15 +20,27 @@
     var util;
     var Entity;
     var PropertyCollection;
+    var IGroupControl;
+    var IAllControl;
+    var RowCollection;
+    var ItemRefCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
         Entity              = require("./entity-base");
         PropertyCollection  = require("./collection-property");
+        IGroupControl       = require("./i-control-group");
+        IAllControl         = require("./i-control-all");
+        RowCollection       = require("./entity-row").RowCollection;
+        ItemRefCollection   = require("./entity-item").ItemRefCollection;
     } else {
         util                = global._W.Common.Util;
         Entity              = global._W.Meta.Entity.Entity;
         PropertyCollection  = global._W.Collection.PropertyCollection;
+        IGroupControl       = global._W.Meta.Entity.EntityTable;
+        PropertyCollection  = global._W.Collection.PropertyCollection;
+        RowCollection       = global._W.Entity.RowCollection;
+        ItemRefCollection   = global._W.Meta.Entity.ItemRefCollection;
     }
 
     //==============================================================
@@ -32,6 +48,10 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
+    if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
+    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
+    if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
+    if (typeof ItemRefCollection === "undefined") throw new Error("[ItemRefCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -42,31 +62,11 @@
         function EntityTable(p_name) {
             _super.call(this, p_name);
 
-            var __items = [];
-            /**
-             * TODO::
-             * @implements
-             */
-            Object.defineProperty(this, "count", 
-            {
-                get: function() { return __items.length; },
-                configurable: true,
-                enumerable: true
-            });
-            Object.defineProperty(this, "list", 
-            {
-                get: function() { return __items; },
-                configurable: true,
-                enumerable: true
-            });
+            this.items = new ItemCollection(this);
+
+            this.rows = new RowCollection(this);
 
             /**
-             * @abstract 상속에서 생성해야함
-             */
-            this.items = null;
-            this.rows = null;
-
-             /**
              * @interface IProperyCollection 인터페이스 선언
              */
             this._implements(IGroupControl, IAllControl);                

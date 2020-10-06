@@ -6,7 +6,7 @@
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -16,26 +16,23 @@
     var util;
     var Observer;
     var MetaObject;
-    var ItemCollection;
-    var item;
-    var Item;
-    var ItemCollection;
-
+    // var item;
+    // var Item;
+    // var ItemCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         Observer            = require("./observer");
         MetaObject          = require("./meta-object");
-        item                = require("./entity-item");
-        Item                = item.Item;
-        ItemCollection      = item.ItemCollection;
+        // item                = require("./entity-item");
+        // Item                = item.Item;
+        // ItemCollection      = item.ItemCollection;
     } else {
         util                = global._W.Common.Util;
         Observer            = global._W.Common.Observer;
         MetaObject          = global._W.Meta.MetaObject;
-        ItemCollection      = global._W.Meta.Entity.ItemCollection;
-        Item                = global._W.Meta.Entity.Item;
-        ItemCollection      = global._W.Meta.Entity.ItemCollection;        
+        // Item                = global._W.Meta.Entity.Item;
+        // ItemCollection      = global._W.Meta.Entity.ItemCollection;        
     }
 
     //==============================================================
@@ -43,8 +40,8 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
     if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
-    if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
-    if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
+    // if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
+    // if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    

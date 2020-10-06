@@ -1,12 +1,13 @@
 /**
  * @namespace _W.Meta.Entity.Row
+ * @namespace _W.Meta.Entity.RowCollection
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Entity   = global._W.Meta.Entity || {};

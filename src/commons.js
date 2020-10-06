@@ -1,12 +1,13 @@
 /**
- * _W.Common : 전체
+ * @namespace _W.Common.Util
+ * @namespace _W.Common.Extend
  */
 (function(global) {
     
     "use strict";
     
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     require("./extends");   // 폴리필
 
     global._W               = global._W || {};
@@ -39,7 +40,7 @@
         module.exports.util             = util;
         module.exports.Observer         = Observer;
     } else {
-        global._W.Common.util           = util;
+        global._W.Common.Util           = util;
         global._W.Common.Observer       = Observer;
     }
 

@@ -1,18 +1,20 @@
 /**
- * _W.Collection
- *      - ArrayCollection
+ * @namespace _W.Collection.ArrayCollection
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
-    var util;
-    var BaseCollection;
-    
+    // 1. 모듈 네임스페이스 선언
+    global._W               = global._W || {};
+    global._W.Collection    = global._W.Collection || {};
+
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
+    var util;
+    var BaseCollection;
+
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BaseCollection      = require("./collection-base");

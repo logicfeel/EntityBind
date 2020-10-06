@@ -1,31 +1,28 @@
 /**
- * _W.Collection
- *      - BaseCollection
+ * @namespace _W.Collection.BaseCollection
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
-
-
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Collection    = global._W.Collection || {};
 
+    //==============================================================
+    // 2. 모듈 가져오기 (node | web)
     var ICollection;
     var Observer;    
 
-    //==============================================================
-    // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {
         require("./object-implement"); // _implements() : 폴리필
 
-        ICollection             = require("./i-collection");
-        Observer                = require("./observer");
+        ICollection         = require("./i-collection");
+        Observer            = require("./observer");
     } else {
-        ICollection             = global._W.Interface.ICollection;
-        Observer                = global._W.Common.Observer;
+        ICollection         = global._W.Interface.ICollection;
+        Observer            = global._W.Common.Observer;
     }
 
     //==============================================================

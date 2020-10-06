@@ -1,10 +1,8 @@
 /**
- * @namespace Object.prototype
  * Object : 폴리필
- *      - Object.prototype.isImplementOf() : [protected] 구현 여부
- *      - Object.prototype._implements() : 인터페이스(클래스 포함) 등록 *다중상속*
-*/
-
+ * @namespace Object.prototype.isImplementOf [protected] 구현 여부
+ * @namespace Object.prototype._implements 인터페이스(클래스 포함) 등록 *다중상속*
+ */
 if ((typeof Object.prototype._implements === "undefined") ||
     (typeof Object.prototype.isImplementOf === "undefined")) {
 
@@ -13,7 +11,7 @@ if ((typeof Object.prototype._implements === "undefined") ||
         "use strict";
 
         //==============================================================
-        // 1. 모듈 | 네임스페이스 선언 (폴리필)
+        // 1. 모듈 네임스페이스 선언
         
         //==============================================================
         // 2. 모듈 가져오기 (node | web)
@@ -76,10 +74,8 @@ if ((typeof Object.prototype._implements === "undefined") ||
     }(this));
 }
 /**
- * Arrary : 폴리필 (웹전용)
- *      - Arrary.prototype.isArray() : 배열 유무
-*/
-
+ * @namespace Array.isArray : 배열 유무 (폴리필 웹전용)
+ */
 if (typeof Array.isArray === "undefined") {
 
     (function(global) {
@@ -87,7 +83,7 @@ if (typeof Array.isArray === "undefined") {
         "use strict";
 
         //==============================================================
-        // 1. 모듈 | 네임스페이스 선언 (폴리필)
+        // 1. 모듈 네임스페이스 선언
         
         //==============================================================
         // 2. 모듈 가져오기 (node | web)
@@ -123,14 +119,14 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 1. 의존 모듈 선언
-    
+    global._W               = global._W || {};
+    global._W.Common        = global._W.Common || {};
+    global._W.Common.Util   = global._W.Common.Util || {};
+
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {
     } else {
-        global._W               = global._W || {};
-        global._W.Common        = global._W.Common || {};
-        global._W.Common.Util   = global._W.Common.Util || {};
     }
 
     //==============================================================
@@ -222,14 +218,14 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 | 폴리필 선언
-    
+    // 1. 모듈 네임스페이스 선언
+    global._W               = global._W || {};
+    global._W.Common        = global._W.Common || {};
+
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
     } else {
-        global._W               = global._W || {};
-        global._W.Common        = global._W.Common || {};
     }
 
     //==============================================================
@@ -356,7 +352,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};
     
@@ -396,15 +392,15 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};
 
+    //==============================================================
+    // 2. 모듈 가져오기 (node | web)
     var util;
     var IObject;
 
-    //==============================================================
-    // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         IObject             = require("./i-object");
@@ -450,7 +446,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};    
     
@@ -507,7 +503,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};    
     
@@ -550,7 +546,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};    
     
@@ -600,7 +596,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};    
     
@@ -643,7 +639,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};    
     
@@ -686,7 +682,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};    
     
@@ -736,7 +732,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};    
     
@@ -837,7 +833,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};
 
@@ -893,7 +889,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Interface     = global._W.Interface || {};
 
@@ -983,33 +979,30 @@ if (typeof Array.isArray === "undefined") {
     
 }(this));
 /**
- * _W.Collection
- *      - BaseCollection
+ * @namespace _W.Collection.BaseCollection
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
-
-
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Collection    = global._W.Collection || {};
 
+    //==============================================================
+    // 2. 모듈 가져오기 (node | web)
     var ICollection;
     var Observer;    
 
-    //==============================================================
-    // 2. 모듈 가져오기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {
         require("./object-implement"); // _implements() : 폴리필
 
-        ICollection             = require("./i-collection");
-        Observer                = require("./observer");
+        ICollection         = require("./i-collection");
+        Observer            = require("./observer");
     } else {
-        ICollection             = global._W.Interface.ICollection;
-        Observer                = global._W.Common.Observer;
+        ICollection         = global._W.Interface.ICollection;
+        Observer            = global._W.Common.Observer;
     }
 
     //==============================================================
@@ -1202,20 +1195,22 @@ if (typeof Array.isArray === "undefined") {
 
 }(this));
 /**
- * _W.Collection
- *      - ArrayCollection
+ * @namespace _W.Collection.ArrayCollection
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
-    var util;
-    var BaseCollection;
-    
+    // 1. 모듈 네임스페이스 선언
+    global._W               = global._W || {};
+    global._W.Collection    = global._W.Collection || {};
+
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
+    var util;
+    var BaseCollection;
+
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BaseCollection      = require("./collection-base");
@@ -1360,15 +1355,14 @@ if (typeof Array.isArray === "undefined") {
 
 }(this));
 /**
- * _W.Collection
- *      - PropertyCollection
+ * @namespace _W.Collection.PropertyCollection
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Collection    = global._W.Collection || {};
     
@@ -1404,9 +1398,9 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this, p_onwer); 
 
             /**
-             * @interface IProperyCollection 인터페이스 선언
+             * @interface IPropertyCollection 인터페이스 선언
              */
-            this._implements(IProperyCollection);            
+            this._implements(IPropertyCollection);            
         }
         util.inherits(PropertyCollection, _super);     // 상속(대상, 부모)    
 
@@ -1579,7 +1573,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
 
@@ -1650,18 +1644,17 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
-    
-
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
 
+   
+    //==============================================================
+    // 2. 모듈 가져오기 (node | web)
     var util;
     var MetaObject;
     var IMarshal;
-    
-    //==============================================================
-    // 2. 모듈 가져오기 (node | web)
+
     if (typeof module === "object" && typeof module.exports === "object") {     
         require("./object-implement"); // _implements() : 폴리필
 
@@ -1743,11 +1736,9 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
-
-
-    global._W               = global._W || {};
-    global._W.Meta          = global._W.Meta || {};
+    // 1. 모듈 네임스페이스 선언
+    global._W                   = global._W || {};
+    global._W.Meta              = global._W.Meta || {};
 
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -1832,17 +1823,16 @@ if (typeof Array.isArray === "undefined") {
 
 }(this));
 /**
- * @namespace _W.Meta.Entity
- *      - Item
- *      - ItemCollection
- *      - ItemRefCollection
+ * @namespace _W.Meta.Entity.Item
+ * @namespace _W.Meta.Entity.ItemCollection
+ * @namespace _W.Meta.Entity.ItemRefCollection
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Entity   = global._W.Meta.Entity || {};
@@ -1963,19 +1953,20 @@ if (typeof Array.isArray === "undefined") {
          * @class
          * @constructor
          * @param {*} p_onwer 소유자
-         * @param {?ItemCollection} p_base 참조기본 컬렉션
+         * @param {?ItemCollection} p_refCollection 참조기본 컬렉션
          */
-        function ItemRefCollection(p_onwer, p_base) {
+        function ItemRefCollection(p_onwer, p_refCollection) {
             _super.call(this, p_onwer);
 
-            if (typeof p_base !== "undefined" && !(p_base instanceof ItemCollection)) {
-                throw new Error("Error!! ItemCollection object [p_base].");
+            // if (typeof p_refCollection !== "undefined" && !(p_refCollection instanceof ItemCollection)) {
+            if (p_refCollection && !(p_refCollection instanceof ItemCollection)) {
+                throw new Error("Error!! ItemCollection object [p_refCollection].");
             }
             
             /**
              * @protected @member
              */
-            this._baseCollection = p_base;
+            this._refCollection = p_refCollection;
         }
         util.inherits(ItemRefCollection, _super);
 
@@ -2015,8 +2006,8 @@ if (typeof Array.isArray === "undefined") {
 
             if (p_refCollection instanceof ItemCollection) {
                 collection = p_refCollection;
-            } else if (this._baseCollection instanceof ItemCollection) {
-                collection = this._baseCollection;
+            } else if (this._refCollection instanceof ItemCollection) {
+                collection = this._refCollection;
             }
             
             if (collection) {
@@ -2064,7 +2055,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Entity   = global._W.Meta.Entity || {};
@@ -2186,15 +2177,19 @@ if (typeof Array.isArray === "undefined") {
     }
 
 }(this));
+const { ItemCollection } = require("./entity-item");
+const { RowCollection } = require("./entity-row");
+
 /**
  * @namespace _W.Meta.Entity.EntityTable
+ * @namespace _W.Meta.Entity.EntityTableCollection
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Entity   = global._W.Meta.Entity || {};
@@ -2204,15 +2199,27 @@ if (typeof Array.isArray === "undefined") {
     var util;
     var Entity;
     var PropertyCollection;
+    var IGroupControl;
+    var IAllControl;
+    var RowCollection;
+    var ItemRefCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
         Entity              = require("./entity-base");
         PropertyCollection  = require("./collection-property");
+        IGroupControl       = require("./i-control-group");
+        IAllControl         = require("./i-control-all");
+        RowCollection       = require("./entity-row").RowCollection;
+        ItemRefCollection   = require("./entity-item").ItemRefCollection;
     } else {
         util                = global._W.Common.Util;
         Entity              = global._W.Meta.Entity.Entity;
         PropertyCollection  = global._W.Collection.PropertyCollection;
+        IGroupControl       = global._W.Meta.Entity.EntityTable;
+        PropertyCollection  = global._W.Collection.PropertyCollection;
+        RowCollection       = global._W.Entity.RowCollection;
+        ItemRefCollection   = global._W.Meta.Entity.ItemRefCollection;
     }
 
     //==============================================================
@@ -2220,6 +2227,10 @@ if (typeof Array.isArray === "undefined") {
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
+    if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
+    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
+    if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
+    if (typeof ItemRefCollection === "undefined") throw new Error("[ItemRefCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -2230,31 +2241,11 @@ if (typeof Array.isArray === "undefined") {
         function EntityTable(p_name) {
             _super.call(this, p_name);
 
-            var __items = [];
-            /**
-             * TODO::
-             * @implements
-             */
-            Object.defineProperty(this, "count", 
-            {
-                get: function() { return __items.length; },
-                configurable: true,
-                enumerable: true
-            });
-            Object.defineProperty(this, "list", 
-            {
-                get: function() { return __items; },
-                configurable: true,
-                enumerable: true
-            });
+            this.items = new ItemCollection(this);
+
+            this.rows = new RowCollection(this);
 
             /**
-             * @abstract 상속에서 생성해야함
-             */
-            this.items = null;
-            this.rows = null;
-
-             /**
              * @interface IProperyCollection 인터페이스 선언
              */
             this._implements(IGroupControl, IAllControl);                
@@ -2367,13 +2358,14 @@ if (typeof Array.isArray === "undefined") {
 }(this));
 /**
  * @namespace _W.Meta.Entity.EntityView
+ * @namespace _W.Meta.Entity.EntityViewCollection
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Entity   = global._W.Meta.Entity || {};
@@ -2384,7 +2376,7 @@ if (typeof Array.isArray === "undefined") {
     var Entity;
     var ItemRefCollection;
     var PropertyCollection;
-    var ArrayCollection;
+    var RowCollection;
     var IGroupControl;
     var IAllControl;
 
@@ -2394,7 +2386,7 @@ if (typeof Array.isArray === "undefined") {
         Entity              = require("./entity-base");
         ItemRefCollection   = require("./entity-item").ItemRefCollection;
         PropertyCollection  = require("./collection-property");
-        ArrayCollection     = require("./collection-array");
+        RowCollection       = require("./entity-row").RowCollection;
         IGroupControl       = require("./i-control-group");
         IAllControl         = require("./i-control-all");
 
@@ -2403,7 +2395,7 @@ if (typeof Array.isArray === "undefined") {
         Entity              = global._W.Meta.Entity.Entity;
         ItemRefCollection   = global._W.Meta.Entity.ItemRefCollection;
         PropertyCollection  = global._W.Collection.PropertyCollection;
-        ArrayCollection     = global._W.Collection.ArrayCollection;
+        RowCollection       = global._W.Entity.RowCollection;
         IGroupControl       = global._W.Interface.IGroupControl;
         IAllControl         = global._W.Interface.IAllControl;
     }
@@ -2414,7 +2406,9 @@ if (typeof Array.isArray === "undefined") {
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof ItemRefCollection === "undefined") throw new Error("[ItemRefCollection] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof ArrayCollection === "undefined") throw new Error("[ArrayCollection] module load fail...");
+    if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
+    if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
+    if (typeof IAllControl === "undefined") throw new Error("[IAllControl] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -2422,14 +2416,14 @@ if (typeof Array.isArray === "undefined") {
         /**
          * @abstract @class
          */
-        function EntityView(p_name, p_baseCollection) {
+        function EntityView(p_name, p_refEntity) {
             _super.call(this, p_name);
 
-            /**
-             * @abstract 상속에서 생성해야함
-             */
-            this.items = new ItemRefCollection(this, p_baseCollection);
-            this.rows = null;
+            var refCollection =  p_refEntity instanceof Entity ? p_refEntity.items : undefined;
+
+            this.items = new ItemRefCollection(this, refCollection);
+            
+            this.rows = new RowCollection(this);
             
              /**
              * @interface IProperyCollection 인터페이스 선언
@@ -2482,19 +2476,25 @@ if (typeof Array.isArray === "undefined") {
         util.inherits(EntityViewCollection, _super);
 
         /**
+         *  - string                    : 생성후   string      이름으로 등록 
+         *  - string, colltion          : 생성후   string      이름으로  등록 (collection보냄)
+         *  - entityView                :         entityView  이름으로 등록
+         *  - entityView, collection    :         entityView  이름으로 등록 (collection보냄)
          * 
-         * @param {String | Item} p_object 
-         * @returns {Item} 등록한 아이템
+         * @param {String | EntityView} p_object 
+         * @param {I?temCollection} p_refEntity
+         * @returns {EntityView} 등록한 아이템
          */
-        EntityViewCollection.prototype.add  = function(p_object) {
+        EntityViewCollection.prototype.add  = function(p_object, p_refEntity) {
 
             var i_value;
             var i_name;
 
             if (typeof p_object === "string") {      
                 i_name  = p_object;
-                i_value = new Item(i_name);
-            } else if (p_object instanceof Item) {
+                i_value = new EntityView(i_name, p_refEntity);
+            } else if (p_object instanceof EntityView) {
+                if (p_refEntity) throw new Error(" EntityView객체와 refEntity객체를 동시에 입력할 수 없습니다. !!");
                 i_name  = p_object.name;
                 i_value = p_object;
             } else {
@@ -2503,9 +2503,7 @@ if (typeof Array.isArray === "undefined") {
 
             if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
 
-            _super.prototype.add.call(this, i_name, i_value);
-
-            return this[i_name];
+            return _super.prototype.add.call(this, i_name, i_value);
         };
         
         /**
@@ -2534,90 +2532,27 @@ if (typeof Array.isArray === "undefined") {
     
     }(PropertyCollection));
 
-    //---------------------------------------
-    var OutputCollection  = (function (_super) {
-        /**
-         * @class
-         * @param {*} p_onwer 소유자 
-         */
-        function OutputCollection(p_onwer) {
-            _super.call(this, p_onwer);
-        }
-        util.inherits(OutputCollection, _super);
-
-        /**
-         * 
-         * @param {String | Item} p_object 
-         * @returns {Item} 등록한 아이템
-         */
-        OutputCollection.prototype.add  = function(p_object) {
-
-            var i_value;
-            var i_name;
-
-            if (typeof p_object === "string") {      
-                i_name  = p_object;
-                i_value = new EntityView(i_name);
-            } else if (p_object instanceof EntityView) {
-                i_name  = p_object.name;
-                i_value = p_object;
-            } else {
-                throw new Error("string | EntityView object [p_object].");
-            }
-
-            if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
-
-            return _super.prototype.add.call(this, i_value);
-        };
-        
-        /**
-         * EntityView 타입만 들어가게 제약조건 추가
-         * @override
-         */
-        OutputCollection.prototype._getPropDesciptor = function(p_idx) {
-            return {
-                get: function() { return this._items[p_idx]; },
-                set: function(newValue) { 
-                    if (newValue instanceof EntityView) {
-                        this._items[p_idx] = newValue;
-                    } else {
-                        throw new Error("Only [EntityView] type instances can be added");
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            };
-        };
-
-
-        // TODO::
-        
-        return OutputCollection;
-    
-    }(ArrayCollection));
-    
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports.EntityView = EntityView;
         module.exports.EntityViewCollection = EntityViewCollection;
-        module.exports.OutputCollection = OutputCollection;
     } else {
         global._W.Meta.Entity.EntityView = EntityView;
         global._W.Meta.Entity.EntityViewCollection = EntityViewCollection;
-        global._W.Meta.Entity.OutputCollection = OutputCollection;
     }
 
 }(this));
 /**
  * @namespace _W.Meta.Entity.Row
+ * @namespace _W.Meta.Entity.RowCollection
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Entity   = global._W.Meta.Entity || {};
@@ -2739,7 +2674,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(this));
 /**
- * 설명
+ * @namespace _W.Entity.EntitySet
  */
 (function(global) {
 
@@ -2747,10 +2682,11 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 1. 의존 모듈 선언
-    //var util;
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
+    // var util;
+    
     if (typeof module === "object" && typeof module.exports === "object") {     
         // util = require("util");
     } else {
@@ -2786,7 +2722,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -2796,26 +2732,23 @@ if (typeof Array.isArray === "undefined") {
     var util;
     var Observer;
     var MetaObject;
-    var ItemCollection;
-    var item;
-    var Item;
-    var ItemCollection;
-
+    // var item;
+    // var Item;
+    // var ItemCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         Observer            = require("./observer");
         MetaObject          = require("./meta-object");
-        item                = require("./entity-item");
-        Item                = item.Item;
-        ItemCollection      = item.ItemCollection;
+        // item                = require("./entity-item");
+        // Item                = item.Item;
+        // ItemCollection      = item.ItemCollection;
     } else {
         util                = global._W.Common.Util;
         Observer            = global._W.Common.Observer;
         MetaObject          = global._W.Meta.MetaObject;
-        ItemCollection      = global._W.Meta.Entity.ItemCollection;
-        Item                = global._W.Meta.Entity.Item;
-        ItemCollection      = global._W.Meta.Entity.ItemCollection;        
+        // Item                = global._W.Meta.Entity.Item;
+        // ItemCollection      = global._W.Meta.Entity.ItemCollection;        
     }
 
     //==============================================================
@@ -2823,8 +2756,8 @@ if (typeof Array.isArray === "undefined") {
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
     if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
-    if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
-    if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
+    // if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
+    // if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -2897,7 +2830,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -2907,26 +2840,29 @@ if (typeof Array.isArray === "undefined") {
     var util;
     var BaseCollection;
     var BaseBind;
-    var Entity;
     var item;
     var Item;
-    var ItemCollection;
+    var Entity;
+    var BindModel;
+    // var ItemCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
-        BaseCollection      =  require("./collection-base");
+        BaseCollection      = require("./collection-base");
         BaseBind            = require("./bind-base");
         item                = require("./entity-item");
-        Entity              =  require("./entity-base");
         Item                = item.Item;
-        ItemCollection      = item.ItemCollection;
+        Entity              = require("./entity-base");
+        BindModel           = require("./bind-model");
+        // ItemCollection      = item.ItemCollection;
     } else {
         util                = global._W.Common.Util;
         BaseCollection      = global._W.Collection.BaseCollection;
         BaseBind            = global._W.Meta.Bind.BaseBind;
         Entity              = global._W.Meta.Entity.Entity;
         Item                = global._W.Meta.Entity.Item;
-        ItemCollection      = global._W.Meta.Entity.ItemCollection;
+        BindModel           = global._W.Meta.Bind.BindModel;
+        // ItemCollection      = global._W.Meta.Entity.ItemCollection;
     }
 
     //==============================================================
@@ -2936,7 +2872,8 @@ if (typeof Array.isArray === "undefined") {
     if (typeof BaseBind === "undefined") throw new Error("[BaseBind] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
-    if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
+    if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
+    // if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -2945,14 +2882,15 @@ if (typeof Array.isArray === "undefined") {
          * @abstract 추상클래스
          * @class
          */
-        function BindCommand(p_model) {
+        function BindCommand(p_bindModel) {
             _super.call(this);
 
-            // TODO:: p_onwer 타입 검사 추가
-            // if (p_onwer instanceof BindModel)
+            if (typeof p_bindModel !== "undefined" && !(p_bindModel instanceof BindModel)) {
+                throw new Error("Only [p_bindModel] type BindModel can be added");
+            }
 
-            /** @protected 소유자 */
-            this.model = p_model;
+            /** @public 소유자 */
+            this.model = p_bindModel;
             
         }
         util.inherits(BindCommand, _super);
@@ -3007,10 +2945,9 @@ if (typeof Array.isArray === "undefined") {
                     }
                 }
             } else {
-                // 공개(public) Entity | BaseCollection 프로퍼티 검사
+                // 공개(public) Entity 프로퍼티 검사
                 for (var prop in this) {
-                    if ((this[prop] instanceof Entity || this[prop] instanceof BaseCollection) 
-                            && prop.substr(0, 1) !== "_") {
+                    if (this[prop] instanceof Entity && prop.substr(0, 1) !== "_") {
                                 property.push(prop.toString());
                     }
                 }
@@ -3018,14 +2955,16 @@ if (typeof Array.isArray === "undefined") {
 
             // 설정
             for (var i = 0; i < property.length; i++) {
-                if (this[property[i]] instanceof BaseCollection) {
-                    property[i] = property[i] + "[0]"               // 기본 첫번째 배열 설정 
-                }
+                // if (this[property[i]] instanceof BaseCollection) {
+                //     property[i] = property[i] + "[0]"               // 기본 첫번째 배열 설정 
+                // }
                 
                 if (property[i].indexOf("[") > -1 && property[i].indexOf("]") > -1) {
                     collection = eval("this." + property[i]).items;
                 } else if (this[property[i]] instanceof Entity){
                     collection = this[property[i]].items
+                } else {
+                    console.warn("Warning!! [" + property[i] + "]속성이 this 에 없습니다. ");
                 }
 
                 collection.add(p_item);
@@ -3054,7 +2993,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -3062,7 +3001,6 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var MetaObject;
     var ItemCollection;
     var BindCommand;
     var BaseBind;
@@ -3071,7 +3009,7 @@ if (typeof Array.isArray === "undefined") {
         util                = require("./utils");
         BaseBind            = require("./bind-base");
         ItemCollection      = require("./entity-item").ItemCollection;
-        BindCommand         = require("./bind-cmd");
+        BindCommand         = require("./bind-command");
     } else {
         util                = global._W.Common.Util;
         BaseBind            = global._W.Meta.Bind.BaseBind;
@@ -3168,7 +3106,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -3179,19 +3117,19 @@ if (typeof Array.isArray === "undefined") {
     var BindCommand;
     var entityView;
     var EntityView;
-    var OutputCollection;
+    var EntityViewCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("util");
-        BindCommand         = require("./bind-command");
-        entityView          = require("./entity-view");
-        EntityView          = entityView.EntityView;
-        OutputCollection    = entityView.OutputCollection;
+        util                    = require("util");
+        BindCommand             = require("./bind-command");
+        entityView              = require("./entity-view");
+        EntityView              = entityView.EntityView;
+        EntityViewCollection    = entityView.EntityViewCollection;
     } else {
-        util                = global._W.Common.Util;
-        BindCommand         = global._W.Meta.Bind.BindCommand;
-        EntityView          = global._W.Meta.Entity.EntityView;
-        OutputCollection    = global._W.Meta.Entity.OutputCollection;
+        util                    = global._W.Common.Util;
+        BindCommand             = global._W.Meta.Bind.BindCommand;
+        EntityView              = global._W.Meta.Entity.EntityView;
+        EntityViewCollection    = global._W.Meta.Entity.EntityViewCollection;
     }
 
     //==============================================================
@@ -3199,7 +3137,7 @@ if (typeof Array.isArray === "undefined") {
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindCommand === "undefined") throw new Error("[BindCommand] module load fail...");
     if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
-    if (typeof OutputCollection === "undefined") throw new Error("[OutputCollection] module load fail...");
+    if (typeof EntityViewCollection === "undefined") throw new Error("[EntityViewCollection] module load fail...");
 
 
     //==============================================================
@@ -3208,43 +3146,47 @@ if (typeof Array.isArray === "undefined") {
         /**
          * @class
          */
-        function BindCommandView(p_model) {
-            _super.call(this, p_model);
+        function BindCommandView(p_bindModel, p_baseEntity) {
+            _super.call(this, p_bindModel);
 
-            // TODO:: model 검사 추가해ㅑㅇ함
+            /** @protected */
+            this._baseEntity = p_baseEntity;
+
+            this._output = new EntityViewCollection(this, this._baseEntity);
+
+            this._output.add(new EntityView("default", this._baseEntity));  // 등록방법 1
+            // this._output.add("default", this._baseEntity);               // 등록방법 2
             
             /** @public  */
-            this.valid  = new EntityView("valid", p_model.items);
+            this.valid  = new EntityView("valid", this._baseEntity);
 
-            this.bind   = new EntityView("bind", p_model.items);
+            this.bind   = new EntityView("bind", this._baseEntity);
 
-            this.output = new OutputCollection(this);
-            this.output.add(new EntityView("output_1", p_model.items));
-
+            this.view = this._output["default"];        // 참조 속성 설정 [0]
         }
         util.inherits(BindCommandView, _super);
     
         BindCommandView.prototype.execute = function() {
-            if (this.execValid()) this.execBind();
+            if (this._execValid()) this._execBind();
         };
 
         /** @virtual */
-        BindCommandView.prototype.execValid = function() {
+        BindCommandView.prototype._execValid = function() {
             throw new Error("[ execValid() ] Abstract method definition, fail...");
         };
 
         /** @virtual */
-        BindCommandView.prototype.execBind = function() {
+        BindCommandView.prototype._execBind = function() {
             throw new Error("[ execBind() ] Abstract method definition, fail...");
         };
         
         /** @virtual */
-        BindCommandView.prototype.execCallback = function() {
+        BindCommandView.prototype._execCallback = function() {
             throw new Error("[ execCallback() ] Abstract method definition, fail...");
         };
 
         /** @virtual */
-        BindCommandView.prototype.execView = function() {
+        BindCommandView.prototype._execView = function() {
             throw new Error("[ execView() ] Abstract method definition, fail...");
         };
 
@@ -3270,7 +3212,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -3283,7 +3225,7 @@ if (typeof Array.isArray === "undefined") {
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
-        BindCommand         = require("./bind-cmd");
+        BindCommand         = require("./bind-command");
         ItemRefCollection   = require("./item");
     } else {
         util                = global._W.Common.Util;
@@ -3357,7 +3299,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -3369,7 +3311,7 @@ if (typeof Array.isArray === "undefined") {
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
-        BindCommandInternal = require("./bind-cmd-internal");
+        BindCommandInternal = require("./bind-command-internal");
     } else {
         util                = global._W.Common.Util;
         BindCommandInternal = global._W.Meta.Bind.BindCommandInternal;
@@ -3428,7 +3370,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -3440,7 +3382,7 @@ if (typeof Array.isArray === "undefined") {
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
-        BindCommandInternal = require("./bind-cmd-internal");
+        BindCommandInternal = require("./bind-command-internal");
     } else {
         util                = global._W.Common.Util;
         BindCommandInternal = global._W.Meta.Bind.BindCommandInternal;
@@ -3498,7 +3440,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -3510,7 +3452,7 @@ if (typeof Array.isArray === "undefined") {
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
-        BindCommandView     = require("./bind-cmd-view");
+        BindCommandView     = require("./bind-command-view");
     } else {
         util                = global._W.Common.Util;
         BindCommandView     = global._W.Meta.Bind.BindCommandView;
@@ -3573,7 +3515,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -3585,7 +3527,7 @@ if (typeof Array.isArray === "undefined") {
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
-        BindCommandView     = require("./bind-cmd-view");
+        BindCommandView     = require("./bind-command-view");
     } else {
         util                = global._W.Common.Util;
         BindCommandView     = global._W.Meta.Bind.BindCommandView;
@@ -3603,26 +3545,47 @@ if (typeof Array.isArray === "undefined") {
         /**
          * @class
          */
-        function BindCommandRead(p_model) {
-            _super.call(this, p_model);
-
+        function BindCommandRead(p_bindModel, p_entity) {
+            _super.call(this, p_bindModel, p_entity);
         }
         util.inherits(BindCommandRead, _super);
     
-        BindCommandRead.prototype.execValid = function() {
+        BindCommandRead.prototype._execValid = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execValid()");
+            for(var i = 0; i < this.valid.items.count; i++) {
+                console.log("valid : " + this.valid.items[i].name);
+            }
+            return true;
         };
 
-        BindCommandRead.prototype.execBind = function() {
+        BindCommandRead.prototype._execBind = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execBind()");
+            for(var i = 0; i < this.bind.items.count; i++) {
+                console.log("bind : " + this.bind.items[i].name);
+            }
+            this._execCallback();
         };
         
-        BindCommandRead.prototype.execCallback = function() {
+        BindCommandRead.prototype._execCallback = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execCallback()");
+            this._execView();
         };
 
-        BindCommandRead.prototype.execView = function() {
+        BindCommandRead.prototype._execView = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execView()");
+            for(var i = 0; i < this._output.count; i++) {
+                for (var ii = 0; ii < this._output[i].items.count; ii++) {
+                    console.log("output["+ i +"] : " + this._output[i].items[ii].name);
+                }
+            }
         };
 
         return BindCommandRead;
@@ -3647,7 +3610,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -3659,7 +3622,7 @@ if (typeof Array.isArray === "undefined") {
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
-        BindCommandInternal = require("./bind-cmd-internal");
+        BindCommandInternal = require("./bind-command-internal");
     } else {
         util                = global._W.Common.Util;
         BindCommandInternal = global._W.Meta.Bind.BindCommandInternal;
@@ -3750,7 +3713,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(this));
 /**
- * 설명
+ * @namespace _W.Meta.Bind.BindModelForm
  */
 (function(global) {
 
@@ -3758,10 +3721,10 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 1. 의존 모듈 선언
-    //var util;
-    
+   
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
+    // var util;
     if (typeof module === "object" && typeof module.exports === "object") {     
         // util = require("util");
     } else {
@@ -3790,7 +3753,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(this));
 /**
- * 설명
+ * @namespace _W.Meta.Bind.BindModelList
  */
 (function(global) {
 
@@ -3798,10 +3761,11 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 1. 의존 모듈 선언
-    //var util;
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
+    // var util;
+
     if (typeof module === "object" && typeof module.exports === "object") {     
         // util = require("util");
     } else {
@@ -3830,7 +3794,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(this));
 /**
- * 설명
+ * @namespace _W.Meta.Bind.BindModelReadDel
  */
 (function(global) {
 
@@ -3838,10 +3802,10 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 1. 의존 모듈 선언
-    //var util;
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
+    // var util;
     if (typeof module === "object" && typeof module.exports === "object") {     
         // util = require("util");
     } else {
@@ -3877,7 +3841,7 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -3887,15 +3851,18 @@ if (typeof Array.isArray === "undefined") {
     var util;
     var BindModel;
     var BindCommandRead;
+    var EntityTable;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BindModel           = require("./bind-model");
-        BindCommandRead     = require("./bind-cmd-read");
+        BindCommandRead     = require("./bind-command-read");
+        EntityTable         = require("./entity-table").EntityTable;
     } else {
         util                = global._W.Common.Util;
         BindModel           = global._W.Meta.Bind.BindModel;
         BindCommandRead     = global._W.Meta.Bind.BindCommandRead;
+        EntityTable         = global._W.Meta.EntityTable;
     }
 
     //==============================================================
@@ -3903,6 +3870,7 @@ if (typeof Array.isArray === "undefined") {
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
     if (typeof BindCommandRead === "undefined") throw new Error("[BindCommandRead] module load fail...");
+    if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
 
 
     //==============================================================
@@ -3916,11 +3884,10 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this);
 
             /** @public 마스터 아이템 (실 동록위치) */
-            this.read       = new BindCommandRead(this);
+            this.first      = new EntityTable("first");
 
-            /** @public 마스터 아이템 (실 동록위치) */
-            this.first      = new ItemCollection(this);
-            
+            /** @public Command */
+            this.read       = new BindCommandRead(this, this.first);
         }
         util.inherits(BindModelRead, _super);
     

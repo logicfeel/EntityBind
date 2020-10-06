@@ -1,5 +1,5 @@
 /**
- * 설명
+ * @namespace _W.Meta.Bind.BindModelForm
  */
 (function(global) {
 
@@ -7,10 +7,10 @@
 
     //==============================================================
     // 1. 의존 모듈 선언
-    //var util;
-    
+   
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
+    // var util;
     if (typeof module === "object" && typeof module.exports === "object") {     
         // util = require("util");
     } else {

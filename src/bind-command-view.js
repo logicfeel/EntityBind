@@ -6,7 +6,7 @@
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -17,19 +17,19 @@
     var BindCommand;
     var entityView;
     var EntityView;
-    var OutputCollection;
+    var EntityViewCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("util");
-        BindCommand         = require("./bind-command");
-        entityView          = require("./entity-view");
-        EntityView          = entityView.EntityView;
-        OutputCollection    = entityView.OutputCollection;
+        util                    = require("util");
+        BindCommand             = require("./bind-command");
+        entityView              = require("./entity-view");
+        EntityView              = entityView.EntityView;
+        EntityViewCollection    = entityView.EntityViewCollection;
     } else {
-        util                = global._W.Common.Util;
-        BindCommand         = global._W.Meta.Bind.BindCommand;
-        EntityView          = global._W.Meta.Entity.EntityView;
-        OutputCollection    = global._W.Meta.Entity.OutputCollection;
+        util                    = global._W.Common.Util;
+        BindCommand             = global._W.Meta.Bind.BindCommand;
+        EntityView              = global._W.Meta.Entity.EntityView;
+        EntityViewCollection    = global._W.Meta.Entity.EntityViewCollection;
     }
 
     //==============================================================
@@ -37,7 +37,7 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindCommand === "undefined") throw new Error("[BindCommand] module load fail...");
     if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
-    if (typeof OutputCollection === "undefined") throw new Error("[OutputCollection] module load fail...");
+    if (typeof EntityViewCollection === "undefined") throw new Error("[EntityViewCollection] module load fail...");
 
 
     //==============================================================
@@ -46,43 +46,47 @@
         /**
          * @class
          */
-        function BindCommandView(p_model) {
-            _super.call(this, p_model);
+        function BindCommandView(p_bindModel, p_baseEntity) {
+            _super.call(this, p_bindModel);
 
-            // TODO:: model 검사 추가해ㅑㅇ함
+            /** @protected */
+            this._baseEntity = p_baseEntity;
+
+            this._output = new EntityViewCollection(this, this._baseEntity);
+
+            this._output.add(new EntityView("default", this._baseEntity));  // 등록방법 1
+            // this._output.add("default", this._baseEntity);               // 등록방법 2
             
             /** @public  */
-            this.valid  = new EntityView("valid", p_model.items);
+            this.valid  = new EntityView("valid", this._baseEntity);
 
-            this.bind   = new EntityView("bind", p_model.items);
+            this.bind   = new EntityView("bind", this._baseEntity);
 
-            this.output = new OutputCollection(this);
-            this.output.add(new EntityView("output_1", p_model.items));
-
+            this.view = this._output["default"];        // 참조 속성 설정 [0]
         }
         util.inherits(BindCommandView, _super);
     
         BindCommandView.prototype.execute = function() {
-            if (this.execValid()) this.execBind();
+            if (this._execValid()) this._execBind();
         };
 
         /** @virtual */
-        BindCommandView.prototype.execValid = function() {
+        BindCommandView.prototype._execValid = function() {
             throw new Error("[ execValid() ] Abstract method definition, fail...");
         };
 
         /** @virtual */
-        BindCommandView.prototype.execBind = function() {
+        BindCommandView.prototype._execBind = function() {
             throw new Error("[ execBind() ] Abstract method definition, fail...");
         };
         
         /** @virtual */
-        BindCommandView.prototype.execCallback = function() {
+        BindCommandView.prototype._execCallback = function() {
             throw new Error("[ execCallback() ] Abstract method definition, fail...");
         };
 
         /** @virtual */
-        BindCommandView.prototype.execView = function() {
+        BindCommandView.prototype._execView = function() {
             throw new Error("[ execView() ] Abstract method definition, fail...");
         };
 

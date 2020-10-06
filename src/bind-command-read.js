@@ -6,7 +6,7 @@
     "use strict";
 
     //==============================================================
-    // 1. 모듈 | 네임스페이스 선언 (폴리필)
+    // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
     global._W.Meta          = global._W.Meta || {};
     global._W.Meta.Bind     = global._W.Meta.Bind || {};
@@ -18,7 +18,7 @@
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
-        BindCommandView     = require("./bind-cmd-view");
+        BindCommandView     = require("./bind-command-view");
     } else {
         util                = global._W.Common.Util;
         BindCommandView     = global._W.Meta.Bind.BindCommandView;
@@ -36,26 +36,47 @@
         /**
          * @class
          */
-        function BindCommandRead(p_model) {
-            _super.call(this, p_model);
-
+        function BindCommandRead(p_bindModel, p_entity) {
+            _super.call(this, p_bindModel, p_entity);
         }
         util.inherits(BindCommandRead, _super);
     
-        BindCommandRead.prototype.execValid = function() {
+        BindCommandRead.prototype._execValid = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execValid()");
+            for(var i = 0; i < this.valid.items.count; i++) {
+                console.log("valid : " + this.valid.items[i].name);
+            }
+            return true;
         };
 
-        BindCommandRead.prototype.execBind = function() {
+        BindCommandRead.prototype._execBind = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execBind()");
+            for(var i = 0; i < this.bind.items.count; i++) {
+                console.log("bind : " + this.bind.items[i].name);
+            }
+            this._execCallback();
         };
         
-        BindCommandRead.prototype.execCallback = function() {
+        BindCommandRead.prototype._execCallback = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execCallback()");
+            this._execView();
         };
 
-        BindCommandRead.prototype.execView = function() {
+        BindCommandRead.prototype._execView = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execView()");
+            for(var i = 0; i < this._output.count; i++) {
+                for (var ii = 0; ii < this._output[i].items.count; ii++) {
+                    console.log("output["+ i +"] : " + this._output[i].items[ii].name);
+                }
+            }
         };
 
         return BindCommandRead;
