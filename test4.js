@@ -23,7 +23,7 @@ x = false; // Not OK
 greet()
 
 
-const myGreeter = new Greeter("hello, world");
+// const myGreeter = new Greeter("hello, world");
 myGreeter.greeting = "howdy";
 myGreeter.showGreeting();
 

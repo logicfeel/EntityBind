@@ -4,7 +4,7 @@
 //===============================================
 // 선언
 var BindCommandRead         = require("../src/bind-command-read");
-var ItemCollection          = require("../src/entity-item").ItemCollection;
+// var ItemCollection          = require("../src/entity-item").ItemCollection;
 var Item                    = require("../src/entity-item").Item;
 var util                    = require("../src/utils");
 var BindModel               = require("../src/bind-model");

@@ -3,7 +3,15 @@
  */
 //===============================================
 // 선언
+
+var Item                    = require("../src/entity-item").Item;
+var EntityTable             = require("../src/entity-table").EntityTable;
+var util                    = require("../src/utils");
+var BindCommandRead         = require("../src/bind-command-read");
 var BindModelRead           = require("../src/bind-model-read");
+var BindModel               = require("../src/bind-model");
+
+
 
 // var ItemCollection          = require("../src/entity-item").ItemCollection;
 // var Item                    = require("../src/entity-item").Item;
@@ -22,7 +30,19 @@ var BindModelRead           = require("../src/bind-model-read");
 
 // var e = new TestBindModel();
 
+//////////////////////////
 var e = new BindModelRead();
+
+// function Test(){
+//     this.aaa = 100;
+
+//     this.first = new EntityTable("first");
+    
+//     this.read = new BindCommandRead(this, this.first);    
+// }
+// util.inherits(Test, BindModel)
+
+// var e = new Test();
 
 //===============================================
 // 테스크 1

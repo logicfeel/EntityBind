@@ -1,6 +1,3 @@
-const { ItemCollection } = require("./entity-item");
-const { RowCollection } = require("./entity-row");
-
 /**
  * @namespace _W.Meta.Entity.EntityTable
  * @namespace _W.Meta.Entity.EntityTableCollection
@@ -24,6 +21,7 @@ const { RowCollection } = require("./entity-row");
     var IAllControl;
     var RowCollection;
     var ItemRefCollection;
+    var ItemCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
@@ -33,6 +31,7 @@ const { RowCollection } = require("./entity-row");
         IAllControl         = require("./i-control-all");
         RowCollection       = require("./entity-row").RowCollection;
         ItemRefCollection   = require("./entity-item").ItemRefCollection;
+        ItemCollection      = require("./entity-item").ItemCollection;
     } else {
         util                = global._W.Common.Util;
         Entity              = global._W.Meta.Entity.Entity;
@@ -41,6 +40,7 @@ const { RowCollection } = require("./entity-row");
         PropertyCollection  = global._W.Collection.PropertyCollection;
         RowCollection       = global._W.Entity.RowCollection;
         ItemRefCollection   = global._W.Meta.Entity.ItemRefCollection;
+        ItemCollection      = global._W.Meta.Entity.ItemCollection;
     }
 
     //==============================================================
@@ -52,6 +52,7 @@ const { RowCollection } = require("./entity-row");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
     if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
     if (typeof ItemRefCollection === "undefined") throw new Error("[ItemRefCollection] module load fail...");
+    if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
