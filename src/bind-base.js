@@ -105,8 +105,8 @@
         global._W.Meta.Bind.BaseBind = BaseBind;
         
         // HACK:: 웹 로딩 방식으로 우회를 위해 추가함
-        global._W.Meta.Bind.BindModel = function(){};   
-        global._W.Meta.Bind.BindCommand = function(){};
+        // global._W.Meta.Bind.BindModel = function(){};   
+        // global._W.Meta.Bind.BindCommand = function(){};
     }
 
 }(this));

@@ -51,7 +51,7 @@ if ((typeof Object.prototype._implements === "undefined") ||
                     this._interface.push(arguments[i]);
                     this._interface[arguments[i].name] = arguments[i];    // 프로퍼티 접근자
                 } else {
-                    throw new Error("함수타입민 가능합니다.");
+                    throw new Error("함수타입만 가능합니다.");
                 }
                     
                 obj = new arguments[i];
@@ -2822,8 +2822,8 @@ if (typeof Array.isArray === "undefined") {
         global._W.Meta.Bind.BaseBind = BaseBind;
         
         // HACK:: 웹 로딩 방식으로 우회를 위해 추가함
-        global._W.Meta.Bind.BindModel = function(){};   
-        global._W.Meta.Bind.BindCommand = function(){};
+        // global._W.Meta.Bind.BindModel = function(){};   
+        // global._W.Meta.Bind.BindCommand = function(){};
     }
 
 }(this));
