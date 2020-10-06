@@ -1,6 +1,6 @@
 {
   "name": "entitybind",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "엔티티모듈 + 바인드모듈의 개발 위치",
   "main": "index.js",
   "scripts": {
