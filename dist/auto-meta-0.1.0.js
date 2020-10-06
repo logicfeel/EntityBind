@@ -2346,7 +2346,7 @@ if (typeof Array.isArray === "undefined") {
         Entity              = global._W.Meta.Entity.Entity;
         PropertyCollection  = global._W.Collection.PropertyCollection;
         IGroupControl       = global._W.Interface.IGroupControl;
-        PropertyCollection  = global._W.Collection.PropertyCollection;
+        IAllControl         = global._W.Interface.IAllControl;
         RowCollection       = global._W.Meta.Entity.RowCollection;
         ItemRefCollection   = global._W.Meta.Entity.ItemRefCollection;
         ItemCollection      = global._W.Meta.Entity.ItemCollection;
@@ -3882,7 +3882,6 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var BindModelRead  = (function (_super) {
         /**
-         * @abstract 추상클래스
          * @class
          */
         function BindModelRead() {

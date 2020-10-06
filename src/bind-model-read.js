@@ -42,7 +42,6 @@
     // 4. 모듈 구현    
     var BindModelRead  = (function (_super) {
         /**
-         * @abstract 추상클래스
          * @class
          */
         function BindModelRead() {

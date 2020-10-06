@@ -37,7 +37,7 @@ var paths = {
 
 gulp.task('auto', function () {
 	return gulp.src(paths.js)
-		.pipe(concat('auto-model-0.1.0.js'))
+		.pipe(concat('auto-meta-0.1.0.js'))
 		.pipe(gulp.dest(dist));
 });
 

@@ -5,13 +5,12 @@
 // 선언
 
 var Item                    = require("../src/entity-item").Item;
-var EntityTable             = require("../src/entity-table").EntityTable;
-var util                    = require("../src/utils");
+
 var BindCommandRead         = require("../src/bind-command-read");
 var BindModelRead           = require("../src/bind-model-read");
-var BindModel               = require("../src/bind-model");
 
 
+// var BindModel               = require("../src/bind-model");
 
 // var ItemCollection          = require("../src/entity-item").ItemCollection;
 // var Item                    = require("../src/entity-item").Item;
@@ -29,20 +28,19 @@ var BindModel               = require("../src/bind-model");
 // }
 
 // var e = new TestBindModel();
+var ABC = function () {
+    this.aaa = 100;
+}
+ABC.prototype.toString = function() {
+    return "[obj ABC]";
+}
+
+var abc =  new ABC();
+abc.toString();
 
 //////////////////////////
 var e = new BindModelRead();
 
-// function Test(){
-//     this.aaa = 100;
-
-//     this.first = new EntityTable("first");
-    
-//     this.read = new BindCommandRead(this, this.first);    
-// }
-// util.inherits(Test, BindModel)
-
-// var e = new Test();
 
 //===============================================
 // 테스크 1
@@ -52,15 +50,15 @@ e.read.add(new Item("ITEM1"));  // 전체추가
 console.log("e.first.items.count            1 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        1 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       1 ==> " + e.read.valid.items.count);
-console.log("e.read.output[0].items.count   1 ==> " + e.read.output[0].items.count);
+console.log("e.read._output[0].items.count  1 ==> " + e.read._output[0].items.count);
 
 console.log("---------------------------------------");
 console.log("e.read.view.item.add(new Item('ITEM2'));");
-e.read.output[0].items.add(new Item("ITEM2"));  // view 추가
+e.read._output[0].items.add(new Item("ITEM2"));  // view 추가
 console.log("e.first.items.count            2 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        1 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       1 ==> " + e.read.valid.items.count);
-console.log("e.read.output[0].items.count   2 ==> " + e.read.output[0].items.count);
+console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
 console.log("---------------------------------------");
 console.log("e.read.valid.add(e.first.items['ITEM2']);");
@@ -68,7 +66,7 @@ e.read.valid.items.add(e.first.items["ITEM2"]);  // valid 참조 추가
 console.log("e.first.items.count            2 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        1 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       2 ==> " + e.read.valid.items.count);
-console.log("e.read.output[0].items.count   2 ==> " + e.read.output[0].items.count);
+console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
 console.log("---------------------------------------");
 console.log("e.read.valid.add(e.first.items['ITEM2']);");
@@ -76,7 +74,7 @@ e.read.bind.items.add(new Item("ITEM2"));  // bind 참조 추가
 console.log("e.first.items.count            2 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        2 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       2 ==> " + e.read.valid.items.count);
-console.log("e.read.output[0].items.count   2 ==> " + e.read.output[0].items.count);
+console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
 console.log("---------------------------------------");
 console.log("e.first.items.add(new Item('ITEM3'));");
@@ -84,7 +82,7 @@ e.first.items.add(new Item("ITEM3"));  // 엔티티에 추가
 console.log("e.first.items.count            3 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        2 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       2 ==> " + e.read.valid.items.count);
-console.log("e.read.output[0].items.count   2 ==> " + e.read.output[0].items.count);
+console.log("e.read._output[0].items.count   2 ==> " + e.read._output[0].items.count);
 
 console.log("---------------------------------------");
 console.log("e.first.items.add(new Item('ITEM3')); //  중복 발생");
@@ -92,7 +90,7 @@ e.first.items.add(new Item("ITEM3"));  // 엔티티에 추가 (중복)
 console.log("e.first.items.count            3 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        2 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       2 ==> " + e.read.valid.items.count);
-console.log("e.read.output[0].items.count   2 ==> " + e.read.output[0].items.count);
+console.log("e.read._output[0].items.count   2 ==> " + e.read._output[0].items.count);
 
 console.log("---------------------------------------");
 console.log("e.read.valid.add(e.first.items['ITEM2']); // 중복 발생");
@@ -100,7 +98,7 @@ e.read.bind.items.add(new Item("ITEM2"));  // bind 참조 추가 (중복)
 console.log("e.first.items.count            3 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        2 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       2 ==> " + e.read.valid.items.count);
-console.log("e.read.output[0].items.count   2 ==> " + e.read.output[0].items.count);
+console.log("e.read._output[0].items.count   2 ==> " + e.read._output[0].items.count);
 
 console.log("---------------------------------------");
 console.log("new Item('ITEM4'),['bind', 'valid']);");
@@ -108,7 +106,7 @@ e.read.add(new Item("ITEM4"),["bind", "valid"]);  // 지정 명칭에 등록
 console.log("e.first.items.count            4 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        3 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       3 ==> " + e.read.valid.items.count);
-console.log("e.read.output[0].items.count   2 ==> " + e.read.output[0].items.count);
+console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
 console.log("---------------------------------------");
 console.log("new Item('ITEM4'),['bind', 'valid']);  // 중복 발생");
@@ -116,7 +114,7 @@ e.read.add(new Item("ITEM4"),["bind", "valid"]);  // 지정 명칭에 등록 (�
 console.log("e.first.items.count            4 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        3 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       3 ==> " + e.read.valid.items.count);
-console.log("e.read.output[0].items.count   2 ==> " + e.read.output[0].items.count);
+console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
 console.log("---------------------------------------");
 console.log("new Item('ITEM4'),['bbb', 'xxx']);     // 오류 발생");
@@ -124,7 +122,7 @@ e.read.add(new Item("ITEM4"),["bbb", "xxx"]);  // 지정명칭 :: 오류발생
 console.log("e.first.items.count            4 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        3 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       3 ==> " + e.read.valid.items.count);
-console.log("e.read.output[0].items.count   2 ==> " + e.read.output[0].items.count);
+console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
 console.log("---------------------------------------");
 console.log("e.read.bind.items.add(new Item('ITEM5'));");
@@ -132,7 +130,8 @@ e.read.bind.items.add(new Item("ITEM5"));  // 엔티티에 추가
 console.log("e.first.items.count            5 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        4 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       3 ==> " + e.read.valid.items.count);
-console.log("e.read.output[0].items.count   2 ==> " + e.read.output[0].items.count);
+console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
+console.log("e.read.view.items.count        2 ==> " + e.read.view.items.count);
 
 console.log("---------------------------------------");
 e.read.execute();
