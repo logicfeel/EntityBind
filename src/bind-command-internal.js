@@ -40,8 +40,8 @@
         /**
          * @class
          */
-        function BindCommandInternal(p_model) {
-            _super.call(this, p_model);
+        function BindCommandInternal(p_bindModel) {
+            _super.call(this, p_bindModel);
 
             /** @public  */
             this.valid = new ItemRefCollection(p_onwer.entity.items);

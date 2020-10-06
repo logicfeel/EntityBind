@@ -37,7 +37,7 @@
         Entity              = global._W.Meta.Entity.Entity;
         ItemRefCollection   = global._W.Meta.Entity.ItemRefCollection;
         PropertyCollection  = global._W.Collection.PropertyCollection;
-        RowCollection       = global._W.Entity.RowCollection;
+        RowCollection       = global._W.Meta.Entity.RowCollection;
         IGroupControl       = global._W.Interface.IGroupControl;
         IAllControl         = global._W.Interface.IAllControl;
     }

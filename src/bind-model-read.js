@@ -27,7 +27,7 @@
         util                = global._W.Common.Util;
         BindModel           = global._W.Meta.Bind.BindModel;
         BindCommandRead     = global._W.Meta.Bind.BindCommandRead;
-        EntityTable         = global._W.Meta.EntityTable;
+        EntityTable         = global._W.Meta.Entity.EntityTable;
     }
 
     //==============================================================
