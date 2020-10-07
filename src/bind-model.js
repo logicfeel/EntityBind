@@ -15,19 +15,17 @@
     // 2. 모듈 가져오기 (node | web)
     var util;
     var ItemCollection;
-    var BindCommand;
+    
     var BaseBind;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BaseBind            = require("./bind-base");
         ItemCollection      = require("./entity-item").ItemCollection;
-        BindCommand         = require("./bind-command");
     } else {
         util                = global._W.Common.Util;
         BaseBind            = global._W.Meta.Bind.BaseBind;
         ItemCollection      = global._W.Meta.Entity.ItemCollection;
-        BindCommand         = global._W.Meta.Bind.BindCommand;
     }
 
     //==============================================================
@@ -35,8 +33,6 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BaseBind === "undefined") throw new Error("[BaseBind] module load fail...");
     if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
-    if (typeof BindCommand === "undefined") throw new Error("[BindCommand] module load fail...");
-
 
     //==============================================================
     // 4. 모듈 구현    
@@ -50,7 +46,15 @@
 
         }
         util.inherits(BindModel, _super);
-    
+
+        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        BindModel.prototype.getTypes  = function() {
+                    
+            var type = ["BindModel"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
         /** @virtual */
         BindModel.prototype.init = function() {
             throw new Error("[ init() ] Abstract method definition, fail...");
@@ -85,7 +89,8 @@
             } else {
                 // public ItemCollection 프로퍼티 검사
                 for (var prop in this) {
-                    if (this[prop] instanceof BindCommand && prop.substr(0, 1) !== "_") {
+                    
+                    if (this[prop].instanceOf("BindCommand") && prop.substr(0, 1) !== "_") {
                         cmds.push(prop.toString());
                     }
                 }

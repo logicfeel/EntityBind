@@ -51,6 +51,14 @@
         }
         util.inherits(Item, _super);
 
+        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        Item.prototype.getTypes  = function() {
+                    
+            var type = ["Item"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+        
         // TODO::
         // Item.prototype.add  = function() {};
 

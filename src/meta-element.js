@@ -58,6 +58,33 @@
         }
         util.inherits(MetaElement, _super);
     
+        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        MetaElement.prototype.getTypes = function() {
+            
+            var type = ["MetaElement"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
+        /**
+         * @private
+         * @method GUID 생성
+         */
+        MetaObject.prototype.__newGUID  = function() {
+            return util.createGUID();
+        };
+
+        /**
+         * 조건 : GUID는 한번만 생성해야 함
+         * @method GUID 얻기
+         */
+        MetaObject.prototype.getGUID  = function() {
+            if (this.__GUID === null) {
+                this.__GUID = this.__newGUID();
+            }
+            return this.__GUID;
+        };
+
         /**
          * @method 객체 얻기 : 추상메소드
          */

@@ -74,6 +74,14 @@
         }
         util.inherits(EntityTable, _super);
 
+        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        EntityTable.prototype.getTypes  = function() {
+            
+            var type = ["EntityTable"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
         EntityTable.prototype.merge  = function() {
             // TODO::
         };

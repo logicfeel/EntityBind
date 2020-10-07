@@ -55,6 +55,14 @@
         }
         util.inherits(BindModelRead, _super);
     
+        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        BindModelRead.prototype.getTypes  = function() {
+                    
+            var type = ["BindModelRead"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
         BindModelRead.prototype.init = function() {
             // TODO::
         };

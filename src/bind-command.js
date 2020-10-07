@@ -19,8 +19,6 @@
     var item;
     var Item;
     var Entity;
-    var BindModel;
-    // var ItemCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
@@ -29,16 +27,12 @@
         item                = require("./entity-item");
         Item                = item.Item;
         Entity              = require("./entity-base");
-        BindModel           = require("./bind-model");
-        // ItemCollection      = item.ItemCollection;
     } else {
         util                = global._W.Common.Util;
         BaseCollection      = global._W.Collection.BaseCollection;
         BaseBind            = global._W.Meta.Bind.BaseBind;
         Entity              = global._W.Meta.Entity.Entity;
         Item                = global._W.Meta.Entity.Item;
-        BindModel           = global._W.Meta.Bind.BindModel;
-        // ItemCollection      = global._W.Meta.Entity.ItemCollection;
     }
 
     //==============================================================
@@ -48,8 +42,6 @@
     if (typeof BaseBind === "undefined") throw new Error("[BaseBind] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
-    if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
-    // if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -60,8 +52,8 @@
          */
         function BindCommand(p_bindModel) {
             _super.call(this);
-
-            if (typeof p_bindModel !== "undefined" && !(p_bindModel instanceof BindModel)) {
+            
+            if (typeof p_bindModel !== "undefined" && !(p_bindModel.instanceOf("BindModel"))) {
                 throw new Error("Only [p_bindModel] type BindModel can be added");
             }
 
@@ -71,6 +63,14 @@
         }
         util.inherits(BindCommand, _super);
     
+        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        Item.prototype.BindCommand  = function() {
+                    
+            var type = ["BindCommand"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
         /** @virtual */
         BindCommand.prototype.execute = function() {
             throw new Error("[ execute() ] Abstract method definition, fail...");

@@ -3,7 +3,9 @@
  */
 var gulp = require('gulp');
 var concat = require('gulp-concat');
-
+var uglify = require('gulp-uglify');
+var minifyhtml = require('gulp-minify-html');
+var package = require('./package');
 
 var src = '';
 var dist = 'dist/';
@@ -35,13 +37,26 @@ var paths = {
 	html: src + '/**/*.html'
 };
 
+
 gulp.task('auto', function () {
 	return gulp.src(paths.js)
-		.pipe(concat('auto-meta-0.1.0.js'))
+		.pipe(concat('auto-meta-' + package.version + '.js'))
 		.pipe(gulp.dest(dist));
 });
 
+gulp.task('auto-min', function () {
+    return gulp.src(paths.js)
+        .pipe(uglify())
+		.pipe(concat('auto-meta-' + package.version + '.min.js'))
+		.pipe(gulp.dest(dist));
+});
 
-gulp.task('default', gulp.series['auto']);
+gulp.task('auto-html', function () {
+    return gulp.src(paths.js)
+        .pipe(minifyhtml())
+		.pipe(concat('auto-meta-' + package.version + '.html.js'))
+		.pipe(gulp.dest(dist));
+});
 
+// gulp.task('default', gulp.series['auto']);
 // exports.default = 'combine-js';

@@ -120,4 +120,11 @@ for(var i = 0; i < e.first.items.count; i++) {
     console.log("first : " + e.first.items[i].name);
 }
 
+console.log("IObject            true    ==> " + e.first.items[0].instanceOf("IObject")  );
+console.log("Item               타입들   ==> " + e.first.items[0].getTypes()  );
+console.log("BindCommandRead    타입들   ==> " + e.read.getTypes()  );
+
+console.log(e.prototype)
+
 console.log("-End-");
+

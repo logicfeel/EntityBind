@@ -74,6 +74,14 @@
         }
         util.inherits(BaseBind, _super);
 
+        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        BaseBind.prototype.getTypes  = function() {
+                    
+            var type = ["BaseBind"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
         /** @protected @event */
         BaseBind.prototype._onExecute = function() {
             this.__event.publish("execute"); 

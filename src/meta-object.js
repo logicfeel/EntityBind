@@ -38,25 +38,37 @@
             // 구현할 인터페이스 선언
             this._implements(IObject);
         }
-    
-        /**
-         * @method GUID 생성
-         */
-        MetaObject.prototype._newGUID  = function() {
-            return common.createGUID();
+        
+        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        MetaObject.prototype.getTypes  = function() {
+            
+            var type = ["MetaObject"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /**
-         * 조건 : GUID는 한번만 생성해야 함
-         * @method GUID 얻기
+         * 상위 클래스 또는 인터페이스 구현 여부 
+         * @param {String} p_name 클래스, Function 이름
+         * @returns {Boolean}
          */
-        MetaObject.prototype.getGUID  = function() {
-            if (this.__GUID === null) {
-                this.__GUID = this._newGUID();
-            }
-            return this.__GUID;
-        };
+        MetaObject.prototype.instanceOf  = function(p_name) {
+
+            var arr = this.getTypes();
     
+            if (typeof p_name !== "string") throw new Error("Only [p_name] type name 'string' can be added");
+        
+            if (this._interface) {
+                for (var i = 0; i < this._interface.length; i++) {
+                    arr.push(this._interface[i].name);
+                }
+            }
+        
+            return arr.indexOf(p_name) > -1;
+        };
+
+
+
         return MetaObject;
     }());
 

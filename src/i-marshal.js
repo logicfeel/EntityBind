@@ -37,9 +37,14 @@
         util.inherits(IMarshal, _super);
 
         IMarshal.prototype.getObject  = function() {
-            throw new Error("에러:: 구현해야함.");
+            throw new Error("[ getObject() ] Abstract method definition, fail...");
         };
-    
+
+        IMarshal.prototype.getGUID  = function() {
+            throw new Error("[ getGUID() ] Abstract method definition, fail...");
+
+        };
+
         return IMarshal;
     }(IObject));
 

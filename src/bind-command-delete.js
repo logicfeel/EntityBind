@@ -42,6 +42,14 @@
         }
         util.inherits(BindCommandDelete, _super);
     
+        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        BindCommandDelete.prototype.getTypes  = function() {
+                    
+            var type = ["BindCommandDelete"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
         BindCommandDelete.prototype.execValid = function() {
             // TODO::
         };

@@ -80,6 +80,14 @@
         }
         util.inherits(Entity, _super);
 
+        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        Entity.prototype.getTypes = function() {
+            
+            var type = ["Entity"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
         /**
          * @abstract IGroupControl
          */

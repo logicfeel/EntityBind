@@ -1,5 +1,5 @@
 
-require("../src/object-implement.slim"); // _implements() : 폴리필
+require("../src/object-implement"); // _implements() : 폴리필
 var IObject = require("../src/i-object");
 var util = require("../src/utils");
 

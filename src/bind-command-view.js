@@ -65,7 +65,15 @@
             this.view = this._output["default"];        // 참조 속성 설정 [0]
         }
         util.inherits(BindCommandView, _super);
-    
+
+        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        BindCommandView.prototype.getTypes  = function() {
+                    
+            var type = ["BindCommandView"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
         BindCommandView.prototype.execute = function() {
             if (this._execValid()) this._execBind();
         };

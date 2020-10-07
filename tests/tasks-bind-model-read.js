@@ -3,44 +3,11 @@
  */
 //===============================================
 // 선언
-
 var Item                    = require("../src/entity-item").Item;
-
-var BindCommandRead         = require("../src/bind-command-read");
 var BindModelRead           = require("../src/bind-model-read");
 
 
-// var BindModel               = require("../src/bind-model");
-
-// var ItemCollection          = require("../src/entity-item").ItemCollection;
-// var Item                    = require("../src/entity-item").Item;
-
-//===============================================
-// 본문 1
-
-// function TestBindModel() {
-    
-//     this.first = {
-//         items: new ItemCollection(this)
-//     };
-    
-//     this.read = new BindCommandRead(this.first);
-// }
-
-// var e = new TestBindModel();
-var ABC = function () {
-    this.aaa = 100;
-}
-ABC.prototype.toString = function() {
-    return "[obj ABC]";
-}
-
-var abc =  new ABC();
-abc.toString();
-
-//////////////////////////
 var e = new BindModelRead();
-
 
 //===============================================
 // 테스크 1
@@ -82,7 +49,7 @@ e.first.items.add(new Item("ITEM3"));  // 엔티티에 추가
 console.log("e.first.items.count            3 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        2 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       2 ==> " + e.read.valid.items.count);
-console.log("e.read._output[0].items.count   2 ==> " + e.read._output[0].items.count);
+console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
 console.log("---------------------------------------");
 console.log("e.first.items.add(new Item('ITEM3')); //  중복 발생");
@@ -90,7 +57,7 @@ e.first.items.add(new Item("ITEM3"));  // 엔티티에 추가 (중복)
 console.log("e.first.items.count            3 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        2 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       2 ==> " + e.read.valid.items.count);
-console.log("e.read._output[0].items.count   2 ==> " + e.read._output[0].items.count);
+console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
 console.log("---------------------------------------");
 console.log("e.read.valid.add(e.first.items['ITEM2']); // 중복 발생");
@@ -98,7 +65,7 @@ e.read.bind.items.add(new Item("ITEM2"));  // bind 참조 추가 (중복)
 console.log("e.first.items.count            3 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        2 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       2 ==> " + e.read.valid.items.count);
-console.log("e.read._output[0].items.count   2 ==> " + e.read._output[0].items.count);
+console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
 console.log("---------------------------------------");
 console.log("new Item('ITEM4'),['bind', 'valid']);");

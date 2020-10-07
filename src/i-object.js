@@ -22,8 +22,12 @@
         function IObject() {
         }
     
-        IObject.prototype.getGUID  = function() {
-            throw new Error("에러:: 구현해야함.");
+        IObject.prototype.getTypes  = function() {
+            throw new Error("[ getTypes() ] Abstract method definition, fail...");
+        };
+        
+        IObject.prototype.instanceOf  = function() {
+            throw new Error("[ instanceOf() ] Abstract method definition, fail...");
         };
     
         return IObject;

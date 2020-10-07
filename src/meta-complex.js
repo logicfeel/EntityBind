@@ -69,6 +69,14 @@
         }
         util.inherits(ComplexElement, _super);
 
+        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        ComplexElement.prototype.getTypes  = function() {
+                            
+            var type = ["ComplexElement"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };        
+        
         // TODO::
         ComplexElement.prototype.add  = function() {};
         ComplexElement.prototype.remove  = function() {};

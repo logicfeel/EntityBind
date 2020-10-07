@@ -41,6 +41,14 @@
         }
         util.inherits(BindCommandRead, _super);
     
+        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        BindCommandRead.prototype.getTypes  = function() {
+                
+            var type = ["BindCommandRead"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
         BindCommandRead.prototype._execValid = function() {
             // TODO::
             console.log("*************");

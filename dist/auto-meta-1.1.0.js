@@ -368,8 +368,12 @@ if (typeof Array.isArray === "undefined") {
         function IObject() {
         }
     
-        IObject.prototype.getGUID  = function() {
-            throw new Error("에러:: 구현해야함.");
+        IObject.prototype.getTypes  = function() {
+            throw new Error("[ getTypes() ] Abstract method definition, fail...");
+        };
+        
+        IObject.prototype.instanceOf  = function() {
+            throw new Error("[ instanceOf() ] Abstract method definition, fail...");
         };
     
         return IObject;
@@ -423,9 +427,14 @@ if (typeof Array.isArray === "undefined") {
         util.inherits(IMarshal, _super);
 
         IMarshal.prototype.getObject  = function() {
-            throw new Error("에러:: 구현해야함.");
+            throw new Error("[ getObject() ] Abstract method definition, fail...");
         };
-    
+
+        IMarshal.prototype.getGUID  = function() {
+            throw new Error("[ getGUID() ] Abstract method definition, fail...");
+
+        };
+
         return IMarshal;
     }(IObject));
 
@@ -1634,24 +1643,7 @@ if (typeof Array.isArray === "undefined") {
             return arr.indexOf(p_name) > -1;
         };
 
-        /**
-         * @private
-         * @method GUID 생성
-         */
-        MetaObject.prototype.__newGUID  = function() {
-            return common.createGUID();
-        };
 
-        /**
-         * 조건 : GUID는 한번만 생성해야 함
-         * @method GUID 얻기
-         */
-        MetaObject.prototype.getGUID  = function() {
-            if (this.__GUID === null) {
-                this.__GUID = this.__newGUID();
-            }
-            return this.__GUID;
-        };
 
         return MetaObject;
     }());
@@ -1731,6 +1723,25 @@ if (typeof Array.isArray === "undefined") {
             var type = ["MetaElement"];
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
+        /**
+         * @private
+         * @method GUID 생성
+         */
+        MetaObject.prototype.__newGUID  = function() {
+            return util.createGUID();
+        };
+
+        /**
+         * 조건 : GUID는 한번만 생성해야 함
+         * @method GUID 얻기
+         */
+        MetaObject.prototype.getGUID  = function() {
+            if (this.__GUID === null) {
+                this.__GUID = this.__newGUID();
+            }
+            return this.__GUID;
         };
 
         /**
@@ -3093,20 +3104,16 @@ if (typeof Array.isArray === "undefined") {
     var util;
     var ItemCollection;
     
-    // POINT 아래주석들
-    // var BindCommand;
     var BaseBind;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BaseBind            = require("./bind-base");
         ItemCollection      = require("./entity-item").ItemCollection;
-        // BindCommand         = require("./bind-command");
     } else {
         util                = global._W.Common.Util;
         BaseBind            = global._W.Meta.Bind.BaseBind;
         ItemCollection      = global._W.Meta.Entity.ItemCollection;
-        // BindCommand         = global._W.Meta.Bind.BindCommand;
     }
 
     //==============================================================
@@ -3114,8 +3121,6 @@ if (typeof Array.isArray === "undefined") {
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BaseBind === "undefined") throw new Error("[BaseBind] module load fail...");
     if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
-    // if (typeof BindCommand === "undefined") throw new Error("[BindCommand] module load fail...");
-
 
     //==============================================================
     // 4. 모듈 구현    
@@ -3173,8 +3178,6 @@ if (typeof Array.isArray === "undefined") {
                 // public ItemCollection 프로퍼티 검사
                 for (var prop in this) {
                     
-                    // POINT
-                    // if (this[prop] instanceof BindCommand && prop.substr(0, 1) !== "_") {
                     if (this[prop].instanceOf("BindCommand") && prop.substr(0, 1) !== "_") {
                         cmds.push(prop.toString());
                     }
