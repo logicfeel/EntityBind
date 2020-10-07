@@ -1606,7 +1606,7 @@ if (typeof Array.isArray === "undefined") {
             this._implements(IObject);
         }
         
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         MetaObject.prototype.getTypes  = function() {
             
             var type = ["MetaObject"];
@@ -1725,7 +1725,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(MetaElement, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         MetaElement.prototype.getTypes = function() {
             
             var type = ["MetaElement"];
@@ -1836,7 +1836,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(ComplexElement, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         ComplexElement.prototype.getTypes  = function() {
                             
             var type = ["ComplexElement"];
@@ -1920,7 +1920,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(Item, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         Item.prototype.getTypes  = function() {
                     
             var type = ["Item"];
@@ -2312,7 +2312,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(Entity, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         Entity.prototype.getTypes = function() {
             
             var type = ["Entity"];
@@ -2444,7 +2444,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(EntityTable, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         EntityTable.prototype.getTypes  = function() {
             
             var type = ["EntityTable"];
@@ -2632,7 +2632,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(EntityView, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         EntityView.prototype.getTypes  = function() {
             
             var type = ["EntityView"];
@@ -2868,7 +2868,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BaseBind, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BaseBind.prototype.getTypes  = function() {
                     
             var type = ["BaseBind"];
@@ -2977,7 +2977,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindCommand, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         Item.prototype.BindCommand  = function() {
                     
             var type = ["BindCommand"];
@@ -3130,7 +3130,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindModel, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindModel.prototype.getTypes  = function() {
                     
             var type = ["BindModel"];
@@ -3269,7 +3269,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindCommandView, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandView.prototype.getTypes  = function() {
                     
             var type = ["BindCommandView"];
@@ -3367,7 +3367,7 @@ if (typeof Array.isArray === "undefined") {
             
         }
         util.inherits(BindCommandInternal, _super);
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandInternal.prototype.getTypes  = function() {
                     
             var type = ["BindCommandInternal"];
@@ -3453,7 +3453,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindCommandCreate, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandCreate.prototype.getTypes  = function() {
                     
             var type = ["BindCommandCreate"];
@@ -3532,7 +3532,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindCommandDelete, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandDelete.prototype.getTypes  = function() {
                     
             var type = ["BindCommandDelete"];
@@ -3610,7 +3610,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindCommandList, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandList.prototype.getTypes  = function() {
                 
             var type = ["BindCommandList"];
@@ -3692,7 +3692,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindCommandRead, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandRead.prototype.getTypes  = function() {
                 
             var type = ["BindCommandRead"];
@@ -3796,7 +3796,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindCommandUpdate, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandUpdate.prototype.getTypes  = function() {
                     
             var type = ["BindCommandUpdate"];
@@ -4048,7 +4048,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindModelRead, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindModelRead.prototype.getTypes  = function() {
                     
             var type = ["BindModelRead"];

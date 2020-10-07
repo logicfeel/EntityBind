@@ -58,7 +58,7 @@
         }
         util.inherits(MetaElement, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         MetaElement.prototype.getTypes = function() {
             
             var type = ["MetaElement"];

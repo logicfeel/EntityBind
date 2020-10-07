@@ -36,13 +36,13 @@
         /**
          * @class
          */
-        function BindCommandList(p_model) {
-            _super.call(this, p_model);
+        function BindCommandList(p_bindModel, p_baseEntity) {
+            _super.call(this, p_bindModel, p_baseEntity);
 
         }
         util.inherits(BindCommandList, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandList.prototype.getTypes  = function() {
                 
             var type = ["BindCommandList"];
@@ -52,18 +52,41 @@
 
         BindCommandList.prototype.execValid = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execValid()");
+            for(var i = 0; i < this.valid.items.count; i++) {
+                console.log("valid : " + this.valid.items[i].name);
+            }
+            return true;
         };
 
         BindCommandList.prototype.execBind = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execBind()");
+            for(var i = 0; i < this.bind.items.count; i++) {
+                console.log("bind : " + this.bind.items[i].name);
+            }
+            this._execCallback();
         };
         
         BindCommandList.prototype.execCallback = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execCallback()");
+            this._execView();
         };
 
         BindCommandList.prototype.execView = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execView()");
+            for(var i = 0; i < this._output.count; i++) {
+                for (var ii = 0; ii < this._output[i].items.count; ii++) {
+                    console.log("output["+ i +"] : " + this._output[i].items[ii].name);
+                }
+            }
+            this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
 

@@ -25,8 +25,8 @@ var paths = {
         // 메타 최상위
         'src/meta-object.js', 'src/meta-element.js', 'src/meta-complex.js', 
         // Entity
-        'src/entity-item.js', 'src/entity-row.js', 'src/entity-base.js', 'src/entity-table.js', 
-        'src/entity-view.js', 'src/entity-set.js', 
+        'src/entity-item.js', 'src/entity-item-dom.js','src/entity-row.js', 'src/entity-base.js', 
+        'src/entity-table.js', 'src/entity-view.js', 'src/entity-set.js', 
         // Bind
         'src/bind-base.js', 'src/bind-command.js', 'src/bind-model.js', 
         'src/bind-command-view.js', 'src/bind-command-internal.js', 'src/bind-command-*.js',
@@ -44,17 +44,17 @@ gulp.task('auto', function () {
 		.pipe(gulp.dest(dist));
 });
 
-gulp.task('auto-min', function () {
+gulp.task('auto-zip', function () {
     return gulp.src(paths.js)
         .pipe(uglify())
-		.pipe(concat('auto-meta-' + package.version + '.min.js'))
+		.pipe(concat('auto-meta-' + package.version + 'zip.js'))
 		.pipe(gulp.dest(dist));
 });
 
-gulp.task('auto-html', function () {
+gulp.task('auto-min', function () {
     return gulp.src(paths.js)
         .pipe(minifyhtml())
-		.pipe(concat('auto-meta-' + package.version + '.html.js'))
+		.pipe(concat('auto-meta-' + package.version + '.min.js'))
 		.pipe(gulp.dest(dist));
 });
 

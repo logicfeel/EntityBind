@@ -5,9 +5,13 @@
 // 선언
 var Item                    = require("../src/entity-item").Item;
 var BindModelRead           = require("../src/bind-model-read");
+var EntityTable             = require("../src/entity-table").EntityTable;
 
 
 var e = new BindModelRead();
+
+// 추가 참조 확인 엔티티테이블
+var t = new EntityTable("second");
 
 //===============================================
 // 테스크 1
@@ -101,11 +105,46 @@ console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.co
 console.log("e.read.view.items.count        2 ==> " + e.read.view.items.count);
 
 console.log("---------------------------------------");
+console.log("참조 추가 전");
+console.log("e.first.items.count            5 ==> " + e.first.items.count);
+console.log("e.read.bind.items.count        4 ==> " + e.read.bind.items.count);
+console.log("e.read.bind._refEntity.length  1 ==> " + e.read.bind._refEntity.length);
+
+t.items.add("B1");
+t.items.add("B2");
+e.read.bind.items.add(t.items["B1"]);               // 바로 추가할 경우
+
+console.log("외부객체 + 참조 없는 경우 :: [second] <=참조 [first] <=참조 [bind] 추가됨, _refEntity 변환없음 )");
+console.log("e.first.items.count            6 ==> " + e.first.items.count);
+console.log("e.read.bind.items.count        5 ==> " + e.read.bind.items.count);
+console.log("e.read.bind._refEntity.length  1 ==> " + e.read.bind._refEntity.length);
+
+e.read.bind.items.add(t.items["B2"], t.items);          // 참조를 전달할 경우
+
+console.log("외부객체 + 참조 있는 경우 :: [second] <=참조 [bind] 추가됨, _refEntity 변환됨 )");
+console.log("e.first.items.count            6 ==> " + e.first.items.count);
+console.log("e.read.bind.items.count        6 ==> " + e.read.bind.items.count);
+console.log("e.read.bind._refEntity.length  2 ==> " + e.read.bind._refEntity.length);
+
+// 중복의 경우 ?? 같은 흐름일단 확인 불필요...할듯..
+
+console.log("---------------------------------------");
+console.log("이벤트");
+e.onExecute = function() {console.log("공통 이벤트 시작 ~~");}
+e.onExecuted = function() {console.log("공통 이벤트 종료 ~~");}
+
+e.read.onExecute = function() {console.log("raed 이벤트 시작 ~~");}
+e.read.onExecuted = function() {console.log("read 이벤트 종료 ~~");}
+
+console.log("---------------------------------------");
 e.read.execute();
 console.log("*************");
 console.log("first.items");
 for(var i = 0; i < e.first.items.count; i++) {
     console.log("first : " + e.first.items[i].name);
 }
+
+
+
 
 console.log("-End-");

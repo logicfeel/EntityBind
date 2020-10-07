@@ -47,12 +47,22 @@
         }
         util.inherits(BindModel, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindModel.prototype.getTypes  = function() {
                     
             var type = ["BindModel"];
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
+        /** @protected @event */
+        BindModel.prototype._onExecute = function() {
+            this.__event.publish("execute"); 
+        };
+
+        /** @protected @event */
+        BindModel.prototype._onExecuted = function() {
+            this.__event.publish("executed"); 
         };
 
         /** @virtual */

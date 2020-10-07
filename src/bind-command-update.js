@@ -36,13 +36,13 @@
         /**
          * @class
          */
-        function BindCommandUpdate(p_model) {
-            _super.call(this, p_model);
+        function BindCommandUpdate(p_bindModel, p_baseEntity) {
+            _super.call(this, p_bindModel, p_baseEntity);
 
         }
         util.inherits(BindCommandUpdate, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandUpdate.prototype.getTypes  = function() {
                     
             var type = ["BindCommandUpdate"];
@@ -52,14 +52,30 @@
 
         BindCommandUpdate.prototype.execValid = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execValid()");
+            for(var i = 0; i < this.valid.items.count; i++) {
+                console.log("valid : " + this.valid.items[i].name);
+            }
+            return true;
         };
 
         BindCommandUpdate.prototype.execBind = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execBind()");
+            for(var i = 0; i < this.bind.items.count; i++) {
+                console.log("bind : " + this.bind.items[i].name);
+            }
+            this._execCallback();
         };
         
         BindCommandUpdate.prototype.execCallback = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execCallback()");
+
+            this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
         return BindCommandUpdate;

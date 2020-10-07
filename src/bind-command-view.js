@@ -47,10 +47,7 @@
          * @class
          */
         function BindCommandView(p_bindModel, p_baseEntity) {
-            _super.call(this, p_bindModel);
-
-            /** @protected */
-            this._baseEntity = p_baseEntity;
+            _super.call(this, p_bindModel, p_baseEntity);
 
             this._output = new EntityViewCollection(this, this._baseEntity);
 
@@ -66,7 +63,7 @@
         }
         util.inherits(BindCommandView, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandView.prototype.getTypes  = function() {
                     
             var type = ["BindCommandView"];
@@ -75,6 +72,7 @@
         };
 
         BindCommandView.prototype.execute = function() {
+            this._onExecute();  // "실행 시작" 이벤트 발생
             if (this._execValid()) this._execBind();
         };
 
@@ -95,7 +93,7 @@
 
         /** @virtual */
         BindCommandView.prototype._execView = function() {
-            throw new Error("[ execView() ] Abstract method definition, fail...");
+            throw new Error("[ _execView() ] Abstract method definition, fail...");
         };
 
         return BindCommandView;

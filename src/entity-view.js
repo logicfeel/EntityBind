@@ -61,7 +61,13 @@
         function EntityView(p_name, p_refEntity) {
             _super.call(this, p_name);
 
-            var refCollection =  p_refEntity instanceof Entity ? p_refEntity.items : undefined;
+            var refCollection;
+
+            if (p_refEntity.instanceOf("Entity")) {
+                refCollection = p_refEntity.items;
+            }
+
+            this._refEntity = [];
 
             this.items = new ItemRefCollection(this, refCollection);
             
@@ -74,7 +80,7 @@
         }
         util.inherits(EntityView, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         EntityView.prototype.getTypes  = function() {
             
             var type = ["EntityView"];
@@ -82,8 +88,8 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        EntityView.prototype._regRefer  = function() {
-            // TODO::
+        EntityView.prototype._regRefer  = function(p_entity) {
+            if (this._refEntity.indexOf(p_entity) < 0) this._refEntity.push(p_entity);
         };
 
         EntityView.prototype.merge  = function() {

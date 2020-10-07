@@ -50,12 +50,14 @@
          * @abstract 추상클래스
          * @class
          */
-        function BindCommand(p_bindModel) {
+        function BindCommand(p_bindModel, p_baseEntity) {
             _super.call(this);
             
-            if (typeof p_bindModel !== "undefined" && !(p_bindModel.instanceOf("BindModel"))) {
-                throw new Error("Only [p_bindModel] type BindModel can be added");
-            }
+            if (!(p_bindModel.instanceOf("BindModel"))) throw new Error("Only [p_bindModel] type 'BindModel' can be added");
+            if (!(p_baseEntity.instanceOf("Entity"))) throw new Error("Only [p_baseEntity] type 'Entity' can be added");
+
+            /** @protected */
+            this._baseEntity = p_baseEntity;
 
             /** @public 소유자 */
             this.model = p_bindModel;
@@ -63,14 +65,26 @@
         }
         util.inherits(BindCommand, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
-        Item.prototype.BindCommand  = function() {
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        BindCommand.prototype.getTypes  = function() {
                     
             var type = ["BindCommand"];
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
+        /** @protected @event */
+        BindCommand.prototype._onExecute = function() {
+            this.model._onExecute();
+            this.__event.publish("execute");
+        };
+
+        /** @protected @event */
+        BindCommand.prototype._onExecuted = function() {
+            this.__event.publish("executed"); 
+            this.model._onExecuted();
+        };
+        
         /** @virtual */
         BindCommand.prototype.execute = function() {
             throw new Error("[ execute() ] Abstract method definition, fail...");

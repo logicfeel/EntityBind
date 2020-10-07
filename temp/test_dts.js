@@ -1,4 +1,4 @@
-/// <reference path="test_dts.d.ts" />
+// <reference path="test_dts.d.ts" />
 
 
 

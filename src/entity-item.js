@@ -45,13 +45,110 @@
         function Item(p_name) {
             _super.call(this, p_name);
 
-            this.default = null;
-            this.caption = null;
-            this.codeType = null;
+            var __type          = "string";
+            var __size          = 0;
+            var __default       = null;
+            var __caption       = "";
+            var __isNotNull     = false;
+            var __callback      = null;
+            var __constraint    = null;
+            var __codeType      = null;
+
+            /** @property {type} */
+            Object.defineProperty(this, "type", 
+            {
+                get: function() { return __type; },
+                set: function(newValue) { 
+                    // TODO:: 자료종류를 검사해야함
+                    if(typeof newValue !== "string") throw new Error("Only [type] type 'string' can be added");
+                    __type = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {size} */
+            Object.defineProperty(this, "size", 
+            {
+                get: function() { return __size; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "number") throw new Error("Only [size] type 'number' can be added");
+                    __size = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {default} */
+            Object.defineProperty(this, "default", 
+            {
+                get: function() { return __default; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "string") throw new Error("Only [default] type 'string' can be added");
+                    __default = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {caption} */
+            Object.defineProperty(this, "caption", 
+            {
+                get: function() { return __caption; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "string") throw new Error("Only [caption] type 'string' can be added");
+                    __caption = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {isNotNull} */
+            Object.defineProperty(this, "isNotNull", 
+            {
+                get: function() { return __isNotNull; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "boolean") throw new Error("Only [isNotNull] type 'boolean' can be added");
+                    __isNotNull = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {callback} */
+            Object.defineProperty(this, "callback", 
+            {
+                get: function() { return __callback; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "function") throw new Error("Only [callback] type 'function' can be added");
+                    __callback = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {constraint} */
+            Object.defineProperty(this, "constraint", 
+            {
+                get: function() { return __constraint; },
+                set: function(newValue) { __constraint = newValue; },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {codeType} */
+            Object.defineProperty(this, "codeType", 
+            {
+                get: function() { return __codeType; },
+                set: function(newValue) { __codeType = newValue; },
+                configurable: true,
+                enumerable: true
+            });
+
         }
         util.inherits(Item, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         Item.prototype.getTypes  = function() {
                     
             var type = ["Item"];
@@ -59,9 +156,10 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
         
-        // TODO::
-        // Item.prototype.add  = function() {};
-
+        /** @override */
+        Item.prototype.getObject = function() {
+            // TODO::
+        };
         return Item;
     
     }(MetaElement));
@@ -194,6 +292,7 @@
                 collection = this._refCollection;
             }
             
+            // 기본참조 컬렉션 또는 전달참조 컬렉션인 경우
             if (collection) {
                 if (collection.contains(i_name)) {
                     item = collection[i_name];                      // 참조 가져옴
@@ -201,10 +300,10 @@
                     item = collection.add(p_object);                // 참조 가져옴
                 }
                 
-                // 의존성을 낮추기 위해서 검사후 등록
-                // 오너 참조에 검사후 없을경우 등록하는 루틴 필요
-                if (this._onwer.regRefer) {
-                    this._onwer.regRefer(collection._onwer);
+                // REVIEW:: 의존성을 낮추기 위해서 검사후 등록
+                // 소유객체에 참조 등록 (중복제거됨)
+                if (this._onwer._regRefer) {
+                    this._onwer._regRefer(collection._onwer);
                 }
             }
             

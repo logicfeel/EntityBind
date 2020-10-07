@@ -1615,7 +1615,7 @@ if (typeof Array.isArray === "undefined") {
             this._implements(IObject);
         }
         
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         MetaObject.prototype.getTypes  = function() {
             
             var type = ["MetaObject"];
@@ -1717,7 +1717,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(MetaElement, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         MetaElement.prototype.getTypes = function() {
             
             var type = ["MetaElement"];
@@ -1847,7 +1847,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(ComplexElement, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         ComplexElement.prototype.getTypes  = function() {
                             
             var type = ["ComplexElement"];
@@ -1925,13 +1925,110 @@ if (typeof Array.isArray === "undefined") {
         function Item(p_name) {
             _super.call(this, p_name);
 
-            this.default = null;
-            this.caption = null;
-            this.codeType = null;
+            var __type          = "string";
+            var __size          = 0;
+            var __default       = null;
+            var __caption       = "";
+            var __isNotNull     = false;
+            var __callback      = null;
+            var __constraint    = null;
+            var __codeType      = null;
+
+            /** @property {type} */
+            Object.defineProperty(this, "type", 
+            {
+                get: function() { return __type; },
+                set: function(newValue) { 
+                    // TODO:: 자료종류를 검사해야함
+                    if(typeof newValue !== "string") throw new Error("Only [type] type 'string' can be added");
+                    __type = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {size} */
+            Object.defineProperty(this, "size", 
+            {
+                get: function() { return __size; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "number") throw new Error("Only [size] type 'number' can be added");
+                    __size = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {default} */
+            Object.defineProperty(this, "default", 
+            {
+                get: function() { return __default; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "string") throw new Error("Only [default] type 'string' can be added");
+                    __default = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {caption} */
+            Object.defineProperty(this, "caption", 
+            {
+                get: function() { return __caption; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "string") throw new Error("Only [caption] type 'string' can be added");
+                    __caption = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {isNotNull} */
+            Object.defineProperty(this, "isNotNull", 
+            {
+                get: function() { return __isNotNull; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "boolean") throw new Error("Only [isNotNull] type 'boolean' can be added");
+                    __isNotNull = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {callback} */
+            Object.defineProperty(this, "callback", 
+            {
+                get: function() { return __callback; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "function") throw new Error("Only [callback] type 'function' can be added");
+                    __callback = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {constraint} */
+            Object.defineProperty(this, "constraint", 
+            {
+                get: function() { return __constraint; },
+                set: function(newValue) { __constraint = newValue; },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {codeType} */
+            Object.defineProperty(this, "codeType", 
+            {
+                get: function() { return __codeType; },
+                set: function(newValue) { __codeType = newValue; },
+                configurable: true,
+                enumerable: true
+            });
+
         }
         util.inherits(Item, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         Item.prototype.getTypes  = function() {
                     
             var type = ["Item"];
@@ -1939,9 +2036,10 @@ if (typeof Array.isArray === "undefined") {
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
         
-        // TODO::
-        // Item.prototype.add  = function() {};
-
+        /** @override */
+        Item.prototype.getObject = function() {
+            // TODO::
+        };
         return Item;
     
     }(MetaElement));
@@ -2074,6 +2172,7 @@ if (typeof Array.isArray === "undefined") {
                 collection = this._refCollection;
             }
             
+            // 기본참조 컬렉션 또는 전달참조 컬렉션인 경우
             if (collection) {
                 if (collection.contains(i_name)) {
                     item = collection[i_name];                      // 참조 가져옴
@@ -2081,10 +2180,10 @@ if (typeof Array.isArray === "undefined") {
                     item = collection.add(p_object);                // 참조 가져옴
                 }
                 
-                // 의존성을 낮추기 위해서 검사후 등록
-                // 오너 참조에 검사후 없을경우 등록하는 루틴 필요
-                if (this._onwer.regRefer) {
-                    this._onwer.regRefer(collection._onwer);
+                // REVIEW:: 의존성을 낮추기 위해서 검사후 등록
+                // 소유객체에 참조 등록 (중복제거됨)
+                if (this._onwer._regRefer) {
+                    this._onwer._regRefer(collection._onwer);
                 }
             }
             
@@ -2108,6 +2207,146 @@ if (typeof Array.isArray === "undefined") {
         global._W.Meta.Entity.Item              = Item;
         global._W.Meta.Entity.ItemCollection    = ItemCollection;
         global._W.Meta.Entity.ItemRefCollection = ItemRefCollection;
+    }
+
+}(this));
+/**
+ * @namespace _W.Meta.Entity.ItemDOM
+ */
+(function(global) {
+
+    "use strict";
+
+    //==============================================================
+    // 1. 모듈 네임스페이스 선언
+    global._W               = global._W || {};
+    global._W.Meta          = global._W.Meta || {};
+    global._W.Meta.Entity   = global._W.Meta.Entity || {};
+    
+    //==============================================================
+    // 2. 모듈 가져오기 (node | web)
+    var util;
+    var Item;
+
+    if (typeof module === "object" && typeof module.exports === "object") {     
+        util                = require("./utils");
+        Item                = require("./entity-item");
+    } else {
+        util                = global._W.Common.Util;
+        Item                = global._W.Meta.Entity.Item;
+    }
+
+    //==============================================================
+    // 3. 모듈 의존성 검사
+    if (typeof util === "undefined") throw new Error("[util] module load fail...");
+    if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
+
+
+    //==============================================================
+    // 4. 모듈 구현    
+    var ItemDOM  = (function (_super) {
+        /**
+         * @class
+         */
+        function ItemDOM() {
+            _super.call(this);
+
+            var __domType       = null;
+            var __isReadOnly    = false;
+            var __isHide        = false;
+            var __refElement    = null;
+            var __refValue      = null;
+
+            /** @property {domType} */
+            Object.defineProperty(this, "domType", 
+            {
+                get: function() { return __type; },
+                set: function(newValue) { 
+                    // TODO:: 자료종류 {input: {type: "text"...}} 만들어야함
+                    if(typeof newValue !== "object") throw new Error("Only [domType] type 'object' can be added");
+                    __type = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {isReadOnly} */
+            Object.defineProperty(this, "isReadOnly", 
+            {
+                get: function() { return __type; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "boolean") throw new Error("Only [isReadOnly] type 'boolean' can be added");
+                    __type = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {isHide} */
+            Object.defineProperty(this, "isHide", 
+            {
+                get: function() { return __type; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "boolean") throw new Error("Only [isHide] type 'boolean' can be added");
+                    __type = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {refElement} */
+            Object.defineProperty(this, "refElement", 
+            {
+                get: function() { return __type; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "object") throw new Error("Only [refElement] type 'object' can be added");
+                    __type = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {refValue} */
+            Object.defineProperty(this, "refValue", 
+            {
+                get: function() { return __type; },
+                set: function(newValue) { 
+                    __type = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+        }
+        util.inherits(ItemDOM, _super);
+    
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        ItemDOM.prototype.getTypes  = function() {
+                    
+            var type = ["ItemDOM"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
+        /** @override */
+        ItemDOM.prototype.getObject = function() {
+            // TODO::
+        };
+
+        ItemDOM.prototype.toEntityColumn = function() {
+            // TODO::
+        };
+
+        return ItemDOM;
+    
+    }(Item));
+
+    //==============================================================
+    // 5. 모듈 내보내기 (node | web)
+    if (typeof module === "object" && typeof module.exports === "object") {     
+        module.exports = ItemDOM;
+    } else {
+        global._W.Meta.Entity.ItemDOM = ItemDOM;
     }
 
 }(this));
@@ -2323,7 +2562,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(Entity, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         Entity.prototype.getTypes = function() {
             
             var type = ["Entity"];
@@ -2455,7 +2694,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(EntityTable, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         EntityTable.prototype.getTypes  = function() {
             
             var type = ["EntityTable"];
@@ -2630,7 +2869,13 @@ if (typeof Array.isArray === "undefined") {
         function EntityView(p_name, p_refEntity) {
             _super.call(this, p_name);
 
-            var refCollection =  p_refEntity instanceof Entity ? p_refEntity.items : undefined;
+            var refCollection;
+
+            if (p_refEntity.instanceOf("Entity")) {
+                refCollection = p_refEntity.items;
+            }
+
+            this._refEntity = [];
 
             this.items = new ItemRefCollection(this, refCollection);
             
@@ -2643,7 +2888,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(EntityView, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         EntityView.prototype.getTypes  = function() {
             
             var type = ["EntityView"];
@@ -2651,8 +2896,8 @@ if (typeof Array.isArray === "undefined") {
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        EntityView.prototype._regRefer  = function() {
-            // TODO::
+        EntityView.prototype._regRefer  = function(p_entity) {
+            if (this._refEntity.indexOf(p_entity) < 0) this._refEntity.push(p_entity);
         };
 
         EntityView.prototype.merge  = function() {
@@ -2821,23 +3066,15 @@ if (typeof Array.isArray === "undefined") {
     var util;
     var Observer;
     var MetaObject;
-    // var item;
-    // var Item;
-    // var ItemCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         Observer            = require("./observer");
         MetaObject          = require("./meta-object");
-        // item                = require("./entity-item");
-        // Item                = item.Item;
-        // ItemCollection      = item.ItemCollection;
     } else {
         util                = global._W.Common.Util;
         Observer            = global._W.Common.Observer;
         MetaObject          = global._W.Meta.MetaObject;
-        // Item                = global._W.Meta.Entity.Item;
-        // ItemCollection      = global._W.Meta.Entity.ItemCollection;        
     }
 
     //==============================================================
@@ -2845,8 +3082,6 @@ if (typeof Array.isArray === "undefined") {
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
     if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
-    // if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
-    // if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -2879,7 +3114,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BaseBind, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BaseBind.prototype.getTypes  = function() {
                     
             var type = ["BaseBind"];
@@ -2887,14 +3122,14 @@ if (typeof Array.isArray === "undefined") {
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @protected @event */
+        /** @abstract */
         BaseBind.prototype._onExecute = function() {
-            this.__event.publish("execute"); 
+            throw new Error("[ _onExecute() ] Abstract method definition, fail...");
         };
 
-        /** @protected @event */
+        /** @abstract */
         BaseBind.prototype._onExecuted = function() {
-            this.__event.publish("executed"); 
+            throw new Error("[ _onExecuted() ] Abstract method definition, fail...");
         };
 
         /**
@@ -2916,10 +3151,6 @@ if (typeof Array.isArray === "undefined") {
         module.exports = BaseBind;
     } else {
         global._W.Meta.Bind.BaseBind = BaseBind;
-        
-        // HACK:: 웹 로딩 방식으로 우회를 위해 추가함
-        // global._W.Meta.Bind.BindModel = function(){};   
-        // global._W.Meta.Bind.BindCommand = function(){};
     }
 
 }(this));
@@ -2975,12 +3206,14 @@ if (typeof Array.isArray === "undefined") {
          * @abstract 추상클래스
          * @class
          */
-        function BindCommand(p_bindModel) {
+        function BindCommand(p_bindModel, p_baseEntity) {
             _super.call(this);
             
-            if (typeof p_bindModel !== "undefined" && !(p_bindModel.instanceOf("BindModel"))) {
-                throw new Error("Only [p_bindModel] type BindModel can be added");
-            }
+            if (!(p_bindModel.instanceOf("BindModel"))) throw new Error("Only [p_bindModel] type 'BindModel' can be added");
+            if (!(p_baseEntity.instanceOf("Entity"))) throw new Error("Only [p_baseEntity] type 'Entity' can be added");
+
+            /** @protected */
+            this._baseEntity = p_baseEntity;
 
             /** @public 소유자 */
             this.model = p_bindModel;
@@ -2988,14 +3221,26 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindCommand, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
-        Item.prototype.BindCommand  = function() {
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        BindCommand.prototype.getTypes  = function() {
                     
             var type = ["BindCommand"];
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
+        /** @protected @event */
+        BindCommand.prototype._onExecute = function() {
+            this.model._onExecute();
+            this.__event.publish("execute");
+        };
+
+        /** @protected @event */
+        BindCommand.prototype._onExecuted = function() {
+            this.__event.publish("executed"); 
+            this.model._onExecuted();
+        };
+        
         /** @virtual */
         BindCommand.prototype.execute = function() {
             throw new Error("[ execute() ] Abstract method definition, fail...");
@@ -3135,12 +3380,22 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindModel, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindModel.prototype.getTypes  = function() {
                     
             var type = ["BindModel"];
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
+        /** @protected @event */
+        BindModel.prototype._onExecute = function() {
+            this.__event.publish("execute"); 
+        };
+
+        /** @protected @event */
+        BindModel.prototype._onExecuted = function() {
+            this.__event.publish("executed"); 
         };
 
         /** @virtual */
@@ -3253,10 +3508,7 @@ if (typeof Array.isArray === "undefined") {
          * @class
          */
         function BindCommandView(p_bindModel, p_baseEntity) {
-            _super.call(this, p_bindModel);
-
-            /** @protected */
-            this._baseEntity = p_baseEntity;
+            _super.call(this, p_bindModel, p_baseEntity);
 
             this._output = new EntityViewCollection(this, this._baseEntity);
 
@@ -3272,7 +3524,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindCommandView, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandView.prototype.getTypes  = function() {
                     
             var type = ["BindCommandView"];
@@ -3281,6 +3533,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         BindCommandView.prototype.execute = function() {
+            this._onExecute();  // "실행 시작" 이벤트 발생
             if (this._execValid()) this._execBind();
         };
 
@@ -3301,7 +3554,7 @@ if (typeof Array.isArray === "undefined") {
 
         /** @virtual */
         BindCommandView.prototype._execView = function() {
-            throw new Error("[ execView() ] Abstract method definition, fail...");
+            throw new Error("[ _execView() ] Abstract method definition, fail...");
         };
 
         return BindCommandView;
@@ -3327,32 +3580,31 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
-    global._W               = global._W || {};
-    global._W.Meta          = global._W.Meta || {};
-    global._W.Meta.Bind     = global._W.Meta.Bind || {};
+    global._W                   = global._W || {};
+    global._W.Meta              = global._W.Meta || {};
+    global._W.Meta.Bind         = global._W.Meta.Bind || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
     var BindCommand;
-    var ItemRefCollection;
+    var EntityView;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("util");
-        BindCommand         = require("./bind-command");
-        ItemRefCollection   = require("./item");
+        util                    = require("util");
+        BindCommand             = require("./bind-command");
+        EntityView              = require("./entity-view").EntityView;
     } else {
-        util                = global._W.Common.Util;
-        BindCommand         = global._W.Meta.Bind.BindCommand;
-        ItemRefCollection   = global._W.Meta.Entity.ItemRefCollection;
+        util                    = global._W.Common.Util;
+        BindCommand             = global._W.Meta.Bind.BindCommand;
+        EntityView              = global._W.Meta.Entity.EntityView;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindCommand === "undefined") throw new Error("[BindCommand] module load fail...");
-    if (typeof ItemRefCollection === "undefined") throw new Error("[ItemRefCollection] module load fail...");
-
+    if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -3360,17 +3612,17 @@ if (typeof Array.isArray === "undefined") {
         /**
          * @class
          */
-        function BindCommandInternal(p_bindModel) {
-            _super.call(this, p_bindModel);
+        function BindCommandInternal(p_bindModel, p_baseEntity) {
+            _super.call(this, p_bindModel, p_baseEntity);
 
             /** @public  */
-            this.valid = new ItemRefCollection(p_onwer.entity.items);
+            this.valid  = new EntityView("valid", this._baseEntity);
 
-            this.bind = new ItemRefCollection(p_onwer.entity.items);
-            
+            this.bind   = new EntityView("bind", this._baseEntity);
         }
         util.inherits(BindCommandInternal, _super);
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandInternal.prototype.getTypes  = function() {
                     
             var type = ["BindCommandInternal"];
@@ -3379,6 +3631,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         BindCommandInternal.prototype.execute = function() {
+            this._onExecute();  // "실행 시작" 이벤트 발생
             if (this.execValid()) this.execBind();
         };
 
@@ -3450,13 +3703,13 @@ if (typeof Array.isArray === "undefined") {
         /**
          * @class
          */
-        function BindCommandCreate(p_model) {
-            _super.call(this, p_model);
+        function BindCommandCreate(p_bindModel, p_baseEntity) {
+            _super.call(this, p_bindModel, p_baseEntity);
 
         }
         util.inherits(BindCommandCreate, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandCreate.prototype.getTypes  = function() {
                     
             var type = ["BindCommandCreate"];
@@ -3465,15 +3718,31 @@ if (typeof Array.isArray === "undefined") {
         };
 
         BindCommandCreate.prototype.execValid = function() {
-            // TODO::
+             // TODO::
+             console.log("*************");
+             console.log("_execValid()");
+             for(var i = 0; i < this.valid.items.count; i++) {
+                 console.log("valid : " + this.valid.items[i].name);
+             }
+             return true;
         };
 
         BindCommandCreate.prototype.execBind = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execBind()");
+            for(var i = 0; i < this.bind.items.count; i++) {
+                console.log("bind : " + this.bind.items[i].name);
+            }
+            this._execCallback();
         };
         
         BindCommandCreate.prototype.execCallback = function() {
-            // TODO::
+             // TODO::
+             console.log("*************");
+             console.log("_execCallback()");
+ 
+             this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
 
@@ -3529,13 +3798,13 @@ if (typeof Array.isArray === "undefined") {
         /**
          * @class
          */
-        function BindCommandDelete(p_model) {
-            _super.call(this, p_model);
+        function BindCommandDelete(p_bindModel, p_baseEntity) {
+            _super.call(this, p_bindModel, p_baseEntity);
 
         }
         util.inherits(BindCommandDelete, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandDelete.prototype.getTypes  = function() {
                     
             var type = ["BindCommandDelete"];
@@ -3545,14 +3814,30 @@ if (typeof Array.isArray === "undefined") {
 
         BindCommandDelete.prototype.execValid = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execValid()");
+            for(var i = 0; i < this.valid.items.count; i++) {
+                console.log("valid : " + this.valid.items[i].name);
+            }
+            return true;
         };
 
         BindCommandDelete.prototype.execBind = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execBind()");
+            for(var i = 0; i < this.bind.items.count; i++) {
+                console.log("bind : " + this.bind.items[i].name);
+            }
+            this._execCallback();
         };
         
         BindCommandDelete.prototype.execCallback = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execCallback()");
+
+            this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
         return BindCommandDelete;
@@ -3607,13 +3892,13 @@ if (typeof Array.isArray === "undefined") {
         /**
          * @class
          */
-        function BindCommandList(p_model) {
-            _super.call(this, p_model);
+        function BindCommandList(p_bindModel, p_baseEntity) {
+            _super.call(this, p_bindModel, p_baseEntity);
 
         }
         util.inherits(BindCommandList, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandList.prototype.getTypes  = function() {
                 
             var type = ["BindCommandList"];
@@ -3623,18 +3908,41 @@ if (typeof Array.isArray === "undefined") {
 
         BindCommandList.prototype.execValid = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execValid()");
+            for(var i = 0; i < this.valid.items.count; i++) {
+                console.log("valid : " + this.valid.items[i].name);
+            }
+            return true;
         };
 
         BindCommandList.prototype.execBind = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execBind()");
+            for(var i = 0; i < this.bind.items.count; i++) {
+                console.log("bind : " + this.bind.items[i].name);
+            }
+            this._execCallback();
         };
         
         BindCommandList.prototype.execCallback = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execCallback()");
+            this._execView();
         };
 
         BindCommandList.prototype.execView = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execView()");
+            for(var i = 0; i < this._output.count; i++) {
+                for (var ii = 0; ii < this._output[i].items.count; ii++) {
+                    console.log("output["+ i +"] : " + this._output[i].items[ii].name);
+                }
+            }
+            this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
 
@@ -3690,12 +3998,12 @@ if (typeof Array.isArray === "undefined") {
         /**
          * @class
          */
-        function BindCommandRead(p_bindModel, p_entity) {
-            _super.call(this, p_bindModel, p_entity);
+        function BindCommandRead(p_bindModel, p_baseEntity) {
+            _super.call(this, p_bindModel, p_baseEntity);
         }
         util.inherits(BindCommandRead, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandRead.prototype.getTypes  = function() {
                 
             var type = ["BindCommandRead"];
@@ -3739,6 +4047,7 @@ if (typeof Array.isArray === "undefined") {
                     console.log("output["+ i +"] : " + this._output[i].items[ii].name);
                 }
             }
+            this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
         return BindCommandRead;
@@ -3793,13 +4102,13 @@ if (typeof Array.isArray === "undefined") {
         /**
          * @class
          */
-        function BindCommandUpdate(p_model) {
-            _super.call(this, p_model);
+        function BindCommandUpdate(p_bindModel, p_baseEntity) {
+            _super.call(this, p_bindModel, p_baseEntity);
 
         }
         util.inherits(BindCommandUpdate, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandUpdate.prototype.getTypes  = function() {
                     
             var type = ["BindCommandUpdate"];
@@ -3809,14 +4118,30 @@ if (typeof Array.isArray === "undefined") {
 
         BindCommandUpdate.prototype.execValid = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execValid()");
+            for(var i = 0; i < this.valid.items.count; i++) {
+                console.log("valid : " + this.valid.items[i].name);
+            }
+            return true;
         };
 
         BindCommandUpdate.prototype.execBind = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execBind()");
+            for(var i = 0; i < this.bind.items.count; i++) {
+                console.log("bind : " + this.bind.items[i].name);
+            }
+            this._execCallback();
         };
         
         BindCommandUpdate.prototype.execCallback = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execCallback()");
+
+            this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
         return BindCommandUpdate;
@@ -3834,46 +4159,6 @@ if (typeof Array.isArray === "undefined") {
 
 }(this));
 /**
- * 설명
- */
-(function(global) {
-
-    "use strict";
-
-    //==============================================================
-    // 1. 의존 모듈 선언
-    //var util;
-    
-    //==============================================================
-    // 2. 모듈 가져오기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        // util = require("util");
-    } else {
-        // global._W = global._W || {};
-        // util = global._W.util || {};
-    }
-
-    //==============================================================
-    // 3. 의존성 검사
-    // if (typeof util === "undefined") throw new Error("[XXX] module  load fail...");
-
-
-    //==============================================================
-    // 4. 모듈 구현    
-    // util.inherits = (function () {
-    // }());
-    
-
-    //==============================================================
-    // 5. 모듈 내보내기 (node | web)
-    // if (typeof module === "object" && typeof module.exports === "object") {     
-    //     module.exports = namespace;
-    // } else {
-    //     global._W.namespace = namespace;
-    // }
-
-}(this));
-/**
  * @namespace _W.Meta.Bind.BindModelForm
  */
 (function(global) {
@@ -3881,36 +4166,94 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 의존 모듈 선언
-   
+    // 1. 모듈 네임스페이스 선언
+    global._W               = global._W || {};
+    global._W.Meta          = global._W.Meta || {};
+    global._W.Meta.Bind     = global._W.Meta.Bind || {};
+    
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    // var util;
+    var util;
+    var BindModel;
+    var BindCommandCreate;
+    var BindCommandRead;
+    var BindCommandUpdate;
+    var BindCommandDelete;
+    var EntityTable;
+
     if (typeof module === "object" && typeof module.exports === "object") {     
-        // util = require("util");
+        util                = require("./utils");
+        BindModel           = require("./bind-model");
+        BindCommandCreate   = require("./bind-command-create");
+        BindCommandRead     = require("./bind-command-read");
+        BindCommandUpdate   = require("./bind-command-update");
+        BindCommandDelete   = require("./bind-command-delete");
+        EntityTable         = require("./entity-table").EntityTable;
     } else {
-        // global._W = global._W || {};
-        // util = global._W.util || {};
+        util                = global._W.Common.Util;
+        BindModel           = global._W.Meta.Bind.BindModel;
+        BindCommandCreate   = global._W.Meta.Bind.BindCommandCreate;
+        BindCommandRead     = global._W.Meta.Bind.BindCommandRead;
+        BindCommandUpdate   = global._W.Meta.Bind.BindCommandUpdate;
+        BindCommandDelete   = global._W.Meta.Bind.BindCommandDelete;
+        EntityTable         = global._W.Meta.Entity.EntityTable;
     }
 
     //==============================================================
-    // 3. 의존성 검사
-    // if (typeof util === "undefined") throw new Error("[XXX] module  load fail...");
+    // 3. 모듈 의존성 검사
+    if (typeof util === "undefined") throw new Error("[util] module load fail...");
+    if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
+    if (typeof BindCommandCreate === "undefined") throw new Error("[BindCommandCreate] module load fail...");
+    if (typeof BindCommandRead === "undefined") throw new Error("[BindCommandRead] module load fail...");
+    if (typeof BindCommandUpdate === "undefined") throw new Error("[BindCommandUpdate] module load fail...");
+    if (typeof BindCommandDelete === "undefined") throw new Error("[BindCommandDelete] module load fail...");
+    if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
 
 
     //==============================================================
     // 4. 모듈 구현    
-    // util.inherits = (function () {
-    // }());
+    var BindModelForm  = (function (_super) {
+        /**
+         * @class
+         */
+        function BindModelForm() {
+            _super.call(this);
+
+            /** @public 마스터 아이템 (실 동록위치) */
+            this.first      = new EntityTable("first");
+
+            /** @public Command */
+            this.create         = new BindCommandCreate(this, this.first);
+            this.read           = new BindCommandRead(this, this.first);
+            this.update         = new BindCommandUpdate(this, this.first);
+            this.delete         = new BindCommandDelete(this, this.first);
+        }
+        util.inherits(BindModelForm, _super);
+    
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        BindModelForm.prototype.getTypes  = function() {
+                    
+            var type = ["BindModelForm"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
+        BindModelForm.prototype.init = function() {
+            // TODO::
+        };
+
+        return BindModelForm;
+    
+    }(BindModel));
     
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    // if (typeof module === "object" && typeof module.exports === "object") {     
-    //     module.exports = namespace;
-    // } else {
-    //     global._W.namespace = namespace;
-    // }
+    if (typeof module === "object" && typeof module.exports === "object") {     
+        module.exports = BindModelForm;
+    } else {
+        global._W.Meta.Bind.BindModelForm = BindModelForm;
+    }
 
 }(this));
 /**
@@ -3921,77 +4264,167 @@ if (typeof Array.isArray === "undefined") {
     "use strict";
 
     //==============================================================
-    // 1. 의존 모듈 선언
+    // 1. 모듈 네임스페이스 선언
+    global._W               = global._W || {};
+    global._W.Meta          = global._W.Meta || {};
+    global._W.Meta.Bind     = global._W.Meta.Bind || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    // var util;
+    var util;
+    var BindModel;
+    var BindCommandList;
+    var EntityTable;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        // util = require("util");
+        util                = require("./utils");
+        BindModel           = require("./bind-model");
+        BindCommandList     = require("./bind-command-list");
+        EntityTable         = require("./entity-table").EntityTable;
     } else {
-        // global._W = global._W || {};
-        // util = global._W.util || {};
+        util                = global._W.Common.Util;
+        BindModel           = global._W.Meta.Bind.BindModel;
+        BindCommandList     = global._W.Meta.Bind.BindCommandList;
+        EntityTable         = global._W.Meta.Entity.EntityTable;
     }
 
     //==============================================================
-    // 3. 의존성 검사
-    // if (typeof util === "undefined") throw new Error("[XXX] module  load fail...");
+    // 3. 모듈 의존성 검사
+    if (typeof util === "undefined") throw new Error("[util] module load fail...");
+    if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
+    if (typeof BindCommandList === "undefined") throw new Error("[BindCommandList] module load fail...");
+    if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
 
 
     //==============================================================
     // 4. 모듈 구현    
-    // util.inherits = (function () {
-    // }());
+    var BindModelList  = (function (_super) {
+        /**
+         * @class
+         */
+        function BindModelList() {
+            _super.call(this);
+
+            /** @public 마스터 아이템 (실 동록위치) */
+            this.first      = new EntityTable("first");
+
+            /** @public Command */
+            this.list       = new BindCommandList(this, this.first);
+        }
+        util.inherits(BindModelList, _super);
+    
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        BindModelList.prototype.getTypes  = function() {
+                    
+            var type = ["BindModelList"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
+        BindModelList.prototype.init = function() {
+            // TODO::
+        };
+
+        return BindModelList;
+    
+    }(BindModel));
     
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    // if (typeof module === "object" && typeof module.exports === "object") {     
-    //     module.exports = namespace;
-    // } else {
-    //     global._W.namespace = namespace;
-    // }
+    if (typeof module === "object" && typeof module.exports === "object") {     
+        module.exports = BindModelList;
+    } else {
+        global._W.Meta.Bind.BindModelList = BindModelList;
+    }
 
 }(this));
 /**
- * @namespace _W.Meta.Bind.BindModelReadDel
+ * @namespace _W.Meta.Bind.BindModelReadDelDel
  */
 (function(global) {
 
     "use strict";
 
     //==============================================================
-    // 1. 의존 모듈 선언
+    // 1. 모듈 네임스페이스 선언
+    global._W               = global._W || {};
+    global._W.Meta          = global._W.Meta || {};
+    global._W.Meta.Bind     = global._W.Meta.Bind || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    // var util;
+    var util;
+    var BindModel;
+    var BindCommandRead;
+    var BindCommandDelete;
+    var EntityTable;
+
     if (typeof module === "object" && typeof module.exports === "object") {     
-        // util = require("util");
+        util                = require("./utils");
+        BindModel           = require("./bind-model");
+        BindCommandRead     = require("./bind-command-read");
+        BindCommandDelete   = require("./bind-command-delete");
+        EntityTable         = require("./entity-table").EntityTable;
     } else {
-        // global._W = global._W || {};
-        // util = global._W.util || {};
+        util                = global._W.Common.Util;
+        BindModel           = global._W.Meta.Bind.BindModel;
+        BindCommandRead     = global._W.Meta.Bind.BindCommandRead;
+        BindCommandDelete   = global._W.Meta.Bind.BindCommandDelete;
+        EntityTable         = global._W.Meta.Entity.EntityTable;
     }
 
     //==============================================================
-    // 3. 의존성 검사
-    // if (typeof util === "undefined") throw new Error("[XXX] module  load fail...");
+    // 3. 모듈 의존성 검사
+    if (typeof util === "undefined") throw new Error("[util] module load fail...");
+    if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
+    if (typeof BindCommandRead === "undefined") throw new Error("[BindCommandRead] module load fail...");
+    if (typeof BindCommandDelete === "undefined") throw new Error("[BindCommandDelete] module load fail...");
+    if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
 
 
     //==============================================================
     // 4. 모듈 구현    
-    // util.inherits = (function () {
-    // }());
+    var BindModelReadDel  = (function (_super) {
+        /**
+         * @class
+         */
+        function BindModelReadDel() {
+            _super.call(this);
+
+            /** @public 마스터 아이템 (실 동록위치) */
+            this.first      = new EntityTable("first");
+
+            /** @public Command */
+            this.read       = new BindCommandRead(this, this.first);
+            this.delete     = new BindCommandDelete(this, this.first);
+        }
+        util.inherits(BindModelReadDel, _super);
+    
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        BindModelReadDel.prototype.getTypes  = function() {
+                    
+            var type = ["BindModelReadDel"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
+        BindModelReadDel.prototype.init = function() {
+            // TODO::
+        };
+
+        return BindModelReadDel;
+    
+    }(BindModel));
     
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    // if (typeof module === "object" && typeof module.exports === "object") {     
-    //     module.exports = namespace;
-    // } else {
-    //     global._W.namespace = namespace;
-    // }
+    if (typeof module === "object" && typeof module.exports === "object") {     
+        module.exports = BindModelReadDel;
+    } else {
+        global._W.Meta.Bind.BindModelReadDel = BindModelReadDel;
+    }
 
 }(this));
 /**
@@ -4051,7 +4484,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindModelRead, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindModelRead.prototype.getTypes  = function() {
                     
             var type = ["BindModelRead"];

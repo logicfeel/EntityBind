@@ -36,13 +36,13 @@
         /**
          * @class
          */
-        function BindCommandDelete(p_model) {
-            _super.call(this, p_model);
+        function BindCommandDelete(p_bindModel, p_baseEntity) {
+            _super.call(this, p_bindModel, p_baseEntity);
 
         }
         util.inherits(BindCommandDelete, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandDelete.prototype.getTypes  = function() {
                     
             var type = ["BindCommandDelete"];
@@ -52,14 +52,30 @@
 
         BindCommandDelete.prototype.execValid = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execValid()");
+            for(var i = 0; i < this.valid.items.count; i++) {
+                console.log("valid : " + this.valid.items[i].name);
+            }
+            return true;
         };
 
         BindCommandDelete.prototype.execBind = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execBind()");
+            for(var i = 0; i < this.bind.items.count; i++) {
+                console.log("bind : " + this.bind.items[i].name);
+            }
+            this._execCallback();
         };
         
         BindCommandDelete.prototype.execCallback = function() {
             // TODO::
+            console.log("*************");
+            console.log("_execCallback()");
+
+            this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
         return BindCommandDelete;

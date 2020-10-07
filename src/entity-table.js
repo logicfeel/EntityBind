@@ -74,7 +74,7 @@
         }
         util.inherits(EntityTable, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         EntityTable.prototype.getTypes  = function() {
             
             var type = ["EntityTable"];

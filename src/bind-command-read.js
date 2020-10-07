@@ -36,12 +36,12 @@
         /**
          * @class
          */
-        function BindCommandRead(p_bindModel, p_entity) {
-            _super.call(this, p_bindModel, p_entity);
+        function BindCommandRead(p_bindModel, p_baseEntity) {
+            _super.call(this, p_bindModel, p_baseEntity);
         }
         util.inherits(BindCommandRead, _super);
     
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandRead.prototype.getTypes  = function() {
                 
             var type = ["BindCommandRead"];
@@ -85,6 +85,7 @@
                     console.log("output["+ i +"] : " + this._output[i].items[ii].name);
                 }
             }
+            this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
         return BindCommandRead;

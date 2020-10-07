@@ -16,23 +16,15 @@
     var util;
     var Observer;
     var MetaObject;
-    // var item;
-    // var Item;
-    // var ItemCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         Observer            = require("./observer");
         MetaObject          = require("./meta-object");
-        // item                = require("./entity-item");
-        // Item                = item.Item;
-        // ItemCollection      = item.ItemCollection;
     } else {
         util                = global._W.Common.Util;
         Observer            = global._W.Common.Observer;
         MetaObject          = global._W.Meta.MetaObject;
-        // Item                = global._W.Meta.Entity.Item;
-        // ItemCollection      = global._W.Meta.Entity.ItemCollection;        
     }
 
     //==============================================================
@@ -40,8 +32,6 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
     if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
-    // if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
-    // if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -74,7 +64,7 @@
         }
         util.inherits(BaseBind, _super);
 
-        /** @virtual 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BaseBind.prototype.getTypes  = function() {
                     
             var type = ["BaseBind"];
@@ -82,14 +72,14 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @protected @event */
+        /** @abstract */
         BaseBind.prototype._onExecute = function() {
-            this.__event.publish("execute"); 
+            throw new Error("[ _onExecute() ] Abstract method definition, fail...");
         };
 
-        /** @protected @event */
+        /** @abstract */
         BaseBind.prototype._onExecuted = function() {
-            this.__event.publish("executed"); 
+            throw new Error("[ _onExecuted() ] Abstract method definition, fail...");
         };
 
         /**
@@ -111,10 +101,6 @@
         module.exports = BaseBind;
     } else {
         global._W.Meta.Bind.BaseBind = BaseBind;
-        
-        // HACK:: 웹 로딩 방식으로 우회를 위해 추가함
-        // global._W.Meta.Bind.BindModel = function(){};   
-        // global._W.Meta.Bind.BindCommand = function(){};
     }
 
 }(this));
