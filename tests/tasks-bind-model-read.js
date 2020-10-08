@@ -112,6 +112,7 @@ console.log("e.read.bind._refEntity.length  1 ==> " + e.read.bind._refEntity.len
 
 t.items.add("B1");
 t.items.add("B2");
+t.items.add("B3");
 e.read.bind.items.add(t.items["B1"]);               // 바로 추가할 경우
 
 console.log("외부객체 + 참조 없는 경우 :: [second] <=참조 [first] <=참조 [bind] 추가됨, _refEntity 변환없음 )");

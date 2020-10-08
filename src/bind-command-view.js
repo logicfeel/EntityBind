@@ -56,6 +56,9 @@
             this._output.add(new EntityView("default", this._baseEntity));  // 등록방법 1
             // this._output.add("default", this._baseEntity);               // 등록방법 2
 
+            /** @property {view} 필요시  상속 또는 객체를 통해서 확장 */
+            this.view = this._output["default"];        // 참조 속성 설정 [0]
+
             /** @property {valid} */
             Object.defineProperty(this, "valid", 
             {
@@ -79,9 +82,6 @@
                 configurable: true,
                 enumerable: true
             });
-            
-            /** @property {view} 필요시  상속 또는 객체를 통해서 확장 */
-            this.view = this._output["default"];        // 참조 속성 설정 [0]
         }
         util.inherits(BindCommandView, _super);
 

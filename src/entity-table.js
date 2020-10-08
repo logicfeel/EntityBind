@@ -134,7 +134,7 @@
 
             if (typeof p_object === "string") {      
                 i_name  = p_object;
-                i_value = new Item(i_name);
+                i_value = new Item(i_name, this._onwer);
             } else if (p_object instanceof Item) {
                 i_name  = p_object.name;
                 i_value = p_object;

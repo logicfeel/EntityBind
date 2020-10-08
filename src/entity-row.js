@@ -72,23 +72,16 @@
         RowCollection.prototype.add  = function(p_object) {
 
             var i_value;
-            var i_name;
 
-            if (typeof p_object === "string") {      
-                i_name  = p_object;
-                i_value = new Item(i_name);
-            } else if (p_object instanceof Item) {
-                i_name  = p_object.name;
+            if (typeof p_object === "undefined") {      
+                i_value = new Row();
+            } else if (p_object instanceof Row) {
                 i_value = p_object;
             } else {
-                throw new Error("string | Row object [p_object].");
+                throw new Error("Row | Row object [p_object].");
             }
 
-            if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
-
-            _super.prototype.add.call(this, i_name, i_value);
-
-            return this[i_name];
+            return _super.prototype.add.call(this, i_value);
         };
         
         /**

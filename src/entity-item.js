@@ -42,9 +42,10 @@
         /**
          * @class
          */
-        function Item(p_name) {
+        function Item(p_name, p_entity) {
             _super.call(this, p_name);
 
+            var __entity        = null;
             var __type          = "string";
             var __size          = 0;
             var __default       = null;
@@ -53,6 +54,27 @@
             var __callback      = null;
             var __constraint    = null;
             var __codeType      = null;
+            var __order         = 100;
+            var __increase      = 100;      // order 의 자동 추가수
+            
+            // Entity 등록 & order(순서) 값 계산
+            if (p_entity && p_entity.instanceOf("Entity")) {
+                __entity    = p_entity;
+                __order = __entity.items.count === 0 ? __order : __entity.items[__entity.items.count - 1].order + __increase;
+            }
+
+            /** @property {entity} */
+            Object.defineProperty(this, "entity", 
+            {
+                get: function() { return __entity; },
+                set: function(newValue) { 
+                    // TODO:: 자료종류를 검사해야함
+                    if (newValue && !newValue.instanceOf("Entity")) throw new Error("Only [entity] type 'Entity' can be added");
+                    __entity = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
 
             /** @property {type} */
             Object.defineProperty(this, "type", 
@@ -145,6 +167,30 @@
                 enumerable: true
             });
 
+            /** @property {order} */
+            Object.defineProperty(this, "order", 
+            {
+                get: function() { return __order; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "number") throw new Error("Only [order] type 'number' can be added");
+                    __order = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {increase} */
+            Object.defineProperty(this, "increase", 
+            {
+                get: function() { return __increase; },
+                set: function(newValue) { 
+                    if(typeof newValue !== "number") throw new Error("Only [increase] type 'number' can be added");
+                    __increase = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+
         }
         util.inherits(Item, _super);
 
@@ -187,7 +233,7 @@
 
             if (typeof p_object === "string") {      
                 i_name  = p_object;
-                i_value = new Item(i_name);
+                i_value = new Item(i_name, this._onwer);
             } else if (p_object instanceof Item) {
                 i_name  = p_object.name;
                 i_value = p_object;
