@@ -13,7 +13,8 @@ var EntityTable             = require("../src/entity-table").EntityTable;
 // 본문 1
 
 function TestBindModel() {
-    
+    BindModel.call(this);
+
     this.first = new EntityTable("first");
     
     this.read = new BindCommandRead(this, this.first);

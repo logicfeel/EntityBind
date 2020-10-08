@@ -45,7 +45,7 @@
             /** @private */
             this.__event    = new Observer(this, this);
 
-            /** @event */
+            /** @property */
             Object.defineProperty(this, "onExecute", {
                 enumerable: true,
                 configurable: true,
@@ -54,6 +54,7 @@
                 }
             });
 
+            /** @property */
             Object.defineProperty(this, "onExecuted", {
                 enumerable: true,
                 configurable: true,
@@ -72,14 +73,14 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @abstract */
+        /** @event */
         BaseBind.prototype._onExecute = function() {
-            throw new Error("[ _onExecute() ] Abstract method definition, fail...");
+            this.__event.publish("execute"); 
         };
 
-        /** @abstract */
+        /** @event */
         BaseBind.prototype._onExecuted = function() {
-            throw new Error("[ _onExecuted() ] Abstract method definition, fail...");
+            this.__event.publish("executed"); 
         };
 
         /**

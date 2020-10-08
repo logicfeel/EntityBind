@@ -47,11 +47,33 @@
         function BindModelRead() {
             _super.call(this);
 
-            /** @public 마스터 아이템 (실 동록위치) */
-            this.first      = new EntityTable("first");
 
-            /** @public Command */
-            this.read       = new BindCommandRead(this, this.first);
+            var __firest    = new EntityTable("first");
+            var __read      = new BindCommandRead(this, __firest);
+
+            /** @property {first} */
+            Object.defineProperty(this, "first", 
+            {
+                get: function() { return __firest; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityTable)) throw new Error("Only [first] type 'EntityTable' can be added");
+                    __firest = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {read} */
+            Object.defineProperty(this, "read", 
+            {
+                get: function() { return __read; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [read] type 'BindCommand' can be added");
+                    __read = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
         }
         util.inherits(BindModelRead, _super);
     

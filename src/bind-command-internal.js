@@ -42,10 +42,33 @@
         function BindCommandInternal(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            /** @public  */
-            this.valid  = new EntityView("valid", this._baseEntity);
+            var __valid = new EntityView("valid", this._baseEntity);
+            var __bind  = new EntityView("bind", this._baseEntity);
 
-            this.bind   = new EntityView("bind", this._baseEntity);
+            /** @property {valid} */
+            Object.defineProperty(this, "valid", 
+            {
+                get: function() { return __valid; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
+                    __valid = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {bind} */
+            Object.defineProperty(this, "bind", 
+            {
+                get: function() { return __bind; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
+                    __bind = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });            
+
         }
         util.inherits(BindCommandInternal, _super);
 

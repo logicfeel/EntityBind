@@ -38,9 +38,9 @@ if ((typeof Object.prototype._implements === "undefined") ||
          * 인터페이스(클래스) 등록
          * @protected
          * @function 
-         * @param {Function} a_imps 함수형 인터페이스 목록
+         * @param {Function} arg 함수형 인터페이스 목록
          */
-        var _implements = function _implements(a_imps) {
+        var _implements = function _implements(arg) {
             this._interface = this._interface || [];
 
             var typeName;
@@ -2260,11 +2260,11 @@ if (typeof Array.isArray === "undefined") {
             /** @property {domType} */
             Object.defineProperty(this, "domType", 
             {
-                get: function() { return __type; },
+                get: function() { return __domType; },
                 set: function(newValue) { 
                     // TODO:: 자료종류 {input: {type: "text"...}} 만들어야함
                     if(typeof newValue !== "object") throw new Error("Only [domType] type 'object' can be added");
-                    __type = newValue;
+                    __domType = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -2273,10 +2273,10 @@ if (typeof Array.isArray === "undefined") {
             /** @property {isReadOnly} */
             Object.defineProperty(this, "isReadOnly", 
             {
-                get: function() { return __type; },
+                get: function() { return __isReadOnly; },
                 set: function(newValue) { 
                     if(typeof newValue !== "boolean") throw new Error("Only [isReadOnly] type 'boolean' can be added");
-                    __type = newValue;
+                    __isReadOnly = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -2285,10 +2285,10 @@ if (typeof Array.isArray === "undefined") {
             /** @property {isHide} */
             Object.defineProperty(this, "isHide", 
             {
-                get: function() { return __type; },
+                get: function() { return __isHide; },
                 set: function(newValue) { 
                     if(typeof newValue !== "boolean") throw new Error("Only [isHide] type 'boolean' can be added");
-                    __type = newValue;
+                    __isHide = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -2297,10 +2297,10 @@ if (typeof Array.isArray === "undefined") {
             /** @property {refElement} */
             Object.defineProperty(this, "refElement", 
             {
-                get: function() { return __type; },
+                get: function() { return __refElement; },
                 set: function(newValue) { 
                     if(typeof newValue !== "object") throw new Error("Only [refElement] type 'object' can be added");
-                    __type = newValue;
+                    __refElement = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -2309,9 +2309,9 @@ if (typeof Array.isArray === "undefined") {
             /** @property {refValue} */
             Object.defineProperty(this, "refValue", 
             {
-                get: function() { return __type; },
+                get: function() { return __refValue; },
                 set: function(newValue) { 
-                    __type = newValue;
+                    __refValue = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -2550,6 +2550,7 @@ if (typeof Array.isArray === "undefined") {
             });
 
             /**
+             * TODO::  개발해야함
              * @abstract 상속에서 생성해야함
              */
             this.items = null;
@@ -2871,7 +2872,7 @@ if (typeof Array.isArray === "undefined") {
 
             var refCollection;
 
-            if (p_refEntity.instanceOf("Entity")) {
+            if (p_refEntity && p_refEntity.instanceOf("Entity")) {
                 refCollection = p_refEntity.items;
             }
 
@@ -2943,7 +2944,7 @@ if (typeof Array.isArray === "undefined") {
          *  - string                    : 생성후   string      이름으로 등록 
          *  - string, colltion          : 생성후   string      이름으로  등록 (collection보냄)
          *  - entityView                :         entityView  이름으로 등록
-         *  - entityView, collection    :         entityView  이름으로 등록 (collection보냄)
+         *  - entityView, collection    :         entityView  이름으로 등록 (collection보냄) => 오류발생
          * 
          * @param {String | EntityView} p_object 
          * @param {I?temCollection} p_refEntity
@@ -3095,7 +3096,7 @@ if (typeof Array.isArray === "undefined") {
             /** @private */
             this.__event    = new Observer(this, this);
 
-            /** @event */
+            /** @property */
             Object.defineProperty(this, "onExecute", {
                 enumerable: true,
                 configurable: true,
@@ -3104,6 +3105,7 @@ if (typeof Array.isArray === "undefined") {
                 }
             });
 
+            /** @property */
             Object.defineProperty(this, "onExecuted", {
                 enumerable: true,
                 configurable: true,
@@ -3122,14 +3124,14 @@ if (typeof Array.isArray === "undefined") {
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @abstract */
+        /** @event */
         BaseBind.prototype._onExecute = function() {
-            throw new Error("[ _onExecute() ] Abstract method definition, fail...");
+            this.__event.publish("execute"); 
         };
 
-        /** @abstract */
+        /** @event */
         BaseBind.prototype._onExecuted = function() {
-            throw new Error("[ _onExecuted() ] Abstract method definition, fail...");
+            this.__event.publish("executed"); 
         };
 
         /**
@@ -3210,14 +3212,13 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this);
             
             if (!(p_bindModel.instanceOf("BindModel"))) throw new Error("Only [p_bindModel] type 'BindModel' can be added");
-            if (!(p_baseEntity.instanceOf("Entity"))) throw new Error("Only [p_baseEntity] type 'Entity' can be added");
+            if (p_baseEntity && !(p_baseEntity.instanceOf("Entity"))) throw new Error("Only [p_baseEntity] type 'Entity' can be added");
+
+            /** @protected 소유자 */
+            this._model = p_bindModel;
 
             /** @protected */
             this._baseEntity = p_baseEntity;
-
-            /** @public 소유자 */
-            this.model = p_bindModel;
-            
         }
         util.inherits(BindCommand, _super);
     
@@ -3229,16 +3230,16 @@ if (typeof Array.isArray === "undefined") {
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @protected @event */
+        /** @override */
         BindCommand.prototype._onExecute = function() {
-            this.model._onExecute();
-            this.__event.publish("execute");
+            this._model._onExecute();
+            _super.prototype._onExecute.call(this);
         };
 
-        /** @protected @event */
+        /** @override */
         BindCommand.prototype._onExecuted = function() {
-            this.__event.publish("executed"); 
-            this.model._onExecuted();
+            _super.prototype._onExecuted.call(this);
+            this._model._onExecuted();
         };
         
         /** @virtual */
@@ -3249,9 +3250,9 @@ if (typeof Array.isArray === "undefined") {
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?Array<String> | String} a_views <선택> 추가할 아이템 명령
+         * @param {?Array<String> | String} p_views <선택> 추가할 아이템 명령
          */
-        BindCommand.prototype.add = function(p_item, a_views) {
+        BindCommand.prototype.add = function(p_item, p_views) {
 
             var views = [];     // 파라메터 변수
             var property = [];  // 속성
@@ -3259,15 +3260,15 @@ if (typeof Array.isArray === "undefined") {
             var collection;
 
             // 초기화
-            if (Array.isArray(a_views)) views = a_views;
-            else if (typeof a_views === "string") views.push(a_views);
+            if (Array.isArray(p_views)) views = p_views;
+            else if (typeof p_views === "string") views.push(p_views);
 
             // 유효성 검사
             if (!(p_item instanceof Item)) {
                 throw new Error("Only [Item] type instances can be added");
             }
-            if (typeof a_views !== "undefined" && (!Array.isArray(a_views) || typeof a_views === "string")) {
-                throw new Error("Only [a_views] type Array can be added");
+            if (typeof p_views !== "undefined" && (!Array.isArray(p_views) || typeof p_views === "string")) {
+                throw new Error("Only [p_views] type Array can be added");
             } 
             
             // 설정 대상 가져오기
@@ -3287,7 +3288,7 @@ if (typeof Array.isArray === "undefined") {
                     if (this[propStr]) {
                         property.push(views[i]);
                     } else {
-                        console.warn("Warning!! Param a_views 에 [" + views[i] + "]가 없습니다. ");
+                        console.warn("Warning!! Param p_views 에 [" + views[i] + "]가 없습니다. ");
                     }
                 }
             } else {
@@ -3388,15 +3389,15 @@ if (typeof Array.isArray === "undefined") {
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @protected @event */
-        BindModel.prototype._onExecute = function() {
-            this.__event.publish("execute"); 
-        };
+        // /** @protected @event */
+        // BindModel.prototype._onExecute = function() {
+        //     this.__event.publish("execute"); 
+        // };
 
-        /** @protected @event */
-        BindModel.prototype._onExecuted = function() {
-            this.__event.publish("executed"); 
-        };
+        // /** @protected @event */
+        // BindModel.prototype._onExecuted = function() {
+        //     this.__event.publish("executed"); 
+        // };
 
         /** @virtual */
         BindModel.prototype.init = function() {
@@ -3406,9 +3407,9 @@ if (typeof Array.isArray === "undefined") {
 /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?Array<String>} a_cmds <선택> 추가할 아이템 명령
+         * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
          */
-        BindModel.prototype.add = function(p_item, a_cmds) {
+        BindModel.prototype.add = function(p_item, p_cmds) {
 
             var cmds = [];
 
@@ -3416,17 +3417,17 @@ if (typeof Array.isArray === "undefined") {
             if (!(p_item instanceof Item)) {
                 throw new Error("Only [Item] type instances can be added");
             }
-            if (typeof a_cmds !== "undefined" && !Array.isArray(a_cmds)) {
+            if (typeof p_cmds !== "undefined" && !Array.isArray(p_cmds)) {
                 throw new Error("Only [a_cmd] type Array can be added");
             }
             
             // 설정 대상 가져오기
-            if (Array.isArray(a_cmds)) {
-                for (var i = 0; i< a_cmds.length; i++) {
-                    if (this[a_cmds[i]]) {
-                        cmds.push(a_cmds[i]);
+            if (Array.isArray(p_cmds)) {
+                for (var i = 0; i< p_cmds.length; i++) {
+                    if (this[p_cmds[i]]) {
+                        cmds.push(p_cmds[i]);
                     } else {
-                        console.warn("Warning!! Param a_cmds 에 [" + a_cmds[i] + "]가 없습니다. ");
+                        console.warn("Warning!! Param p_cmds 에 [" + p_cmds[i] + "]가 없습니다. ");
                     }
                 }
             } else {
@@ -3510,16 +3511,38 @@ if (typeof Array.isArray === "undefined") {
         function BindCommandView(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
+            var __valid     = new EntityView("valid", this._baseEntity);
+            var __bind      = new EntityView("bind", this._baseEntity);
+            
             this._output = new EntityViewCollection(this, this._baseEntity);
-
             this._output.add(new EntityView("default", this._baseEntity));  // 등록방법 1
             // this._output.add("default", this._baseEntity);               // 등록방법 2
+
+            /** @property {valid} */
+            Object.defineProperty(this, "valid", 
+            {
+                get: function() { return __valid; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
+                    __valid = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {bind} */
+            Object.defineProperty(this, "bind", 
+            {
+                get: function() { return __bind; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
+                    __bind = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
             
-            /** @public  */
-            this.valid  = new EntityView("valid", this._baseEntity);
-
-            this.bind   = new EntityView("bind", this._baseEntity);
-
+            /** @property {view} 필요시  상속 또는 객체를 통해서 확장 */
             this.view = this._output["default"];        // 참조 속성 설정 [0]
         }
         util.inherits(BindCommandView, _super);
@@ -3615,10 +3638,33 @@ if (typeof Array.isArray === "undefined") {
         function BindCommandInternal(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            /** @public  */
-            this.valid  = new EntityView("valid", this._baseEntity);
+            var __valid = new EntityView("valid", this._baseEntity);
+            var __bind  = new EntityView("bind", this._baseEntity);
 
-            this.bind   = new EntityView("bind", this._baseEntity);
+            /** @property {valid} */
+            Object.defineProperty(this, "valid", 
+            {
+                get: function() { return __valid; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
+                    __valid = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {bind} */
+            Object.defineProperty(this, "bind", 
+            {
+                get: function() { return __bind; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
+                    __bind = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });            
+
         }
         util.inherits(BindCommandInternal, _super);
 
@@ -4219,14 +4265,71 @@ if (typeof Array.isArray === "undefined") {
         function BindModelForm() {
             _super.call(this);
 
-            /** @public 마스터 아이템 (실 동록위치) */
-            this.first      = new EntityTable("first");
+            var __firest    = new EntityTable("first");
+            var __create    = new BindCommandCreate(this, this.first);
+            var __read      = new BindCommandRead(this, this.first);
+            var __update    = new BindCommandUpdate(this, this.first);
+            var __delete    = new BindCommandDelete(this, this.first);
 
-            /** @public Command */
-            this.create         = new BindCommandCreate(this, this.first);
-            this.read           = new BindCommandRead(this, this.first);
-            this.update         = new BindCommandUpdate(this, this.first);
-            this.delete         = new BindCommandDelete(this, this.first);
+            /** @property {first} */
+            Object.defineProperty(this, "first", 
+            {
+                get: function() { return __firest; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityTable)) throw new Error("Only [first] type 'EntityTable' can be added");
+                    __firest = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {create} */
+            Object.defineProperty(this, "create", 
+            {
+                get: function() { return __create; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [create] type 'BindCommand' can be added");
+                    __create = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {read} */
+            Object.defineProperty(this, "read", 
+            {
+                get: function() { return __read; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [read] type 'BindCommand' can be added");
+                    __read = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {update} */
+            Object.defineProperty(this, "update", 
+            {
+                get: function() { return __update; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [update] type 'BindCommand' can be added");
+                    __update = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {delete} */
+            Object.defineProperty(this, "delete", 
+            {
+                get: function() { return __delete; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [delete] type 'BindCommand' can be added");
+                    __delete = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
         }
         util.inherits(BindModelForm, _super);
     
@@ -4305,11 +4408,32 @@ if (typeof Array.isArray === "undefined") {
         function BindModelList() {
             _super.call(this);
 
-            /** @public 마스터 아이템 (실 동록위치) */
-            this.first      = new EntityTable("first");
+            var __firest    = new EntityTable("first");
+            var __list      = new BindCommandList(this, this.first);
 
-            /** @public Command */
-            this.list       = new BindCommandList(this, this.first);
+            /** @property {first} */
+            Object.defineProperty(this, "first", 
+            {
+                get: function() { return __firest; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityTable)) throw new Error("Only [first] type 'EntityTable' can be added");
+                    __firest = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {list} */
+            Object.defineProperty(this, "list", 
+            {
+                get: function() { return __list; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [list] type 'BindCommand' can be added");
+                    __list = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
         }
         util.inherits(BindModelList, _super);
     
@@ -4392,12 +4516,45 @@ if (typeof Array.isArray === "undefined") {
         function BindModelReadDel() {
             _super.call(this);
 
-            /** @public 마스터 아이템 (실 동록위치) */
-            this.first      = new EntityTable("first");
+            var __firest    = new EntityTable("first");
+            var __read      = new BindCommandRead(this, this.first);
+            var __delete    = new BindCommandDelete(this, this.first);
 
-            /** @public Command */
-            this.read       = new BindCommandRead(this, this.first);
-            this.delete     = new BindCommandDelete(this, this.first);
+            /** @property {first} */
+            Object.defineProperty(this, "first", 
+            {
+                get: function() { return __firest; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityTable)) throw new Error("Only [first] type 'EntityTable' can be added");
+                    __firest = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {read} */
+            Object.defineProperty(this, "read", 
+            {
+                get: function() { return __read; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [read] type 'BindCommand' can be added");
+                    __read = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {delete} */
+            Object.defineProperty(this, "delete", 
+            {
+                get: function() { return __delete; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [delete] type 'BindCommand' can be added");
+                    __delete = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });            
         }
         util.inherits(BindModelReadDel, _super);
     
@@ -4476,11 +4633,33 @@ if (typeof Array.isArray === "undefined") {
         function BindModelRead() {
             _super.call(this);
 
-            /** @public 마스터 아이템 (실 동록위치) */
-            this.first      = new EntityTable("first");
 
-            /** @public Command */
-            this.read       = new BindCommandRead(this, this.first);
+            var __firest    = new EntityTable("first");
+            var __read      = new BindCommandRead(this, __firest);
+
+            /** @property {first} */
+            Object.defineProperty(this, "first", 
+            {
+                get: function() { return __firest; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityTable)) throw new Error("Only [first] type 'EntityTable' can be added");
+                    __firest = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {read} */
+            Object.defineProperty(this, "read", 
+            {
+                get: function() { return __read; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [read] type 'BindCommand' can be added");
+                    __read = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
         }
         util.inherits(BindModelRead, _super);
     

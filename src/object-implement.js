@@ -38,9 +38,9 @@ if ((typeof Object.prototype._implements === "undefined") ||
          * 인터페이스(클래스) 등록
          * @protected
          * @function 
-         * @param {Function} a_imps 함수형 인터페이스 목록
+         * @param {Function} arg 함수형 인터페이스 목록
          */
-        var _implements = function _implements(a_imps) {
+        var _implements = function _implements(arg) {
             this._interface = this._interface || [];
 
             var typeName;
@@ -48,8 +48,11 @@ if ((typeof Object.prototype._implements === "undefined") ||
         
             for(var i = 0; i < arguments.length; i++) {
                 if (typeof arguments[i] === "function") {
-                    this._interface.push(arguments[i]);
-                    this._interface[arguments[i].name] = arguments[i];    // 프로퍼티 접근자
+                    // 중복 제거
+                    if (this._interface.indexOf(arguments[i]) < 0) {
+                        this._interface.push(arguments[i]);
+                        this._interface[arguments[i].name] = arguments[i];    // 프로퍼티 접근자
+                    }
                 } else {
                     throw new Error("함수타입만 가능합니다.");
                 }

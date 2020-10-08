@@ -63,7 +63,7 @@
 
             var refCollection;
 
-            if (p_refEntity.instanceOf("Entity")) {
+            if (p_refEntity && p_refEntity.instanceOf("Entity")) {
                 refCollection = p_refEntity.items;
             }
 
@@ -135,7 +135,7 @@
          *  - string                    : 생성후   string      이름으로 등록 
          *  - string, colltion          : 생성후   string      이름으로  등록 (collection보냄)
          *  - entityView                :         entityView  이름으로 등록
-         *  - entityView, collection    :         entityView  이름으로 등록 (collection보냄)
+         *  - entityView, collection    :         entityView  이름으로 등록 (collection보냄) => 오류발생
          * 
          * @param {String | EntityView} p_object 
          * @param {I?temCollection} p_refEntity

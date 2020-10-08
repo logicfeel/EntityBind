@@ -47,7 +47,7 @@ gulp.task('auto', function () {
 gulp.task('auto-zip', function () {
     return gulp.src(paths.js)
         .pipe(uglify())
-		.pipe(concat('auto-meta-' + package.version + 'zip.js'))
+		.pipe(concat('auto-meta-' + package.version + '.zip.js'))
 		.pipe(gulp.dest(dist));
 });
 

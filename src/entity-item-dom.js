@@ -48,11 +48,11 @@
             /** @property {domType} */
             Object.defineProperty(this, "domType", 
             {
-                get: function() { return __type; },
+                get: function() { return __domType; },
                 set: function(newValue) { 
                     // TODO:: 자료종류 {input: {type: "text"...}} 만들어야함
                     if(typeof newValue !== "object") throw new Error("Only [domType] type 'object' can be added");
-                    __type = newValue;
+                    __domType = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -61,10 +61,10 @@
             /** @property {isReadOnly} */
             Object.defineProperty(this, "isReadOnly", 
             {
-                get: function() { return __type; },
+                get: function() { return __isReadOnly; },
                 set: function(newValue) { 
                     if(typeof newValue !== "boolean") throw new Error("Only [isReadOnly] type 'boolean' can be added");
-                    __type = newValue;
+                    __isReadOnly = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -73,10 +73,10 @@
             /** @property {isHide} */
             Object.defineProperty(this, "isHide", 
             {
-                get: function() { return __type; },
+                get: function() { return __isHide; },
                 set: function(newValue) { 
                     if(typeof newValue !== "boolean") throw new Error("Only [isHide] type 'boolean' can be added");
-                    __type = newValue;
+                    __isHide = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -85,10 +85,10 @@
             /** @property {refElement} */
             Object.defineProperty(this, "refElement", 
             {
-                get: function() { return __type; },
+                get: function() { return __refElement; },
                 set: function(newValue) { 
                     if(typeof newValue !== "object") throw new Error("Only [refElement] type 'object' can be added");
-                    __type = newValue;
+                    __refElement = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -97,9 +97,9 @@
             /** @property {refValue} */
             Object.defineProperty(this, "refValue", 
             {
-                get: function() { return __type; },
+                get: function() { return __refValue; },
                 set: function(newValue) { 
-                    __type = newValue;
+                    __refValue = newValue;
                 },
                 configurable: true,
                 enumerable: true

@@ -166,7 +166,7 @@
         // 입력값 검사
         Main.ParamsValid();
 
-        // 입력값 검사
+        // 버튼 모드 설정
         Main.Mode_Button(Main.Params.cmd);
 
         // 버튼 이벤트 등록

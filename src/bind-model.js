@@ -55,15 +55,15 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @protected @event */
-        BindModel.prototype._onExecute = function() {
-            this.__event.publish("execute"); 
-        };
+        // /** @protected @event */
+        // BindModel.prototype._onExecute = function() {
+        //     this.__event.publish("execute"); 
+        // };
 
-        /** @protected @event */
-        BindModel.prototype._onExecuted = function() {
-            this.__event.publish("executed"); 
-        };
+        // /** @protected @event */
+        // BindModel.prototype._onExecuted = function() {
+        //     this.__event.publish("executed"); 
+        // };
 
         /** @virtual */
         BindModel.prototype.init = function() {
@@ -73,9 +73,9 @@
 /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?Array<String>} a_cmds <선택> 추가할 아이템 명령
+         * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
          */
-        BindModel.prototype.add = function(p_item, a_cmds) {
+        BindModel.prototype.add = function(p_item, p_cmds) {
 
             var cmds = [];
 
@@ -83,17 +83,17 @@
             if (!(p_item instanceof Item)) {
                 throw new Error("Only [Item] type instances can be added");
             }
-            if (typeof a_cmds !== "undefined" && !Array.isArray(a_cmds)) {
+            if (typeof p_cmds !== "undefined" && !Array.isArray(p_cmds)) {
                 throw new Error("Only [a_cmd] type Array can be added");
             }
             
             // 설정 대상 가져오기
-            if (Array.isArray(a_cmds)) {
-                for (var i = 0; i< a_cmds.length; i++) {
-                    if (this[a_cmds[i]]) {
-                        cmds.push(a_cmds[i]);
+            if (Array.isArray(p_cmds)) {
+                for (var i = 0; i< p_cmds.length; i++) {
+                    if (this[p_cmds[i]]) {
+                        cmds.push(p_cmds[i]);
                     } else {
-                        console.warn("Warning!! Param a_cmds 에 [" + a_cmds[i] + "]가 없습니다. ");
+                        console.warn("Warning!! Param p_cmds 에 [" + p_cmds[i] + "]가 없습니다. ");
                     }
                 }
             } else {

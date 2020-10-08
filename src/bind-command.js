@@ -54,14 +54,13 @@
             _super.call(this);
             
             if (!(p_bindModel.instanceOf("BindModel"))) throw new Error("Only [p_bindModel] type 'BindModel' can be added");
-            if (!(p_baseEntity.instanceOf("Entity"))) throw new Error("Only [p_baseEntity] type 'Entity' can be added");
+            if (p_baseEntity && !(p_baseEntity.instanceOf("Entity"))) throw new Error("Only [p_baseEntity] type 'Entity' can be added");
+
+            /** @protected 소유자 */
+            this._model = p_bindModel;
 
             /** @protected */
             this._baseEntity = p_baseEntity;
-
-            /** @public 소유자 */
-            this.model = p_bindModel;
-            
         }
         util.inherits(BindCommand, _super);
     
@@ -73,16 +72,16 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @protected @event */
+        /** @override */
         BindCommand.prototype._onExecute = function() {
-            this.model._onExecute();
-            this.__event.publish("execute");
+            this._model._onExecute();
+            _super.prototype._onExecute.call(this);
         };
 
-        /** @protected @event */
+        /** @override */
         BindCommand.prototype._onExecuted = function() {
-            this.__event.publish("executed"); 
-            this.model._onExecuted();
+            _super.prototype._onExecuted.call(this);
+            this._model._onExecuted();
         };
         
         /** @virtual */
@@ -93,9 +92,9 @@
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?Array<String> | String} a_views <선택> 추가할 아이템 명령
+         * @param {?Array<String> | String} p_views <선택> 추가할 아이템 명령
          */
-        BindCommand.prototype.add = function(p_item, a_views) {
+        BindCommand.prototype.add = function(p_item, p_views) {
 
             var views = [];     // 파라메터 변수
             var property = [];  // 속성
@@ -103,15 +102,15 @@
             var collection;
 
             // 초기화
-            if (Array.isArray(a_views)) views = a_views;
-            else if (typeof a_views === "string") views.push(a_views);
+            if (Array.isArray(p_views)) views = p_views;
+            else if (typeof p_views === "string") views.push(p_views);
 
             // 유효성 검사
             if (!(p_item instanceof Item)) {
                 throw new Error("Only [Item] type instances can be added");
             }
-            if (typeof a_views !== "undefined" && (!Array.isArray(a_views) || typeof a_views === "string")) {
-                throw new Error("Only [a_views] type Array can be added");
+            if (typeof p_views !== "undefined" && (!Array.isArray(p_views) || typeof p_views === "string")) {
+                throw new Error("Only [p_views] type Array can be added");
             } 
             
             // 설정 대상 가져오기
@@ -131,7 +130,7 @@
                     if (this[propStr]) {
                         property.push(views[i]);
                     } else {
-                        console.warn("Warning!! Param a_views 에 [" + views[i] + "]가 없습니다. ");
+                        console.warn("Warning!! Param p_views 에 [" + views[i] + "]가 없습니다. ");
                     }
                 }
             } else {

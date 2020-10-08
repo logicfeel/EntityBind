@@ -47,11 +47,32 @@
         function BindModelList() {
             _super.call(this);
 
-            /** @public 마스터 아이템 (실 동록위치) */
-            this.first      = new EntityTable("first");
+            var __firest    = new EntityTable("first");
+            var __list      = new BindCommandList(this, this.first);
 
-            /** @public Command */
-            this.list       = new BindCommandList(this, this.first);
+            /** @property {first} */
+            Object.defineProperty(this, "first", 
+            {
+                get: function() { return __firest; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityTable)) throw new Error("Only [first] type 'EntityTable' can be added");
+                    __firest = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {list} */
+            Object.defineProperty(this, "list", 
+            {
+                get: function() { return __list; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [list] type 'BindCommand' can be added");
+                    __list = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
         }
         util.inherits(BindModelList, _super);
     

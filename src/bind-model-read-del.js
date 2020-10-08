@@ -51,12 +51,45 @@
         function BindModelReadDel() {
             _super.call(this);
 
-            /** @public 마스터 아이템 (실 동록위치) */
-            this.first      = new EntityTable("first");
+            var __firest    = new EntityTable("first");
+            var __read      = new BindCommandRead(this, this.first);
+            var __delete    = new BindCommandDelete(this, this.first);
 
-            /** @public Command */
-            this.read       = new BindCommandRead(this, this.first);
-            this.delete     = new BindCommandDelete(this, this.first);
+            /** @property {first} */
+            Object.defineProperty(this, "first", 
+            {
+                get: function() { return __firest; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityTable)) throw new Error("Only [first] type 'EntityTable' can be added");
+                    __firest = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {read} */
+            Object.defineProperty(this, "read", 
+            {
+                get: function() { return __read; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [read] type 'BindCommand' can be added");
+                    __read = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {delete} */
+            Object.defineProperty(this, "delete", 
+            {
+                get: function() { return __delete; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [delete] type 'BindCommand' can be added");
+                    __delete = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });            
         }
         util.inherits(BindModelReadDel, _super);
     

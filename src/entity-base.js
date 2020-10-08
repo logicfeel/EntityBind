@@ -68,6 +68,7 @@
             });
 
             /**
+             * TODO::  개발해야함
              * @abstract 상속에서 생성해야함
              */
             this.items = null;
