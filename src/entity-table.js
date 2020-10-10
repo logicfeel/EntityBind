@@ -20,7 +20,6 @@
     var IGroupControl;
     var IAllControl;
     var RowCollection;
-    var ItemRefCollection;
     var ItemCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
@@ -30,7 +29,6 @@
         IGroupControl       = require("./i-control-group");
         IAllControl         = require("./i-control-all");
         RowCollection       = require("./entity-row").RowCollection;
-        ItemRefCollection   = require("./entity-item").ItemRefCollection;
         ItemCollection      = require("./entity-item").ItemCollection;
     } else {
         util                = global._W.Common.Util;
@@ -39,7 +37,6 @@
         IGroupControl       = global._W.Interface.IGroupControl;
         IAllControl         = global._W.Interface.IAllControl;
         RowCollection       = global._W.Meta.Entity.RowCollection;
-        ItemRefCollection   = global._W.Meta.Entity.ItemRefCollection;
         ItemCollection      = global._W.Meta.Entity.ItemCollection;
     }
 
@@ -51,7 +48,6 @@
     if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
     if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
-    if (typeof ItemRefCollection === "undefined") throw new Error("[ItemRefCollection] module load fail...");
     if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
 
     //==============================================================

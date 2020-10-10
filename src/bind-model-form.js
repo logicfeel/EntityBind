@@ -22,21 +22,21 @@
     var EntityTable;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        BindModel           = require("./bind-model");
-        BindCommandCreate   = require("./bind-command-create");
-        BindCommandRead     = require("./bind-command-read");
-        BindCommandUpdate   = require("./bind-command-update");
-        BindCommandDelete   = require("./bind-command-delete");
-        EntityTable         = require("./entity-table").EntityTable;
+        util                        = require("./utils");
+        BindModel                   = require("./bind-model");
+        BindCommandCreate           = require("./bind-command-create");
+        BindCommandRead             = require("./bind-command-read");
+        BindCommandUpdate           = require("./bind-command-update");
+        BindCommandDelete           = require("./bind-command-delete");
+        EntityTable                 = require("./entity-table").EntityTable;
     } else {
-        util                = global._W.Common.Util;
-        BindModel           = global._W.Meta.Bind.BindModel;
-        BindCommandCreate   = global._W.Meta.Bind.BindCommandCreate;
-        BindCommandRead     = global._W.Meta.Bind.BindCommandRead;
-        BindCommandUpdate   = global._W.Meta.Bind.BindCommandUpdate;
-        BindCommandDelete   = global._W.Meta.Bind.BindCommandDelete;
-        EntityTable         = global._W.Meta.Entity.EntityTable;
+        util                        = global._W.Common.Util;
+        BindModel                   = global._W.Meta.Bind.BindModel;
+        BindCommandCreate           = global._W.Meta.Bind.BindCommandCreate;
+        BindCommandRead             = global._W.Meta.Bind.BindCommandRead;
+        BindCommandUpdate           = global._W.Meta.Bind.BindCommandUpdate;
+        BindCommandDelete           = global._W.Meta.Bind.BindCommandDelete;
+        EntityTable                 = global._W.Meta.Entity.EntityTable;
     }
 
     //==============================================================
@@ -48,7 +48,6 @@
     if (typeof BindCommandUpdate === "undefined") throw new Error("[BindCommandUpdate] module load fail...");
     if (typeof BindCommandDelete === "undefined") throw new Error("[BindCommandDelete] module load fail...");
     if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
-
 
     //==============================================================
     // 4. 모듈 구현    
@@ -144,6 +143,70 @@
     }(BindModel));
     
 
+     //---------------------------------------
+     var EntityTableCollection  = (function (_super) {
+        /**
+         * @class
+         * @param {*} p_onwer 소유자 
+         */
+        function EntityTableCollection(p_onwer) {
+            _super.call(this, p_onwer);
+        }
+        util.inherits(EntityTableCollection, _super);
+
+        /**
+         * 
+         * @param {String | Item} p_object 
+         * @returns {Item} 등록한 아이템
+         */
+        EntityTableCollection.prototype.add  = function(p_object) {
+
+            var i_value;
+            var i_name;
+
+            if (typeof p_object === "string") {      
+                i_name  = p_object;
+                i_value = new Item(i_name, this._onwer);
+            } else if (p_object instanceof Item) {
+                i_name  = p_object.name;
+                i_value = p_object;
+            } else {
+                throw new Error("string | EntityTable object [p_object].");
+            }
+
+            if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
+
+            _super.prototype.add.call(this, i_name, i_value);
+
+            return this[i_name];
+        };
+        
+        /**
+         * EntityTable 타입만 들어가게 제약조건 추가
+         * @override
+         */
+        EntityTableCollection.prototype._getPropDesciptor = function(p_idx) {
+            return {
+                get: function() { return this._items[p_idx]; },
+                set: function(newValue) { 
+                    if (newValue instanceof EntityTable) {
+                        this._items[p_idx] = newValue;
+                    } else {
+                        throw new Error("Only [EntityTable] type instances can be added");
+                    }
+                },
+                enumerable: true,
+                configurable: true
+            };
+        };
+
+
+        // TODO::
+        
+        return EntityTableCollection;
+    
+    }(PropertyCollection));
+        
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     

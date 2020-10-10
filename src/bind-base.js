@@ -62,6 +62,15 @@
                     this.__event.subscribe(p_fn, "executed");
                 }
             });
+
+            /** @property */
+            Object.defineProperty(this, "onFail", {
+                enumerable: true,
+                configurable: true,
+                set: function(p_fn) {
+                    this.__event.subscribe(p_fn, "fail");
+                }
+            });
         }
         util.inherits(BaseBind, _super);
 
@@ -83,13 +92,10 @@
             this.__event.publish("executed"); 
         };
 
-        /**
-         * 아이템을 추가하고 명령과 매핑한다.
-         * @abstract
-         */
-        BaseBind.prototype.add = function() {
-            throw new Error("[ add() ] Abstract method definition, fail...");
-        };
+        /** @event */
+        BaseBind.prototype._onFail = function() {
+            this.__event.publish("fail"); 
+        };        
 
         return BaseBind;
     

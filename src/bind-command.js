@@ -47,13 +47,15 @@
     // 4. 모듈 구현    
     var BindCommand  = (function (_super) {
         /**
-         * @abstract 추상클래스
+         * @abstract 바인드 명령 (상위)
          * @class
          */
         function BindCommand(p_bindModel, p_baseEntity) {
             _super.call(this);
             
-            if (!(p_bindModel.instanceOf("BindModel"))) throw new Error("Only [p_bindModel] type 'BindModel' can be added");
+            var __cbEnd;                
+
+            if (p_baseEntity && !(p_bindModel.instanceOf("BindModel"))) throw new Error("Only [p_bindModel] type 'BindModel' can be added");
             if (p_baseEntity && !(p_baseEntity.instanceOf("Entity"))) throw new Error("Only [p_baseEntity] type 'Entity' can be added");
 
             /** @protected 소유자 */
@@ -61,6 +63,18 @@
 
             /** @protected */
             this._baseEntity = p_baseEntity;
+
+            /** @property {vbEnd} */
+            Object.defineProperty(this, "cbValid", 
+            {
+                get: function() { return __cbEnd; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [cbValid] type 'Function' can be added");
+                    __cbEnd = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });            
         }
         util.inherits(BindCommand, _super);
     
@@ -74,8 +88,8 @@
 
         /** @override */
         BindCommand.prototype._onExecute = function() {
-            this._model._onExecute();
-            _super.prototype._onExecute.call(this);
+            _super.prototype._onExecute.call(this);     // 자신에 이벤트 발생
+            this._model._onExecute();                   // 모델에 이벤트 추가 발생
         };
 
         /** @override */
@@ -83,6 +97,12 @@
             _super.prototype._onExecuted.call(this);
             this._model._onExecuted();
         };
+
+        /** @override */
+        BindCommand.prototype._onFail = function() {
+            _super.prototype._onFail.call(this);
+            this._model._onFail();                
+        };        
         
         /** @virtual */
         BindCommand.prototype.execute = function() {

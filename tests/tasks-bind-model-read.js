@@ -145,7 +145,8 @@ for(var i = 0; i < e.first.items.count; i++) {
     console.log("first : " + e.first.items[i].name);
 }
 
-
+var abc = "A";
+if (abc) console.log(".true");
 
 
 console.log("-End-");
