@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Interface.IMarshal
+ * @namespace _W.Interface.IControlCollection
  */
 (function(global) {
 

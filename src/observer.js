@@ -40,6 +40,9 @@
             this.subscribers = {        // 전역 구독자
                 any: []
             };
+
+            // 이벤트 전파 설정
+            this.propagation = false;
         }
 
         /**
@@ -109,7 +112,7 @@
             if (p_code in this.subscribers) {
                 for (var i = 0; i < this.subscribers[p_code].length; i++) {
                     if (typeof this.subscribers[p_code][i] === "function") {
-                        this.subscribers[p_code][i].call(this._this, this._onwer);  // REVIEW:: _onwer 인수 확인필요!
+                        this.subscribers[p_code][i].call(this._this, this._onwer);  // REVIEW:: _onwer 인수 확인필요! >> 전달파라메터 
                     }
                 }
             }
@@ -117,8 +120,12 @@
             if (this.isDebug) {
                 console.log("publish() 이벤트 발생 [" + this._this.constructor.name + "] type:" + p_code);
             }
-            
+            this.propagation = true;
         };
+
+        Observer.prototype.stopPropagation = function() {
+            this.propagation = false;
+        }
 
         return Observer;
     }());
