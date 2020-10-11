@@ -52,7 +52,7 @@
             var __caption       = "";
             var __isNotNull     = false;
             var __callback      = null;
-            var __constraint    = null;
+            var __constraints   = [];
             var __codeType      = null;
             var __order         = 100;
             var __increase      = 100;      // order 의 자동 추가수
@@ -149,14 +149,14 @@
                 enumerable: true
             });
 
-            /** @property {constraint} */
-            Object.defineProperty(this, "constraint", 
-            {
-                get: function() { return __constraint; },
-                set: function(newValue) { __constraint = newValue; },
-                configurable: true,
-                enumerable: true
-            });
+            // /** @property {constraints} */
+            // Object.defineProperty(this, "constraints", 
+            // {
+            //     get: function() { return __constraints; },
+            //     set: function(newValue) { __constraints = newValue; },
+            //     configurable: true,
+            //     enumerable: true
+            // });
 
             /** @property {codeType} */
             Object.defineProperty(this, "codeType", 
@@ -206,6 +206,54 @@
         Item.prototype.getObject = function() {
             // TODO::
         };
+
+        /**
+         * @method
+         */
+        Item.prototype.setConstraint = function(i_regex, i_msg, i_code) {
+
+            var constraint = {};
+
+            if (!(i_regex instanceof RegExp)) throw new Error("Only [i_regex] type 'RegExp' can be added");
+            if (!(typeof i_msg === "string")) throw new Error("Only [i_msg] type 'string' can be added");
+
+            constraint.regex = i_regex;
+            constraint.msg = i_msg;
+            constraint.code = i_code;
+            
+            this.__constraints.push(constraint);
+        };
+
+        Item.prototype.valid = function(i_value, o_message) {
+
+            var result = "";
+
+            o_message.msg = "";
+            o_message.code = "";
+
+            if (!(typeof i_value === "string")) throw new Error("Only [i_value] type 'string' can be added");
+            
+            // 우선순위 높음
+            for(var i = 0; this.__constraints.length > i; i++) {
+                result = i_value.match(__constraints[i].regex);
+                if (result.length > 0 ) {
+                    o_message.msg = __constraints[i].msg;
+                    o_message.code = __constraints[i].code;
+                    
+                    return false;
+                }
+            }
+            // 우선순위 낮음
+            if (this.isNotNull && i_value.trim().length <= 0) {
+                o_message.msg = "- " + this.caption + "(" + this.name + ")은 공백을 입력할 수 없습니다.";
+                o_message.code = 0;
+                return false;    // 공백 메세지
+            }
+
+            return true;
+        };
+
+
         return Item;
     
     }(MetaElement));

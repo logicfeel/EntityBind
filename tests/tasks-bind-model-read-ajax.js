@@ -3,19 +3,16 @@
  */
 //===============================================
 // 선언
+// var Item                    = require("../src/entity-item-dom");
 var Item                    = require("../src/entity-item").Item;
-var BindModelRead           = require("../src/bind-model-read");
+
+var BindModelReadAjax       = require("../src/bind-model-read-ajax");
 var EntityTable             = require("../src/entity-table").EntityTable;
 
-// var view                    = require("./view.json");
-// for (var prop in view) {
-//     if (view.hasOwnProperty(prop)) console.log(prop);
-// }
 
 
-var e = new BindModelRead();
+var e = new BindModelReadAjax();
 
-// 추가 참조 확인 엔티티테이블
 var t = new EntityTable("second");
 
 //===============================================
@@ -23,6 +20,8 @@ var t = new EntityTable("second");
 console.log("---------------------------------------");
 console.log("e.read.add(new Item('ITEM1'));");
 e.read.add(new Item("ITEM1"));  // 전체추가
+// e.first["ITEM1"].refValue = "11";
+
 console.log("e.first.items.count            1 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        1 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       1 ==> " + e.read.valid.items.count);

@@ -52,9 +52,9 @@
 
             var __attrs         = new PropertyObjectCollection(this);
             var __mode          = new PropertyFunctionCollection(this);
-            var __cbRegister    = null;
-            var __cbValid       = null;
-            var __cbResume      = null;
+            var __cbRegister    = function() {};
+            var __cbValid       = function() {return true};
+            var __cbResume      = function() {};
 
             /** @property {attrs} */
             Object.defineProperty(this, "attrs", 
@@ -126,19 +126,14 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @virtual */
+        /** @method */
         BindModel.prototype.init = function() {
-            throw new Error("[ init() ] Abstract method definition, fail...");
+            this.cbRegister.call(this);
+            if (this.cbValid.call(this)) {
+                this.cbResume.call(this)
+            }
         };
 
-        /**
-         * 아이템을 추가하고 명령과 매핑한다.
-         * @abstract
-         */
-        BindModel.prototype.add = function() {
-            throw new Error("[ add() ] Abstract method definition, fail...");
-        };
-        
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템

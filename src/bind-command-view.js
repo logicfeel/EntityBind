@@ -52,6 +52,8 @@
             var __valid     = new EntityView("valid", this._baseEntity);
             var __bind      = new EntityView("bind", this._baseEntity);
             
+            var __cbView;
+            
             this._output = new EntityViewCollection(this, this._baseEntity);
             this._output.add(new EntityView("default", this._baseEntity));  // 등록방법 1
             // this._output.add("default", this._baseEntity);               // 등록방법 2
@@ -82,6 +84,18 @@
                 configurable: true,
                 enumerable: true
             });
+
+            /** @property {cbView} */
+            Object.defineProperty(this, "cbView", 
+            {
+                get: function() { return __cbView; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof Function)) throw new Error("Only [cbView] type 'Function' can be added");
+                    __cbView = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });             
         }
         util.inherits(BindCommandView, _super);
 

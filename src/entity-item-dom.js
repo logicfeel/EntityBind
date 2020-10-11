@@ -18,7 +18,7 @@
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
-        Item                = require("./entity-item");
+        Item                = require("./entity-item").Item;
     } else {
         util                = global._W.Common.Util;
         Item                = global._W.Meta.Entity.Item;

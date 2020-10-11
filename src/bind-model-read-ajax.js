@@ -1,5 +1,7 @@
+const BindCommandReadAjax = require("./bind-command-read-ajax");
+
 /**
- * @namespace _W.Meta.Bind.BindModelRead
+ * @namespace _W.Meta.Bind.BindModelReadAjax
  */
 (function(global) {
 
@@ -14,18 +16,18 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BindModel;
+    var BindModelRead;
     var BindCommandRead;
     var EntityTable;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
-        BindModel           = require("./bind-model");
+        BindModelRead       = require("./bind-model-read");
         BindCommandRead     = require("./bind-command-read");
         EntityTable         = require("./entity-table").EntityTable;
     } else {
         util                = global._W.Common.Util;
-        BindModel           = global._W.Meta.Bind.BindModel;
+        BindModelRead       = global._W.Meta.Bind.BindModelRead;
         BindCommandRead     = global._W.Meta.Bind.BindCommandRead;
         EntityTable         = global._W.Meta.Entity.EntityTable;
     }
@@ -33,69 +35,81 @@
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
+    if (typeof BindModelRead === "undefined") throw new Error("[BindModelRead] module load fail...");
     if (typeof BindCommandRead === "undefined") throw new Error("[BindCommandRead] module load fail...");
     if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
 
 
     //==============================================================
     // 4. 모듈 구현    
-    var BindModelRead  = (function (_super) {
+    var BindModelReadAjax  = (function (_super) {
         /**
          * @class
          */
-        function BindModelRead() {
+        function BindModelReadAjax() {
             _super.call(this);
 
+            var __g_ajaxSetup = {
+                url: "",
+                method: "POST"
+            };
 
-            var __firest    = new EntityTable("first");
-            var __read      = new BindCommandRead(this, __firest);
-
-            /** @property {first} */
-            Object.defineProperty(this, "first", 
+            /** @property {ajaxSetup} */
+            Object.defineProperty(this, "g_ajaxSetup", 
             {
-                get: function() { return __firest; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof EntityTable)) throw new Error("Only [first] type 'EntityTable' can be added");
-                    __firest = newValue;
-                },
+                get: function() { return __g_ajaxSetup; },
                 configurable: true,
                 enumerable: true
             });
 
-            /** @property {read} */
-            Object.defineProperty(this, "read", 
+            /** @property {url} */
+            Object.defineProperty(this, "g_url", 
             {
-                get: function() { return __read; },
+                get: function() { return __g_ajaxSetup.url; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof BindCommandRead)) throw new Error("Only [read] type 'BindCommandRead' can be added");
-                    __read = newValue;
+                    if (!(typeof newValue === "string")) throw new Error("Only [url] type 'string' can be added");
+                    __g_ajaxSetup.url = newValue;
                 },
                 configurable: true,
                 enumerable: true
-            });
+            }); 
+
+            /** @property {method} */
+            Object.defineProperty(this, "g_method",
+            {
+                get: function() { return __g_ajaxSetup.method; },
+                set: function(newValue) { 
+                    if (!(typeof newValue === "string")) throw new Error("Only [method] type 'string' can be added");
+                    __g_ajaxSetup.method = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });             
+
+            /** @override */
+            this.read = new BindCommandReadAjax(this, this.first);
         }
-        util.inherits(BindModelRead, _super);
+        util.inherits(BindModelReadAjax, _super);
     
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
-        BindModelRead.prototype.getTypes  = function() {
+        BindModelReadAjax.prototype.getTypes  = function() {
                     
-            var type = ["BindModelRead"];
+            var type = ["BindModelReadAjax"];
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        return BindModelRead;
+        return BindModelReadAjax;
     
-    }(BindModel));
+    }(BindModelRead));
     
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = BindModelRead;
+        module.exports = BindModelReadAjax;
     } else {
-        global._W.Meta.Bind.BindModelRead = BindModelRead;
+        global._W.Meta.Bind.BindModelReadAjax = BindModelReadAjax;
     }
 
 }(this));

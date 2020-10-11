@@ -53,7 +53,7 @@
         function BindCommand(p_bindModel, p_baseEntity) {
             _super.call(this);
             
-            var __cbEnd;                
+            var __cbEnd;
 
             if (p_baseEntity && !(p_bindModel.instanceOf("BindModel"))) throw new Error("Only [p_bindModel] type 'BindModel' can be added");
             if (p_baseEntity && !(p_baseEntity.instanceOf("Entity"))) throw new Error("Only [p_baseEntity] type 'Entity' can be added");
@@ -65,11 +65,11 @@
             this._baseEntity = p_baseEntity;
 
             /** @property {vbEnd} */
-            Object.defineProperty(this, "cbValid", 
+            Object.defineProperty(this, "cbEnd", 
             {
                 get: function() { return __cbEnd; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof BindCommand)) throw new Error("Only [cbValid] type 'Function' can be added");
+                    if (!(newValue instanceof Function)) throw new Error("Only [cbEnd] type 'Function' can be added");
                     __cbEnd = newValue;
                 },
                 configurable: true,
@@ -86,29 +86,30 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @override */
-        BindCommand.prototype._onExecute = function() {
-            _super.prototype._onExecute.call(this);     // 자신에 이벤트 발생
-            this._model._onExecute();                   // 모델에 이벤트 추가 발생
-        };
-
-        /** @override */
-        BindCommand.prototype._onExecuted = function() {
-            _super.prototype._onExecuted.call(this);
-            this._model._onExecuted();
-        };
-
-        /** @override */
-        BindCommand.prototype._onFail = function() {
-            _super.prototype._onFail.call(this);
-            this._model._onFail();                
-        };        
-        
         /** @virtual */
         BindCommand.prototype.execute = function() {
             throw new Error("[ execute() ] Abstract method definition, fail...");
         };
 
+        /** @override */
+        BindCommand.prototype._onExecute = function() {
+            
+            _super.prototype._onExecute.call(this);                 // 자신에 이벤트 발생
+            if (this.eventPropagation) this._model._onExecute();    // 모델에 이벤트 추가 발생
+        };
+
+        /** @override */
+        BindCommand.prototype._onExecuted = function() {
+            _super.prototype._onExecuted.call(this);
+            if (this.eventPropagation) this._model._onExecuted();
+        };
+
+        /** @override */
+        BindCommand.prototype._onFail = function() {
+            _super.prototype._onFail.call(this);
+            if (this.eventPropagation) this._model._onFail();
+        };        
+        
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템

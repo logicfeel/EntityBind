@@ -71,6 +71,17 @@
                     this.__event.subscribe(p_fn, "fail");
                 }
             });
+
+            /** @property */
+            Object.defineProperty(this, "eventPropagation", {
+                enumerable: true,
+                configurable: true,
+                set: function(p_bool) {
+                    if (!(p_bool instanceof Boolean)) throw new Error("Only [p_bool] type 'Boolean' can be added");
+                    this.__event.propagation = p_bool;
+                },
+                get: function() { return this.__event.propagation; }
+            });
         }
         util.inherits(BaseBind, _super);
 
