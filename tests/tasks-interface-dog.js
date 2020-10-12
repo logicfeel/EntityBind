@@ -16,12 +16,18 @@ IDog.prototype.getSound = function() {
     return "Set";
 };
 
+IDog.prototype.static = function() {
+    return "SS";
+};
+
 //=================================
 var Animal  = (function () {
     function Animal() {
         
+        // var static = 1;
         this._implements(IObject, IDog);      // 인터페이스 구현함
     }
+    Animal.static = function() {};  // 정적메소드  (통과됨)
 
     Animal.prototype.move  = function(p_name) {
     };
@@ -37,10 +43,14 @@ var Animal  = (function () {
 function ISteel () {
 }
 //=================================
-var a = new Animal();
 
+// 1안
+var a = new Animal();
 console.log("a._isImplementOf(IDog)     True  = " + a.isImplementOf(IDog));
 console.log("a._isImplementOf(ISteel)   False = " + a.isImplementOf(ISteel));
 
-// console.log("getGUID() " + a.getGUID());
+// 2안>
+// Animal();  // 함수 호출의 경우도 인터페이스 구현에 포함됨
+
+
 console.log("-End-");
