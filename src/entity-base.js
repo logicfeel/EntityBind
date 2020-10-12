@@ -130,10 +130,138 @@
             throw new Error("[ clear() ] Abstract method definition, fail...");
         };
         
-        /**@abstract IAllControl */
-        Entity.prototype.load  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
+
+
+        // 지역함수
+        function loadItem(p_thisEntity, p_item) {
+            // for (var prop in entity.items[i]) {
+                // if (p_item.hasOwnProperty(prop)) {
+                    p_thisEntity.items.add(p_item);
+                    // Item 속성 가져오기
+                    for (var prop in p_item) {
+                        if (p_item.hasOwnProperty(prop)) {
+                            
+                            // REVIEW: 필요시 검사후 설정 로직 추가
+                            p_thisEntity.items[prop][prop2] = entity.items[i][prop][prop2]
+                        }
+                    }
+                // }
+            // }
+        }
+
+
+        Entity.prototype.__addItem  = function(p_name, p_property) {
+            
+            if(!this.items.contains(p_name)) this.items.add(p_name);
+            
+            if (typeof p_property === "object" ) {
+                for(var prop in p_property) {
+                    this.items[p_name][prop] = p_property[prop];
+                }
+            }
         };
+
+        /**
+         * 
+         * @param {*} p_object 
+         * @param {Number} p_option 
+         *          - 1: 병합, item + row  (*기본값)
+         *          - 2: 데이터만 가져오기 (존재하는 아이템만)
+         */
+        Entity.prototype.load  = function(p_object, p_option) {
+
+            if (p_object instanceof Entity) {
+                this.__loadEntity(p_object, p_option);
+            } else {
+                this.__loadJSON(p_object, p_option);
+            }
+        };
+
+        Entity.prototype.__loadJSON  = function(p_object, p_option) {
+            p_option = p_option || 1;   // 기본값 덮어쓰기
+            
+            var entity;
+            var row;
+
+            if (typeof p_object === "undefined") throw new Error("Only [p_object] type 'object' can be added");
+            
+            entity = p_object["entity"]  || p_object["table"] || undefined;
+            
+            if (typeof entity === "undefined") throw new Error("Only [p_object] type 'entity | table' can be added");
+            
+
+            // itmes, rows 배열로 구조 변경
+            if (!Array.isArray(entity.items)) entity.items = [entity.items];
+            if (!Array.isArray(entity.rows)) entity.rows = [entity.rows];
+
+            // 병합
+            if (p_option === 1) {
+                // Item 기준으로 아이템 가져오기
+                if (entity.items && entity.items[0]) {
+                    for(var i = 0; entity.items.length > i; i++) {
+                        // Item 가져오기
+                        for (var prop in entity.items[i]) {
+                            if (entity.items[i].hasOwnProperty(prop)) {
+                                this.__addItem(prop, entity.items[i][prop]);
+                            }
+                        }
+                    }
+                }
+
+                // Row 기준으로 아이템 가져오기 (첫번째 Row 기준)
+                if (entity.rows && entity.rows[0]) {
+                    for (var prop in entity.rows[0]) {
+                        if (entity.rows[0].hasOwnProperty(prop)) {
+                            this.__addItem(prop, "");
+                        }
+                    }
+                }
+            }
+            
+            // Row 데이터 가져오기
+            if (entity.rows && entity.rows[0]) {
+                for(var i = 0; entity.rows.length > i; i++) {
+                    
+                    row = this.newRow();
+                    for (var prop in entity.rows[i]) {
+                        if (entity.rows[i].hasOwnProperty(prop) && typeof row[prop] !== "undefined") {
+                            row[prop] = entity.rows[i][prop];
+                        }
+                    }
+                    this.rows.add(row);
+                }
+            }        
+        };
+
+        Entity.prototype.__loadEntity  = function(p_object, p_option) {
+            p_option = p_option || 1;   // 기본값 덮어쓰기
+
+            var entity = p_object;
+            var row;
+            var itemName;
+            var data;
+
+            // 병합
+            if (p_option === 1) {
+                // Item 기준으로 아이템 가져오기
+                for(var i = 0; entity.items.count > i; i++) {
+                    this.items.add(entity.items[i]);
+                }
+            }
+            
+            // Row 데이터 가져오기
+            for(var i = 0; entity.rows.count > i; i++) {
+                
+                row = this.newRow();
+
+                for (var ii = 0; ii < this.items.count; ii++) {
+                    itemName = this.items[ii].name;
+                    row[itemName] = typeof entity.rows[i][itemName] !== "undefined" ? entity.rows[i][itemName] : "";
+                }
+                this.rows.add(row);
+            }
+        };
+
 
         /**@abstract IAllControl */
         Entity.prototype.clear  = function() {
@@ -144,13 +272,11 @@
             throw new Error("[ select() ] Abstract method definition, fail...");
         };
 
+        
         Entity.prototype.newRow  = function() {
-            // TODO::
+            return new Row(this);
         };
-        Entity.prototype.clearRow  = function() {
-            // TODO::
-        };
-
+        
         return Entity;
     
     }(MetaElement));

@@ -3,8 +3,8 @@
  */
 //===============================================
 // 선언
-// var Item                    = require("../src/entity-item-dom");
-var Item                    = require("../src/entity-item").Item;
+var Item                    = require("../src/entity-item-dom");
+// var Item                    = require("../src/entity-item").Item;
 
 var BindModelReadAjax       = require("../src/bind-model-read-ajax");
 var EntityTable             = require("../src/entity-table").EntityTable;
@@ -142,15 +142,29 @@ e.read.onExecute = function() {console.log("raed 이벤트 시작 ~~");}
 e.read.onExecuted = function() {console.log("read 이벤트 종료 ~~");}
 
 console.log("---------------------------------------");
+
+e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";
+// e.g_url = "./view.json";
+
+e.read.cbView = function(view) {
+    console.log("*************");
+    console.log("read.view.items.count  ==> " + e.read.view.items.count);    
+    console.log("view.items.count       ==> " + view.items.count);    
+    console.log("read.view.rows.count   ==> " + e.read.view.rows.count);    
+    console.log("view.rows.count        ==> "  + view.rows.count);    
+    console.log("view.rows[0].list      ==> " + view.rows[0].list);
+};
+
+// e.read.outputOption = 2;
+
 e.read.execute();
+
+
 console.log("*************");
 console.log("first.items");
 for(var i = 0; i < e.first.items.count; i++) {
     console.log("first : " + e.first.items[i].name);
 }
-
-var abc = "A";
-if (abc) console.log(".true");
 
 
 console.log("-End-");

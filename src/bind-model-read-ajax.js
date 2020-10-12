@@ -1,5 +1,3 @@
-const BindCommandReadAjax = require("./bind-command-read-ajax");
-
 /**
  * @namespace _W.Meta.Bind.BindModelReadAjax
  */
@@ -49,45 +47,45 @@ const BindCommandReadAjax = require("./bind-command-read-ajax");
         function BindModelReadAjax() {
             _super.call(this);
 
-            var __g_ajaxSetup = {
+            var __baseAjaxSetup = {
                 url: "",
                 method: "POST"
             };
 
-            /** @property {ajaxSetup} */
-            Object.defineProperty(this, "g_ajaxSetup", 
+            /** @override */
+            this.read = new BindCommandReadAjax(this, this.first);
+
+            /** @property {baseAjaxSetup} */
+            Object.defineProperty(this, "baseAjaxSetup", 
             {
-                get: function() { return __g_ajaxSetup; },
+                get: function() { return __baseAjaxSetup; },
                 configurable: true,
                 enumerable: true
             });
 
-            /** @property {url} */
-            Object.defineProperty(this, "g_url", 
+            /** @property {baseUrl} */
+            Object.defineProperty(this, "baseUrl", 
             {
-                get: function() { return __g_ajaxSetup.url; },
+                get: function() { return __baseAjaxSetup.url; },
                 set: function(newValue) { 
-                    if (!(typeof newValue === "string")) throw new Error("Only [url] type 'string' can be added");
-                    __g_ajaxSetup.url = newValue;
+                    if (!(typeof newValue === "string")) throw new Error("Only [baseUrl] type 'string' can be added");
+                    __baseAjaxSetup.url = newValue;
                 },
                 configurable: true,
                 enumerable: true
             }); 
 
-            /** @property {method} */
-            Object.defineProperty(this, "g_method",
+            /** @property {baseMethod} */
+            Object.defineProperty(this, "baseMethod",
             {
-                get: function() { return __g_ajaxSetup.method; },
+                get: function() { return __baseAjaxSetup.method; },
                 set: function(newValue) { 
-                    if (!(typeof newValue === "string")) throw new Error("Only [method] type 'string' can be added");
-                    __g_ajaxSetup.method = newValue;
+                    if (!(typeof newValue === "string")) throw new Error("Only [baseMethod] type 'string' can be added");
+                    __baseAjaxSetup.method = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });             
-
-            /** @override */
-            this.read = new BindCommandReadAjax(this, this.first);
         }
         util.inherits(BindModelReadAjax, _super);
     

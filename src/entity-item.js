@@ -149,14 +149,14 @@
                 enumerable: true
             });
 
-            // /** @property {constraints} */
-            // Object.defineProperty(this, "constraints", 
-            // {
-            //     get: function() { return __constraints; },
-            //     set: function(newValue) { __constraints = newValue; },
-            //     configurable: true,
-            //     enumerable: true
-            // });
+            /** @property {constraints} */
+            Object.defineProperty(this, "constraints", 
+            {
+                get: function() { return __constraints; },
+                // set: function(newValue) { __constraints = newValue; },
+                configurable: true,
+                enumerable: true
+            });
 
             /** @property {codeType} */
             Object.defineProperty(this, "codeType", 
@@ -221,7 +221,7 @@
             constraint.msg = i_msg;
             constraint.code = i_code;
             
-            this.__constraints.push(constraint);
+            this.constraints.push(constraint);
         };
 
         Item.prototype.valid = function(i_value, o_message) {
@@ -230,15 +230,16 @@
 
             o_message.msg = "";
             o_message.code = "";
+            i_value = i_value || "";
 
             if (!(typeof i_value === "string")) throw new Error("Only [i_value] type 'string' can be added");
             
             // 우선순위 높음
-            for(var i = 0; this.__constraints.length > i; i++) {
-                result = i_value.match(__constraints[i].regex);
+            for(var i = 0; this.constraints.length > i; i++) {
+                result = i_value.match(constraints[i].regex);
                 if (result.length > 0 ) {
-                    o_message.msg = __constraints[i].msg;
-                    o_message.code = __constraints[i].code;
+                    o_message.msg = constraints[i].msg;
+                    o_message.code = constraints[i].code;
                     
                     return false;
                 }

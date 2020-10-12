@@ -1,6 +1,6 @@
 {
   "name": "entitybind",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "엔티티모듈 + 바인드모듈의 개발 위치",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-minify-html": "^1.0.6",
-    "gulp-uglify": "^3.0.2"
+    "gulp-uglify": "^3.0.2",
+    "request": "^2.88.2"
   }
 }

@@ -90,9 +90,9 @@
             // TODO::
         };
         
-        EntityTable.prototype.load  = function() {
-            // TODO::
-        };
+        // EntityTable.prototype.load  = function() {
+        //     // TODO::
+        // };
         
         EntityTable.prototype.clear  = function() {
             // TODO::

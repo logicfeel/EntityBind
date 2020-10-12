@@ -20,6 +20,7 @@
     var BindCommandUpdate;
     var BindCommandDelete;
     var EntityTable;
+    var PropertyCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                        = require("./utils");
@@ -29,6 +30,8 @@
         BindCommandUpdate           = require("./bind-command-update");
         BindCommandDelete           = require("./bind-command-delete");
         EntityTable                 = require("./entity-table").EntityTable;
+        PropertyCollection          = require("./collection-property");
+        
     } else {
         util                        = global._W.Common.Util;
         BindModel                   = global._W.Meta.Bind.BindModel;
@@ -37,6 +40,8 @@
         BindCommandUpdate           = global._W.Meta.Bind.BindCommandUpdate;
         BindCommandDelete           = global._W.Meta.Bind.BindCommandDelete;
         EntityTable                 = global._W.Meta.Entity.EntityTable;
+        PropertyCollection          = global._W.Collection.PropertyCollection;
+
     }
 
     //==============================================================
@@ -48,6 +53,7 @@
     if (typeof BindCommandUpdate === "undefined") throw new Error("[BindCommandUpdate] module load fail...");
     if (typeof BindCommandDelete === "undefined") throw new Error("[BindCommandDelete] module load fail...");
     if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
+    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    

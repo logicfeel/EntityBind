@@ -1,0 +1,27 @@
+<html>
+<head></head>
+<body>
+
+
+    테스트함
+<!--
+   <script src="auto-meta-1.1.0.js"></script>
+-->
+<script src="jquery.js"></script>
+<script src="auto-meta-1.2.0.js"></script>
+
+<script>
+
+    var aaa = 10;
+
+    var Item = _W.Meta.Entity.Item;
+    var e = new _W.Meta.Bind.BindModelRead();
+
+
+    e.read.valid.items.add("A1");
+    e.read.add(new Item("A2"));
+    e.read.execute();
+
+</script>
+</body>
+</html>

@@ -53,6 +53,8 @@
             var __bind      = new EntityView("bind", this._baseEntity);
             
             var __cbView;
+
+            var __outputOption = 1;     // 1: View 오버로딩 , 2: 있는자료만            
             
             this._output = new EntityViewCollection(this, this._baseEntity);
             this._output.add(new EntityView("default", this._baseEntity));  // 등록방법 1
@@ -95,7 +97,20 @@
                 },
                 configurable: true,
                 enumerable: true
-            });             
+            });
+
+            /** @property {outputOption} */
+            Object.defineProperty(this, "outputOption", 
+            {
+                get: function() { return __outputOption; },
+                set: function(newValue) { 
+                    if (!(typeof newValue === "number")) throw new Error("Only [outputOption] type 'number' can be added");
+                    __outputOption = newValue;
+                },
+
+                configurable: true,
+                enumerable: true
+            });
         }
         util.inherits(BindCommandView, _super);
 
@@ -107,7 +122,9 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        BindCommandView.prototype.execute = function() {
+        BindCommandView.prototype.execute = function(p_option) {
+            
+            
             this._onExecute();  // "실행 시작" 이벤트 발생
             if (this._execValid()) this._execBind();
         };

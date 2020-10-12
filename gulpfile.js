@@ -22,6 +22,7 @@ var paths = {
         'src/i-collection.js', 'src/i-collection-property.js', 'src/i-collection-control.js',
         // 컬렉션
         'src/collection-base.js', 'src/collection-array.js', 'src/collection-property.js',
+        'src/collection-property-object.js','src/collection-property-function.js',
         // 메타 최상위
         'src/meta-object.js', 'src/meta-element.js', 'src/meta-complex.js', 
         // Entity
@@ -29,9 +30,12 @@ var paths = {
         'src/entity-table.js', 'src/entity-view.js', 'src/entity-set.js', 
         // Bind
         'src/bind-base.js', 'src/bind-command.js', 'src/bind-model.js', 
-        'src/bind-command-view.js', 'src/bind-command-internal.js', 'src/bind-command-*.js',
-        'src/bind-*.js'
-
+        'src/bind-command-internal.js', 'src/bind-command-view.js', 
+        'src/bind-command-read.js', 'src/bind-command-create.js', 'src/bind-command-update.js', 
+        'src/bind-command-delete.js', 'src/bind-command-list.js', 
+        'src/bind-command-read-ajax.js',
+        'src/bind-model-form.js', 'src/bind-model-list.js', 'src/bind-model-read.js', 'src/bind-model-read-del.js',
+        'src/bind-model-read-ajax.js'
     ],
 	scss: src + '/scss/*.scss',
 	html: src + '/**/*.html'

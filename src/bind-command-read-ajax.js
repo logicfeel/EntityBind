@@ -1,5 +1,3 @@
-const { EntityView } = require("./entity-view");
-
 /**
  * @namespace _W.Meta.Bind.BindCommandReadAjax
  */
@@ -17,23 +15,27 @@ const { EntityView } = require("./entity-view");
     // 2. 모듈 가져오기 (node | web)
     var util;
     var BindCommandRead;
-    var jquery;
+    var EntityView;
+    var request;
+    var ajax;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BindCommandRead     = require("./bind-command-read");
-        jquery              = require("jquery");
+        EntityView          = require("./entity-view").EntityView;
+        request             = require("request");
     } else {
         util                = global._W.Common.Util;
         BindCommandRead     = global._W.Meta.Bind.BindCommandRead;
-        jquery              = global.$;     // jquery 로딩 REVIEW:: 로딩 확인
+        EntityView          = global._W.Meta.Entity.EntityView;
+        ajax                = global.jQuery.ajax || global.$.ajax;     // jquery 로딩 REVIEW:: 로딩 확인
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindCommandRead === "undefined") throw new Error("[BindCommandRead] module load fail...");
-    if (typeof jquery === "undefined") throw new Error("[jquery] module load fail...");
+
 
     //==============================================================
     // 4. 모듈 구현    
@@ -47,7 +49,8 @@ const { EntityView } = require("./entity-view");
             // TODO:: jquery 등 외부 모듈을 이용하여, 검사 진행, 하지만 꼭 필요한지 사용시 재검토
             var __ajaxSetup = {
                 url: "",
-                method: "POST"
+                method: "POST",
+                dataType: "json"
             };
 
             /** @property {ajaxSetup} */
@@ -82,6 +85,7 @@ const { EntityView } = require("./entity-view");
                 enumerable: true
             }); 
 
+            
         }
         util.inherits(BindCommandReadAjax, _super);
     
@@ -93,6 +97,48 @@ const { EntityView } = require("./entity-view");
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
+        /**
+         * (WEB & NodeJs 의 어뎁터 패턴)
+         * node 에서는 비동기만 반영함 (테스트 용도) =>> 필요시 개발함
+         * @param {Object} i_setup 
+         */
+        BindCommandReadAjax.prototype.__ajaxAdapter = function(i_setup) {
+            
+            var option = {};
+            var result;
+    
+            if (ajax) {
+                if (typeof ajax === "undefined") throw new Error("[ajax] module load fail...");
+                ajax(i_setup);
+            } else {
+                option.uri = i_setup.url;
+                // option.json = true // json 으로 JSON 으로 요청함
+    
+                if (i_setup.method === "GET") {
+                    option.method = "POST";
+                    option.qs = i_setup.data;
+                    request.get(option, i_setup.success);
+                } else if (i_setup.method === "POST") {
+                    option.method = "POST";
+                    option.form = i_setup.data;
+                    request.post(option, function(i_err, i_res, i_body) {
+                    // request.post(option, function(i_result, i_status, i_xhr) {
+                        // TODO:: 에러처리 추가해야함
+                        if (i_setup.dataType === "json") result = JSON.parse(i_body);
+                        
+                        result = result || i_body;
+                        i_setup.success(result, i_err, i_res);
+                    });
+                } else {
+                    // 기타 
+                    option.method = i_setup.method;
+                    request(option, i_setup.success);
+                }
+            }
+        };
+
+
+        // TODO:: 상위로 이동 검토
         BindCommandReadAjax.prototype._execValid = function() {
             
 
@@ -118,75 +164,67 @@ const { EntityView } = require("./entity-view");
 
         BindCommandReadAjax.prototype._execBind = function() {
             
-            var $ = jquery;
-            var url = this.ajaxSetup.url || this._model.g_ajaxSetup.url;
-            var method = this.ajaxSetup.method || this._model.g_ajaxSetup.method;
-            var data = {};   // items에서 받아와야함
-            var success = this._execCallback; 
+            var ajaxSetup = {};
+            
+            ajaxSetup.url = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
+            ajaxSetup.method = this.ajaxSetup.method || this._model.baseAjaxSetup.method;
+            // TODO:: 프로퍼티에 추가해야함
+            ajaxSetup.dataType = "json";
+            ajaxSetup.data = {};   // items에서 받아와야함
+            ajaxSetup.success = this._execCallback.bind(this);
             
             for(var i = 0; i < this.bind.items.count; i++) {
-                data[this.bind.items.name] = this.bind.items[i].refValue; // 값
+                ajaxSetup.data[this.bind.items[i].name] = this.bind.items[i].refValue; // 값
             }
-
-            $.ajax(this.ajaxSetup);
+            
+            // $.ajax(this.ajaxSetup);
+            this.__ajaxAdapter(ajaxSetup);
 
             // REVIEW:: 확인후 삭제
             console.log("*************");
             console.log("_execBind(ajax load)");
         };
         
+        /**
+         * 콜백에서 받은 데이터를 기준으로 table(item, rows)을 만든다.
+         * 리턴데이터 형식이 다를 경우 오버라이딩해서 수정함
+         * @param {*} i_result 
+         * @param {*} i_status 
+         * @param {*} i_xhr 
+         */
         BindCommandReadAjax.prototype._execCallback = function(i_result, i_status, i_xhr) {
             
-            var entities = [];
             var entity;
 
-            // TODO:: 임시데이터 가져오기 테스트 부분
-            if(i_result) {
-                if (i_result.entity) {
-                    entity = new EntityView("entity");
-                    if (i_result.entity.rows) {
-                        
-                        // items 구성
-                        for(var i = 0; i_result.entity.rows.length > i; i++) {
-                            for (var prop in i_result.entity.rows[i]) {
-                                if (view.hasOwnProperty(prop)) entity.items.add(prop);
-                            }
-                        }
+            entity = new EntityView("result");
+            entity.load(i_result);
 
-                        // Rows (데이터)등록
-                        entity.items.newRow();
-                        for(var i = 0; i_result.entity.rows.length > i; i++) {
-                            for (var prop in i_result.entity.rows[i]) {
-                                if (view.hasOwnProperty(prop)) entity.rows[i][prop] = i_result.entity.rows[i][prop];
-                            }
-                        }
-
-                    }
-                }
-            }
-            
-            // TODO:: i_result를 _output[0](this.view))을 비교하여 결과를 삽입함.
-            // _output[0].rows.newRow() 이런식으로 삽입
-            // 리턴이 두개일 경우 두개를 삽입?
             console.log("*************");
             console.log("_execCallback()");
             this._execView(entity);
         };
 
-        // TODO:: 이 부분은 사용시 구현이 되어야함.
+        
+        
+        /**
+         * TODO:: 이 부분은 사용시 구현이 되어야함.
+         * 임시테이블과 View 지정 테이블과 매핑한다.
+         * @param {*} entity 
+         */
         BindCommandReadAjax.prototype._execView = function(entity) {
             
             var itemName;
             
-            this.view.newRow();
-            
-            for (var i = 0; entity.items.count > i; i++) {
+            // this.view.newRow();
+            this.view.load(entity, this.outputOption);
+
+            // for (var i = 0; entity.items.count > i; i++) {
                 
-                if (this.view.items.contains(entity.items[i].name)) {
-                    itemName = entity.items[i].name;
-                    this.view.rows[0][itemName] = entity.rows[0][itemName]; // 데이터 복사
-                }
-            }
+            //     if (this.view.items.contains(entity.items[i].name)) {
+            //         itemName = entity.items[i].name;
+            //         this.view.rows[0][itemName] = entity.rows[0][itemName]; // 데이터 복사
+            //     }
+            // }
             // TODO::
             // console.log("*************");
             // console.log("_execView()");
@@ -200,7 +238,7 @@ const { EntityView } = require("./entity-view");
             if (typeof this.cbView === "function" ) this.cbView(this.view);
 
             // 처리 종료 콜백 호출
-            if (typeof this.cbEnd === "function" ) this.cbEnd(this.view);
+            if (typeof this.cbEnd === "function" ) this.cbEnd();
             
             this._onExecuted();  // "실행 종료" 이벤트 발생
         };

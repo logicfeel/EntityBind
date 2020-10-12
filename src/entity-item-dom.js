@@ -36,8 +36,8 @@
         /**
          * @class
          */
-        function ItemDOM() {
-            _super.call(this);
+        function ItemDOM(p_name, p_entity) {
+            _super.call(this, p_name, p_entity);
 
             var __domType       = null;
             var __isReadOnly    = false;

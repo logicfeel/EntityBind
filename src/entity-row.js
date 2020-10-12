@@ -44,8 +44,29 @@
         /**
          * @abstract @class
          */
-        function Row() {
+        function Row(p_entity) {
             _super.call(this, this);
+            
+            var __entity        = null;
+            var itemName = "";
+
+            // Entity 등록 & order(순서) 값 계산
+            if (p_entity && p_entity.instanceOf("Entity")) {
+                __entity    = p_entity;
+
+                for (var i = 0; i < __entity.items.count; i++) {
+                    itemName = __entity.items[i].name;
+                    _super.prototype.add.call(this, itemName, null);
+                }
+            }
+
+            /** @property {entity} */
+            Object.defineProperty(this, "entity", 
+            {
+                get: function() { return __entity; },
+                configurable: true,
+                enumerable: true
+            });            
         }
         util.inherits(Row, _super);
 
