@@ -17,6 +17,7 @@
     var BindCommandView;
     var EntityView;
     var request;
+    var jquery;
     var ajax;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
@@ -28,7 +29,8 @@
         util                = global._W.Common.Util;
         BindCommandView     = global._W.Meta.Bind.BindCommandView;
         EntityView          = global._W.Meta.Entity.EntityView;
-        ajax                = global.jQuery.ajax || global.$.ajax;     // jquery 로딩 REVIEW:: 로딩 확인
+        jquery              = global.jQuery || global.$;     // jquery 로딩 REVIEW:: 로딩 확인
+        ajax                = jquery.ajax;
     }
 
     //==============================================================
@@ -110,7 +112,7 @@
 
             if (ajax) {
                 if (typeof ajax === "undefined") throw new Error("[ajax] module load fail...");
-                ajax(i_setup);
+                // ajax(i_setup);
             } else {
                 option.uri = i_setup.url;
                 // option.json = true // json 으로 JSON 으로 요청함
@@ -132,7 +134,6 @@
                         }
                         
                         if (i_setup.dataType === "json") result = JSON.parse(i_body);
-                        
                         result = result || i_body;
                         i_setup.success(result, i_err, i_res);
                     });

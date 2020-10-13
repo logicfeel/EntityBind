@@ -88,7 +88,7 @@
 
         return BindModelListDel;
     
-    }(BindModel));
+    }(BindModelList));
     
 
     //==============================================================

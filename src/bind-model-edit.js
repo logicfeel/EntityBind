@@ -131,7 +131,7 @@
              */
             this._implements(IBindModelEdit);
         }
-        util.inherits(BindModelForm, _super);
+        util.inherits(BindModelEdit, _super);
     
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindModelEdit.prototype.getTypes  = function() {

@@ -20,6 +20,9 @@ var paths = {
         // 인터페이스
         'src/i-object.js', 'src/i-marshal.js', 'src/i-control*.js',
         'src/i-collection.js', 'src/i-collection-property.js', 'src/i-collection-control.js',
+        'src/i-bind-model.js', 'src/i-bind-model-read.js', 'src/i-bind-model-list.js',
+        'src/i-bind-model-edit.js', 'src/i-bind-model-create.js',
+        'src/i-bind-model-read-del.js', 'src/i-bind-model-form.js', 'src/i-bind-model-list-del.js',
         // 컬렉션
         'src/collection-base.js', 'src/collection-array.js', 'src/collection-property.js',
         'src/collection-property-object.js','src/collection-property-function.js',
@@ -34,7 +37,9 @@ var paths = {
         'src/bind-command-read.js', 'src/bind-command-create.js', 'src/bind-command-update.js', 
         'src/bind-command-delete.js', 'src/bind-command-list.js', 
         'src/bind-command-read-ajax.js',
-        'src/bind-model-form.js', 'src/bind-model-list.js', 'src/bind-model-read.js', 'src/bind-model-read-del.js',
+        'src/bind-model-list.js', 'src/bind-model-read.js', 'src/bind-model-create.js',
+        'src/bind-model-list-del.js', 'src/bind-model-read-del.js', 
+        'src/bind-model-edit.js', 'src/bind-model-form.js', 
         'src/bind-model-read-ajax.js'
     ],
 	scss: src + '/scss/*.scss',
