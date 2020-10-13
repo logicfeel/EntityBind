@@ -112,7 +112,7 @@
 
             if (ajax) {
                 if (typeof ajax === "undefined") throw new Error("[ajax] module load fail...");
-                // ajax(i_setup);
+                ajax(i_setup);
             } else {
                 option.uri = i_setup.url;
                 // option.json = true // json 으로 JSON 으로 요청함
@@ -153,6 +153,13 @@
             ajaxSetup.method = this.ajaxSetup.method || this._model.baseAjaxSetup.method;
             ajaxSetup.dataType = "json";
             ajaxSetup.success = this._execCallback.bind(this);
+
+            // ADD::
+            function ajaxError(xhr, status, error) {
+            	// this._onFail.call(this,xhr.statusText);
+            	this._onFail(xhr.statusText);
+            }
+            ajaxSetup.error = ajaxError.bind(this);
 
             ajaxSetup.data = {};   // items에서 받아와야함            
             for(var i = 0; i < this.bind.items.count; i++) {

@@ -1,14 +1,18 @@
+<!DOCTYPE html>
 <html>
-<head></head>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset="utf-8" />    
+</head>
 <body>
-
+    <p class="msg">msg : </p>
 
     테스트함
 <!--
    <script src="auto-meta-1.1.0.js"></script>
 -->
-<script src="jquery.js"></script>
-<script src="auto-meta-1.3.0.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js?aaa"></script>
+<script src="auto-meta-1.3.0.js?a"></script>
 
 <script>
 
@@ -59,22 +63,21 @@
     var e = new BindModelReadAjax(new readDI());
 
     // 등록
-    e.baseUrl = "./sample_row_single.json";
-    // e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";
-    // e.baseUrl = "json/sample_row_singl";
+    // e.baseUrl = "./sample_row_single.json";     // 로컬 로딩
+    e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";    // 로컬로딩
 
     e.onFail = function(p_msg) {
         console.log("오류  ==> " + p_msg);
     };
 
-
+/*
     $.ajax({
         url: e.baseUrl,
         type: "GET",
         dataType: "json"
     })
     .done(function(a, b, c) {
-        console.log("요청 성공");
+        console.log("요청 성공" + JSON.stringify(a));
     })
     .fail(function(a, b, c) {
         console.log("요청 실패");
@@ -83,7 +86,7 @@
         console.log("요청 완료");
 
     });
-
+*/
     //------------------------------
     // e.read.execute();
     e.init();

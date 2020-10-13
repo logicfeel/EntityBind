@@ -52,7 +52,9 @@ util.inherits(readDI, MetaObject);
 var e = new BindModelReadAjax(new readDI());
 
 // 등록
-e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";
+// e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";
+e.baseUrl = "jsons/sample_row_single.asp";
+e.baseUrl = "jsons/sample_row_single.json";
 
 e.onFail = function(p_msg) {
     console.log("오류  ==> " + p_msg);

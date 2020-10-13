@@ -71,8 +71,19 @@ if ((typeof Object.prototype._implements === "undefined") ||
 
         //==============================================================
         // 5. 모듈 내보내기 (node | web)
-        Object.prototype._implements = _implements;
-        Object.prototype.isImplementOf = isImplementOf;
-
+        // jquery 에서 오류 발생으로 대체함
+        // Object.prototype._implements = _implements;
+        // Object.prototype.isImplementOf = isImplementOf;
+		Object.defineProperty(Object.prototype, "_implements",
+	    {
+	        value: _implements,
+	        enumerable: false
+	    });
+	    Object.defineProperty(Object.prototype, "isImplementOf",
+	    {
+	        value: isImplementOf,
+	        enumerable: false
+        });
+        
     }(this));
 }

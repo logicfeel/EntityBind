@@ -71,9 +71,20 @@ if ((typeof Object.prototype._implements === "undefined") ||
 
         //==============================================================
         // 5. 모듈 내보내기 (node | web)
-        Object.prototype._implements = _implements;
-        Object.prototype.isImplementOf = isImplementOf;
-
+        // jquery 에서 오류 발생으로 대체함
+        // Object.prototype._implements = _implements;
+        // Object.prototype.isImplementOf = isImplementOf;
+		Object.defineProperty(Object.prototype, "_implements",
+	    {
+	        value: _implements,
+	        enumerable: false
+	    });
+	    Object.defineProperty(Object.prototype, "isImplementOf",
+	    {
+	        value: isImplementOf,
+	        enumerable: false
+        });
+        
     }(this));
 }
 /**
@@ -5349,7 +5360,7 @@ if (typeof Array.isArray === "undefined") {
 
             if (ajax) {
                 if (typeof ajax === "undefined") throw new Error("[ajax] module load fail...");
-                // ajax(i_setup);
+                ajax(i_setup);
             } else {
                 option.uri = i_setup.url;
                 // option.json = true // json 으로 JSON 으로 요청함
@@ -5390,6 +5401,13 @@ if (typeof Array.isArray === "undefined") {
             ajaxSetup.method = this.ajaxSetup.method || this._model.baseAjaxSetup.method;
             ajaxSetup.dataType = "json";
             ajaxSetup.success = this._execCallback.bind(this);
+
+            // ADD::
+            function ajaxError(xhr, status, error) {
+            	// this._onFail.call(this,xhr.statusText);
+            	this._onFail(xhr.statusText);
+            }
+            ajaxSetup.error = ajaxError.bind(this);
 
             ajaxSetup.data = {};   // items에서 받아와야함            
             for(var i = 0; i < this.bind.items.count; i++) {
