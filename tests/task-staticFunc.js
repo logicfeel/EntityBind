@@ -80,4 +80,6 @@ Item("addr");
 addr.refValue = bm.attrs["addr"];           // 상단에 참조를 정의해두면 이런식으로 쉽게 사용함
 
 
-console.log("-End")
+console.log("-End");
+
+
