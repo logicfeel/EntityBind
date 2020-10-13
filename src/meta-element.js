@@ -51,6 +51,7 @@
             p_name = p_name || "";
             
             this.name = p_name;
+            
             /**
              * @interface IMarshal 인터페이스 선언
              */

@@ -104,8 +104,8 @@
         };
 
         /** @event */
-        BaseBind.prototype._onFail = function() {
-            this.__event.publish("fail"); 
+        BaseBind.prototype._onFail = function(p_msg) {
+            this.__event.publish("fail", p_msg); 
         };        
 
         return BaseBind;

@@ -105,9 +105,9 @@
         };
 
         /** @override */
-        BindCommand.prototype._onFail = function() {
-            _super.prototype._onFail.call(this);
-            if (this.eventPropagation) this._model._onFail();
+        BindCommand.prototype._onFail = function(o_msg) {
+            _super.prototype._onFail.call(this, o_msg);
+            if (this.eventPropagation) this._model._onFail(o_msg);
         };        
         
         /**

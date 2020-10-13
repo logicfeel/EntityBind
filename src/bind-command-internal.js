@@ -82,22 +82,37 @@
 
         BindCommandInternal.prototype.execute = function() {
             this._onExecute();  // "실행 시작" 이벤트 발생
-            if (this.execValid()) this.execBind();
+            if (this._execValid()) this._execBind();
         };
 
         /** @virtual */
-        BindCommandInternal.prototype.execValid = function() {
-            throw new Error("[ execValid() ] Abstract method definition, fail...");
+        BindCommandInternal.prototype._execValid = function() {
+            
+            var o_msg = {};
+
+            console.log("*************");
+            // console.log("_execValid()");
+            for(var i = 0; i < this.valid.items.count; i++) {
+                if (!(this.valid.items[i].valid(this.bind.items[i].refValue, o_msg))) {
+                    this._onFail(o_msg);
+                    return false;
+                }
+                // console.log("valid : " + this.valid.items[i].name);
+            }
+            return true;
         };
 
-        /** @virtual */
-        BindCommandInternal.prototype.execBind = function() {
-            throw new Error("[ execBind() ] Abstract method definition, fail...");
+        /** @abstract */
+        BindCommandInternal.prototype._execBind = function() {
+            throw new Error("[ _execBind() ] Abstract method definition, fail...");
         };
         
         /** @virtual */
-        BindCommandInternal.prototype.execCallback = function() {
-            throw new Error("[ execCallback() ] Abstract method definition, fail...");
+        BindCommandInternal.prototype._execCallback = function(i_result, i_status, i_xhr) {
+            // 처리 종료 콜백 호출
+            if (typeof this.cbEnd === "function" ) this.cbEnd();
+            
+            this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
 

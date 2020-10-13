@@ -17,17 +17,20 @@
     var BindModelRead;
     var BindCommandRead;
     var EntityTable;
+    var BindCommandReadAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BindModelRead       = require("./bind-model-read");
         BindCommandRead     = require("./bind-command-read");
         EntityTable         = require("./entity-table").EntityTable;
+        BindCommandReadAjax = require("./bind-command-read-ajax");
     } else {
         util                = global._W.Common.Util;
         BindModelRead       = global._W.Meta.Bind.BindModelRead;
         BindCommandRead     = global._W.Meta.Bind.BindCommandRead;
         EntityTable         = global._W.Meta.Entity.EntityTable;
+        BindCommandReadAjax = global._W.Meta.Bind.BindCommandReadAjax;
     }
 
     //==============================================================
@@ -36,6 +39,7 @@
     if (typeof BindModelRead === "undefined") throw new Error("[BindModelRead] module load fail...");
     if (typeof BindCommandRead === "undefined") throw new Error("[BindCommandRead] module load fail...");
     if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
+    if (typeof BindCommandReadAjax === "undefined") throw new Error("[BindCommandReadAjax] module load fail...");
 
 
     //==============================================================
@@ -44,8 +48,8 @@
         /**
          * @class
          */
-        function BindModelReadAjax() {
-            _super.call(this);
+        function BindModelReadAjax(p_objectDI) {
+            _super.call(this, p_objectDI);
 
             var __baseAjaxSetup = {
                 url: "",

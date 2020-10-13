@@ -106,13 +106,17 @@
          * @description 구독 함수 호출
          * @param {String}} p_code 이벤트 코드명 : 기본값 "any"
          */
-        Observer.prototype.publish = function(p_code) {
+        Observer.prototype.publish = function(p_code, p_params) {
             p_code = p_code || "any";
             
+            var args = Array.prototype.slice.call(arguments);
+            var params = args.length >= 1 ? args.splice(1) : [];
+
             if (p_code in this.subscribers) {
                 for (var i = 0; i < this.subscribers[p_code].length; i++) {
                     if (typeof this.subscribers[p_code][i] === "function") {
-                        this.subscribers[p_code][i].call(this._this, this._onwer);  // REVIEW:: _onwer 인수 확인필요! >> 전달파라메터 
+                        // this.subscribers[p_code][i].call(this._this, this._onwer);  // REVIEW:: _onwer 인수 확인필요! >> 전달파라메터 
+                        this.subscribers[p_code][i].apply(this._this, params);
                     }
                 }
             }

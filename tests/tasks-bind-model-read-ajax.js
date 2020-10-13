@@ -156,6 +156,10 @@ e.read.cbView = function(view) {
 };
 
 // e.read.outputOption = 2;
+e.read.cbView = function(entity) {
+    console.log("cbView  호출");    
+    console.log("entity.rows[0] = " + entity.rows[0]._items);    
+}
 
 e.read.execute();
 

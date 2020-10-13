@@ -19,6 +19,7 @@
     var IGroupControl;
     var IAllControl;
     var RowCollection;
+    var Row;
     var ItemCollection;
     
     if (typeof module === "object" && typeof module.exports === "object") {     
@@ -28,15 +29,17 @@
         MetaElement             = require("./meta-element");
         IGroupControl           = require("./i-control-group");
         IAllControl             = require("./i-control-all");
-        RowCollection       = require("./entity-row").RowCollection;
-        ItemCollection      = require("./entity-item").ItemCollection;
+        RowCollection           = require("./entity-row").RowCollection;
+        Row                     = require("./entity-row").Row;
+        ItemCollection          = require("./entity-item").ItemCollection;
     } else {
         util                    = global._W.Common.Util;
         MetaElement             = global._W.Meta.MetaElement;
         IGroupControl           = global._W.Interface.IGroupControl;
         IAllControl             = global._W.Interface.IAllControl;
-        RowCollection       = global._W.Meta.Entity.RowCollection;
-        ItemCollection      = global._W.Meta.Entity.ItemCollection;
+        RowCollection           = global._W.Meta.Entity.RowCollection;
+        Row                     = global._W.Meta.Entity.Row;
+        ItemCollection          = global._W.Meta.Entity.ItemCollection;
     }
 
     //==============================================================
@@ -46,7 +49,9 @@
     if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
     if (typeof IAllControl === "undefined") throw new Error("[IAllControl] module load fail...");
     if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
+    if (typeof Row === "undefined") throw new Error("[Row] module load fail...");
     if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
+
 
     //==============================================================
     // 4. 모듈 구현    

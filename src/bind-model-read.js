@@ -15,27 +15,33 @@
     // 2. 모듈 가져오기 (node | web)
     var util;
     var BindModel;
-    var BindCommandRead;
+    var BindCommand;
     var EntityTable;
+    var IBindModelRead;
+    
+    if (typeof module === "object" && typeof module.exports === "object") {    
+        require("./object-implement"); // _implements() : 폴리필
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BindModel           = require("./bind-model");
-        BindCommandRead     = require("./bind-command-read");
+        BindCommand         = require("./bind-command");
         EntityTable         = require("./entity-table").EntityTable;
+        IBindModelRead      = require("./i-bind-model-read");
     } else {
         util                = global._W.Common.Util;
         BindModel           = global._W.Meta.Bind.BindModel;
-        BindCommandRead     = global._W.Meta.Bind.BindCommandRead;
+        BindCommand         = global._W.Meta.Bind.BindCommand;
         EntityTable         = global._W.Meta.Entity.EntityTable;
+        IBindModelRead      = global._W.Interface.IBindModelRead;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
-    if (typeof BindCommandRead === "undefined") throw new Error("[BindCommandRead] module load fail...");
+    if (typeof BindCommand === "undefined") throw new Error("[BindCommand] module load fail...");
     if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
+    if (typeof IBindModelRead === "undefined") throw new Error("[IBindModelRead] module load fail...");
 
 
     //==============================================================
@@ -44,12 +50,14 @@
         /**
          * @class
          */
-        function BindModelRead() {
-            _super.call(this);
+        function BindModelRead(p_objectDI) {
+            _super.call(this, p_objectDI);
 
 
             var __firest    = new EntityTable("first");
-            var __read      = new BindCommandRead(this, __firest);
+
+            // var __read      = new BindCommandRead(this, __firest);
+            var __read      = null;
 
             /** @property {first} */
             Object.defineProperty(this, "first", 
@@ -68,12 +76,17 @@
             {
                 get: function() { return __read; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof BindCommandRead)) throw new Error("Only [read] type 'BindCommandRead' can be added");
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [read] type 'BindCommand' can be added");
                     __read = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
+
+            /**
+             * @interface IBindModel 인터페이스 선언
+             */
+            this._implements(IBindModelRead);              
         }
         util.inherits(BindModelRead, _super);
     

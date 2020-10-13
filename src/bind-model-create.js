@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Bind.BindModelList
+ * @namespace _W.Meta.Bind.BindModelCreate
  */
 (function(global) {
 
@@ -15,47 +15,49 @@
     // 2. 모듈 가져오기 (node | web)
     var util;
     var BindModel;
-    var BindCommandList;
+    var BindCommandRead;
     var EntityTable;
-    var IBindModelList;
-
+    var IBindModelCreate;
+    
     if (typeof module === "object" && typeof module.exports === "object") {    
         require("./object-implement"); // _implements() : 폴리필
-        
+         
         util                = require("./utils");
         BindModel           = require("./bind-model");
-        BindCommandList     = require("./bind-command-list");
+        BindCommandRead     = require("./bind-command-read");
         EntityTable         = require("./entity-table").EntityTable;
-        IBindModelList      = require("./i-bind-model-list");
-
+        IBindModelCreate    = require("./i-bind-model-create");
     } else {
         util                = global._W.Common.Util;
         BindModel           = global._W.Meta.Bind.BindModel;
-        BindCommandList     = global._W.Meta.Bind.BindCommandList;
+        BindCommandRead     = global._W.Meta.Bind.BindCommandRead;
         EntityTable         = global._W.Meta.Entity.EntityTable;
-        IBindModelList      = global._W.Interface.IBindModelList;
+        IBindModelCreate    = global._W.Interface.IBindModelCreate;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
-    if (typeof BindCommandList === "undefined") throw new Error("[BindCommandList] module load fail...");
+    if (typeof BindCommandRead === "undefined") throw new Error("[BindCommandRead] module load fail...");
     if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
-    if (typeof IBindModelList === "undefined") throw new Error("[IBindModelList] module load fail...");
+    if (typeof IBindModelCreate === "undefined") throw new Error("[IBindModelCreate] module load fail...");
 
 
     //==============================================================
     // 4. 모듈 구현    
-    var BindModelList  = (function (_super) {
+    var BindModelCreate  = (function (_super) {
         /**
          * @class
          */
-        function BindModelList() {
+        function BindModelCreate() {
             _super.call(this);
 
+
             var __firest    = new EntityTable("first");
-            var __list      = new BindCommandList(this, this.first);
+
+            // var __create      = new BindCommandRead(this, __firest);
+            var __create      = null;
 
             /** @property {first} */
             Object.defineProperty(this, "first", 
@@ -69,13 +71,13 @@
                 enumerable: true
             });
 
-            /** @property {list} */
-            Object.defineProperty(this, "list", 
+            /** @property {create} */
+            Object.defineProperty(this, "create", 
             {
-                get: function() { return __list; },
+                get: function() { return __create; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof BindCommand)) throw new Error("Only [list] type 'BindCommand' can be added");
-                    __list = newValue;
+                    if (!(newValue instanceof BindCommandRead)) throw new Error("Only [create] type 'BindCommandRead' can be added");
+                    __create = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -84,23 +86,19 @@
             /**
              * @interface IBindModel 인터페이스 선언
              */
-            this._implements(IBindModelList);              
+            this._implements(IBindModelCreate);              
         }
-        util.inherits(BindModelList, _super);
+        util.inherits(BindModelCreate, _super);
     
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
-        BindModelList.prototype.getTypes  = function() {
+        BindModelCreate.prototype.getTypes  = function() {
                     
-            var type = ["BindModelList"];
+            var type = ["BindModelCreate"];
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        BindModelList.prototype.init = function() {
-            // TODO::
-        };
-
-        return BindModelList;
+        return BindModelCreate;
     
     }(BindModel));
     
@@ -108,9 +106,9 @@
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = BindModelList;
+        module.exports = BindModelCreate;
     } else {
-        global._W.Meta.Bind.BindModelList = BindModelList;
+        global._W.Meta.Bind.BindModelCreate = BindModelCreate;
     }
 
 }(this));

@@ -14,32 +14,38 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BindModel;
+    var BindModelRead;
     var BindCommandRead;
     var BindCommandDelete;
     var EntityTable;
+    var IBindModelReadDel;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === "object" && typeof module.exports === "object") {   
+        require("./object-implement"); // _implements() : 폴리필
+          
         util                = require("./utils");
-        BindModel           = require("./bind-model");
+        BindModelRead       = require("./bind-model-read");
         BindCommandRead     = require("./bind-command-read");
         BindCommandDelete   = require("./bind-command-delete");
         EntityTable         = require("./entity-table").EntityTable;
+        IBindModelReadDel   = require("./i-bind-model-read-del");
     } else {
         util                = global._W.Common.Util;
-        BindModel           = global._W.Meta.Bind.BindModel;
+        BindModelRead       = global._W.Meta.Bind.BindModelRead;
         BindCommandRead     = global._W.Meta.Bind.BindCommandRead;
         BindCommandDelete   = global._W.Meta.Bind.BindCommandDelete;
         EntityTable         = global._W.Meta.Entity.EntityTable;
+        IBindModelReadDel   = global._W.Interface.IBindModelReadDel;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
+    if (typeof BindModelRead === "undefined") throw new Error("[BindModelRead] module load fail...");
     if (typeof BindCommandRead === "undefined") throw new Error("[BindCommandRead] module load fail...");
     if (typeof BindCommandDelete === "undefined") throw new Error("[BindCommandDelete] module load fail...");
     if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
+    if (typeof IBindModelReadDel === "undefined") throw new Error("[IBindModelReadDel] module load fail...");
 
 
     //==============================================================
@@ -51,33 +57,7 @@
         function BindModelReadDel() {
             _super.call(this);
 
-            var __firest    = new EntityTable("first");
-            var __read      = new BindCommandRead(this, this.first);
             var __delete    = new BindCommandDelete(this, this.first);
-
-            /** @property {first} */
-            Object.defineProperty(this, "first", 
-            {
-                get: function() { return __firest; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof EntityTable)) throw new Error("Only [first] type 'EntityTable' can be added");
-                    __firest = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });
-
-            /** @property {read} */
-            Object.defineProperty(this, "read", 
-            {
-                get: function() { return __read; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof BindCommand)) throw new Error("Only [read] type 'BindCommand' can be added");
-                    __read = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });
 
             /** @property {delete} */
             Object.defineProperty(this, "delete", 
@@ -89,7 +69,12 @@
                 },
                 configurable: true,
                 enumerable: true
-            });            
+            });
+            
+            /**
+             * @interface IBindModel 인터페이스 선언
+             */
+            this._implements(IBindModelReadDel);                    
         }
         util.inherits(BindModelReadDel, _super);
     
@@ -107,7 +92,7 @@
 
         return BindModelReadDel;
     
-    }(BindModel));
+    }(BindModelRead));
     
 
     //==============================================================

@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Bind.BindModelList
+ * @namespace _W.Meta.Bind.BindModelListDel
  */
 (function(global) {
 
@@ -14,68 +14,54 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BindModel;
+    var BindModelList;
     var BindCommandList;
     var EntityTable;
-    var IBindModelList;
+    var IBindModelListDel;
 
-    if (typeof module === "object" && typeof module.exports === "object") {    
+    if (typeof module === "object" && typeof module.exports === "object") {
         require("./object-implement"); // _implements() : 폴리필
-        
+
         util                = require("./utils");
-        BindModel           = require("./bind-model");
+        BindModelList       = require("./bind-model-list");
         BindCommandList     = require("./bind-command-list");
         EntityTable         = require("./entity-table").EntityTable;
-        IBindModelList      = require("./i-bind-model-list");
-
+        IBindModelListDel   = require("./i-bind-model-list-del");
     } else {
         util                = global._W.Common.Util;
-        BindModel           = global._W.Meta.Bind.BindModel;
+        BindModelList       = global._W.Meta.Bind.BindModelList;
         BindCommandList     = global._W.Meta.Bind.BindCommandList;
         EntityTable         = global._W.Meta.Entity.EntityTable;
-        IBindModelList      = global._W.Interface.IBindModelList;
+        IBindModelListDel   = global._W.Interface.IBindModelListDel;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
+    if (typeof BindModelList === "undefined") throw new Error("[BindModelList] module load fail...");
     if (typeof BindCommandList === "undefined") throw new Error("[BindCommandList] module load fail...");
     if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
-    if (typeof IBindModelList === "undefined") throw new Error("[IBindModelList] module load fail...");
+    if (typeof IBindModelListDel === "undefined") throw new Error("[IBindModelListDel] module load fail...");
 
 
     //==============================================================
     // 4. 모듈 구현    
-    var BindModelList  = (function (_super) {
+    var BindModelListDel  = (function (_super) {
         /**
          * @class
          */
-        function BindModelList() {
+        function BindModelListDel() {
             _super.call(this);
 
-            var __firest    = new EntityTable("first");
-            var __list      = new BindCommandList(this, this.first);
+            var __delete    = null;
 
-            /** @property {first} */
-            Object.defineProperty(this, "first", 
+            /** @property {delete} */
+            Object.defineProperty(this, "delete", 
             {
-                get: function() { return __firest; },
+                get: function() { return __delete; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof EntityTable)) throw new Error("Only [first] type 'EntityTable' can be added");
-                    __firest = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });
-
-            /** @property {list} */
-            Object.defineProperty(this, "list", 
-            {
-                get: function() { return __list; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof BindCommand)) throw new Error("Only [list] type 'BindCommand' can be added");
-                    __list = newValue;
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [delete] type 'BindCommand' can be added");
+                    __delete = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -84,23 +70,23 @@
             /**
              * @interface IBindModel 인터페이스 선언
              */
-            this._implements(IBindModelList);              
+            this._implements(IBindModelListDel);              
         }
-        util.inherits(BindModelList, _super);
+        util.inherits(BindModelListDel, _super);
     
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
-        BindModelList.prototype.getTypes  = function() {
+        BindModelListDel.prototype.getTypes  = function() {
                     
-            var type = ["BindModelList"];
+            var type = ["BindModelListDel"];
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        BindModelList.prototype.init = function() {
+        BindModelListDel.prototype.init = function() {
             // TODO::
         };
 
-        return BindModelList;
+        return BindModelListDel;
     
     }(BindModel));
     
@@ -108,9 +94,9 @@
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = BindModelList;
+        module.exports = BindModelListDel;
     } else {
-        global._W.Meta.Bind.BindModelList = BindModelList;
+        global._W.Meta.Bind.BindModelListDel = BindModelListDel;
     }
 
 }(this));

@@ -14,20 +14,20 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BindCommandInternal;
+    var BindCommand;
     var entityView;
     var EntityView;
     var EntityViewCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                    = require("util");
-        BindCommandInternal     = require("./bind-command-internal");
+        BindCommand             = require("./bind-command");
         entityView              = require("./entity-view");
         EntityView              = entityView.EntityView;
         EntityViewCollection    = entityView.EntityViewCollection;
     } else {
         util                    = global._W.Common.Util;
-        BindCommandInternal     = global._W.Meta.Bind.BindCommandInternal;
+        BindCommand             = global._W.Meta.Bind.BindCommand;
         EntityView              = global._W.Meta.Entity.EntityView;
         EntityViewCollection    = global._W.Meta.Entity.EntityViewCollection;
     }
@@ -35,7 +35,7 @@
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BindCommandInternal === "undefined") throw new Error("[BindCommandInternal] module load fail...");
+    if (typeof BindCommand === "undefined") throw new Error("[BindCommand] module load fail...");
     if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
     if (typeof EntityViewCollection === "undefined") throw new Error("[EntityViewCollection] module load fail...");
 
@@ -49,6 +49,9 @@
         function BindCommandView(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
+            var __valid     = new EntityView("valid", this._baseEntity);
+            var __bind      = new EntityView("bind", this._baseEntity);
+            
             var __cbView;
 
             var __outputOption = 1;     // 1: View 오버로딩 , 2: 있는자료만            
@@ -60,6 +63,29 @@
             /** @property {view} 필요시  상속 또는 객체를 통해서 확장 */
             this.view = this._output["default"];        // 참조 속성 설정 [0]
 
+            /** @property {valid} */
+            Object.defineProperty(this, "valid", 
+            {
+                get: function() { return __valid; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
+                    __valid = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {bind} */
+            Object.defineProperty(this, "bind", 
+            {
+                get: function() { return __bind; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
+                    __bind = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
 
             /** @property {cbView} */
             Object.defineProperty(this, "cbView", 
@@ -96,27 +122,36 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /**
-         * 콜백에서 받은 데이터를 기준으로 table(item, rows)을 만든다.
-         * 리턴데이터 형식이 다를 경우 오버라이딩해서 수정함
-         * @param {*} i_result 
-         * @param {*} i_status 
-         * @param {*} i_xhr 
-         */
-        BindCommandView.prototype._execCallback = function(i_result, i_status, i_xhr) {
+        BindCommandView.prototype.execute = function(p_option) {
+            
+            
+            this._onExecute();  // "실행 시작" 이벤트 발생
+            if (this._execValid()) this._execBind();
+        };
 
-            this.view.load(i_result, this.outputOption);
+        /** @virtual */
+        BindCommandView.prototype._execValid = function() {
+            throw new Error("[ execValid() ] Abstract method definition, fail...");
+        };
 
-            // 뷰 콜백 호출  : EntitView를 전달함
-            if (typeof this.cbView === "function" ) this.cbView(this.view);
+        /** @virtual */
+        BindCommandView.prototype._execBind = function() {
+            throw new Error("[ execBind() ] Abstract method definition, fail...");
+        };
+        
+        /** @virtual */
+        BindCommandView.prototype._execCallback = function() {
+            throw new Error("[ execCallback() ] Abstract method definition, fail...");
+        };
 
-            // 부모 호출 : 데코레이션 패턴
-            _super.prototype._execCallback.call(this, i_result, i_status, i_xhr);
+        /** @virtual */
+        BindCommandView.prototype._execView = function() {
+            throw new Error("[ _execView() ] Abstract method definition, fail...");
         };
 
         return BindCommandView;
     
-    }(BindCommandInternal));
+    }(BindCommand));
     
 
     //==============================================================

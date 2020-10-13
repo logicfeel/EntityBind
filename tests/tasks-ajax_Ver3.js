@@ -25,6 +25,8 @@ IBindModelForm.prototype.mode = function() {
 }
 
 // IBindModelForm 구현한다고 가정함
+// 상속보다는 구현을 우선으로 함
+// 이유는 ViewDI 간의 상속관계가 있을 수 있으므로..
 function ViewDI() {
     // var bm = new IBindModelForm();
     this.attrs = {abc: "aaa"};
@@ -62,9 +64,13 @@ function Ajax( bindmodel ) {
 
 //----------------------------------
 
-var d = new ViewDI();
+// var d = new ViewDI();
 
 // var a = new Ajax(PageDI());
+/**
+ * 의존성 주입 방식으로..
+ * 동일한 인터페이스를 상속한 자식끼라 가능한 방식임
+ */
 var a = new Ajax(new ViewDI());
 
 a.mode.modify();
