@@ -110,7 +110,7 @@
             // 뷰 콜백 호출  : EntitView를 전달함
             if (typeof this.cbView === "function" ) this.cbView(this.view);
 
-            // 부모 호출 : 데코레이션 패턴
+            // 상위 호출 : 데코레이션 패턴
             _super.prototype._execCallback.call(this, i_result, i_status, i_xhr);
         };
 

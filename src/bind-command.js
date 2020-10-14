@@ -94,7 +94,7 @@
         /** @override */
         BindCommand.prototype._onExecute = function() {
             
-            _super.prototype._onExecute.call(this);                 // 자신에 이벤트 발생
+            _super.prototype._onExecute.call(this);                         // 자신에 이벤트 발생
             if (this.eventPropagation) this._model._onExecute();    // 모델에 이벤트 추가 발생
         };
 
@@ -105,9 +105,9 @@
         };
 
         /** @override */
-        BindCommand.prototype._onFail = function(o_msg) {
-            _super.prototype._onFail.call(this, o_msg);
-            if (this.eventPropagation) this._model._onFail(o_msg);
+        BindCommand.prototype._onFail = function(p_msg) {
+            _super.prototype._onFail.call(this, p_msg);
+            if (this.eventPropagation) this._model._onFail(p_msg);
         };        
         
         /**

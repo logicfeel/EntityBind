@@ -40,9 +40,11 @@
     //---------------------------------------
     var Item  = (function (_super) {
         /**
-         * @class
+         * @class 
+         * @param {String} p_name 아이템명
+         * @param {Entity} p_entity 소유 Entity
          */
-        function Item(p_name, p_entity) {
+        function Item(p_name, p_entity, p_option) {
             _super.call(this, p_name);
 
             var __entity        = null;
@@ -190,6 +192,15 @@
                 configurable: true,
                 enumerable: true
             });
+
+            // 아이템 옵션속성 추가
+            if (typeof p_option === "object" ) {
+                for(var prop in p_option) {
+                    if (p_option.hasOwnProperty(prop)) {
+                        this[prop] = p_option[prop];
+                    }
+                }
+            }
 
         }
         util.inherits(Item, _super);

@@ -108,10 +108,13 @@
             
             var option = {};
             var result;
-            var this_onFail = this._onFail.bind(this);
+            
+            var msg;
+            var code;
 
             if (ajax) {
                 if (typeof ajax === "undefined") throw new Error("[ajax] module load fail...");
+                // 원격 서비스 호출
                 ajax(i_setup);
             } else {
                 option.uri = i_setup.url;
@@ -124,19 +127,29 @@
                 } else if (i_setup.method === "POST") {
                     option.method = "POST";
                     option.form = i_setup.data;
+                    
+                    // 원격 서비스 호출
                     request.post(option, function(i_err, i_res, i_body) {
-                    // request.post(option, function(i_result, i_status, i_xhr) {
                         
-                        // TODO:: 에러처리     
-                        if (i_err || i_res.statusCode !== 200) {
-                            this_onFail("네트워크 오류 ::" + i_res.statusMessage);
-                            return;
+                        if (i_err || i_res.statusCode !== 200) {    // 실패시
+                            
+                           if(i_res) {
+                               code = i_res.statusCode;
+                               msg = i_res.statusMessage;
+                           }
+                            msg = i_err ? msg + " :: " + i_err : msg;
+                            
+                            // xhr, status, error
+                            i_setup.error(i_res, code, msg);
+
+                        } else {                                    // 성공시
+                            if (i_setup.dataType === "json") result = JSON.parse(i_body);
+                            result = result || i_body;
+                            i_setup.success(result, i_err, i_res);
                         }
-                        
-                        if (i_setup.dataType === "json") result = JSON.parse(i_body);
-                        result = result || i_body;
-                        i_setup.success(result, i_err, i_res);
+                        return;
                     });
+
                 } else {
                     // 기타 
                     option.method = i_setup.method;
@@ -145,29 +158,31 @@
             }
         };
 
+        // AJAX 를 기준으로 구성함 (requst는 맞춤)
+        BindCommandReadAjax.prototype._ajaxError = function(xhr, status, error) {
+            
+            var msg ="";
+            
+            msg = xhr && xhr.statusText ? xhr.statusText : error;
+            this._onFail(msg);
+        }
+
         BindCommandReadAjax.prototype._execBind = function() {
             
             var ajaxSetup = {};
             
-            ajaxSetup.url = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            ajaxSetup.method = this.ajaxSetup.method || this._model.baseAjaxSetup.method;
-            ajaxSetup.dataType = "json";
-            ajaxSetup.success = this._execCallback.bind(this);
+            ajaxSetup.url       = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
+            ajaxSetup.method    = this.ajaxSetup.method || this._model.baseAjaxSetup.method;
+            ajaxSetup.dataType  = "json";
+            ajaxSetup.success   = this._execCallback.bind(this);
+            ajaxSetup.error     = this._ajaxError.bind(this);
 
-            // ADD::
-            function ajaxError(xhr, status, error) {
-            	// this._onFail.call(this,xhr.statusText);
-            	this._onFail(xhr.statusText);
-            }
-            ajaxSetup.error = ajaxError.bind(this);
-
-            ajaxSetup.data = {};   // items에서 받아와야함            
             for(var i = 0; i < this.bind.items.count; i++) {
+                if(typeof ajaxSetup.data !== "object") ajaxSetup.data = {};
                 ajaxSetup.data[this.bind.items[i].name] = this.bind.items[i].refValue; // 값
             }
-            
-            // $.ajax(this.ajaxSetup);
-            this._ajaxAdapter(ajaxSetup);
+
+            this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
 
         return BindCommandReadAjax;

@@ -66,11 +66,8 @@
             var propObject;
 
             // DI 의존성 주입 : 객체를 비교하여 삽입
-
-            // if ( typeof p_objectDI.instanceOf("IBindModel")) {   // 이걸사용할려면 Meta를 상속해야함
-            if ( typeof p_objectDI === "object") {
+            if (p_objectDI instanceof IBindModel) {     // 가능
                 // attrs 등록
-
                 if (typeof p_objectDI["attrs"] !== "undefined" && p_objectDI["attrs"] !== null) {
                     propObject = p_objectDI["attrs"];
                     for(var prop in propObject) {

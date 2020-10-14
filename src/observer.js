@@ -42,7 +42,7 @@
             };
 
             // 이벤트 전파 설정
-            this.propagation = false;
+            this.propagation = true;
         }
 
         /**
@@ -112,6 +112,8 @@
             var args = Array.prototype.slice.call(arguments);
             var params = args.length >= 1 ? args.splice(1) : [];
 
+            // this.propagation = true;    // 이벤트 전파
+
             if (p_code in this.subscribers) {
                 for (var i = 0; i < this.subscribers[p_code].length; i++) {
                     if (typeof this.subscribers[p_code][i] === "function") {
@@ -124,7 +126,6 @@
             if (this.isDebug) {
                 console.log("publish() 이벤트 발생 [" + this._this.constructor.name + "] type:" + p_code);
             }
-            this.propagation = true;
         };
 
         Observer.prototype.stopPropagation = function() {

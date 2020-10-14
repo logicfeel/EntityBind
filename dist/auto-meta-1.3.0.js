@@ -268,7 +268,7 @@ if (typeof Array.isArray === "undefined") {
             };
 
             // 이벤트 전파 설정
-            this.propagation = false;
+            this.propagation = true;
         }
 
         /**
@@ -338,6 +338,8 @@ if (typeof Array.isArray === "undefined") {
             var args = Array.prototype.slice.call(arguments);
             var params = args.length >= 1 ? args.splice(1) : [];
 
+            // this.propagation = true;    // 이벤트 전파
+
             if (p_code in this.subscribers) {
                 for (var i = 0; i < this.subscribers[p_code].length; i++) {
                     if (typeof this.subscribers[p_code][i] === "function") {
@@ -350,7 +352,6 @@ if (typeof Array.isArray === "undefined") {
             if (this.isDebug) {
                 console.log("publish() 이벤트 발생 [" + this._this.constructor.name + "] type:" + p_code);
             }
-            this.propagation = true;
         };
 
         Observer.prototype.stopPropagation = function() {
@@ -4150,7 +4151,7 @@ if (typeof Array.isArray === "undefined") {
         /** @override */
         BindCommand.prototype._onExecute = function() {
             
-            _super.prototype._onExecute.call(this);                 // 자신에 이벤트 발생
+            _super.prototype._onExecute.call(this);                         // 자신에 이벤트 발생
             if (this.eventPropagation) this._model._onExecute();    // 모델에 이벤트 추가 발생
         };
 
@@ -4161,9 +4162,9 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /** @override */
-        BindCommand.prototype._onFail = function(o_msg) {
-            _super.prototype._onFail.call(this, o_msg);
-            if (this.eventPropagation) this._model._onFail(o_msg);
+        BindCommand.prototype._onFail = function(p_msg) {
+            _super.prototype._onFail.call(this, p_msg);
+            if (this.eventPropagation) this._model._onFail(p_msg);
         };        
         
         /**
@@ -4319,11 +4320,8 @@ if (typeof Array.isArray === "undefined") {
             var propObject;
 
             // DI 의존성 주입 : 객체를 비교하여 삽입
-
-            // if ( typeof p_objectDI.instanceOf("IBindModel")) {   // 이걸사용할려면 Meta를 상속해야함
-            if ( typeof p_objectDI === "object") {
+            if (p_objectDI instanceof IBindModel) {     // 가능
                 // attrs 등록
-
                 if (typeof p_objectDI["attrs"] !== "undefined" && p_objectDI["attrs"] !== null) {
                     propObject = p_objectDI["attrs"];
                     for(var prop in propObject) {
@@ -4735,7 +4733,7 @@ if (typeof Array.isArray === "undefined") {
             // 뷰 콜백 호출  : EntitView를 전달함
             if (typeof this.cbView === "function" ) this.cbView(this.view);
 
-            // 부모 호출 : 데코레이션 패턴
+            // 상위 호출 : 데코레이션 패턴
             _super.prototype._execCallback.call(this, i_result, i_status, i_xhr);
         };
 
@@ -5356,10 +5354,13 @@ if (typeof Array.isArray === "undefined") {
             
             var option = {};
             var result;
-            var this_onFail = this._onFail.bind(this);
+            
+            var msg;
+            var code;
 
             if (ajax) {
                 if (typeof ajax === "undefined") throw new Error("[ajax] module load fail...");
+                // 원격 서비스 호출
                 ajax(i_setup);
             } else {
                 option.uri = i_setup.url;
@@ -5372,19 +5373,29 @@ if (typeof Array.isArray === "undefined") {
                 } else if (i_setup.method === "POST") {
                     option.method = "POST";
                     option.form = i_setup.data;
+                    
+                    // 원격 서비스 호출
                     request.post(option, function(i_err, i_res, i_body) {
-                    // request.post(option, function(i_result, i_status, i_xhr) {
                         
-                        // TODO:: 에러처리     
-                        if (i_err || i_res.statusCode !== 200) {
-                            this_onFail("네트워크 오류 ::" + i_res.statusMessage);
-                            return;
+                        if (i_err || i_res.statusCode !== 200) {    // 실패시
+                            
+                           if(i_res) {
+                               code = i_res.statusCode;
+                               msg = i_res.statusMessage;
+                           }
+                            msg = i_err ? msg + " :: " + i_err : msg;
+                            
+                            // xhr, status, error
+                            i_setup.error(i_res, code, msg);
+
+                        } else {                                    // 성공시
+                            if (i_setup.dataType === "json") result = JSON.parse(i_body);
+                            result = result || i_body;
+                            i_setup.success(result, i_err, i_res);
                         }
-                        
-                        if (i_setup.dataType === "json") result = JSON.parse(i_body);
-                        result = result || i_body;
-                        i_setup.success(result, i_err, i_res);
+                        return;
                     });
+
                 } else {
                     // 기타 
                     option.method = i_setup.method;
@@ -5393,29 +5404,31 @@ if (typeof Array.isArray === "undefined") {
             }
         };
 
+        // AJAX 를 기준으로 구성함 (requst는 맞춤)
+        BindCommandReadAjax.prototype._ajaxError = function(xhr, status, error) {
+            
+            var msg ="";
+            
+            msg = xhr && xhr.statusText ? xhr.statusText : error;
+            this._onFail(msg);
+        }
+
         BindCommandReadAjax.prototype._execBind = function() {
             
             var ajaxSetup = {};
             
-            ajaxSetup.url = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            ajaxSetup.method = this.ajaxSetup.method || this._model.baseAjaxSetup.method;
-            ajaxSetup.dataType = "json";
-            ajaxSetup.success = this._execCallback.bind(this);
+            ajaxSetup.url       = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
+            ajaxSetup.method    = this.ajaxSetup.method || this._model.baseAjaxSetup.method;
+            ajaxSetup.dataType  = "json";
+            ajaxSetup.success   = this._execCallback.bind(this);
+            ajaxSetup.error     = this._ajaxError.bind(this);
 
-            // ADD::
-            function ajaxError(xhr, status, error) {
-            	// this._onFail.call(this,xhr.statusText);
-            	this._onFail(xhr.statusText);
-            }
-            ajaxSetup.error = ajaxError.bind(this);
-
-            ajaxSetup.data = {};   // items에서 받아와야함            
             for(var i = 0; i < this.bind.items.count; i++) {
+                if(typeof ajaxSetup.data !== "object") ajaxSetup.data = {};
                 ajaxSetup.data[this.bind.items[i].name] = this.bind.items[i].refValue; // 값
             }
-            
-            // $.ajax(this.ajaxSetup);
-            this._ajaxAdapter(ajaxSetup);
+
+            this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
 
         return BindCommandReadAjax;

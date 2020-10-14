@@ -26,45 +26,50 @@
     //-----------------------------------------------------
     // 페이지 의존 함수
     function readDI() {
-        MetaObject.call(this);
+        IBindModelRead.call(this);
 
-        this.read = null;       // 가상으로 지정함
-        
+        __this = this;
+
         this.attrs = {
             cmd: "INSERT",
             idx: 130
         };
-        
-        this.mode = {};
 
+        // 등록 방법 
+        // 1) 함수로 선언하여 위치를 자유롭게 선언 후 cbRegister에 등록
+        // 2) cbRegister 에 즉시 선언
+        // 3) this.XXX 선언후 등록 (this.cbRegister 보다 우선 선언해야 함)
         this.cbRegister = function() {
-            this.read.cbView = readView;
+            this.read.cbView = function(entity) {      // 함수로 선언하여 위치를 자유롭게 두던지, 
+                console.log("cbView  호출");    
+                console.log("this._model.first.items.count  10 ==> " + this._model.first.items.count);   
+                console.log("entity.items.count             10 ==> " + entity.items.count);   
+                console.log("entity.rows.count              1  ==> " + entity.rows.count);   
+                console.log("entity.rows[0]                 ,, ==> " + entity.rows[0]._items);   
+                __this.msg();
+            };
         };
-        this.cbValid = null;
+        
         this.cbResume = function(model) {
             this.read.execute();
         };
 
-        function readView(entity) {
-            console.log("cbView  호출");    
-            console.log("this._model.first.items.count  10 ==> " + this._model.first.items.count);   
-            console.log("entity.items.count             10 ==> " + entity.items.count);   
-            console.log("entity.rows.count              1  ==> " + entity.rows.count);   
-            console.log("entity.rows[0]                 ,, ==> " + entity.rows[0]._items);   
-        }
-
-        /** @implements */
-        this._implements(IBindModelRead);            
     }
-    util.inherits(readDI, MetaObject);
+    util.inherits(readDI, IBindModelRead);
+    
+    readDI.prototype.msg = function(a) {
+        console.log("msg...");
+    };
 
     //-----------------------------------------------------
     // 연결
     var e = new BindModelReadAjax(new readDI());
 
     // 등록
-    e.baseUrl = "./sample_row_single.json";     // 로컬 로딩
+    // e.baseUrl = "./sample_row_single.json";     // 로컬 로딩
     // e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";    // 로컬로딩
+    // e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.as";    // 오류 1
+    e.baseUrl = "sample_row_single.jsona";                      // 오류 2
 
     e.onFail = function(p_msg) {
         console.log("오류  ==> " + p_msg);
