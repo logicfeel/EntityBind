@@ -107,7 +107,10 @@
             throw new Error("[ _execBind() ] Abstract method definition, fail...");
         };
         
-        /** @virtual */
+        /** 
+         * success(result,status,xhr)
+         * @virtual 
+         **/
         BindCommandInternal.prototype._execCallback = function(i_result, i_status, i_xhr) {
             // 처리 종료 콜백 호출
             if (typeof this.cbEnd === "function" ) this.cbEnd();

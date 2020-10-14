@@ -67,14 +67,19 @@
 
     // 등록
     // e.baseUrl = "./sample_row_single.json";     // 로컬 로딩
-    // e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";    // 로컬로딩
+    e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";    // 로컬로딩
     // e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.as";    // 오류 1
-    e.baseUrl = "sample_row_single.jsona";                      // 오류 2
+    // e.baseUrl = "sample_row_single.jsona";                      // 오류 2
 
     e.onFail = function(p_msg) {
         console.log("오류  ==> " + p_msg);
     };
-
+    e.onExecute = function() {      // 실행시
+        console.log("onExecute 이벤트 ");
+    };
+    e.onExecuted = function() {      // 실행끝
+        console.log("onExecuted 이벤트 ");
+    };
     //------------------------------
     e.init();
     console.log("-End-");

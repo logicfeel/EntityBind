@@ -50,9 +50,13 @@
 
             // TODO:: jquery 등 외부 모듈을 이용하여, 검사 진행, 하지만 꼭 필요한지 사용시 재검토
             var __ajaxSetup = {
-                url: "",
-                method: "POST",
-                dataType: "json"
+                url: "",            // 요청 경로
+                type: "POST",       // 전송 방법 : GET, POST
+                dataType: "json",   //
+                async: true,        // [*]비동기(ture), 동기(false)
+                success: null,      // 성공 콜백
+                error: null,        // 실패 콜백
+                complete: null      // 완료 콜백
             };
 
             /** @property {ajaxSetup} */
@@ -75,19 +79,18 @@
                 enumerable: true
             }); 
 
-            /** @property {method} */
-            Object.defineProperty(this, "method", 
+            /** @property {url} */
+            Object.defineProperty(this, "complete", 
             {
-                get: function() { return __ajaxSetup.method; },
+                get: function() { return __ajaxSetup.complete; },
                 set: function(newValue) { 
-                    if (!(typeof newValue === "string")) throw new Error("Only [method] type 'string' can be added");
-                    __ajaxSetup.method = newValue;
+                    if (!(typeof newValue === "function")) throw new Error("Only [complete] type 'function' can be added");
+                    __ajaxSetup.complete = newValue;
                 },
                 configurable: true,
                 enumerable: true
             }); 
 
-            
         }
         util.inherits(BindCommandReadAjax, _super);
     
@@ -112,59 +115,66 @@
             var msg;
             var code;
 
-            if (ajax) {
-                if (typeof ajax === "undefined") throw new Error("[ajax] module load fail...");
-                // 원격 서비스 호출
+            // request VS Jquery.ajax 와 콜백 어뎁터 연결 함수
+            function callback(error, response, body) {
+
+                var status = response ? response.statusCode : null;
+                var msg    = response ? response.statusMessage : "";
+
+                // (xhr,status) : 완료콜백
+                if (i_setup && typeof i_setup.complete === "function") i_setup.complete(response, status);
+                
+
+                if (error || response.statusCode !== 200) {    // 실패시
+                    msg = error ? (msg + " :: " + error) : msg;
+                    // (xhr,status,error)
+                    i_setup.error(response, status, msg);
+                } else {                                    // 성공시
+                    if (i_setup.dataType === "json") result = JSON.parse(body);
+                    result = result || body;
+                    // (result,status,xhr)
+                    i_setup.success(result, error, response);
+                }                
+            }
+
+            if (ajax && typeof ajax === "function") {
+                
                 ajax(i_setup);
+
             } else {
                 option.uri = i_setup.url;
                 // option.json = true // json 으로 JSON 으로 요청함
     
-                if (i_setup.method === "GET") {
+                if (i_setup.type === "GET") {
                     option.method = "POST";
                     option.qs = i_setup.data;
-                    request.get(option, i_setup.success);
-                } else if (i_setup.method === "POST") {
+                    request.get(option, callback);
+                } else if (i_setup.type === "POST") {
                     option.method = "POST";
                     option.form = i_setup.data;
-                    
-                    // 원격 서비스 호출
-                    request.post(option, function(i_err, i_res, i_body) {
-                        
-                        if (i_err || i_res.statusCode !== 200) {    // 실패시
-                            
-                           if(i_res) {
-                               code = i_res.statusCode;
-                               msg = i_res.statusMessage;
-                           }
-                            msg = i_err ? msg + " :: " + i_err : msg;
-                            
-                            // xhr, status, error
-                            i_setup.error(i_res, code, msg);
-
-                        } else {                                    // 성공시
-                            if (i_setup.dataType === "json") result = JSON.parse(i_body);
-                            result = result || i_body;
-                            i_setup.success(result, i_err, i_res);
-                        }
-                        return;
-                    });
-
+                    request.post(option, callback);
                 } else {
-                    // 기타 
-                    option.method = i_setup.method;
-                    request(option, i_setup.success);
+                    // 기타 :: 결과는 확인 안함
+                    request(option, callback);
                 }
             }
         };
 
-        // AJAX 를 기준으로 구성함 (requst는 맞춤)
+        /**
+         * AJAX 를 기준으로 구성함 (requst는 맞춤)
+         * error(xhr,status,error)
+         * @param {*} xhr 
+         * @param {*} status 
+         * @param {*} error 
+         */
         BindCommandReadAjax.prototype._ajaxError = function(xhr, status, error) {
             
             var msg ="";
             
             msg = xhr && xhr.statusText ? xhr.statusText : error;
             this._onFail(msg);
+            
+            this._onExecuted();  // "실행 종료" 이벤트 발생
         }
 
         BindCommandReadAjax.prototype._execBind = function() {
@@ -172,7 +182,6 @@
             var ajaxSetup = {};
             
             ajaxSetup.url       = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            ajaxSetup.method    = this.ajaxSetup.method || this._model.baseAjaxSetup.method;
             ajaxSetup.dataType  = "json";
             ajaxSetup.success   = this._execCallback.bind(this);
             ajaxSetup.error     = this._ajaxError.bind(this);
