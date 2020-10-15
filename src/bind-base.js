@@ -16,15 +16,18 @@
     var util;
     var Observer;
     var MetaObject;
+    var Entity;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         Observer            = require("./observer");
         MetaObject          = require("./meta-object");
+        Entity              = require("./entity-base");
     } else {
         util                = global._W.Common.Util;
         Observer            = global._W.Common.Observer;
         MetaObject          = global._W.Meta.MetaObject;
+        Entity              = global._W.Entity.Entity;
     }
 
     //==============================================================
@@ -32,6 +35,7 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
     if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
+    if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -42,8 +46,22 @@
         function BaseBind() {
             _super.call(this);
 
+            var __baseEntity;
+            
             /** @private */
             this.__event    = new Observer(this, this);
+
+            /** @property */
+            Object.defineProperty(this, "baseEntity", 
+            {
+                get: function() { return __baseEntity; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof Entity)) throw new Error("Only [baseEntity] type 'Entity' can be added");
+                    __baseEntity = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });  
 
             /** @property */
             Object.defineProperty(this, "onExecute", {

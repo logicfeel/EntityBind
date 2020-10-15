@@ -56,8 +56,9 @@
 
             var __firest    = new EntityTable("first");
 
-            // var __read      = new BindCommandRead(this, __firest);
             var __read      = null;
+
+            this.baseEntity = __firest;
 
             /** @property {first} */
             Object.defineProperty(this, "first", 

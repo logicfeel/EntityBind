@@ -4,7 +4,7 @@ function IBindModel() {
     this.mode;
     this.cbRegister;
     this.cbValid;
-    this.cbResume;
+    this.cbReady;
 }
 
 // IBindModel 상속
@@ -13,7 +13,7 @@ function IBindModelForm() {
     this.mode = {};
     this.cbRegister = function() {};
     this.cbValid = function() {};
-    this.cbResume = function() {};
+    this.cbReady = function() {};
 
     this.create;
     this.read;

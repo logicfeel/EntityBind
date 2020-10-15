@@ -41,6 +41,16 @@
         function PropertyCollection(p_onwer) {
             _super.call(this, p_onwer); 
 
+            var __properties = [];
+
+            /** @property {properties} */
+            Object.defineProperty(this, "properties", 
+            {
+                get: function() { return __properties; },
+                configurable: true,
+                enumerable: true
+            });
+
             /**
              * @interface IPropertyCollection 인터페이스 선언
              */
@@ -57,9 +67,10 @@
 
             var idx = this.indexOf(p_name);
 
-            delete this[p_name];                    // 내부 이름 삭제
-            delete this[idx];                       // 내부 idx 삭제
-            delete this._items[idx];                // 내부 참조 삭제
+            delete this[p_name];                                        // 내부 이름 삭제
+            delete this[idx];                                           // 내부 idx 삭제
+            delete this._element[idx];                                  // 내부 참조 삭제
+            delete this.properties[this.properties.indexOf(p_name)];    // 속성목록 삭제
 
             return idx;
         };
@@ -83,13 +94,14 @@
                 return this[p_name];     // 중복 등록 방지
             }
 
-            this._items.push(p_value);
-            index = (this._items.length === 1) ? 0 : this._items.length  - 1;
+            this._element.push(p_value);
+            index = (this._element.length === 1) ? 0 : this._element.length  - 1;
             Object.defineProperty(this, [index], this._getPropDesciptor(index));
 
             if (p_name) {
                 Object.defineProperty(this, p_name, this._getPropDesciptor(index));
             }
+            this.properties.push(p_name);
 
             this._onAdd();                          // 이벤트 발생 : 등록
             this._onChanged();                      // 이벤트 발생 : 변경후
@@ -141,11 +153,11 @@
             
             this._onChanging();                     // 이벤트 발생 : 변경전
 
-            for (var i = 0; i < this._items.length; i++) {
+            for (var i = 0; i < this._element.length; i++) {
                 propName = this.propertyOf(i);
                 if (typeof propName === "string") this.__remove(propName);
             }
-            this._items = [];
+            this._element = [];
 
             this._onClear();                        // 이벤트 발생 : 전체삭제
             this._onChanged();                      // 이벤트 발생 : 변경후                
@@ -175,7 +187,7 @@
             
             var obj = typeof p_obj === "string" ? this[p_obj] : p_obj;
             
-            return this._items.indexOf(obj);;
+            return this._element.indexOf(obj);;
         };
 
         /**
@@ -187,7 +199,7 @@
             
             for (var prop in this) {
                 if ( this.hasOwnProperty(prop)){
-                    if (!isFinite(prop) && this[prop] === this._items[p_idx]) {
+                    if (!isFinite(prop) && this[prop] === this._element[p_idx]) {
                         return prop;
                     }
                 }

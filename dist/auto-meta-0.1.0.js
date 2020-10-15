@@ -3253,17 +3253,17 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this, p_bindModel);
 
             /** @protected */
-            this._baseEntity = p_baseEntity;
+            this.baseEntity = p_baseEntity;
 
-            this._output = new EntityViewCollection(this, this._baseEntity);
+            this._output = new EntityViewCollection(this, this.baseEntity);
 
-            this._output.add(new EntityView("default", this._baseEntity));  // 등록방법 1
-            // this._output.add("default", this._baseEntity);               // 등록방법 2
+            this._output.add(new EntityView("default", this.baseEntity));  // 등록방법 1
+            // this._output.add("default", this.baseEntity);               // 등록방법 2
             
             /** @public  */
-            this.valid  = new EntityView("valid", this._baseEntity);
+            this.valid  = new EntityView("valid", this.baseEntity);
 
-            this.bind   = new EntityView("bind", this._baseEntity);
+            this.bind   = new EntityView("bind", this.baseEntity);
 
             this.view = this._output["default"];        // 참조 속성 설정 [0]
         }

@@ -44,20 +44,20 @@
         function ComplexElement() {
             _super.call(this);
 
-            var __items = [];
+            var __element = [];
             /**
              * TODO::
              * @implements
              */
             Object.defineProperty(this, "count", 
             {
-                get: function() { return __items.length; },
+                get: function() { return __element.length; },
                 configurable: true,
                 enumerable: true
             });
             Object.defineProperty(this, "list", 
             {
-                get: function() { return __items; },
+                get: function() { return __element; },
                 configurable: true,
                 enumerable: true
             });

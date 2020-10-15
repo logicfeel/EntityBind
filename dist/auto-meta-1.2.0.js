@@ -3690,7 +3690,7 @@ if (typeof Array.isArray === "undefined") {
             this._model = p_bindModel;
 
             /** @protected */
-            this._baseEntity = p_baseEntity;
+            this.baseEntity = p_baseEntity;
 
             /** @property {vbEnd} */
             Object.defineProperty(this, "cbEnd", 
@@ -3879,7 +3879,7 @@ if (typeof Array.isArray === "undefined") {
             var __mode          = new PropertyFunctionCollection(this);
             var __cbRegister    = function() {};
             var __cbValid       = function() {return true};
-            var __cbResume      = function() {};
+            var __cbReady      = function() {};
 
             /** @property {attrs} */
             Object.defineProperty(this, "attrs", 
@@ -3929,13 +3929,13 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {cbResume} */
-            Object.defineProperty(this, "cbResume", 
+            /** @property {cbReady} */
+            Object.defineProperty(this, "cbReady", 
             {
-                get: function() { return __cbResume; },
+                get: function() { return __cbReady; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof BindCommand)) throw new Error("Only [cbResume] type 'Function' can be added");
-                    __cbResume = newValue;
+                    if (!(newValue instanceof BindCommand)) throw new Error("Only [cbReady] type 'Function' can be added");
+                    __cbReady = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -3955,7 +3955,7 @@ if (typeof Array.isArray === "undefined") {
         BindModel.prototype.init = function() {
             this.cbRegister.call(this);
             if (this.cbValid.call(this)) {
-                this.cbResume.call(this)
+                this.cbReady.call(this)
             }
         };
 
@@ -4059,8 +4059,8 @@ if (typeof Array.isArray === "undefined") {
         function BindCommandInternal(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            var __valid = new EntityView("valid", this._baseEntity);
-            var __bind  = new EntityView("bind", this._baseEntity);
+            var __valid = new EntityView("valid", this.baseEntity);
+            var __bind  = new EntityView("bind", this.baseEntity);
 
             /** @property {valid} */
             Object.defineProperty(this, "valid", 
@@ -4183,16 +4183,16 @@ if (typeof Array.isArray === "undefined") {
         function BindCommandView(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            var __valid     = new EntityView("valid", this._baseEntity);
-            var __bind      = new EntityView("bind", this._baseEntity);
+            var __valid     = new EntityView("valid", this.baseEntity);
+            var __bind      = new EntityView("bind", this.baseEntity);
             
             var __cbView;
 
             var __outputOption = 1;     // 1: View 오버로딩 , 2: 있는자료만            
             
-            this._output = new EntityViewCollection(this, this._baseEntity);
-            this._output.add(new EntityView("default", this._baseEntity));  // 등록방법 1
-            // this._output.add("default", this._baseEntity);               // 등록방법 2
+            this._output = new EntityViewCollection(this, this.baseEntity);
+            this._output.add(new EntityView("default", this.baseEntity));  // 등록방법 1
+            // this._output.add("default", this.baseEntity);               // 등록방법 2
 
             /** @property {view} 필요시  상속 또는 객체를 통해서 확장 */
             this.view = this._output["default"];        // 참조 속성 설정 [0]

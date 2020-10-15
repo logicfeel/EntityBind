@@ -30,7 +30,7 @@ function readDI() {
         this.read.cbView = readView;
     };
     this.cbValid = null;
-    this.cbResume = function(model) {
+    this.cbReady = function(model) {
         this.read.execute();
     };
 
@@ -39,7 +39,7 @@ function readDI() {
         console.log("this._model.first.items.count  10 ==> " + this._model.first.items.count);   
         console.log("entity.items.count             10 ==> " + entity.items.count);   
         console.log("entity.rows.count              1  ==> " + entity.rows.count);   
-        console.log("entity.rows[0]                 ,, ==> " + entity.rows[0]._items);   
+        console.log("entity.rows[0]                 ,, ==> " + entity.rows[0]._element);   
     }
 
     /** @implements */

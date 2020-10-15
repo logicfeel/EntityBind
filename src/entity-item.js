@@ -62,7 +62,7 @@
             // Entity 등록 & order(순서) 값 계산
             if (p_entity && p_entity.instanceOf("Entity")) {
                 __entity    = p_entity;
-                __order = __entity.items.count === 0 ? __order : __entity.items[__entity.items.count - 1].order + __increase;
+                __order     = __entity.items.count === 0 ? __order : __entity.items[__entity.items.count - 1].order + __increase;
             }
 
             /** @property {entity} */
@@ -108,7 +108,7 @@
             {
                 get: function() { return __default; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "string") throw new Error("Only [default] type 'string' can be added");
+                    if(typeof newValue !== "undefined" && ["string", "number", "boolean"].indexOf(typeof newValue) < 0) throw new Error("Only [default] type 'string | boolea | number' can be added");
                     __default = newValue; 
                 },
                 configurable: true,
@@ -200,6 +200,8 @@
                         this[prop] = p_option[prop];
                     }
                 }
+            } else if (["number", "string", "boolean"].indexOf(typeof p_option) > -1) {
+                this.default = p_option[prop];
             }
 
         }
@@ -307,17 +309,34 @@
 
             return this[i_name];
         };
-        
+
+        ItemCollection.prototype.addValue  = function(p_name, p_value) {
+
+            var item;
+
+            if (typeof p_name === "undefined") throw new Error("There is no required value [p_name].");
+            if (typeof p_value === "undefined") throw new Error("There is no required value [p_name].");
+
+
+            if (typeof p_name === "string") {      
+                item = new Item(p_name, this._onwer, p_value);
+            } else {
+                throw new Error("string | Item object [p_object].");
+            }
+
+            return this.add(item);
+        };
+
         /**
          * Item 타입만 들어가게 제약조건 추가
          * @override
          */
         ItemCollection.prototype._getPropDesciptor = function(p_idx) {
             return {
-                get: function() { return this._items[p_idx]; },
+                get: function() { return this._element[p_idx]; },
                 set: function(newValue) { 
                     if (newValue instanceof Item) {
-                        this._items[p_idx] = newValue;
+                        this._element[p_idx] = newValue;
                     } else {
                         throw new Error("Only [Item] type instances can be added");
                     }
@@ -418,6 +437,9 @@
             return _super.prototype.add.call(this, item);           // 자신에 등록
         };
 
+        // POINT::
+        // ItemCollection.prototype.addValue  = function(p_name, p_value) {
+        // };
 
         return ItemRefCollection;
     

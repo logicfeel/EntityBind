@@ -3218,7 +3218,7 @@ if (typeof Array.isArray === "undefined") {
             this._model = p_bindModel;
 
             /** @protected */
-            this._baseEntity = p_baseEntity;
+            this.baseEntity = p_baseEntity;
         }
         util.inherits(BindCommand, _super);
     
@@ -3511,12 +3511,12 @@ if (typeof Array.isArray === "undefined") {
         function BindCommandView(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            var __valid     = new EntityView("valid", this._baseEntity);
-            var __bind      = new EntityView("bind", this._baseEntity);
+            var __valid     = new EntityView("valid", this.baseEntity);
+            var __bind      = new EntityView("bind", this.baseEntity);
             
-            this._output = new EntityViewCollection(this, this._baseEntity);
-            this._output.add(new EntityView("default", this._baseEntity));  // 등록방법 1
-            // this._output.add("default", this._baseEntity);               // 등록방법 2
+            this._output = new EntityViewCollection(this, this.baseEntity);
+            this._output.add(new EntityView("default", this.baseEntity));  // 등록방법 1
+            // this._output.add("default", this.baseEntity);               // 등록방법 2
 
             /** @property {valid} */
             Object.defineProperty(this, "valid", 
@@ -3638,8 +3638,8 @@ if (typeof Array.isArray === "undefined") {
         function BindCommandInternal(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            var __valid = new EntityView("valid", this._baseEntity);
-            var __bind  = new EntityView("bind", this._baseEntity);
+            var __valid = new EntityView("valid", this.baseEntity);
+            var __bind  = new EntityView("bind", this.baseEntity);
 
             /** @property {valid} */
             Object.defineProperty(this, "valid", 

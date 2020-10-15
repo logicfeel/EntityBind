@@ -69,6 +69,8 @@
             _super.call(this);
 
             var __firest    = new EntityTable("first");
+
+            this.baseEntity = __firest;
             
             // var __create    = new BindCommandCreate(this, this.first);
             // var __read      = new BindCommandRead(this, this.first);

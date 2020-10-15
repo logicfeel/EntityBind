@@ -151,10 +151,10 @@
          */
         EntityTableCollection.prototype._getPropDesciptor = function(p_idx) {
             return {
-                get: function() { return this._items[p_idx]; },
+                get: function() { return this._element[p_idx]; },
                 set: function(newValue) { 
                     if (newValue instanceof EntityTable) {
-                        this._items[p_idx] = newValue;
+                        this._element[p_idx] = newValue;
                     } else {
                         throw new Error("Only [EntityTable] type instances can be added");
                     }

@@ -47,12 +47,12 @@
             // Protected
             this._onwer    = p_onwer;
     
-            this._items    = [];
+            this._element    = [];
 
             // Property
             this.setProperty("count", 
                 function() {
-                    return this._items.length;
+                    return this._element.length;
                 }, 
                 null
             );
@@ -60,7 +60,7 @@
             // Property
             this.setProperty("list", 
                 function() {
-                    return this._items;
+                    return this._element;
                 }, 
                 null
             );
@@ -123,8 +123,8 @@
          */
         BaseCollection.prototype._getPropDesciptor = function(p_idx) {
             return {
-                get: function() { return this._items[p_idx]; },
-                set: function(newValue) { this._items[p_idx] = newValue; },
+                get: function() { return this._element[p_idx]; },
+                set: function(newValue) { this._element[p_idx] = newValue; },
                 enumerable: true,
                 configurable: true
             };

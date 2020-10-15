@@ -56,6 +56,8 @@
 
             var __firest    = new EntityTable("first");
 
+            this.baseEntity = __firest;
+            
             // var __create      = new BindCommandRead(this, __firest);
             var __create      = null;
 

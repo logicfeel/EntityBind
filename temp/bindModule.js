@@ -18,7 +18,7 @@ var BaseCollection = /** @class */ (function () {
     }
     Object.defineProperty(BaseCollection.prototype, "count", {
         get: function () {
-            return this._items.length;
+            return this._element.length;
         },
         enumerable: true,
         configurable: true

@@ -53,9 +53,9 @@
 
             var __outputOption = 1;     // 1: View 오버로딩 , 2: 있는자료만            
             
-            this._output = new EntityViewCollection(this, this._baseEntity);
-            this._output.add(new EntityView("default", this._baseEntity));  // 등록방법 1
-            // this._output.add("default", this._baseEntity);               // 등록방법 2
+            this._output = new EntityViewCollection(this, this.baseEntity);
+            this._output.add(new EntityView("default", this.baseEntity));  // 등록방법 1
+            // this._output.add("default", this.baseEntity);               // 등록방법 2
 
             /** @property {view} 필요시  상속 또는 객체를 통해서 확장 */
             this.view = this._output["default"];        // 참조 속성 설정 [0]

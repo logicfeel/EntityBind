@@ -19,6 +19,7 @@
     var PropertyCollection;
     var PropertyFunctionCollection;
     var IBindModel;
+    var Entity;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         require("./object-implement"); // _implements() : 폴리필
@@ -29,6 +30,7 @@
         PropertyCollection          = require("./collection-property");
         PropertyFunctionCollection  = require("./collection-property-function");        
         IBindModel                  = require("./i-bind-model");        
+        Entity                      = require("./entity-base");
     } else {
         util                        = global._W.Common.Util;
         BaseBind                    = global._W.Meta.Bind.BaseBind;
@@ -36,6 +38,7 @@
         PropertyCollection          = global._W.Collection.PropertyCollection;
         PropertyFunctionCollection  = global._W.Collection.PropertyFunctionCollection;        
         IBindModel                  = global._W.Interface.IBindModel;        
+        Entity                      = global._W.Meta.Entity.Entity;        
     }
 
     //==============================================================
@@ -46,6 +49,7 @@
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
     if (typeof PropertyFunctionCollection === "undefined") throw new Error("[PropertyFunctionCollection] module load fail...");
     if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
+    if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -61,7 +65,7 @@
             var __mode          = new PropertyFunctionCollection(this);
             var __cbRegister    = function() {};
             var __cbValid       = function() {return true};
-            var __cbResume      = function() {};
+            var __cbReady      = function() {};
 
             var propObject;
 
@@ -72,7 +76,14 @@
                     propObject = p_objectDI["attrs"];
                     for(var prop in propObject) {
                         if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-                            __attrs.add(prop, propObject[prop]);
+                            
+                            // new Item // 테이블 로딩
+                            if (typeof propObject[prop] !== "object") {
+                                __attrs.add(prop, propObject[prop]);
+                            } else {
+                                __attrs.add(prop, propObject[prop]);
+                            }
+                            
                         }
                     }
                 }
@@ -91,8 +102,8 @@
                 if (typeof p_objectDI["cbValid"] === "function") {
                     __cbValid = p_objectDI["cbValid"];
                 }
-                if (typeof p_objectDI["cbResume"] === "function") {
-                    __cbResume = p_objectDI["cbResume"];
+                if (typeof p_objectDI["cbReady"] === "function") {
+                    __cbReady = p_objectDI["cbReady"];
                 }
             }
 
@@ -144,13 +155,13 @@
                 enumerable: true
             });
 
-            /** @property {cbResume} */
-            Object.defineProperty(this, "cbResume", 
+            /** @property {cbReady} */
+            Object.defineProperty(this, "cbReady", 
             {
-                get: function() { return __cbResume; },
+                get: function() { return __cbReady; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbResume] type 'Function' can be added");
-                    __cbResume = newValue;
+                    if (!(newValue instanceof Function)) throw new Error("Only [cbReady] type 'Function' can be added");
+                    __cbReady = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -175,7 +186,7 @@
         BindModel.prototype.init = function() {
             this.cbRegister.call(this);
             if (this.cbValid.call(this)) {
-                this.cbResume.call(this)
+                this.cbReady.call(this)
             }
         };
 
@@ -188,12 +199,14 @@
 
             var cmds = [];
 
+            if (Array.isArray(p_cmds)) cmds = p_cmds;
+
             // 유효성 검사
             if (!(p_item instanceof Item)) {
-                throw new Error("Only [Item] type instances can be added");
+                throw new Error("Only [Item] type 'Item' can be added");
             }
             if (typeof p_cmds !== "undefined" && !Array.isArray(p_cmds)) {
-                throw new Error("Only [a_cmd] type Array can be added");
+                throw new Error("Only [a_cmd] type 'Array | string' can be added");
             }
             
             // 설정 대상 가져오기
@@ -218,6 +231,62 @@
             // 설정
             for (var i = 0; i < cmds.length; i++) {
                 this[cmds[i]].add(p_item);
+            }
+        };
+
+        /**
+         * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
+         * @param {String} p_name
+         * @param {Object | String | Number | Boolean} p_value 
+         */
+        BindModel.prototype.addItem = function(p_name, p_value, p_cmds) {
+
+            var item;
+            
+            // 유효성 검사
+            if (typeof p_name !== "string") {
+                throw new Error("Only [p_name] type 'string' can be added");
+            }
+
+            item = this.baseEntity.items.addValue(p_name, p_value);
+
+            this.add(item, p_cmds);
+        };
+
+        /**
+         * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
+         * @param {?String | ?Array<String>} p_attrs 
+         * @param {String} p_entity 
+         */
+        BindModel.prototype.loadAttrs = function(p_attrs, p_entity) {
+
+            var __attrs = [];
+            var entity;
+            var propName;
+
+            // 최기화
+            if (Array.isArray(p_attrs)) __attrs = __attrs.concat(p_attrs);  // Array의 경우
+            else if (typeof p_attrs === "string") __attrs.push(p_attrs);    // String의 경우
+            else __attrs = this.attrs.properties;                           // 없을 경우 (전체 가져옴)
+
+            // 유효성 검사
+            if (typeof p_attrs !== "undefined" && (!Array.isArray(p_attrs) || typeof p_attrs === "string")) {
+                throw new Error("Only [p_entities] type 'Array | string' can be added");
+            }
+
+            if (typeof p_entity !== "undefined" && !(typeof this[p_entity] !== "undefined")) {
+                throw new Error(" BindModel에 ["+ p_entity +"]의 Entity가 없습니다. ");
+            }
+            if (typeof p_entity !== "undefined" && !(p_entity instanceof Entity)) throw new Error("Only [p_entity] type 'Entity' can be added");
+
+            entity = p_entity || this.baseEntity;
+
+            // 속성목록을 등록
+            for(var i = 0; __attrs.length > i; i++) {
+                propName = __attrs[i];
+                if (typeof propName === "string" && typeof this.attrs[propName] !== "undefined") {
+                    entity.items.addValue(propName, this.attrs[propName]);
+                }
             }
         };
 

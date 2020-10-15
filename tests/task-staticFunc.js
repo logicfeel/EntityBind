@@ -6,7 +6,7 @@ function IBinder() {
     this.attrs  = {};
     this.cbRegister;
     this.cbValid;
-    this.cbResume;   // 이부분은 혼선을 피하기 위해서 인터페이스에서 빼는거 적당할듯 => 덮어써서 자용하면됨 (자동화의 이득)
+    this.cbReady;   // 이부분은 혼선을 피하기 위해서 인터페이스에서 빼는거 적당할듯 => 덮어써서 자용하면됨 (자동화의 이득)
 }
 
 function Page() {
@@ -52,7 +52,7 @@ function Page() {
     };
     //====================================
     // 의존성이 섞여 있는 부분
-    this.cbResume = function(bindModel) {           // 의존성이 섞여 있음 !!! => 파라메터로 해결, 선택적으로 사용
+    this.cbReady = function(bindModel) {           // 의존성이 섞여 있음 !!! => 파라메터로 해결, 선택적으로 사용
         // 재개(대기) 
         // cmd 모드에 따라 즉시 호출도 포함함
         bindModel.read.execute();
@@ -69,7 +69,7 @@ function BindModelFormAjax() {}
 //--------------------------------------
 new bm = new BindModelFormAjax(p);
 bm.read.cbView = this.pageView;             // 이부분은 자동화 보다는 사용자화 하는게 맞을듯함
-bm.cbResume = function() {                  // 의존성이 섞여 있음 !!! => 파라메터로 해결
+bm.cbReady = function() {                  // 의존성이 섞여 있음 !!! => 파라메터로 해결
     // 시작시 처리할 부분이 있으면 추가함
 };
 bm.cbRegister = function() {                // read, 이런 부분을 모를 경우 오버라이딩함

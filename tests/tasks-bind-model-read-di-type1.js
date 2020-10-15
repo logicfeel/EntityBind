@@ -15,7 +15,8 @@ function ReadDI() {
 
     this.attrs = {
         cmd: "INSERT",
-        idx: 130
+        idx: 130,
+        cnt: {caption: "카운터"}
     };
 
     // 등록 방법 
@@ -28,12 +29,12 @@ function ReadDI() {
             console.log("this._model.first.items.count  10 ==> " + this._model.first.items.count);   
             console.log("entity.items.count             10 ==> " + entity.items.count);   
             console.log("entity.rows.count              1  ==> " + entity.rows.count);   
-            console.log("entity.rows[0]                 ,, ==> " + entity.rows[0]._items);   
+            console.log("entity.rows[0]                 ,, ==> " + entity.rows[0]._element);   
             __this.msg();
         };
     };
 
-    this.cbResume = function(model) {
+    this.cbReady = function(model) {
         this.read.execute();
     };
 
@@ -51,7 +52,7 @@ var e = new BindModelReadAjax(new ReadDI());
 // 속성 설정
 e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";
 // e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.as";    // 오류 1
-// e.baseUrl = "jsons/sample_row_single.json";                      // 오류 2
+// e.baseUrl = "jsons/sample_row_single.json";                     // 오류 2
 
 // 추가 등록 ----------------------
 e.onFail = function(p_msg) {    // 공통(상위) 오류 등록
@@ -64,6 +65,25 @@ e.onExecute = function() {      // 실행시
 e.onExecuted = function() {      // 실행끝
     console.log("onExecuted 이벤트 ");
 };
+
+// 1) 'attrs'의 단일 Items을 등록
+// 1-1) attrs(단일객체)를 >> entity에 개별 등록
+// e.read.valid.items.add(new Item("cnt", e.read.valid, e.attrs["cnt"])); // 1번 방법(비추)
+// e.read.valid.items.addValue("cnt", e.attrs["cnt"]);              // 2번 방법 (추천)
+// addValue
+// 1-2) attr(단일객체)를 >> entity목록(배열)에 등록
+// addValue
+// 1-3) attr(단일객체)를 >> cmd목록(배열)에 속한 모든 entity에 등록
+// addValue
+// 2) 'attr'의 여러 Item을  등록
+// loadAttrs
+// 2-1-1) 전체 attr을 기본(baseEntity) 엔티티에 로딩
+e.loadAttrs()
+// 2-1-2) 지정 attr을 지정 엔티티에 로딩
+
+// 2-2-1) 여러 아이템을 지정한 entity에 등록
+
+// 2-2-2) 여러 아이템을 cmd의 모든 entity에 등록
 
 //===============================================
 e.init();

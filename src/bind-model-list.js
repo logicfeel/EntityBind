@@ -57,6 +57,8 @@
             var __firest    = new EntityTable("first");
             var __list      = new BindCommandList(this, this.first);
 
+            this.baseEntity = __firest;
+            
             /** @property {first} */
             Object.defineProperty(this, "first", 
             {

@@ -61,8 +61,7 @@
             /** @protected 소유자 */
             this._model = p_bindModel;
 
-            /** @protected */
-            this._baseEntity = p_baseEntity;
+            this.baseEntity = p_baseEntity;
 
             /** @property {vbEnd} */
             Object.defineProperty(this, "cbEnd", 
@@ -113,45 +112,45 @@
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?Array<String> | String} p_views <선택> 추가할 아이템 명령
+         * @param {?Array<String> | String} p_entities <선택> 추가할 아이템 명령
          */
-        BindCommand.prototype.add = function(p_item, p_views) {
+        BindCommand.prototype.add = function(p_item, p_entities) {
 
-            var views = [];     // 파라메터 변수
-            var property = [];  // 속성
+            var entities = [];     // 파라메터 변수
+            var property = [];      // 속성
             var propStr;
             var collection;
 
             // 초기화
-            if (Array.isArray(p_views)) views = p_views;
-            else if (typeof p_views === "string") views.push(p_views);
+            if (Array.isArray(p_entities)) entities = p_entities;
+            else if (typeof p_entities === "string") entities.push(p_entities);
 
             // 유효성 검사
             if (!(p_item instanceof Item)) {
-                throw new Error("Only [Item] type instances can be added");
+                throw new Error("Only [p_item] type 'Item' can be added");
             }
-            if (typeof p_views !== "undefined" && (!Array.isArray(p_views) || typeof p_views === "string")) {
-                throw new Error("Only [p_views] type Array can be added");
+            if (typeof p_entities !== "undefined" && (!Array.isArray(p_entities) || typeof p_entities === "string")) {
+                throw new Error("Only [p_entities] type 'Array | string' can be added");
             } 
             
             // 설정 대상 가져오기
-            if (views.length > 0) {
-                for (var i = 0; i< views.length; i++) {
+            if (entities.length > 0) {
+                for (var i = 0; i< entities.length; i++) {
                     
-                    if (typeof views[i] !== "string") throw new Error("Only [String] type instances can be added");
+                    if (typeof entities[i] !== "string") throw new Error("Only [String] type instances can be added");
                    
                     // 배열문자열 검사  => output[0]
-                    if (views[i].indexOf("[") > -1) {
-                        propStr = views[i].slice(0, views[i].indexOf("[") - 1);
+                    if (entities[i].indexOf("[") > -1) {
+                        propStr = entities[i].slice(0, entities[i].indexOf("[") - 1);
                     } else {
-                        propStr = views[i];
+                        propStr = entities[i];
                     }
 
                     // 속성 유무 검사
                     if (this[propStr]) {
-                        property.push(views[i]);
+                        property.push(entities[i]);
                     } else {
-                        console.warn("Warning!! Param p_views 에 [" + views[i] + "]가 없습니다. ");
+                        console.warn("Warning!! Param p_entities 에 [" + entities[i] + "]가 없습니다. ");
                     }
                 }
             } else {
@@ -178,6 +177,55 @@
                 }
 
                 collection.add(p_item);
+            }
+        };
+
+        /**
+         * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
+         * @param {String} p_name
+         * @param {Object | String | Number | Boolean} p_value 
+         */
+        BindCommand.prototype.addItem = function(p_name, p_value, p_entities) {
+
+            var item;
+            
+            // 유효성 검사
+            if (typeof p_name !== "string") {
+                throw new Error("Only [p_name] type 'string' can be added");
+            }
+
+            item = this.baseEntity.items.addValue(p_name, p_value);
+
+            this.add(item, p_entities);
+        };
+
+        /**
+         * 
+         * @param {String | Array} p_names 
+         * @param {?String | Array<String>} p_entities 
+         */
+        BindCommand.prototype.linkBaseToEntity = function(p_names, p_entities) {
+
+            var names = [];     // 파라메터 변수
+            var itemName;
+            var item;
+
+            // 초기화
+            if (Array.isArray(p_names)) names = p_names;
+            else if (typeof names === "string") names.push(p_names);
+
+            // 유효성 검사
+            if (names.length === 0) throw new Error("Only [p_names] type 'Array | string' can be added");
+
+            // 아이템 검사 및 등록 함수 this.add(..) 호출
+            for(var i = 0; names.length > 0; i++) {
+                itemName = names[i]; 
+                item = this._model.items[itemName];
+                if (typeof item !== "undefined") {
+                    this.add(item, p_entities);
+                } else {
+                    throw new Error("baseEntity에 [" + itemName + "] 아이템이 없습니다.");
+                }
             }
         };
 

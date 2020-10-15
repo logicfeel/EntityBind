@@ -46,7 +46,7 @@
          */
         ArrayCollection.prototype.__remove = function(p_idx) {
             delete this[p_idx];                      // 내부 idx 삭제
-            delete this._items[p_idx];              // 내부 참조 삭제
+            delete this._element[p_idx];              // 내부 참조 삭제
         };
 
         /**
@@ -62,8 +62,8 @@
 
             if (typeof p_value === "undefined") throw new Error("p_value param request fail...");
         
-            this._items.push(p_value);
-            index = (this._items.length === 1) ? 0 : this._items.length  - 1;
+            this._element.push(p_value);
+            index = (this._element.length === 1) ? 0 : this._element.length  - 1;
             Object.defineProperty(this, [index], this._getPropDesciptor(index));
 
             this._onAdd();                          // 이벤트 발생 : 등록
@@ -97,7 +97,7 @@
          */
         ArrayCollection.prototype.removeAt = function(p_idx) {
 
-            var obj = this._items[p_idx];
+            var obj = this._element[p_idx];
             
             this._onChanging();                     // 이벤트 발생 : 변경전
             
@@ -116,11 +116,11 @@
             
             this._onChanging();                     // 이벤트 발생 : 변경전
 
-            for (var i = 0; i < this._items.length; i++) {
+            for (var i = 0; i < this._element.length; i++) {
                 obj = this.indexOf(i);
                 if (typeof obj !== "undefined") this.__remove(i);
             }
-            this._items = [];
+            this._element = [];
         
             this._onClear();                        // 이벤트 발생 : 전체삭제
             this._onChanged();                      // 이벤트 발생 : 변경후            
@@ -132,7 +132,7 @@
          * @returns {Boolean}
          */
         ArrayCollection.prototype.contains = function(p_obj) {
-            return this._items.indexOf(p_obj) > -1;
+            return this._element.indexOf(p_obj) > -1;
         };
 
         /**
@@ -141,7 +141,7 @@
          * @returns {Number}
          */
         ArrayCollection.prototype.indexOf = function(p_obj) {
-            return this._items.indexOf(p_obj);
+            return this._element.indexOf(p_obj);
         };
 
         return ArrayCollection;

@@ -42,8 +42,8 @@
         function BindCommandInternal(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            var __valid = new EntityView("valid", this._baseEntity);
-            var __bind  = new EntityView("bind", this._baseEntity);
+            var __valid = new EntityView("valid", this.baseEntity);
+            var __bind  = new EntityView("bind", this.baseEntity);
 
             /** @property {valid} */
             Object.defineProperty(this, "valid", 
@@ -93,7 +93,7 @@
             console.log("*************");
             // console.log("_execValid()");
             for(var i = 0; i < this.valid.items.count; i++) {
-                if (!(this.valid.items[i].valid(this.bind.items[i].refValue, o_msg))) {
+                if (!(this.valid.items[i].valid(this.valid.items[i].refValue, o_msg))) {
                     this._onFail(o_msg);
                     return false;
                 }
