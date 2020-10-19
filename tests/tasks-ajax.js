@@ -19,7 +19,7 @@
 
 
 function IBindModel() {
-    this.attrs;
+    this.attr;
     this.mode;
     this.cbRegister;
     this.cbValid;
@@ -28,7 +28,7 @@ function IBindModel() {
 
 // IBindModel 상속
 function IBindModelForm() {
-    this.attrs = {};
+    this.attr = {};
     this.mode = {};
     this.cbRegister = function() {};
     this.cbValid = function() {};
@@ -46,7 +46,7 @@ IBindModelForm.prototype.mode = function() {
 
 function PageDI() {
     var bm = new IBindModelForm();
-    bm.attrs = {abc: "aaa"};
+    bm.attr = {abc: "aaa"};
     bm.mode.modify = function() {
         console.log("modify...");
     }
@@ -61,7 +61,7 @@ function PageDI() {
 function Ajax( bindmodel ) {
 
     
-    this.attrs = bindmodel.attrs;
+    this.attr = bindmodel.attr;
     this.cbValid = bindmodel.cbValid;
     this.mode = bindmodel.mode;
 }

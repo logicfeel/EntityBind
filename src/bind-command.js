@@ -200,11 +200,12 @@
         };
 
         /**
-         * 
+         * 예시>
+         * e.read.setEntity(['idx', 'addr'], 'valid');
          * @param {String | Array} p_names 
          * @param {?String | Array<String>} p_entities 
          */
-        BindCommand.prototype.linkBaseToEntity = function(p_names, p_entities) {
+        BindCommand.prototype.setEntity = function(p_names, p_entities) {
 
             var names = [];     // 파라메터 변수
             var itemName;

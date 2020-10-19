@@ -13,7 +13,7 @@ function ReadDI() {
 
     __this = this;          // 내부용 this
 
-    this.attrs = {
+    this.attr = {
         cmd: "INSERT",
         idx: 130,
         cnt: {caption: "카운터"}
@@ -66,25 +66,26 @@ e.onExecuted = function() {      // 실행끝
     console.log("onExecuted 이벤트 ");
 };
 
-// 1) 'attrs'의 단일 Items을 등록
-// 1-1) attrs(단일객체)를 >> entity에 개별 등록
-// e.read.valid.items.add(new Item("cnt", e.read.valid, e.attrs["cnt"])); // 1번 방법(비추)
-// e.read.valid.items.addValue("cnt", e.attrs["cnt"]);              // 2번 방법 (추천)
+// 1) 'attr'의 단일 Items을 등록
+// 1-1) attr(단일객체)를 >> entity에 개별 등록
+// e.read.valid.items.add(new Item("cnt", e.read.valid, e.attr["cnt"])); // 1번 방법(비추)
+// e.read.valid.items.addValue("cnt", e.attr["cnt"]);              // 2번 방법 (추천)
 // addValue
 // 1-2) attr(단일객체)를 >> entity목록(배열)에 등록
 // addValue
 // 1-3) attr(단일객체)를 >> cmd목록(배열)에 속한 모든 entity에 등록
 // addValue
 // 2) 'attr'의 여러 Item을  등록
-// loadAttrs
+// loadAttr(['cmd', 'addr']);
 // 2-1-1) 전체 attr을 기본(baseEntity) 엔티티에 로딩
-e.loadAttrs()
+// e.loadAttr();
 // 2-1-2) 지정 attr을 지정 엔티티에 로딩
-
+// e.second = new EntityTable('second');
+// e.loadAttr(['cmd', 'addr'], 'second');
 // 2-2-1) 여러 아이템을 지정한 entity에 등록
-
+// e.read.setEntity(['cmd', 'addr'], 'bind');
 // 2-2-2) 여러 아이템을 cmd의 모든 entity에 등록
-
+// e.read.setEntity(['cmd', 'addr']);
 //===============================================
 e.init();
 console.log("-End-");

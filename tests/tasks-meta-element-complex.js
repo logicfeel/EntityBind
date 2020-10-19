@@ -3,7 +3,7 @@
  */
 //===============================================
 // 선언
-var ComplexElement = require("../src/meta-complex");
+var ComplexElement = require("../src/meta-element-complex");
 
 //===============================================
 // 본문

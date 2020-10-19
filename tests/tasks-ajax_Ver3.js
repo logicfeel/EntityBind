@@ -1,6 +1,6 @@
 
 function IBindModel() {
-    this.attrs;
+    this.attr;
     this.mode;
     this.cbRegister;
     this.cbValid;
@@ -9,7 +9,7 @@ function IBindModel() {
 
 // IBindModel 상속
 function IBindModelForm() {
-    this.attrs = {};
+    this.attr = {};
     this.mode = {};
     this.cbRegister = function() {};
     this.cbValid = function() {};
@@ -29,7 +29,7 @@ IBindModelForm.prototype.mode = function() {
 // 이유는 ViewDI 간의 상속관계가 있을 수 있으므로..
 function ViewDI() {
     // var bm = new IBindModelForm();
-    this.attrs = {abc: "aaa"};
+    this.attr = {abc: "aaa"};
     this.mode = {};
     this.mode.modify = function() {
         console.log("modify...");
@@ -43,7 +43,7 @@ function ViewDI() {
     this.cbValid = function() {
         console.log("cbValid...");
 
-        console.log("attrs = " + this.attrs.abc);
+        console.log("attr = " + this.attr.abc);
         getBBB();        
     };
     // this.getAAA();
@@ -55,7 +55,7 @@ ViewDI.prototype.getAAA = function() {
 // ===============================
 function Ajax( bindmodel ) {
     
-    this.attrs = bindmodel.attrs;
+    this.attr = bindmodel.attr;
     this.cbValid = bindmodel.cbValid;
     this.mode = bindmodel.mode;
     this.getAAA = bindmodel.getAAA;
@@ -75,7 +75,7 @@ var a = new Ajax(new ViewDI());
 
 a.mode.modify();
 a.cbValid();
-a.attrs.abc = "bbb";
+a.attr.abc = "bbb";
 a.cbValid();
 a.getAAA();
 

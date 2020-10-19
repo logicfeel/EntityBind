@@ -103,7 +103,7 @@
          * @param {*} i_status 
          * @param {*} i_xhr 
          */
-        BindCommandView.prototype._execCallback = function(i_result, i_status, i_xhr) {
+        BindCommandView.prototype._execSuccess = function(i_result, i_status, i_xhr) {
 
             this.view.load(i_result, this.outputOption);
 
@@ -111,7 +111,18 @@
             if (typeof this.cbView === "function" ) this.cbView(this.view);
 
             // 상위 호출 : 데코레이션 패턴
-            _super.prototype._execCallback.call(this, i_result, i_status, i_xhr);
+            _super.prototype._execSuccess.call(this, i_result, i_status, i_xhr);
+        };
+
+
+        BindCommandView.prototype.addOutput = function(p_name) {
+
+            // 유효성 검사
+            if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
+            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 속성명 중복 : " + p_name);
+
+            this._output.add(new EntityView(p_name, this.baseEntity));  // 등록방법 1
+            this[p_name] = this._output[p_name];
         };
 
         return BindCommandView;

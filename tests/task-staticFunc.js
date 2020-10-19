@@ -3,7 +3,7 @@ const { Item } = require("../src/entity-item");
 // 화면 인터페이스
 function IBinder() {
     this.mode   = {};
-    this.attrs  = {};
+    this.attr  = {};
     this.cbRegister;
     this.cbValid;
     this.cbReady;   // 이부분은 혼선을 피하기 위해서 인터페이스에서 빼는거 적당할듯 => 덮어써서 자용하면됨 (자동화의 이득)
@@ -13,7 +13,7 @@ function Page() {
     // -------------------------------------
     // 선언부
     this.mode = {edit: null, create: null};                 // 화면과 의존성이 높음 , * mode : 방식
-    this.attrs = {                                          // idx 같이 고유 명칭이므로 의존성이 높음
+    this.attr = {                                          // idx 같이 고유 명칭이므로 의존성이 높음
         cmd: "INSERT",
         idx: 1,                 // 확인필요
         addr: $("#addr").val()  // 이런식으로 참조를 등록해 두면
@@ -77,7 +77,7 @@ bm.cbRegister = function() {                // read, 이런 부분을 모를 경
 }
 
 Item("addr");
-addr.refValue = bm.attrs["addr"];           // 상단에 참조를 정의해두면 이런식으로 쉽게 사용함
+addr.refValue = bm.attr["addr"];           // 상단에 참조를 정의해두면 이런식으로 쉽게 사용함
 
 
 console.log("-End");

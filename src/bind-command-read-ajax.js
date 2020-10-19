@@ -79,17 +79,17 @@
                 enumerable: true
             }); 
 
-            /** @property {url} */
-            Object.defineProperty(this, "complete", 
-            {
-                get: function() { return __ajaxSetup.complete; },
-                set: function(newValue) { 
-                    if (!(typeof newValue === "function")) throw new Error("Only [complete] type 'function' can be added");
-                    __ajaxSetup.complete = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            }); 
+            // /** @property {complete} */
+            // Object.defineProperty(this, "complete", 
+            // {
+            //     get: function() { return __ajaxSetup.complete; },
+            //     set: function(newValue) { 
+            //         if (!(typeof newValue === "function")) throw new Error("Only [complete] type 'function' can be added");
+            //         __ajaxSetup.complete = newValue;
+            //     },
+            //     configurable: true,
+            //     enumerable: true
+            // }); 
 
         }
         util.inherits(BindCommandReadAjax, _super);
@@ -129,7 +129,7 @@
                     msg = error ? (msg + " :: " + error) : msg;
                     // (xhr,status,error)
                     i_setup.error(response, status, msg);
-                } else {                                    // 성공시
+                } else {                                        // 성공시
                     if (i_setup.dataType === "json") result = JSON.parse(body);
                     result = result || body;
                     // (result,status,xhr)
@@ -180,10 +180,13 @@
         BindCommandReadAjax.prototype._execBind = function() {
             
             var ajaxSetup = {};
+            var complete = this.ajaxSetup.complete || this._model.baseAjaxSetup.complete || null;
             
             ajaxSetup.url       = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            ajaxSetup.dataType  = "json";
-            ajaxSetup.success   = this._execCallback.bind(this);
+            ajaxSetup.type      = this.ajaxSetup.type || this._model.baseAjaxSetup.type;
+            ajaxSetup.dataType  = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType;
+            ajaxSetup.complete  = (typeof complete === "function") ? complete.bind(this) : null;
+            ajaxSetup.success   = this._execSuccess.bind(this);
             ajaxSetup.error     = this._ajaxError.bind(this);
 
             for(var i = 0; i < this.bind.items.count; i++) {

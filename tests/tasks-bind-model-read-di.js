@@ -18,7 +18,7 @@ function readDI() {
 
     this.read = null;       // 가상으로 지정함
     
-    this.attrs = {
+    this.attr = {
         cmd: "INSERT",
         idx: 130
     };

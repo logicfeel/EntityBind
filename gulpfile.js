@@ -27,7 +27,7 @@ var paths = {
         'src/collection-base.js', 'src/collection-array.js', 'src/collection-property.js',
         'src/collection-property-object.js','src/collection-property-function.js',
         // 메타 최상위
-        'src/meta-object.js', 'src/meta-element.js', 'src/meta-complex.js', 
+        'src/meta-object.js', 'src/meta-element.js', 'src/meta-element-complex.js', 
         // Entity
         'src/entity-item.js', 'src/entity-item-dom.js','src/entity-row.js', 'src/entity-base.js', 
         'src/entity-table.js', 'src/entity-view.js', 'src/entity-set.js', 

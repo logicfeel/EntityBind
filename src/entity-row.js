@@ -70,6 +70,14 @@
         }
         util.inherits(Row, _super);
 
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        Row.prototype.getTypes  = function() {
+                    
+            var type = ["Row"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
         return Row;
     
     }(PropertyCollection));

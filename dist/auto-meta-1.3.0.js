@@ -4613,7 +4613,7 @@ if (typeof Array.isArray === "undefined") {
          * success(result,status,xhr)
          * @virtual 
          **/
-        BindCommandInternal.prototype._execCallback = function(i_result, i_status, i_xhr) {
+        BindCommandInternal.prototype._execSuccess = function(i_result, i_status, i_xhr) {
             // 처리 종료 콜백 호출
             if (typeof this.cbEnd === "function" ) this.cbEnd();
             
@@ -4740,7 +4740,7 @@ if (typeof Array.isArray === "undefined") {
          * @param {*} i_status 
          * @param {*} i_xhr 
          */
-        BindCommandView.prototype._execCallback = function(i_result, i_status, i_xhr) {
+        BindCommandView.prototype._execSuccess = function(i_result, i_status, i_xhr) {
 
             this.view.load(i_result, this.outputOption);
 
@@ -4748,7 +4748,7 @@ if (typeof Array.isArray === "undefined") {
             if (typeof this.cbView === "function" ) this.cbView(this.view);
 
             // 상위 호출 : 데코레이션 패턴
-            _super.prototype._execCallback.call(this, i_result, i_status, i_xhr);
+            _super.prototype._execSuccess.call(this, i_result, i_status, i_xhr);
         };
 
         return BindCommandView;
@@ -4833,13 +4833,13 @@ if (typeof Array.isArray === "undefined") {
             for(var i = 0; i < this.bind.items.count; i++) {
                 console.log("bind : " + this.bind.items[i].name);
             }
-            this._execCallback();
+            this._execSuccess();
         };
         
-        BindCommandRead.prototype._execCallback = function() {
+        BindCommandRead.prototype._execSuccess = function() {
             // TODO::
             console.log("*************");
-            console.log("_execCallback()");
+            console.log("_execSuccess()");
             this._execView();
         };
 
@@ -4938,13 +4938,13 @@ if (typeof Array.isArray === "undefined") {
             for(var i = 0; i < this.bind.items.count; i++) {
                 console.log("bind : " + this.bind.items[i].name);
             }
-            this._execCallback();
+            this._execSuccess();
         };
         
-        BindCommandCreate.prototype.execCallback = function() {
+        BindCommandCreate.prototype.execSuccess = function() {
              // TODO::
              console.log("*************");
-             console.log("_execCallback()");
+             console.log("_execSuccess()");
  
              this._onExecuted();  // "실행 종료" 이벤트 발생
         };
@@ -5033,13 +5033,13 @@ if (typeof Array.isArray === "undefined") {
             for(var i = 0; i < this.bind.items.count; i++) {
                 console.log("bind : " + this.bind.items[i].name);
             }
-            this._execCallback();
+            this._execSuccess();
         };
         
-        BindCommandUpdate.prototype.execCallback = function() {
+        BindCommandUpdate.prototype.execSuccess = function() {
             // TODO::
             console.log("*************");
-            console.log("_execCallback()");
+            console.log("_execSuccess()");
 
             this._onExecuted();  // "실행 종료" 이벤트 발생
         };
@@ -5127,13 +5127,13 @@ if (typeof Array.isArray === "undefined") {
             for(var i = 0; i < this.bind.items.count; i++) {
                 console.log("bind : " + this.bind.items[i].name);
             }
-            this._execCallback();
+            this._execSuccess();
         };
         
-        BindCommandDelete.prototype.execCallback = function() {
+        BindCommandDelete.prototype.execSuccess = function() {
             // TODO::
             console.log("*************");
-            console.log("_execCallback()");
+            console.log("_execSuccess()");
 
             this._onExecuted();  // "실행 종료" 이벤트 발생
         };
@@ -5221,13 +5221,13 @@ if (typeof Array.isArray === "undefined") {
             for(var i = 0; i < this.bind.items.count; i++) {
                 console.log("bind : " + this.bind.items[i].name);
             }
-            this._execCallback();
+            this._execSuccess();
         };
         
-        BindCommandList.prototype.execCallback = function() {
+        BindCommandList.prototype.execSuccess = function() {
             // TODO::
             console.log("*************");
-            console.log("_execCallback()");
+            console.log("_execSuccess()");
             this._execView();
         };
 
@@ -5444,7 +5444,7 @@ if (typeof Array.isArray === "undefined") {
             
             ajaxSetup.url       = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
             ajaxSetup.dataType  = "json";
-            ajaxSetup.success   = this._execCallback.bind(this);
+            ajaxSetup.success   = this._execSuccess.bind(this);
             ajaxSetup.error     = this._ajaxError.bind(this);
             ajaxSetup.complete  = this._ajaxComplete.bind(this);
 

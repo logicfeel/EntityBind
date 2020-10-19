@@ -138,21 +138,21 @@
 
 
         // 지역함수
-        function loadItem(p_thisEntity, p_item) {
-            // for (var prop in entity.items[i]) {
-                // if (p_item.hasOwnProperty(prop)) {
-                    p_thisEntity.items.add(p_item);
-                    // Item 속성 가져오기
-                    for (var prop in p_item) {
-                        if (p_item.hasOwnProperty(prop)) {
+        // function loadItem(p_thisEntity, p_item) {
+        //     // for (var prop in entity.items[i]) {
+        //         // if (p_item.hasOwnProperty(prop)) {
+        //             p_thisEntity.items.add(p_item);
+        //             // Item 속성 가져오기
+        //             for (var prop in p_item) {
+        //                 if (p_item.hasOwnProperty(prop)) {
                             
-                            // REVIEW: 필요시 검사후 설정 로직 추가
-                            p_thisEntity.items[prop][prop2] = entity.items[i][prop][prop2]
-                        }
-                    }
-                // }
-            // }
-        }
+        //                     // REVIEW: 필요시 검사후 설정 로직 추가
+        //                     p_thisEntity.items[prop][prop2] = entity.items[i][prop][prop2]
+        //                 }
+        //             }
+        //         // }
+        //     // }
+        // }
 
 
         Entity.prototype.__addItem  = function(p_name, p_property) {

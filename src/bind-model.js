@@ -61,27 +61,27 @@
         function BindModel(p_objectDI) {
             _super.call(this);
 
-            var __attrs         = new PropertyCollection(this);
+            var __attr         = new PropertyCollection(this);
             var __mode          = new PropertyFunctionCollection(this);
             var __cbRegister    = function() {};
             var __cbValid       = function() {return true};
-            var __cbReady      = function() {};
+            var __cbReady       = function() {};
 
             var propObject;
 
             // DI 의존성 주입 : 객체를 비교하여 삽입
             if (p_objectDI instanceof IBindModel) {     // 가능
-                // attrs 등록
-                if (typeof p_objectDI["attrs"] !== "undefined" && p_objectDI["attrs"] !== null) {
-                    propObject = p_objectDI["attrs"];
+                // attr 등록
+                if (typeof p_objectDI["attr"] !== "undefined" && p_objectDI["attr"] !== null) {
+                    propObject = p_objectDI["attr"];
                     for(var prop in propObject) {
                         if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
                             
                             // new Item // 테이블 로딩
                             if (typeof propObject[prop] !== "object") {
-                                __attrs.add(prop, propObject[prop]);
+                                __attr.add(prop, propObject[prop]);
                             } else {
-                                __attrs.add(prop, propObject[prop]);
+                                __attr.add(prop, propObject[prop]);
                             }
                             
                         }
@@ -107,13 +107,13 @@
                 }
             }
 
-            /** @property {attrs} */
-            Object.defineProperty(this, "attrs", 
+            /** @property {attr} */
+            Object.defineProperty(this, "attr", 
             {
-                get: function() { return __attrs; },
+                get: function() { return __attr; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof PropertyCollection)) throw new Error("Only [attrs] type 'PropertyCollection' can be added");
-                    __attrs = newValue;
+                    if (!(newValue instanceof PropertyCollection)) throw new Error("Only [attr] type 'PropertyCollection' can be added");
+                    __attr = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -255,22 +255,22 @@
 
         /**
          * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
-         * @param {?String | ?Array<String>} p_attrs 
+         * @param {?String | ?Array<String>} p_attr 
          * @param {String} p_entity 
          */
-        BindModel.prototype.loadAttrs = function(p_attrs, p_entity) {
+        BindModel.prototype.loadAttr = function(p_attr, p_entity) {
 
-            var __attrs = [];
+            var __attr = [];
             var entity;
             var propName;
 
             // 최기화
-            if (Array.isArray(p_attrs)) __attrs = __attrs.concat(p_attrs);  // Array의 경우
-            else if (typeof p_attrs === "string") __attrs.push(p_attrs);    // String의 경우
-            else __attrs = this.attrs.properties;                           // 없을 경우 (전체 가져옴)
+            if (Array.isArray(p_attr)) __attr = __attr.concat(p_attr);  // Array의 경우
+            else if (typeof p_attr === "string") __attr.push(p_attr);    // String의 경우
+            else __attr = this.attr.properties;                           // 없을 경우 (전체 가져옴)
 
             // 유효성 검사
-            if (typeof p_attrs !== "undefined" && (!Array.isArray(p_attrs) || typeof p_attrs === "string")) {
+            if (typeof p_attr !== "undefined" && (!Array.isArray(p_attr) || typeof p_attr === "string")) {
                 throw new Error("Only [p_entities] type 'Array | string' can be added");
             }
 
@@ -282,10 +282,10 @@
             entity = p_entity || this.baseEntity;
 
             // 속성목록을 등록
-            for(var i = 0; __attrs.length > i; i++) {
-                propName = __attrs[i];
-                if (typeof propName === "string" && typeof this.attrs[propName] !== "undefined") {
-                    entity.items.addValue(propName, this.attrs[propName]);
+            for(var i = 0; __attr.length > i; i++) {
+                propName = __attr[i];
+                if (typeof propName === "string" && typeof this.attr[propName] !== "undefined") {
+                    entity.items.addValue(propName, this.attr[propName]);
                 }
             }
         };

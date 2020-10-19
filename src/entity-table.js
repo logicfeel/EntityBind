@@ -63,10 +63,10 @@
 
             this.rows = new RowCollection(this);
 
-            /**
-             * @interface IProperyCollection 인터페이스 선언
-             */
-            this._implements(IGroupControl, IAllControl);                
+            // /**
+            //  * @interface IProperyCollection 인터페이스 선언
+            //  */
+            // this._implements(IGroupControl, IAllControl);                
         }
         util.inherits(EntityTable, _super);
 

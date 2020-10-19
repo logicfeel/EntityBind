@@ -67,13 +67,13 @@
             for(var i = 0; i < this.bind.items.count; i++) {
                 console.log("bind : " + this.bind.items[i].name);
             }
-            this._execCallback();
+            this._execSuccess();
         };
         
-        BindCommandList.prototype.execCallback = function() {
+        BindCommandList.prototype.execSuccess = function() {
             // TODO::
             console.log("*************");
-            console.log("_execCallback()");
+            console.log("_execSuccess()");
             this._execView();
         };
 

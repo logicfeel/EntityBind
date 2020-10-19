@@ -140,8 +140,8 @@
         };
         
         /** @virtual */
-        BindCommandView.prototype._execCallback = function() {
-            throw new Error("[ execCallback() ] Abstract method definition, fail...");
+        BindCommandView.prototype._execSuccess = function() {
+            throw new Error("[ execSuccess() ] Abstract method definition, fail...");
         };
 
         /** @virtual */

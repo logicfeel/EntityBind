@@ -171,7 +171,7 @@
             // TODO:: 프로퍼티에 추가해야함
             ajaxSetup.dataType = "json";
             ajaxSetup.data = {};   // items에서 받아와야함
-            ajaxSetup.success = this._execCallback.bind(this);
+            ajaxSetup.success = this._execSuccess.bind(this);
             
             for(var i = 0; i < this.bind.items.count; i++) {
                 ajaxSetup.data[this.bind.items[i].name] = this.bind.items[i].refValue; // 값
@@ -192,7 +192,7 @@
          * @param {*} i_status 
          * @param {*} i_xhr 
          */
-        BindCommandReadAjax.prototype._execCallback = function(i_result, i_status, i_xhr) {
+        BindCommandReadAjax.prototype._execSuccess = function(i_result, i_status, i_xhr) {
             
             var entity;
 
@@ -200,7 +200,7 @@
             entity.load(i_result);
 
             console.log("*************");
-            console.log("_execCallback()");
+            console.log("_execSuccess()");
             this._execView(entity);
         };
 

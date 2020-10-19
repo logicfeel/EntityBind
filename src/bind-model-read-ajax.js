@@ -53,7 +53,7 @@
 
             var __baseAjaxSetup = {
                 url: "",
-                method: "POST"
+                type: "POST"
             };
 
             /** @override */
@@ -79,17 +79,6 @@
                 enumerable: true
             }); 
 
-            /** @property {baseMethod} */
-            Object.defineProperty(this, "baseMethod",
-            {
-                get: function() { return __baseAjaxSetup.method; },
-                set: function(newValue) { 
-                    if (!(typeof newValue === "string")) throw new Error("Only [baseMethod] type 'string' can be added");
-                    __baseAjaxSetup.method = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });             
         }
         util.inherits(BindModelReadAjax, _super);
     
