@@ -103,6 +103,45 @@
         };
 
         /**
+         * AJAX 를 기준으로 구성함 (requst는 맞춤)
+         * error(xhr,status,error)
+         * @param {*} xhr 
+         * @param {*} status 
+         * @param {*} error 
+         */
+        BindCommandReadAjax.prototype._execError = function(xhr, status, error) {
+            
+            var msg = xhr && xhr.statusText ? xhr.statusText : error;
+
+            // 상위 호출 : 데코레이션 패턴
+            _super.prototype._execError.call(msg);
+        }
+
+        /**
+         * Ajax 바인딩 구현
+         * @method
+         */
+        BindCommandReadAjax.prototype._execBind = function() {
+            
+            var ajaxSetup = {};
+            var complete = this.ajaxSetup.complete || this._model.baseAjaxSetup.complete || null;
+            
+            ajaxSetup.url       = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
+            ajaxSetup.type      = this.ajaxSetup.type || this._model.baseAjaxSetup.type;
+            ajaxSetup.dataType  = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType;
+            ajaxSetup.complete  = (typeof complete === "function") ? complete.bind(this) : null;
+            ajaxSetup.success   = this._execSuccess.bind(this);
+            ajaxSetup.error     = this._execError.bind(this);
+
+            for(var i = 0; i < this.bind.items.count; i++) {
+                if(typeof ajaxSetup.data !== "object") ajaxSetup.data = {};
+                ajaxSetup.data[this.bind.items[i].name] = this.bind.items[i].refValue; // 값
+            }
+
+            this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
+        };
+
+        /**
          * (WEB & NodeJs 의 어뎁터 패턴)
          * node 에서는 비동기만 반영함 (테스트 용도) =>> 필요시 개발함
          * @param {Object} i_setup 
@@ -158,43 +197,6 @@
                     request(option, callback);
                 }
             }
-        };
-
-        /**
-         * AJAX 를 기준으로 구성함 (requst는 맞춤)
-         * error(xhr,status,error)
-         * @param {*} xhr 
-         * @param {*} status 
-         * @param {*} error 
-         */
-        BindCommandReadAjax.prototype._ajaxError = function(xhr, status, error) {
-            
-            var msg ="";
-            
-            msg = xhr && xhr.statusText ? xhr.statusText : error;
-            this._onFail(msg);
-            
-            this._onExecuted();  // "실행 종료" 이벤트 발생
-        }
-
-        BindCommandReadAjax.prototype._execBind = function() {
-            
-            var ajaxSetup = {};
-            var complete = this.ajaxSetup.complete || this._model.baseAjaxSetup.complete || null;
-            
-            ajaxSetup.url       = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            ajaxSetup.type      = this.ajaxSetup.type || this._model.baseAjaxSetup.type;
-            ajaxSetup.dataType  = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType;
-            ajaxSetup.complete  = (typeof complete === "function") ? complete.bind(this) : null;
-            ajaxSetup.success   = this._execSuccess.bind(this);
-            ajaxSetup.error     = this._ajaxError.bind(this);
-
-            for(var i = 0; i < this.bind.items.count; i++) {
-                if(typeof ajaxSetup.data !== "object") ajaxSetup.data = {};
-                ajaxSetup.data[this.bind.items[i].name] = this.bind.items[i].refValue; // 값
-            }
-
-            this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
 
         return BindCommandReadAjax;

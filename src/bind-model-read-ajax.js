@@ -14,32 +14,36 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BindModelRead;
+    var BindModel;
     var BindCommandRead;
     var EntityTable;
     var BindCommandReadAjax;
+    var IBindModelRead;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
-        BindModelRead       = require("./bind-model-read");
+        BindModel           = require("./bind-model");
         BindCommandRead     = require("./bind-command-read");
         EntityTable         = require("./entity-table").EntityTable;
         BindCommandReadAjax = require("./bind-command-read-ajax");
+        IBindModelRead      = require("./i-bind-model-read");
     } else {
         util                = global._W.Common.Util;
-        BindModelRead       = global._W.Meta.Bind.BindModelRead;
+        BindModel           = global._W.Meta.Bind.BindModel;
         BindCommandRead     = global._W.Meta.Bind.BindCommandRead;
         EntityTable         = global._W.Meta.Entity.EntityTable;
         BindCommandReadAjax = global._W.Meta.Bind.BindCommandReadAjax;
+        IBindModelRead      = global._W.Interface.IBindModelRead;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BindModelRead === "undefined") throw new Error("[BindModelRead] module load fail...");
+    if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
     if (typeof BindCommandRead === "undefined") throw new Error("[BindCommandRead] module load fail...");
     if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
     if (typeof BindCommandReadAjax === "undefined") throw new Error("[BindCommandReadAjax] module load fail...");
+    if (typeof IBindModelRead === "undefined") throw new Error("[IBindModelRead] module load fail...");
 
 
     //==============================================================
@@ -56,9 +60,13 @@
                 type: "POST"
             };
 
-            /** @override */
-            this.read = new BindCommandReadAjax(this, this.first);
+            // Entity 추가 및 baseEntity 설정
+            this.baseEntity = this.addEntity('first');
 
+            /** @override */
+            this.read = new BindCommandReadAjax(this, this.baseEntity);
+
+            
             /** @property {baseAjaxSetup} */
             Object.defineProperty(this, "baseAjaxSetup", 
             {
@@ -77,8 +85,12 @@
                 },
                 configurable: true,
                 enumerable: true
-            }); 
+            });
 
+            /**
+             * @interface IBindModelRead 인터페이스 선언
+             */
+            this._implements(IBindModelRead);                        
         }
         util.inherits(BindModelReadAjax, _super);
     
@@ -92,7 +104,7 @@
 
         return BindModelReadAjax;
     
-    }(BindModelRead));
+    }(BindModel));
     
 
     //==============================================================

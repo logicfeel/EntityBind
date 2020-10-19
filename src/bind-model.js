@@ -20,6 +20,7 @@
     var PropertyFunctionCollection;
     var IBindModel;
     var Entity;
+    var EntityTable;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         require("./object-implement"); // _implements() : 폴리필
@@ -31,6 +32,7 @@
         PropertyFunctionCollection  = require("./collection-property-function");        
         IBindModel                  = require("./i-bind-model");        
         Entity                      = require("./entity-base");
+        EntityTable                 = require("./entity-table").EntityTable;
     } else {
         util                        = global._W.Common.Util;
         BaseBind                    = global._W.Meta.Bind.BaseBind;
@@ -39,6 +41,7 @@
         PropertyFunctionCollection  = global._W.Collection.PropertyFunctionCollection;        
         IBindModel                  = global._W.Interface.IBindModel;        
         Entity                      = global._W.Meta.Entity.Entity;        
+        EntityTable                 = global._W.Meta.Entity.EntityTable;        
     }
 
     //==============================================================
@@ -50,6 +53,7 @@
     if (typeof PropertyFunctionCollection === "undefined") throw new Error("[PropertyFunctionCollection] module load fail...");
     if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
+    if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -256,7 +260,7 @@
         /**
          * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
          * @param {?String | ?Array<String>} p_attr 
-         * @param {String} p_entity 
+         * @param {?String} p_entity 
          */
         BindModel.prototype.loadAttr = function(p_attr, p_entity) {
 
@@ -289,6 +293,20 @@
                 }
             }
         };
+
+        BindModel.prototype.addEntity = function(p_name) {
+
+            var entity;
+
+            // 유효성 검사
+            if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
+            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
+
+            entity = new EntityTable(p_name);
+            this[p_name] = entity;
+            
+            return entity;
+        }
 
         return BindModel;
     

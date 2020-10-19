@@ -118,6 +118,11 @@
             this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
+        BindCommandInternal.prototype._execError = function(p_msg) {
+            this._onFail(msg);
+            this._onExecuted();  // "실행 종료" 이벤트 발생
+        };
+
 
         return BindCommandInternal;
     

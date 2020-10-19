@@ -5412,7 +5412,7 @@ if (typeof Array.isArray === "undefined") {
          * @param {*} status 
          * @param {*} error 
          */
-        BindCommandReadAjax.prototype._ajaxError = function(xhr, status, error) {
+        BindCommandReadAjax.prototype._execError = function(xhr, status, error) {
             
             var msg ="";
             
@@ -5445,7 +5445,7 @@ if (typeof Array.isArray === "undefined") {
             ajaxSetup.url       = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
             ajaxSetup.dataType  = "json";
             ajaxSetup.success   = this._execSuccess.bind(this);
-            ajaxSetup.error     = this._ajaxError.bind(this);
+            ajaxSetup.error     = this._execError.bind(this);
             ajaxSetup.complete  = this._ajaxComplete.bind(this);
 
             for(var i = 0; i < this.bind.items.count; i++) {

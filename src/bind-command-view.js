@@ -119,7 +119,7 @@
 
             // 유효성 검사
             if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
-            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 속성명 중복 : " + p_name);
+            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
 
             this._output.add(new EntityView(p_name, this.baseEntity));  // 등록방법 1
             this[p_name] = this._output[p_name];
