@@ -72,18 +72,7 @@
         }
         util.inherits(BindCommandInternal, _super);
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
-        BindCommandInternal.prototype.getTypes  = function() {
-                    
-            var type = ["BindCommandInternal"];
-            
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        };
 
-        BindCommandInternal.prototype.execute = function() {
-            this._onExecute();  // "실행 시작" 이벤트 발생
-            if (this._execValid()) this._execBind();
-        };
 
         /** @virtual */
         BindCommandInternal.prototype._execValid = function() {
@@ -106,7 +95,7 @@
         BindCommandInternal.prototype._execBind = function() {
             throw new Error("[ _execBind() ] Abstract method definition, fail...");
         };
-        
+
         /** 
          * success(result,status,xhr)
          * @virtual 
@@ -123,6 +112,22 @@
             this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        BindCommandInternal.prototype.getTypes  = function() {
+                    
+            var type = ["BindCommandInternal"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
+        /**
+         * @method 
+         */
+        BindCommandInternal.prototype.execute = function() {
+            this._onExecute();  // "실행 시작" 이벤트 발생
+            if (this._execValid()) this._execBind();
+        };
+        
 
         return BindCommandInternal;
     

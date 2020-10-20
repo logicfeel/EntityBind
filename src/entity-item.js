@@ -237,12 +237,12 @@
             this.constraints.push(constraint);
         };
 
-        Item.prototype.valid = function(i_value, o_message) {
+        Item.prototype.valid = function(i_value, o_msg) {
 
             var result = "";
 
-            o_message.msg = "";
-            o_message.code = "";
+            o_msg.msg = "";
+            o_msg.code = "";
             i_value = i_value || "";
 
             if (!(typeof i_value === "string")) throw new Error("Only [i_value] type 'string' can be added");
@@ -251,16 +251,16 @@
             for(var i = 0; this.constraints.length > i; i++) {
                 result = i_value.match(constraints[i].regex);
                 if (result.length > 0 ) {
-                    o_message.msg = constraints[i].msg;
-                    o_message.code = constraints[i].code;
+                    o_msg.msg = constraints[i].msg;
+                    o_msg.code = constraints[i].code;
                     
                     return false;
                 }
             }
             // 우선순위 낮음
             if (this.isNotNull && i_value.trim().length <= 0) {
-                o_message.msg = "- " + this.caption + "(" + this.name + ")은 공백을 입력할 수 없습니다.";
-                o_message.code = 0;
+                o_msg.msg = "- " + this.caption + "(" + this.name + ")은 공백을 입력할 수 없습니다.";
+                o_msg.code = 0;
                 return false;    // 공백 메세지
             }
 

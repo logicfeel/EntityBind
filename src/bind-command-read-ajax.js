@@ -48,7 +48,6 @@
         function BindCommandReadAjax(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            // TODO:: jquery 등 외부 모듈을 이용하여, 검사 진행, 하지만 꼭 필요한지 사용시 재검토
             var __ajaxSetup = {
                 url: "",            // 요청 경로
                 type: "POST",       // 전송 방법 : GET, POST
@@ -78,19 +77,6 @@
                 configurable: true,
                 enumerable: true
             }); 
-
-            // /** @property {complete} */
-            // Object.defineProperty(this, "complete", 
-            // {
-            //     get: function() { return __ajaxSetup.complete; },
-            //     set: function(newValue) { 
-            //         if (!(typeof newValue === "function")) throw new Error("Only [complete] type 'function' can be added");
-            //         __ajaxSetup.complete = newValue;
-            //     },
-            //     configurable: true,
-            //     enumerable: true
-            // }); 
-
         }
         util.inherits(BindCommandReadAjax, _super);
     
@@ -101,21 +87,6 @@
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
-
-        /**
-         * AJAX 를 기준으로 구성함 (requst는 맞춤)
-         * error(xhr,status,error)
-         * @param {*} xhr 
-         * @param {*} status 
-         * @param {*} error 
-         */
-        BindCommandReadAjax.prototype._execError = function(xhr, status, error) {
-            
-            var msg = xhr && xhr.statusText ? xhr.statusText : error;
-
-            // 상위 호출 : 데코레이션 패턴
-            _super.prototype._execError.call(msg);
-        }
 
         /**
          * Ajax 바인딩 구현
@@ -140,6 +111,21 @@
 
             this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
+
+        /**
+         * AJAX 를 기준으로 구성함 (requst는 맞춤)
+         * error(xhr,status,error)
+         * @param {*} xhr 
+         * @param {*} status 
+         * @param {*} error 
+         */
+        BindCommandReadAjax.prototype._execError = function(xhr, status, error) {
+            
+            var msg = xhr && xhr.statusText ? xhr.statusText : error;
+
+            // 상위 호출 : 데코레이션 패턴
+            _super.prototype._execError.call(msg);
+        }
 
         /**
          * (WEB & NodeJs 의 어뎁터 패턴)

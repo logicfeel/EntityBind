@@ -103,7 +103,7 @@
             var i_value;
 
             if (typeof p_object === "undefined") {      
-                i_value = new Row();
+                i_value = new Row(this._onwer);
             } else if (p_object instanceof Row) {
                 i_value = p_object;
             } else {

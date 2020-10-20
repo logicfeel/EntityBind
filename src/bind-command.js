@@ -77,13 +77,6 @@
         }
         util.inherits(BindCommand, _super);
     
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
-        BindCommand.prototype.getTypes  = function() {
-                    
-            var type = ["BindCommand"];
-            
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        };
 
         /** @virtual */
         BindCommand.prototype.execute = function() {
@@ -108,6 +101,14 @@
             _super.prototype._onFail.call(this, p_msg);
             if (this.eventPropagation) this._model._onFail(p_msg);
         };        
+
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        BindCommand.prototype.getTypes  = function() {
+                    
+            var type = ["BindCommand"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
         
         /**
          * 아이템을 추가하고 명령과 매핑한다.

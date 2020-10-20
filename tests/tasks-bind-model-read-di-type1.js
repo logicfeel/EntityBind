@@ -31,6 +31,14 @@ function ReadDI() {
             console.log("entity.rows.count              1  ==> " + entity.rows.count);   
             console.log("entity.rows[0]                 ,, ==> " + entity.rows[0]._element);   
             __this.msg();
+
+            var filter = {
+                except: "row_count",
+                adm_id: {caption: "관리자아이디요", order: 10000}
+            };
+            var list = entity.select(filter);
+
+            console.log("STOP")
         };
     };
 

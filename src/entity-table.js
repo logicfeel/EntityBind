@@ -61,8 +61,6 @@
 
             this.items = new ItemCollection(this);
 
-            this.rows = new RowCollection(this);
-
             // /**
             //  * @interface IProperyCollection 인터페이스 선언
             //  */

@@ -70,13 +70,6 @@
             this._refEntity = [];
 
             this.items = new ItemRefCollection(this, refCollection);
-            
-            this.rows = new RowCollection(this);
-            
-            //  /**
-            //  * @interface IProperyCollection 인터페이스 선언
-            //  */
-            // this._implements(IGroupControl, IAllControl);                
         }
         util.inherits(EntityView, _super);
 
@@ -109,10 +102,6 @@
         // };
         
         EntityView.prototype.clear  = function() {
-            // TODO::
-        };
-
-        EntityView.prototype.select  = function() {
             // TODO::
         };
 

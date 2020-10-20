@@ -63,23 +63,7 @@
             _super.call(this, p_name);
 
             var __items = null;     // 상속해서 생성해야함
-            var __rows = null;      // 상속해서 생성해야함
-
-            /**
-             * TODO:: 삭제 하는게 맞을듯 확인 필요
-             */
-            // Object.defineProperty(this, "count", 
-            // {
-            //     get: function() { return __items.length; },
-            //     configurable: true,
-            //     enumerable: true
-            // });
-            // Object.defineProperty(this, "list", 
-            // {
-            //     get: function() { return __items; },
-            //     configurable: true,
-            //     enumerable: true
-            // });
+            var __rows  = new RowCollection(this);
 
             /** @property {first} */
             Object.defineProperty(this, "items", 
@@ -112,49 +96,6 @@
         }
         util.inherits(Entity, _super);
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
-        Entity.prototype.getTypes = function() {
-            
-            var type = ["Entity"];
-            
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
-        };
-
-        /**@abstract IGroupControl */
-        Entity.prototype.merge  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
-        };
-        
-        /**@abstract IGroupControl */
-        Entity.prototype.copyTo  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
-        };
-        
-        /**@abstract IAllControl */
-        Entity.prototype.clone  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
-        };
-        
-
-
-        // 지역함수
-        // function loadItem(p_thisEntity, p_item) {
-        //     // for (var prop in entity.items[i]) {
-        //         // if (p_item.hasOwnProperty(prop)) {
-        //             p_thisEntity.items.add(p_item);
-        //             // Item 속성 가져오기
-        //             for (var prop in p_item) {
-        //                 if (p_item.hasOwnProperty(prop)) {
-                            
-        //                     // REVIEW: 필요시 검사후 설정 로직 추가
-        //                     p_thisEntity.items[prop][prop2] = entity.items[i][prop][prop2]
-        //                 }
-        //             }
-        //         // }
-        //     // }
-        // }
-
-
         Entity.prototype.__addItem  = function(p_name, p_property) {
             
             if(!this.items.contains(p_name)) this.items.add(p_name);
@@ -166,21 +107,6 @@
             }
         };
 
-        /**
-         * 
-         * @param {*} p_object 
-         * @param {Number} p_option 
-         *          - 1: 병합, item + row  (*기본값)
-         *          - 2: 데이터만 가져오기 (존재하는 아이템만)
-         */
-        Entity.prototype.load  = function(p_object, p_option) {
-
-            if (p_object instanceof Entity) {
-                this.__loadEntity(p_object, p_option);
-            } else {
-                this.__loadJSON(p_object, p_option);
-            }
-        };
 
         Entity.prototype.__loadJSON  = function(p_object, p_option) {
             p_option = p_option || 1;   // 기본값 덮어쓰기
@@ -268,18 +194,96 @@
         };
 
 
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        Entity.prototype.getTypes = function() {
+            
+            var type = ["Entity"];
+            
+            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
+        /**
+         * 
+         * @param {*} p_object 
+         * @param {Number} p_option 
+         *          - 1: 병합, item + row  (*기본값)
+         *          - 2: 데이터만 가져오기 (존재하는 아이템만)
+         */
+        Entity.prototype.load  = function(p_object, p_option) {
+
+            if (p_object instanceof Entity) {
+                this.__loadEntity(p_object, p_option);
+            } else {
+                this.__loadJSON(p_object, p_option);
+            }
+        };
+
+        Entity.prototype.newRow  = function() {
+            return new Row(this);
+        };
+
+        /**
+         * filter = {
+         *  except : ["name"...]      // 제외 아이템
+         *  아이템명: { order: 100 }    // 속성 오버라이딩
+         * }
+         * ** 상속기법을 이용함
+         * @param {Object} p_filter ㄴㅇㄹㄴㄹ
+         * @return {Array}
+         */
+        Entity.prototype.select  = function(p_filter) {
+            
+            var list = [];
+            var excepts = [];
+            var obj, f;
+            var filterItem;
+
+            // 제외 아이템 조회
+            if (p_filter && p_filter.except) {
+                if (Array.isArray(p_filter.except)) excepts = p_filter.except;
+                else if (typeof p_filter.except === "string") excepts.push(p_filter.except);
+            } 
+
+            for (var i = 0; this.items.count > i; i++) {
+                if (excepts.indexOf(this.items[i].name) < 0)  {
+                    
+                    // 가상함수에 객체 생성방식
+                    f = function() {};
+                    f.prototype = this.items[i];
+                    var obj = new f();
+                    
+                    // 필터 설정(등록)
+                    if (p_filter && p_filter[this.items[i].name]) {
+                        filterItem = p_filter[this.items[i].name];    
+                        for(var prop in filterItem) {
+                            obj[prop] = filterItem[prop];
+                        }
+                    }
+                    list.push(this.items[i])
+                }
+            }
+
+            return list.sort(function(a, b) { return a.order - b.order; });
+        };
+
+        /**@abstract IGroupControl */
+        Entity.prototype.merge  = function() {
+            throw new Error("[ clear() ] Abstract method definition, fail...");
+        };
+        
+        /**@abstract IGroupControl */
+        Entity.prototype.copyTo  = function() {
+            throw new Error("[ clear() ] Abstract method definition, fail...");
+        };
+        
         /**@abstract IAllControl */
-        Entity.prototype.clear  = function() {
+        Entity.prototype.clone  = function() {
             throw new Error("[ clear() ] Abstract method definition, fail...");
         };
 
-        Entity.prototype.select  = function() {
-            throw new Error("[ select() ] Abstract method definition, fail...");
-        };
-
-        
-        Entity.prototype.newRow  = function() {
-            return new Row(this);
+        /**@abstract IAllControl */
+        Entity.prototype.clear  = function() {
+            throw new Error("[ clear() ] Abstract method definition, fail...");
         };
         
         return Entity;
