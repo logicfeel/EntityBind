@@ -229,9 +229,10 @@
 	        var strHtml = "";
 	        strHtml = strHtml + "<tr>";
 	        strHtml = strHtml + "<td>" + num + "</td>";
-	        strHtml = strHtml + "<td><a href=\"javascript:Main.C_GoForm('UPDATE','" + forRow[i].ntc_idx + "');\"\">" + forRow[i].title + "</a></td>";
+	        strHtml = strHtml + "<td>  <a href=\"javascript:Main.C_GoForm('UPDATE','" + forRow[i].ntc_idx + "');\"\">" + forRow[i].title + "</a></td>";
 	        strHtml = strHtml + "<td>" + Main.C_NoticeType(forRow[i].noticeType_cd) + "</td>";
-	        strHtml = strHtml + "<td>" + forRow[i].writer + "</td>";
+	        // strHtml = strHtml + "<td>" + forRow[i].writer + "</td>";
+	        strHtml = strHtml + "<td>" + forRow[i]['writer'].value + "</td>";
 	        strHtml = strHtml + "<td>" + forRow[i].create_dt.substring(0,10) + "</td>";
 	        strHtml = strHtml + "<td>" + forRow[i].cnt + "</td>";
 	        strHtml = strHtml + "<td></td>";

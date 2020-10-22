@@ -128,7 +128,7 @@
         this.mode = {
             create: function() {
                 this.attr.cmd = "CREATE";
-                $("#sto_id").val(this.cmd.sto_id);
+                $("#sto_id").val(this.attr.cmd);
                 $("#create_dt_area").hide();
             },
             update: function() {
@@ -147,7 +147,7 @@
                 this.create.execute();
             });
             $("#btn_Update").click(function () {
-                this.delete.execute();
+                this.update.execute();
             });
             $("#btn_Delete").click(function () {
                 this.delete.execute();
@@ -178,7 +178,26 @@
         
         // 이런식으로 자동 설정도 가능한....
         // this.writeAttr(entity.rows[0]);  
+        // 단일 특정 row를 채우는 경우
         // entity.setValue(row);
+        // 복수의 row를 채우는 경우
+        // entity.fill("#CList", "#Template");  // row 가 붙는 위치
+        // #Template > selector 형식으로 위치가 확인됨
+        // 확인 검토
+        // getter/setter VS  getterRow, setterRow 를 구분할지 여부
+        /**
+         * 단일로도 가능하며, 복수로도 가능하다.
+         * getter(seq), setter(seq)
+         * seq = seq | 1; 이런식으로 기본값을 지정
+         * 
+         * 문제점 ?
+         *  - ROW에 의존적 또는 구조가 복잡해질 우려가 있다.
+         * 
+         */
+
+        // Item.rowSelector 에 지정된 명칭(class)[포인트지점] 을 기준으로 파싱함
+
+
         entity.items['ntx_idx'].value = "설정"; // setter 작동
         val = entity.items['ntx_idx'].value;    // getter 작동
 
@@ -230,6 +249,28 @@
     $(document).ready(function () {
         e.init();
     });
+
+
+    //===================================
+    /**
+     * 이슈 !! 이름의 중복시
+     * 
+     *  - Item.cbRowSelector 설정 : 필요시 선택사황
+     *  - 처리 이벤트 (화면 비활성화)
+     *  - cbView 에서 해당 부분만큼의 html 구성  :: FormDI 에서  받은 내용임
+     *  - ??.fill
+     * ### 잠시 보류함
+     * adapter.fill(entity); 를 통해서 정리할 수 있음
+     * 
+     **/
+    // 1. cbView 에서 껍질 부분을 출력하고,
+    // 
+    // 2.셀렉터로 특정위치를 지정해주고
+
+
+    ItemDOM.cbRowSelector = function(seq) {
+      return "li:nth-last-child(" + seq + ") td ";
+    };
 
 </script>
 
