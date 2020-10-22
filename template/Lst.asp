@@ -234,8 +234,7 @@
 	        strHtml = strHtml + "<td>" + forRow[i].writer + "</td>";
 	        strHtml = strHtml + "<td>" + forRow[i].create_dt.substring(0,10) + "</td>";
 	        strHtml = strHtml + "<td>" + forRow[i].cnt + "</td>";
-	        strHtml = strHtml + "<td>";
-	        strHtml = strHtml + "</td>";
+	        strHtml = strHtml + "<td></td>";
 	        $("#CList").append(strHtml); 
 	    }
 

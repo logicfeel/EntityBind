@@ -3,7 +3,10 @@
  */
 //===============================================
 // 선언
-var Item                    = require("../src/entity-item-dom");
+var Item                    = require("../src/entity-item").Item;
+var MetaElement             = require("../src/meta-element");
+
+
 var BindModelReadAjax       = require("../src/bind-model-read-ajax");
 var IBindModelRead          = require("../src/i-bind-model-read");
 var util                    = require("../src/utils");
@@ -33,11 +36,35 @@ function ReadDI() {
             __this.msg();
 
             var filter = {
-                except: "row_count",
-                adm_id: {caption: "관리자아이디요", order: 10000}
-            };
-            var list = entity.select(filter);
+                __except: "row_count",
+                adm_id: {caption: "관리자아이디요", order: 10000},
+                del_yn: {__except: true}
 
+            };
+            
+            var list = entity.select(filter);
+            console.log("filte....")
+            console.log("list.length  8 ==> " + list.length);
+            // 필터 인스턴스 타입 검사
+            if (list[0] instanceof Item) console.log("true");
+            if (list[0] instanceof MetaElement) console.log("true");
+
+
+            // 제약조건 : 실패조건과 메세지를 등록하는 방식
+            console.log("제약조건 테스트------------------");
+            var msg = {};
+            list[0].isNotNull = true;
+            list[0].caption = "상점코드";
+            list[0].setConstraint(/\D/, "숫자만 입력해야함...", 100);
+            list[0].setConstraint(/[0-9]{5}/, "5자리 이하만...", 200);
+            list[0].setConstraint(/\s/, "공백은 안되요...", 200);
+            console.log(list[0].valid("", msg));
+
+            var m = msg.msg;
+            var aaa = "AAAa";
+            
+            console.log(m)
+            // console.log('msg : %s %s  ${aaa}..', aaa, "AAA");
             console.log("STOP")
         };
     };

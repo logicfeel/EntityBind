@@ -224,8 +224,9 @@
 
         /**
          * filter = {
-         *  except : ["name"...]      // 제외 아이템
-         *  아이템명: { order: 100 }    // 속성 오버라이딩
+         *  __except : ["name"...],        // 제외 아이템 (1방법)
+         *  아이템명: { __except: true }    // 아이템 제외 (2방법)
+         *  아이템명: { order: 100 }        // 속성 오버라이딩
          * }
          * ** 상속기법을 이용함
          * @param {Object} p_filter ㄴㅇㄹㄴㄹ
@@ -233,21 +234,22 @@
          */
         Entity.prototype.select  = function(p_filter) {
             
+            var EXECEPT = '__except';
             var list = [];
             var excepts = [];
             var obj, f;
             var filterItem;
 
             // 제외 아이템 조회
-            if (p_filter && p_filter.except) {
-                if (Array.isArray(p_filter.except)) excepts = p_filter.except;
-                else if (typeof p_filter.except === "string") excepts.push(p_filter.except);
+            if (p_filter && p_filter[EXECEPT]) {
+                if (Array.isArray(p_filter[EXECEPT])) excepts = p_filter[EXECEPT];
+                else if (typeof p_filter[EXECEPT] === "string") excepts.push(p_filter[EXECEPT]);
             } 
 
             for (var i = 0; this.items.count > i; i++) {
                 if (excepts.indexOf(this.items[i].name) < 0)  {
                     
-                    // 가상함수에 객체 생성방식
+                    // 임시함수에 객체 생성방식
                     f = function() {};
                     f.prototype = this.items[i];
                     var obj = new f();
@@ -259,7 +261,7 @@
                             obj[prop] = filterItem[prop];
                         }
                     }
-                    list.push(this.items[i])
+                    if (obj[EXECEPT] !== true) list.push(obj);
                 }
             }
 
