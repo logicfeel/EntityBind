@@ -42,8 +42,7 @@
             var __domType       = null;
             var __isReadOnly    = false;
             var __isHide        = false;
-            var __refElement    = null;
-            var __refValue      = null;
+            var __element       = null;
 
             /** @property {domType} */
             Object.defineProperty(this, "domType", 
@@ -82,29 +81,17 @@
                 enumerable: true
             });
 
-            /** @property {refElement} */
-            Object.defineProperty(this, "refElement", 
+            /** @property {element} */
+            Object.defineProperty(this, "element", 
             {
-                get: function() { return __refElement; },
+                get: function() { return __element; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "object") throw new Error("Only [refElement] type 'object' can be added");
-                    __refElement = newValue;
+                    if(typeof newValue !== "object") throw new Error("Only [element] type 'object' can be added");
+                    __element = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
-
-            /** @property {refValue} */
-            Object.defineProperty(this, "refValue", 
-            {
-                get: function() { return __refValue; },
-                set: function(newValue) { 
-                    __refValue = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });
-
         }
         util.inherits(ItemDOM, _super);
     
@@ -114,6 +101,28 @@
             var type = ["ItemDOM"];
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
+        /**
+         * 상위 Item.value 의 특성을 오버라이딩함
+         * @param {Function} p_getter 
+         * @param {Function} p_setter 
+         */
+        ItemDOM.prototype.defineValueProperty  = function(p_getter, p_setter) {
+            p_getter = p_getter || function() { return this.value };
+            p_setter = p_setter || function(val) { this.value = val };
+
+            // 유효성 검사
+            if (typeof p_getter !== "function") throw new Error("Only [p_getter] type 'function' can be added");
+            if (typeof p_setter !== "function") throw new Error("Only [p_setter] type 'function' can be added");
+
+            Object.defineProperty(this, "value", 
+            {
+                get: p_getter,
+                set: p_setter,
+                configurable: true,
+                enumerable: true
+            });
         };
 
         /** @override */

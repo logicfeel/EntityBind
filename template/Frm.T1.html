@@ -107,11 +107,17 @@
   function FormDI() {
     IBindModelRead.call(this);
     
-    __this = this;  // 내부 this
+    var __this = this;  // 내부 this
     
-    this.attr = getURLToJSON(location.href);
+    this.selector = {
+      form: ["#sto_id", "#ntc_idx", "#writer"],
+      event: ["#btn_List"],
+      style: ["myModal-content > modal-header"]
+    };
+  
     
     this.attr = {   // attr 에는 문자값과 객체값 두가지를 형식을 가진다.
+      param: getURLToJSON(location.href),
       cmd: null,
       listURL: "Notice_Lst.asp",
       sto_id: {caption: "상점코드", value: $("#sto_id").val()}, 
@@ -190,7 +196,9 @@
       $("#noticeType_T").attr("checked", "checked");
     }
   };
+</script>
 
+<script>
   //-------------------------------------------------------
   var BindModelReadAjax       = _W.Meta.Bind.BindModelReadAjax;
   

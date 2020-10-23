@@ -268,6 +268,25 @@
             return list.sort(function(a, b) { return a.order - b.order; });
         };
 
+        Entity.prototype.setValue  = function(p_row) {
+            
+            if (p_row instanceof Row) throw new Error("Only [p_row] type 'Row' can be added");
+
+            for(var i = 0; this.items.count > i; i++) {
+                this.items[i].value = p_row[i];
+            }
+        };
+
+        Entity.prototype.getValue  = function() {
+            
+            var row = this.newRow();
+            
+            for(var i = 0; this.items.count > i; i++) {
+                row[i] = this.items[i].value;
+            }
+            return row;
+        };
+
         /**@abstract IGroupControl */
         Entity.prototype.merge  = function() {
             throw new Error("[ clear() ] Abstract method definition, fail...");

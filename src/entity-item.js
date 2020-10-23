@@ -58,6 +58,8 @@
             var __codeType      = null;
             var __order         = 100;
             var __increase      = 100;      // order 의 자동 추가수
+            var __value         = null;
+
             var __cbNotMsg      = function() {
                 return this.caption+"("+this.name+")은  공백을 입력할 수 없습니다.";
             };
@@ -192,6 +194,17 @@
                 set: function(newValue) { 
                     if(typeof newValue !== "number") throw new Error("Only [increase] type 'number' can be added");
                     __increase = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+            
+            /** @property {value} */
+            Object.defineProperty(this, "value", 
+            {
+                get: function() { return __value; },
+                set: function(newValue) { 
+                    __value = newValue;
                 },
                 configurable: true,
                 enumerable: true

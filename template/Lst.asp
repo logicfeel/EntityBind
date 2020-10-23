@@ -115,9 +115,6 @@
 <script src="/A-Back/CMN/Paging.js"></script>
 <script src="/A-Back/CMN/ModuleCommon.js"></script>
 <script type="text/javascript">
-<!--
-
-	
 	$(document).ajaxError(function (event, xhr, options, exc) {
 	    if (xhr.status != 200) {
 	        var msg = "";
@@ -256,7 +253,6 @@
 		return tmp;	
 	}
 
--->
 </script>
 
 </body>

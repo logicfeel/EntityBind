@@ -88,6 +88,23 @@
         return _p8() + _p8(true) + _p8(true) + _p8();
     };
 
+    /**
+     * 셀렉터의 유효성 검사 : 대상을 모두 검사하여 결과를 리턴한다.
+     * 주의!! DOM(web) 에서만 작동한다.
+     * @param {Object | Array<String> | String} p_obj 
+     * @returns {String} 없는 셀렉터, 통화하면 null 리턴
+     */
+    var validSelector = function(p_obj) {
+    
+
+        if (typeof document === "object" && typeof document.querySelector === "object") {     
+            document.querySelector(".token")
+        } else {
+            return false;
+        }
+
+    };
+
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
