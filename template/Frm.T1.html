@@ -115,6 +115,8 @@
       style: ["myModal-content > modal-header"]
     };
   
+    // 셀렉터 검사 (인터페이스 역활)
+    util.validSelector(this.selector);
     
     this.attr = {   // attr 에는 문자값과 객체값 두가지를 형식을 가진다.
       param: getURLToJSON(location.href),

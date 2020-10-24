@@ -77,13 +77,14 @@
         /** @virtual */
         BindCommandInternal.prototype._execValid = function() {
             
-            var o_msg = {};
+            var msg = {};     // 오류 참조 변수
 
             console.log("*************");
             // console.log("_execValid()");
             for(var i = 0; i < this.valid.items.count; i++) {
-                if (!(this.valid.items[i].valid(this.valid.items[i].refValue, o_msg))) {
-                    this._onFail(o_msg);
+                // null 검사를 모두 수행 : option 2
+                if (!(this.valid.items[i].valid(this.valid.items[i].refValue, msg, 2))) {
+                    this._onFail(msg);
                     return false;
                 }
                 // console.log("valid : " + this.valid.items[i].name);

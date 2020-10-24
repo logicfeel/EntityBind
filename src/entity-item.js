@@ -60,11 +60,6 @@
             var __increase      = 100;      // order 의 자동 추가수
             var __value         = null;
 
-            var __cbNotMsg      = function() {
-                return this.caption+"("+this.name+")은  공백을 입력할 수 없습니다.";
-            };
-
-
             // Entity 등록 & order(순서) 값 계산
             if (p_entity && p_entity.instanceOf("Entity")) {
                 __entity    = p_entity;
@@ -210,18 +205,6 @@
                 enumerable: true
             });
 
-            /** @property {cbNotMsg} */
-            Object.defineProperty(this, "cbNotMsg", 
-            {
-                get: function() { return __cbNotMsg; },
-                set: function(newValue) { 
-                    if(typeof newValue !== "function") throw new Error("Only [increase] type 'number' can be added");
-                    __cbNotMsg = newValue; 
-                },
-                configurable: true,
-                enumerable: true
-            });
-
 
             // 아이템 옵션속성 추가
             if (typeof p_option === "object" ) {
@@ -267,12 +250,20 @@
             this.constraints.push(constraint);
         };
 
-        Item.prototype.valid = function(p_value, o_msg) {
-
+        
+        /**
+         * 
+         * @param {*} p_value 
+         * @param {*} r_msg 
+         * @param {Number} p_option 1. isNotNull 참조 | 2: null검사 진행   |  3: null검사 무시
+         */
+        Item.prototype.valid = function(p_value, r_msg, p_option) {
+            p_option = p_option || 1;   // 기본값
+            
             var result;
 
-            o_msg.msg = "";
-            o_msg.code = "";
+            r_msg.msg = "";
+            r_msg.code = "";
             p_value = p_value || "";
 
             if (!(typeof p_value === "string")) throw new Error("Only [p_value] type 'string' can be added");
@@ -281,21 +272,22 @@
             for(var i = 0; this.constraints.length > i; i++) {
                 result = p_value.match(this.constraints[i].regex);
                 if (result !== null) {
-                    o_msg.msg   = this.constraints[i].msg;
-                    o_msg.code  = this.constraints[i].code;
+                    r_msg.msg   = this.constraints[i].msg;
+                    r_msg.code  = this.constraints[i].code;
                     return false;
                 }
             }
-            // 우선순위 낮음
-            if (this.isNotNull && p_value.trim().length <= 0) {
-                o_msg.msg   = this.cbNotMsg.call(this);
-                o_msg.code  = 0;
+            
+            // Null 검사
+            if ((p_option === 1 && this.isNotNull && p_value.trim().length <= 0) || 
+                (p_option === 2 && p_value.trim().length <= 0)) {
+                
+                r_msg.msg   = this.caption+"("+this.name+")은  공백을 입력할 수 없습니다.";
+                r_msg.code  = 0;
                 return false;
             }
-
             return true;
         };
-
 
         return Item;
     

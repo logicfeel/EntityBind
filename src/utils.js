@@ -95,14 +95,39 @@
      * @returns {String} 없는 셀렉터, 통화하면 null 리턴
      */
     var validSelector = function(p_obj) {
-    
+        
+        var selectors = [];
 
-        if (typeof document === "object" && typeof document.querySelector === "object") {     
-            document.querySelector(".token")
-        } else {
-            return false;
+        // 입력형식에 따른 배열에 삽입
+        if (typeof p_obj === "string") selectors.push(p_obj);
+        else if (typeof p_obj === "array") {
+            selectors = p_obj;
+        } else if (typeof p_obj === "object") {
+            for(var prop in p_obj) {
+                if (p_obj.hasOwnProperty(prop)) {
+                    if (Array.isArray(p_obj[prop])) {
+                        selectors = selectors.concat(p_obj[prop]);
+                    } else { 
+                        selectors.push(p_obj[prop]);
+                    }
+                }
+            }
         }
 
+        if (typeof document === "object" && typeof document.querySelector === "object") {     
+            // 유효성 검사
+            for(var i = 0; selectors.length > 0; i++) {
+                if (typeof selectors[i] !== "string") throw new Error("Only [selectors] type 'string' can be added");
+
+                if (document.querySelector(selectors[i]) === null) {
+                    return selectors[i];
+                }
+            }
+        } else {
+            throw new Error("[document.querySelector] module load fail...");
+        }
+
+        return null;
     };
 
     //==============================================================
@@ -115,6 +140,7 @@
         global._W.Common.Util.inherits = inherits;
         global._W.Common.Util.getArrayLevel = getArrayLevel;
         global._W.Common.Util.createGUID = createGUID;
+        global._W.Common.Util.validSelector = validSelector;
     }
 
 }(this));
