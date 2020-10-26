@@ -26,7 +26,7 @@ function readDI() {
 
     this.mode = {};
     this.cbRegister = function() {
-        this.read.cbView = readView;
+        this.read.cbOutput = readView;
     };
     this.cbValid = null;
     // this.cbReady = null;
@@ -35,7 +35,7 @@ function readDI() {
     };
 
     function readView(entity) {
-        console.log("cbView  호출");    
+        console.log("cbOutput  호출");    
         console.log("this._model.first.items.count  10 ==> " + this._model.first.items.count);   
         console.log("e.first.items.count            10 ==> " + e.first.items.count);   
         console.log("entity.items.count             10 ==> " + entity.items.count);   
@@ -63,9 +63,9 @@ var e = new BindModelReadAjax(new readDI());
 // 등록
 e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";
 
-// e.read.cbView = di.cbView;
-// e.read.cbView = function(entity) {
-//     console.log("cbView  호출");    
+// e.read.cbOutput = di.cbOutput;
+// e.read.cbOutput = function(entity) {
+//     console.log("cbOutput  호출");    
 //     console.log("this._model.first.items.count  10 ==> " + this._model.first.items.count);   
 //     console.log("e.first.items.count            10 ==> " + e.first.items.count);   
 //     console.log("entity.items.count             10 ==> " + entity.items.count);   

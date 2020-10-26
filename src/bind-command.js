@@ -96,11 +96,11 @@
             if (this.eventPropagation) this._model._onExecuted();
         };
 
-        /** @override */
-        BindCommand.prototype._onFail = function(p_msg) {
-            _super.prototype._onFail.call(this, p_msg);
-            if (this.eventPropagation) this._model._onFail(p_msg);
-        };        
+        // /** @override */
+        // BindCommand.prototype._onFail = function(p_msg) {
+        //     _super.prototype._onFail.call(this, p_msg);
+        //     if (this.eventPropagation) this._model._onFail(p_msg);
+        // };        
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommand.prototype.getTypes  = function() {

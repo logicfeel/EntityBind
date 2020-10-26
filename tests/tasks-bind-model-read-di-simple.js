@@ -27,7 +27,7 @@ function readDI() {
     this.mode = {};
 
     this.cbRegister = function() {
-        this.read.cbView = readView;
+        this.read.cbOutput = readView;
     };
     this.cbValid = null;
     this.cbReady = function(model) {
@@ -35,7 +35,7 @@ function readDI() {
     };
 
     function readView(entity) {
-        console.log("cbView  호출");    
+        console.log("cbOutput  호출");    
         console.log("this._model.first.items.count  10 ==> " + this._model.first.items.count);   
         console.log("entity.items.count             10 ==> " + entity.items.count);   
         console.log("entity.rows.count              1  ==> " + entity.rows.count);   

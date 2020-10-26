@@ -146,7 +146,7 @@ console.log("---------------------------------------");
 e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";
 // e.g_url = "./view.json";
 
-e.read.cbView = function(view) {
+e.read.cbOutput = function(view) {
     console.log("*************");
     console.log("read.view.items.count  ==> " + e.read.view.items.count);    
     console.log("view.items.count       ==> " + view.items.count);    
@@ -156,8 +156,8 @@ e.read.cbView = function(view) {
 };
 
 // e.read.outputOption = 2;
-e.read.cbView = function(entity) {
-    console.log("cbView  호출");    
+e.read.cbOutput = function(entity) {
+    console.log("cbOutput  호출");    
     console.log("entity.rows[0] = " + entity.rows[0]._element);    
 }
 

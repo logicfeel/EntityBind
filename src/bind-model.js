@@ -70,6 +70,8 @@
             var __cbRegister    = function() {};
             var __cbValid       = function() {return true};
             var __cbReady       = function() {};
+            var __cbFail        = function() { console.warn("실패하였습니다."); };
+            var __cbError       = function() { console.error("오류가 발생 하였습니다."); };
 
             var propObject;
 
@@ -166,6 +168,30 @@
                 set: function(newValue) { 
                     if (!(newValue instanceof Function)) throw new Error("Only [cbReady] type 'Function' can be added");
                     __cbReady = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {cbFail} */
+            Object.defineProperty(this, "cbFail", 
+            {
+                get: function() { return __cbFail; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof Function)) throw new Error("Only [cbFail] type 'Function' can be added");
+                    __cbFail = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {cbError} */
+            Object.defineProperty(this, "cbError", 
+            {
+                get: function() { return __cbError; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof Function)) throw new Error("Only [cbError] type 'Function' can be added");
+                    __cbError = newValue;
                 },
                 configurable: true,
                 enumerable: true

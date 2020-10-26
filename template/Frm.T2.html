@@ -169,7 +169,7 @@
       });
       
       // 뷰콜백 연결
-      this.read.cbView = this.readView;   
+      this.read.cbOutput = this.readView;   
     };
     
     this.cbValid = function() {   // 2.검사
@@ -188,21 +188,17 @@
   util.inherits(FormDI, IBindModelRead);
 
   FormDI.prototype.readView = function(entity) {
-      var row;
+      if (typeof entity === "undefined" || entity.rows.count <= 0) Msg("자료가 없습니다.");
 
-      if (entity.rows.count <= 0) Msg("자료가 없습니다.");
-      
-      // 2안> 자동 등록 방식
-      entity.setValue(entity.rows[0]);
+      entity.setValue(entity.rows[0]);  // 2안> 자동 등록 방식
   };
 
   //-------------------------------------------------------
   var BindModelReadAjax       = _W.Meta.Bind.BindModelReadAjax;
   
-  // 메타 객체 생성
-  var e = new BindModelReadAjax(new FromDI());
-  e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";
+  var e = new BindModelReadAjax(new FromDI()); // 메타모델 생성
 
+  e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";
   e.loadAttr();   // 전체속성 가져옴
 
   e.onFail = function(p_msg, p_code) {

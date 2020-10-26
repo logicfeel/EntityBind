@@ -41,8 +41,9 @@
                 any: []
             };
 
-            // 이벤트 전파 설정
-            this.propagation = true;
+            
+            this.propagation    = true;     // 이벤트 전파 설정
+            this.isMultiMode    = true;     // 단일 이벤트 등록 (마지막 등록기준)
         }
 
         /**
@@ -55,15 +56,18 @@
             p_code = p_code || 'any';
 
             var subscribers = null;
-            
+
             if (typeof p_fn === "undefined") throw new Error("p_fn param request fail...");
-            
+            if (typeof p_fn !== "function") throw new Error("Only [p_fn] type 'function' can be added");
+
+            // 싱글모드일 경우 기존내용 모두 제거
+            if (!this.isMultiMode) this.unsubscribeAll(p_code);
+
             if (typeof this.subscribers[p_code] === "undefined") {
                 this.subscribers[p_code] = [];
             }
             subscribers = this.subscribers[p_code];
-            
-            if  (typeof p_fn === "function") subscribers.push(p_fn);
+            subscribers.push(p_fn);
         };
         
         /**

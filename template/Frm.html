@@ -153,7 +153,7 @@
                 this.delete.execute();
             });
             
-            this.read.cbView = this.readView;   // 뷰콜백 연결
+            this.read.cbOutput = this.readView;   // 뷰콜백 연결
         };
         
         this.cbValid = function() {   // 2.검사
@@ -257,13 +257,13 @@
      * 
      *  - Item.cbRowSelector 설정 : 필요시 선택사황
      *  - 처리 이벤트 (화면 비활성화)
-     *  - cbView 에서 해당 부분만큼의 html 구성  :: FormDI 에서  받은 내용임
+     *  - cbOutput 에서 해당 부분만큼의 html 구성  :: FormDI 에서  받은 내용임
      *  - ??.fill
      * ### 잠시 보류함
      * adapter.fill(entity); 를 통해서 정리할 수 있음
      * 
      **/
-    // 1. cbView 에서 껍질 부분을 출력하고,
+    // 1. cbOutput 에서 껍질 부분을 출력하고,
     // 
     // 2.셀렉터로 특정위치를 지정해주고
 

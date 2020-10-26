@@ -68,7 +68,7 @@ function BindModelFormAjax() {}
 
 //--------------------------------------
 new bm = new BindModelFormAjax(p);
-bm.read.cbView = this.pageView;             // 이부분은 자동화 보다는 사용자화 하는게 맞을듯함
+bm.read.cbOutput = this.pageView;             // 이부분은 자동화 보다는 사용자화 하는게 맞을듯함
 bm.cbReady = function() {                  // 의존성이 섞여 있음 !!! => 파라메터로 해결
     // 시작시 처리할 부분이 있으면 추가함
 };

@@ -49,14 +49,14 @@
         function BindCommandView(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            var __cbView;
+            var __cbOutput;
 
             var __outputOption = 1;     // 1: View 오버로딩 , 2: 있는자료만            
             
             this._output = new EntityViewCollection(this, this.baseEntity);
             
             // 속성 생성 및 참조 등록
-            this.addOutput("view");
+            this.addOutput("outout");
 
             /** @property {outputOption} */
             Object.defineProperty(this, "outputOption", 
@@ -71,13 +71,13 @@
                 enumerable: true
             });
             
-            /** @property {cbView} */
-            Object.defineProperty(this, "cbView", 
+            /** @property {cbOutput} */
+            Object.defineProperty(this, "cbOutput", 
             {
-                get: function() { return __cbView; },
+                get: function() { return __cbOutput; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbView] type 'Function' can be added");
-                    __cbView = newValue;
+                    if (!(newValue instanceof Function)) throw new Error("Only [cbOutput] type 'Function' can be added");
+                    __cbOutput = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -95,10 +95,10 @@
          */
         BindCommandView.prototype._execSuccess = function(i_result, i_status, i_xhr) {
 
-            this.view.load(i_result, this.outputOption);
+            this["outout"].load(i_result, this.outputOption);
 
             // 뷰 콜백 호출  : EntitView를 전달함
-            if (typeof this.cbView === "function" ) this.cbView(this.view);
+            if (typeof this.cbOutput === "function" ) this.cbOutput(this["outout"]);
 
             // 상위 호출 : 데코레이션 패턴
             _super.prototype._execSuccess.call(this, i_result, i_status, i_xhr);

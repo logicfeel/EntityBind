@@ -40,8 +40,8 @@
         // 2) cbRegister 에 즉시 선언
         // 3) this.XXX 선언후 등록 (this.cbRegister 보다 우선 선언해야 함)
         this.cbRegister = function() {
-            this.read.cbView = function(entity) {      // 함수로 선언하여 위치를 자유롭게 두던지, 
-                console.log("cbView  호출");    
+            this.read.cbOutput = function(entity) {      // 함수로 선언하여 위치를 자유롭게 두던지, 
+                console.log("cbOutput  호출");    
                 console.log("this._model.first.items.count  10 ==> " + this._model.first.items.count);   
                 console.log("entity.items.count             10 ==> " + entity.items.count);   
                 console.log("entity.rows.count              1  ==> " + entity.rows.count);   

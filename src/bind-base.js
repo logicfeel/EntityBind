@@ -81,14 +81,14 @@
                 }
             });
 
-            /** @property */
-            Object.defineProperty(this, "onFail", {
-                enumerable: true,
-                configurable: true,
-                set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "fail");
-                }
-            });
+            // /** @property */
+            // Object.defineProperty(this, "onFail", {
+            //     enumerable: true,
+            //     configurable: true,
+            //     set: function(p_fn) {
+            //         this.__event.subscribe(p_fn, "fail");
+            //     }
+            // });
 
             /** @property */
             Object.defineProperty(this, "eventPropagation", {
@@ -121,10 +121,10 @@
             this.__event.publish("executed"); 
         };
 
-        /** @event */
-        BaseBind.prototype._onFail = function(p_msg) {
-            this.__event.publish("fail", p_msg); 
-        };        
+        // /** @event */
+        // BaseBind.prototype._onFail = function(p_msg) {
+        //     this.__event.publish("fail", p_msg); 
+        // };        
 
         return BaseBind;
     

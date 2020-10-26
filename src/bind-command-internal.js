@@ -42,8 +42,12 @@
         function BindCommandInternal(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            var __valid = new EntityView("valid", this.baseEntity);
-            var __bind  = new EntityView("bind", this.baseEntity);
+            var __valid     = new EntityView("valid", this.baseEntity);
+            var __bind      = new EntityView("bind", this.baseEntity);
+
+            var __cbValid   = function() {};
+            var __cbBind    = function() {};
+
 
             /** @property {valid} */
             Object.defineProperty(this, "valid", 
@@ -67,6 +71,30 @@
                 },
                 configurable: true,
                 enumerable: true
+            });
+
+            /** @property {cbValid} */
+            Object.defineProperty(this, "cbValid", 
+            {
+                get: function() { return __cbValid; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof Function)) throw new Error("Only [cbValid] type 'Function' can be added");
+                    __cbValid = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {cbBind} */
+            Object.defineProperty(this, "cbBind", 
+            {
+                get: function() { return __cbBind; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof Function)) throw new Error("Only [cbBind] type 'Function' can be added");
+                    __cbBind = newValue;
+                },
+                configurable: true,
+                enumerable: true
             });            
 
         }
@@ -84,7 +112,8 @@
             for(var i = 0; i < this.valid.items.count; i++) {
                 // null 검사를 모두 수행 : option 2
                 if (!(this.valid.items[i].valid(this.valid.items[i].refValue, msg, 2))) {
-                    this._onFail(msg);
+                    this._model.cbFail(msg);
+                    this._onExecuted();     // "실행 종료" 이벤트 발생
                     return false;
                 }
                 // console.log("valid : " + this.valid.items[i].name);
@@ -109,8 +138,9 @@
         };
 
         BindCommandInternal.prototype._execError = function(p_msg) {
-            this._onFail(msg);
-            this._onExecuted();  // "실행 종료" 이벤트 발생
+            // this._onFail(msg);
+            this._model.cbFail(msg);
+            this._onExecuted();     // "실행 종료" 이벤트 발생
         };
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/

@@ -235,7 +235,7 @@
             // }
             
             // 뷰 콜백 호출  : EntitView를 전달함
-            if (typeof this.cbView === "function" ) this.cbView(this.view);
+            if (typeof this.cbOutput === "function" ) this.cbOutput(this.view);
 
             // 처리 종료 콜백 호출
             if (typeof this.cbEnd === "function" ) this.cbEnd();
