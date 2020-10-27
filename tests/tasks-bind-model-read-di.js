@@ -79,6 +79,6 @@ e.onFail = function(p_msg) {
 
 e.init();
 //------------------------------
-// e.read.execute();
+e.read.execute();
 
 console.log("-End-");

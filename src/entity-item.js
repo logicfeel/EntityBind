@@ -156,7 +156,21 @@
             Object.defineProperty(this, "constraints", 
             {
                 get: function() { return __constraints; },
-                // set: function(newValue) { __constraints = newValue; },
+                set: function(newValue) { 
+                    var list = [];
+                    
+                    // 배열로 일반화
+                    if (Array.isArray(newValue))  list = newValue;
+                    else list.push(newValue);
+
+                    // 유효성 검사
+                    for(var i = 0; list.length > i; i++) {
+                        if (typeof list[i].regex !== "object" || typeof list[i].msg !== "string") {
+                            throw new Error("Only [constraints] type '{regex:object, msg:string, ?code:number}' can be added");
+                        }
+                    }
+                    __constraints = newValue; 
+                },
                 configurable: true,
                 enumerable: true
             });
@@ -214,7 +228,7 @@
                     }
                 }
             } else if (["number", "string", "boolean"].indexOf(typeof p_option) > -1) {
-                this.default = p_option[prop];
+                this.default = p_option;
             }
 
         }
@@ -254,17 +268,17 @@
         /**
          * 
          * @param {*} p_value 
-         * @param {*} r_msg 
+         * @param {*} r_result 
          * @param {Number} p_option 1. isNotNull 참조 | 2: null검사 진행   |  3: null검사 무시
          */
-        Item.prototype.valid = function(p_value, r_msg, p_option) {
-            p_option = p_option || 1;   // 기본값
+        Item.prototype.valid = function(p_value, r_result, p_option) {
+            // 기본값
+            p_option = p_option || 1;   
+            r_result.msg = "";
+            r_result.code = "";
+            p_value = p_value || "";
             
             var result;
-
-            r_msg.msg = "";
-            r_msg.code = "";
-            p_value = p_value || "";
 
             if (!(typeof p_value === "string")) throw new Error("Only [p_value] type 'string' can be added");
             
@@ -272,8 +286,8 @@
             for(var i = 0; this.constraints.length > i; i++) {
                 result = p_value.match(this.constraints[i].regex);
                 if (result !== null) {
-                    r_msg.msg   = this.constraints[i].msg;
-                    r_msg.code  = this.constraints[i].code;
+                    r_result.msg   = this.constraints[i].msg;
+                    r_result.code  = this.constraints[i].code;
                     return false;
                 }
             }
@@ -282,8 +296,8 @@
             if ((p_option === 1 && this.isNotNull && p_value.trim().length <= 0) || 
                 (p_option === 2 && p_value.trim().length <= 0)) {
                 
-                r_msg.msg   = this.caption+"("+this.name+")은  공백을 입력할 수 없습니다.";
-                r_msg.code  = 0;
+                r_result.msg   = this.caption+"("+this.name+")은  공백을 입력할 수 없습니다.";
+                r_result.code  = 0;
                 return false;
             }
             return true;

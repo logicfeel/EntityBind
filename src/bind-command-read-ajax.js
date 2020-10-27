@@ -94,6 +94,8 @@
          */
         BindCommandReadAjax.prototype._execBind = function() {
             
+            var value;
+            var item;
             var ajaxSetup = {};
             var complete = this.ajaxSetup.complete || this._model.baseAjaxSetup.complete || null;
             
@@ -106,8 +108,11 @@
 
             for(var i = 0; i < this.bind.items.count; i++) {
                 if(typeof ajaxSetup.data !== "object") ajaxSetup.data = {};
-                ajaxSetup.data[this.bind.items[i].name] = this.bind.items[i].refValue; // 값
+                item = this.bind.items[i];
+                value = item.value || item.default;     // 값이 없으면 기본값 설정
+                ajaxSetup.data[item.name] = value;
             }
+            
 
             this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
@@ -115,24 +120,24 @@
         /**
          * AJAX 를 기준으로 구성함 (requst는 맞춤)
          * error(xhr,status,error)
-         * @param {*} xhr 
-         * @param {*} status 
-         * @param {*} error 
+         * @param {*} p_xhr 
+         * @param {*} p_status 
+         * @param {*} p_error 
          */
-        BindCommandReadAjax.prototype._execError = function(xhr, status, error) {
+        BindCommandReadAjax.prototype._execError = function(p_xhr, p_status, p_error) {
             
-            var msg = xhr && xhr.statusText ? xhr.statusText : error;
+            var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;
 
             // 상위 호출 : 데코레이션 패턴
-            _super.prototype._execError.call(msg);
+            _super.prototype._execError.call(this, msg, p_status);
         }
 
         /**
          * (WEB & NodeJs 의 어뎁터 패턴)
          * node 에서는 비동기만 반영함 (테스트 용도) =>> 필요시 개발함
-         * @param {Object} i_setup 
+         * @param {Object} p_ajaxSetup 
          */
-        BindCommandReadAjax.prototype._ajaxAdapter = function(i_setup) {
+        BindCommandReadAjax.prototype._ajaxAdapter = function(p_ajaxSetup) {
             
             var option = {};
             var result;
@@ -147,36 +152,35 @@
                 var msg    = response ? response.statusMessage : "";
 
                 // (xhr,status) : 완료콜백
-                if (i_setup && typeof i_setup.complete === "function") i_setup.complete(response, status);
-                
+                if (p_ajaxSetup && typeof p_ajaxSetup.complete === "function") p_ajaxSetup.complete(response, status);
 
                 if (error || response.statusCode !== 200) {    // 실패시
-                    msg = error ? (msg + " :: " + error) : msg;
+                    msg = error ? (msg + " " + error) : msg;
                     // (xhr,status,error)
-                    i_setup.error(response, status, msg);
+                    p_ajaxSetup.error(response, status, msg);
                 } else {                                        // 성공시
-                    if (i_setup.dataType === "json") result = JSON.parse(body);
+                    if (p_ajaxSetup.dataType === "json") result = JSON.parse(body);
                     result = result || body;
                     // (result,status,xhr)
-                    i_setup.success(result, error, response);
+                    p_ajaxSetup.success(result, error, response);
                 }                
             }
 
             if (ajax && typeof ajax === "function") {
                 
-                ajax(i_setup);
+                ajax(p_ajaxSetup);
 
             } else {
-                option.uri = i_setup.url;
+                option.uri = p_ajaxSetup.url;
                 // option.json = true // json 으로 JSON 으로 요청함
     
-                if (i_setup.type === "GET") {
+                if (p_ajaxSetup.type === "GET") {
                     option.method = "POST";
-                    option.qs = i_setup.data;
+                    option.qs = p_ajaxSetup.data;
                     request.get(option, callback);
-                } else if (i_setup.type === "POST") {
+                } else if (p_ajaxSetup.type === "POST") {
                     option.method = "POST";
-                    option.form = i_setup.data;
+                    option.form = p_ajaxSetup.data;
                     request.post(option, callback);
                 } else {
                     // 기타 :: 결과는 확인 안함

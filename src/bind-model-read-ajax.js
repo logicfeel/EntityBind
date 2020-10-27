@@ -52,7 +52,7 @@
         /**
          * @class
          */
-        function BindModelReadAjax(p_objectDI) {
+        function BindModelReadAjax(p_objectDI, p_isLoadAttr) {
             _super.call(this, p_objectDI);
 
             var __baseAjaxSetup = {
@@ -86,6 +86,11 @@
                 configurable: true,
                 enumerable: true
             });
+
+            // 자동 속성 로딩
+            if (p_isLoadAttr) {
+                this.loadAttr();
+            }
 
             /**
              * @interface IBindModelRead 인터페이스 선언

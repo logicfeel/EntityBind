@@ -130,13 +130,13 @@
             if (!(p_item instanceof Item)) {
                 throw new Error("Only [p_item] type 'Item' can be added");
             }
-            if (typeof p_entities !== "undefined" && (!Array.isArray(p_entities) || typeof p_entities === "string")) {
+            if (typeof p_entities !== "undefined" && (!(Array.isArray(p_entities) || typeof p_entities === "string"))) {
                 throw new Error("Only [p_entities] type 'Array | string' can be added");
             } 
             
             // 설정 대상 가져오기
             if (entities.length > 0) {
-                for (var i = 0; i< entities.length; i++) {
+                for (var i = 0; i < entities.length; i++) {
                     
                     if (typeof entities[i] !== "string") throw new Error("Only [String] type instances can be added");
                    
@@ -172,7 +172,7 @@
                 if (property[i].indexOf("[") > -1 && property[i].indexOf("]") > -1) {
                     collection = eval("this." + property[i]).items;
                 } else if (this[property[i]] instanceof Entity){
-                    collection = this[property[i]].items
+                    collection = this[property[i]].items;
                 } else {
                     console.warn("Warning!! [" + property[i] + "]속성이 this 에 없습니다. ");
                 }
@@ -214,15 +214,15 @@
 
             // 초기화
             if (Array.isArray(p_names)) names = p_names;
-            else if (typeof names === "string") names.push(p_names);
+            else if (typeof p_names === "string") names.push(p_names);
 
             // 유효성 검사
             if (names.length === 0) throw new Error("Only [p_names] type 'Array | string' can be added");
 
             // 아이템 검사 및 등록 함수 this.add(..) 호출
-            for(var i = 0; names.length > 0; i++) {
+            for(var i = 0; names.length > i; i++) {
                 itemName = names[i]; 
-                item = this._model.items[itemName];
+                item = this._model.baseEntity.items[itemName];
                 if (typeof item !== "undefined") {
                     this.add(item, p_entities);
                 } else {

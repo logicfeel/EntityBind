@@ -27,7 +27,7 @@
         util                = global._W.Common.Util;
         Observer            = global._W.Common.Observer;
         MetaObject          = global._W.Meta.MetaObject;
-        Entity              = global._W.Entity.Entity;
+        Entity              = global._W.Meta.Entity.Entity;
     }
 
     //==============================================================

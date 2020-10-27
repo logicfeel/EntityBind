@@ -105,18 +105,26 @@
         /** @virtual */
         BindCommandInternal.prototype._execValid = function() {
             
-            var msg = {};     // 오류 참조 변수
+            var result = {};     // 오류 참조 변수
+            var value = null;
 
-            console.log("*************");
-            // console.log("_execValid()");
-            for(var i = 0; i < this.valid.items.count; i++) {
-                // null 검사를 모두 수행 : option 2
-                if (!(this.valid.items[i].valid(this.valid.items[i].refValue, msg, 2))) {
-                    this._model.cbFail(msg);
-                    this._onExecuted();     // "실행 종료" 이벤트 발생
-                    return false;
+            // 콜백 검사
+            if (!this.cbValid()) {
+                this._model.cbFail("cbValid() => false 리턴 ");
+                this._onExecuted();     // "실행 종료" 이벤트 발생
+                return false;
+            } else {
+                // 아이템 검사
+                for(var i = 0; i < this.valid.items.count; i++) {
+                    
+                    value = this.valid.items[i].value || this.valid.items[i].default;
+                    // null 검사를 모두 수행 : option 2
+                    if (!(this.valid.items[i].valid(value, result, 2))) {
+                        this._model.cbFail(result.msg, result.code);
+                        this._onExecuted();     // "실행 종료" 이벤트 발생
+                        return false;
+                    }
                 }
-                // console.log("valid : " + this.valid.items[i].name);
             }
             return true;
         };
@@ -137,9 +145,9 @@
             this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
-        BindCommandInternal.prototype._execError = function(p_msg) {
+        BindCommandInternal.prototype._execError = function(p_msg, p_status) {
             // this._onFail(msg);
-            this._model.cbFail(msg);
+            this._model.cbError(p_msg, p_status);
             this._onExecuted();     // "실행 종료" 이벤트 발생
         };
 

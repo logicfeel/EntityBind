@@ -25,6 +25,9 @@
             this.cbRegister = null;
             this.cbValid    = null;
             this.cbReady    = null;
+
+            this.onExecute  = null;
+            this.onExecuted = null;
         }
         
         return IBindModel;

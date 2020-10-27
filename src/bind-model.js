@@ -62,7 +62,7 @@
          * @abstract 추상클래스
          * @class
          */
-        function BindModel(p_objectDI) {
+        function BindModel(p_objectDI)  {
             _super.call(this);
 
             var __attr         = new PropertyCollection(this);
@@ -74,44 +74,6 @@
             var __cbError       = function() { console.error("오류가 발생 하였습니다."); };
 
             var propObject;
-
-            // DI 의존성 주입 : 객체를 비교하여 삽입
-            if (p_objectDI instanceof IBindModel) {     // 가능
-                // attr 등록
-                if (typeof p_objectDI["attr"] !== "undefined" && p_objectDI["attr"] !== null) {
-                    propObject = p_objectDI["attr"];
-                    for(var prop in propObject) {
-                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-                            
-                            // new Item // 테이블 로딩
-                            if (typeof propObject[prop] !== "object") {
-                                __attr.add(prop, propObject[prop]);
-                            } else {
-                                __attr.add(prop, propObject[prop]);
-                            }
-                            
-                        }
-                    }
-                }
-                // mode 등록
-                if (typeof p_objectDI["mode"] !== "undefined" && p_objectDI["mode"] !== null) {
-                    propObject = p_objectDI["mode"];
-                    for(var prop in propObject) {
-                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-                            __mode.add(prop, propObject[prop]);
-                        }
-                    }
-                }
-                if (typeof p_objectDI["cbRegister"] === "function") {
-                    __cbRegister = p_objectDI["cbRegister"];
-                }
-                if (typeof p_objectDI["cbValid"] === "function") {
-                    __cbValid = p_objectDI["cbValid"];
-                }
-                if (typeof p_objectDI["cbReady"] === "function") {
-                    __cbReady = p_objectDI["cbReady"];
-                }
-            }
 
             /** @property {attr} */
             Object.defineProperty(this, "attr", 
@@ -196,6 +158,50 @@
                 configurable: true,
                 enumerable: true
             });
+
+            // DI 의존성 주입 : 객체를 비교하여 삽입
+            if (p_objectDI instanceof IBindModel) {     // 가능
+                // attr 등록
+                if (typeof p_objectDI["attr"] !== "undefined" && p_objectDI["attr"] !== null) {
+                    propObject = p_objectDI["attr"];
+                    for(var prop in propObject) {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+                            __attr.add(prop, propObject[prop]);
+                        }
+                    }
+                }
+                // mode 등록
+                if (typeof p_objectDI["mode"] !== "undefined" && p_objectDI["mode"] !== null) {
+                    propObject = p_objectDI["mode"];
+                    for(var prop in propObject) {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+                            __mode.add(prop, propObject[prop]);
+                        }
+                    }
+                }
+                if (typeof p_objectDI["cbRegister"] === "function") {
+                    __cbRegister = p_objectDI["cbRegister"];
+                }
+                if (typeof p_objectDI["cbValid"] === "function") {
+                    __cbValid = p_objectDI["cbValid"];
+                }
+                if (typeof p_objectDI["cbReady"] === "function") {
+                    __cbReady = p_objectDI["cbReady"];
+                }
+                if (typeof p_objectDI["cbFail"] === "function") {
+                    __cbFail = p_objectDI["cbFail"];
+                }
+                if (typeof p_objectDI["cbError"] === "function") {
+                    __cbError = p_objectDI["cbError"];
+                }
+
+                if (typeof p_objectDI["onExecute"] === "function") {
+                    this.onExecute = p_objectDI["onExecute"];
+                }
+                if (typeof p_objectDI["onExecuted"] === "function") {
+                    this.onExecuted = p_objectDI["onExecuted"];
+                }
+            }
 
             /**
              * @interface IBindModel 인터페이스 선언
