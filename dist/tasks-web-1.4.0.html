@@ -20,30 +20,10 @@
     var IBindModelRead          = _W.Interface.IBindModelRead;
     var util                    = _W.Common.Util;
 
-
-
     function ReadDI() {
         IBindModelRead.call(this);
 
         var __this = this;          // 내부용 this : prototype 접근지시자
-
-        this.attr = {
-            cmd: "INSERT",
-            idx: 130,
-            listURL: "Notice_Lst.asp",
-            sto_id: {
-                caption: "상점코드", 
-                value: "1220",
-                constraints: [
-                    { regex: /\D/, msg: "숫자만 입력해야함...", code: 100 },
-                    { regex: /[0-9]{5}/, msg: "5자리 미만 숫자만...", code: 200 }
-                ]
-            }, 
-            ntc_idx: {caption: "일련번호", value: 12},
-            title: {caption: "제목", value: "제목이요"},
-            writer: {caption: "작성자", value: "작가"},
-            noticeType: {caption: "공지타입", value: "G"}
-        };
 
         this.cbRegister = function() {
             console.log("cbREgister.#btn_List 이벤트 등록..");
@@ -76,14 +56,6 @@
         };
     }
     util.inherits(ReadDI, IBindModelRead);
-    ReadDI.prototype.readView = function(entity) {
-        console.log("-------------------------------------------------------");
-        console.log("cbOutput  호출");
-        console.log("this._model.first.items.count  10 ==> " + this._model.first.items.count);   
-        console.log("entity.items.count             10 ==> " + entity.items.count);   
-        console.log("entity.rows.count              1  ==> " + entity.rows.count);   
-        console.log("entity.rows[0]                 ,, ==> " + entity.rows[0]._element);       
-    };
 
     ReadDI.prototype.readValid = function() {
         // console.log("경고창:등록하시겠습니까 ?  => Yes ");
@@ -92,18 +64,58 @@
         return confirm("경고창:등록하시겠습니까 ?");
     };
 
+    // this.ReadDI = ReadDI;
+</script>
+
+<script>
+
+    var BindModelReadAjax       = _W.Meta.Bind.BindModelReadAjax;
+    var util                    = _W.Common.Util;
+
+    function ReadDIView() {
+        ReadDI.call(this);
+
+        var __this = this;          // 내부용 this : prototype 접근지시자
+
+        this.attr = {
+            cmd: "INSERT",
+            idx: 130,
+            listURL: "Notice_Lst.asp",
+            sto_id: {
+                caption: "상점코드", 
+                value: "1220",
+                constraints: [
+                    { regex: /\D/, msg: "숫자만 입력해야함...", code: 100 },
+                    { regex: /[0-9]{5}/, msg: "5자리 미만 숫자만...", code: 200 }
+                ]
+            }, 
+            ntc_idx: {caption: "일련번호", value: 12},
+            title: {caption: "제목", value: "제목이요"},
+            writer: {caption: "작성자", value: "작가"},
+            noticeType: {caption: "공지타입", value: "G"}
+        };
+    }
+    util.inherits(ReadDIView, ReadDI);
+    ReadDIView.prototype.readView = function(entity) {
+        console.log("-------------------------------------------------------");
+        console.log("cbOutput  호출");
+        console.log("this._model.first.items.count  10 ==> " + this._model.first.items.count);   
+        console.log("entity.items.count             10 ==> " + entity.items.count);   
+        console.log("entity.rows.count              1  ==> " + entity.rows.count);   
+        console.log("entity.rows[0]                 ,, ==> " + entity.rows[0]._element);       
+    };
+
     //-----------------------------------------------------
     // 연결
-    var e = new BindModelReadAjax(new ReadDI(), true);
+    var e = new BindModelReadAjax(new ReadDIView(), true);
 
     // 등록
-    // e.baseUrl = "./sample_row_single.json";     // 로컬 로딩
     e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";    // 로컬로딩
+    // e.baseUrl = "./sample_row_single.json";     // 로컬 로딩
     // e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.as";    // 오류 1
     // e.baseUrl = "sample_row_single.jsona";                      // 오류 2
 
     e.read.setItem(["title", "sto_id"], "valid");
-
     //------------------------------
     e.init();
     console.log("-End-");
