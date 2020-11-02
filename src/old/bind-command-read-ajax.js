@@ -100,39 +100,38 @@
         /**
          * (WEB & NodeJs 의 어뎁터 패턴)
          * node 에서는 비동기만 반영함 (테스트 용도) =>> 필요시 개발함
-         * @param {Object} i_setup 
+         * @param {Object} p_setup 
          */
-        BindCommandReadAjax.prototype.bindAjaxAdapter = function(i_setup) {
+        BindCommandReadAjax.prototype.bindAjaxAdapter = function(p_setup) {
             
             var option = {};
             var result;
     
             if (ajax) {
                 if (typeof ajax === "undefined") throw new Error("[ajax] module load fail...");
-                ajax(i_setup);
+                ajax(p_setup);
             } else {
-                option.uri = i_setup.url;
+                option.uri = p_setup.url;
                 // option.json = true // json 으로 JSON 으로 요청함
     
-                if (i_setup.method === "GET") {
+                if (p_setup.method === "GET") {
                     option.method = "POST";
-                    option.qs = i_setup.data;
-                    request.get(option, i_setup.success);
-                } else if (i_setup.method === "POST") {
+                    option.qs = p_setup.data;
+                    request.get(option, p_setup.success);
+                } else if (p_setup.method === "POST") {
                     option.method = "POST";
-                    option.form = i_setup.data;
-                    request.post(option, function(i_err, i_res, i_body) {
-                    // request.post(option, function(i_result, i_status, i_xhr) {
+                    option.form = p_setup.data;
+                    request.post(option, function(err, res, body) {
                         // TODO:: 에러처리 추가해야함
-                        if (i_setup.dataType === "json") result = JSON.parse(i_body);
+                        if (p_setup.dataType === "json") result = JSON.parse(body);
                         
-                        result = result || i_body;
-                        i_setup.success(result, i_err, i_res);
+                        result = result || body;
+                        p_setup.success(result, err, res);
                     });
                 } else {
                     // 기타 
-                    option.method = i_setup.method;
-                    request(option, i_setup.success);
+                    option.method = p_setup.method;
+                    request(option, p_setup.success);
                 }
             }
         };
@@ -188,16 +187,16 @@
         /**
          * 콜백에서 받은 데이터를 기준으로 table(item, rows)을 만든다.
          * 리턴데이터 형식이 다를 경우 오버라이딩해서 수정함
-         * @param {*} i_result 
-         * @param {*} i_status 
-         * @param {*} i_xhr 
+         * @param {*} p_result 
+         * @param {*} p_status 
+         * @param {*} p_xhr 
          */
-        BindCommandReadAjax.prototype._execSuccess = function(i_result, i_status, i_xhr) {
+        BindCommandReadAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
             
             var entity;
 
             entity = new EntityView("result");
-            entity.load(i_result);
+            entity.load(p_result);
 
             console.log("*************");
             console.log("_execSuccess()");

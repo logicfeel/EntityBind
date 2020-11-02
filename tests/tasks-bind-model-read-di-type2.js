@@ -24,7 +24,8 @@ function ReadDI() {
             caption: "상점코드", 
             value: "1220",
             constraints: [
-                { regex: /\D/, msg: "숫자만 입력해야함...", code: 100 },
+                { regex: /\D/, msg: "숫자만 입력해야함...", code: 100},
+                { regex: /12/, msg: "12로 시작해야함...", code: 150, return: true},
                 { regex: /[0-9]{5}/, msg: "5자리 미만 숫자만...", code: 200 }
             ]
         }, 

@@ -87,7 +87,7 @@
                 enumerable: true
             });
 
-            // 자동 속성 로딩
+            // 속성 자동 로딩
             if (p_isLoadAttr) {
                 this.loadAttr();
             }

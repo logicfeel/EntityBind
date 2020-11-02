@@ -138,7 +138,7 @@
          * success(result,status,xhr)
          * @virtual 
          **/
-        BindCommandInternal.prototype._execSuccess = function(i_result, i_status, i_xhr) {
+        BindCommandInternal.prototype._execSuccess = function(p_result, p_status, p_xhr) {
             // 처리 종료 콜백 호출
             if (typeof this.cbEnd === "function" ) this.cbEnd();
             

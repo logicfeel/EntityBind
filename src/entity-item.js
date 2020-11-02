@@ -250,16 +250,18 @@
         /**
          * @method
          */
-        Item.prototype.setConstraint = function(i_regex, i_msg, i_code) {
+        Item.prototype.setConstraint = function(p_regex, p_msg, p_code, p_return) {
+            p_return = p_return || false;
 
             var constraint = {};
 
-            if (!(i_regex instanceof RegExp)) throw new Error("Only [i_regex] type 'RegExp' can be added");
-            if (!(typeof i_msg === "string")) throw new Error("Only [i_msg] type 'string' can be added");
+            if (!(p_regex instanceof RegExp)) throw new Error("Only [p_regex] type 'RegExp' can be added");
+            if (!(typeof p_msg === "string")) throw new Error("Only [p_msg] type 'string' can be added");
 
-            constraint.regex = i_regex;
-            constraint.msg = i_msg;
-            constraint.code = i_code;
+            constraint.regex = p_regex;
+            constraint.msg = p_msg;
+            constraint.code = p_code;
+            constraint.return = p_return;
             
             this.constraints.push(constraint);
         };
@@ -284,12 +286,22 @@
             
             // 우선순위 높음
             for(var i = 0; this.constraints.length > i; i++) {
+
                 result = p_value.match(this.constraints[i].regex);
-                if (result !== null) {
+
+                if ((this.constraints[i].return !== true && result !== null) ||
+                    (this.constraints[i].return === true && result === null)) {
+
                     r_result.msg   = this.constraints[i].msg;
                     r_result.code  = this.constraints[i].code;
                     return false;
                 }
+
+                // if (result !== null) {
+                //     r_result.msg   = this.constraints[i].msg;
+                //     r_result.code  = this.constraints[i].code;
+                //     return false;
+                // }
             }
             
             // Null 검사

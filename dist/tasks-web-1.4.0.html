@@ -85,8 +85,8 @@
                 caption: "상점코드", 
                 value: "1220",
                 constraints: [
-                    { regex: /\D/, msg: "숫자만 입력해야함...", code: 100 },
-                    { regex: /[0-9]{5}/, msg: "5자리 미만 숫자만...", code: 200 }
+                    { regex: /\D/, msg: "숫자만 입력해야함...", code: 100, return: false },
+                    { regex: /[0-9]{5}/, msg: "5자리 미만 숫자만...", code: 200, return: true }
                 ]
             }, 
             ntc_idx: {caption: "일련번호", value: 12},

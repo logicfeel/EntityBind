@@ -89,19 +89,19 @@
         /**
          * 콜백에서 받은 데이터를 기준으로 table(item, rows)을 만든다.
          * 리턴데이터 형식이 다를 경우 오버라이딩해서 수정함
-         * @param {*} i_result 
-         * @param {*} i_status 
-         * @param {*} i_xhr 
+         * @param {*} p_result 
+         * @param {*} p_status 
+         * @param {*} p_xhr 
          */
-        BindCommandView.prototype._execSuccess = function(i_result, i_status, i_xhr) {
+        BindCommandView.prototype._execSuccess = function(p_result, p_status, p_xhr) {
 
-            this["outout"].load(i_result, this.outputOption);
+            this["outout"].load(p_result, this.outputOption);
 
             // 뷰 콜백 호출  : EntitView를 전달함
             if (typeof this.cbOutput === "function" ) this.cbOutput(this["outout"]);
 
             // 상위 호출 : 데코레이션 패턴
-            _super.prototype._execSuccess.call(this, i_result, i_status, i_xhr);
+            _super.prototype._execSuccess.call(this, p_result, p_status, p_xhr);
         };
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/

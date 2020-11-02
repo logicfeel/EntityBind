@@ -301,9 +301,9 @@
             var propName;
 
             // 최기화
-            if (Array.isArray(p_attr)) __attr = __attr.concat(p_attr);  // Array의 경우
-            else if (typeof p_attr === "string") __attr.push(p_attr);    // String의 경우
-            else __attr = this.attr.properties;                           // 없을 경우 (전체 가져옴)
+            if (Array.isArray(p_attr)) __attr = __attr.concat(p_attr);      // Array의 경우
+            else if (typeof p_attr === "string") __attr.push(p_attr);       // String의 경우
+            else __attr = this.attr.properties;                             // 없을 경우 (전체 가져옴)
 
             // 유효성 검사
             if (typeof p_attr !== "undefined" && (!Array.isArray(p_attr) || typeof p_attr === "string")) {
