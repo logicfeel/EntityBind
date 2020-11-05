@@ -222,14 +222,14 @@
             return new Row(this);
         };
 
-        /**
+        /** 
          * filter = {
          *  __except : ["name"...],        // 제외 아이템 (1방법)
          *  아이템명: { __except: true }    // 아이템 제외 (2방법)
          *  아이템명: { order: 100 }        // 속성 오버라이딩
          * }
          * ** 상속기법을 이용함
-         * @param {Object} p_filter ㄴㅇㄹㄴㄹ
+         * @param {Object} p_filter 필터객체
          * @return {Array}
          */
         Entity.prototype.select  = function(p_filter) {
