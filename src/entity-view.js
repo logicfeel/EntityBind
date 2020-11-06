@@ -67,7 +67,7 @@
                 refCollection = p_refEntity.items;
             }
 
-            this._refEntity = [];
+            this._refEntities = [];
 
             this.items = new ItemRefCollection(this, refCollection);
         }
@@ -82,7 +82,7 @@
         };
 
         EntityView.prototype._regRefer  = function(p_entity) {
-            if (this._refEntity.indexOf(p_entity) < 0) this._refEntity.push(p_entity);
+            if (this._refEntities.indexOf(p_entity) < 0) this._refEntities.push(p_entity);
         };
 
         EntityView.prototype.merge  = function() {
@@ -94,8 +94,20 @@
         };
         
         EntityView.prototype.clone  = function() {
-            // TODO::
-        };
+            
+            var entity = new EntityView(this.name);
+            entity.items = new ItemRefCollection(entity);
+
+            for(var i = 0; i < this.items.count; i++) {
+                entity.items.add(this.items[i]);
+            }
+
+            for(var i = 0; i < this.rows.count; i++) {
+                entity.rows.add(this.rows[i]);
+            }
+            
+            return entity;
+        };        
         
         // EntityView.prototype.load  = function() {
         //     // TODO::

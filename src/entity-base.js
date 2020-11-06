@@ -202,24 +202,30 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /**
-         * 
-         * @param {*} p_object 
-         * @param {Number} p_option 
-         *          - 1: 병합, item + row  (*기본값)
-         *          - 2: 데이터만 가져오기 (존재하는 아이템만)
-         */
-        Entity.prototype.load  = function(p_object, p_option) {
 
-            if (p_object instanceof Entity) {
-                this.__loadEntity(p_object, p_option);
-            } else {
-                this.__loadJSON(p_object, p_option);
-            }
-        };
 
         Entity.prototype.newRow  = function() {
             return new Row(this);
+        };
+
+
+        Entity.prototype.setValue  = function(p_row) {
+            
+            if (p_row instanceof Row) throw new Error("Only [p_row] type 'Row' can be added");
+
+            for(var i = 0; this.items.count > i; i++) {
+                this.items[i].value = p_row[i];
+            }
+        };
+
+        Entity.prototype.getValue  = function() {
+            
+            var row = this.newRow();
+            
+            for(var i = 0; this.items.count > i; i++) {
+                row[i] = this.items[i].value;
+            }
+            return row;
         };
 
         /** 
@@ -230,15 +236,22 @@
          * }
          * ** 상속기법을 이용함
          * @param {Object} p_filter 필터객체
-         * @return {Array}
+         * @param {?Number | Array<Number>} p_index 인덱스 시작번호 또는 목록
+         * @param {?Number} p_end 인덱스 종료번호
+         * @return {Entity}
          */
-        Entity.prototype.select  = function(p_filter) {
+        Entity.prototype.select  = function(p_filter, p_index, p_end) {
             
             var EXECEPT = '__except';
             var list = [];
             var excepts = [];
             var obj, f;
             var filterItem;
+            
+            // 자신의 생성자로 생성
+            // REVIEW:: 이후에 복제로 변경 검토
+            var entity = new this.constructor(this.name);   
+            var idx;
 
             // 제외 아이템 조회
             if (p_filter && p_filter[EXECEPT]) {
@@ -265,26 +278,34 @@
                 }
             }
 
-            return list.sort(function(a, b) { return a.order - b.order; });
+            list.sort(function(a, b) { return a.order - b.order; });
+
+            // 리턴 Entity 의 Item 구성
+            for(var i = 0; i < list.length; i++) {
+                entity.items.add(list[i]);
+            }
+            
+            // 리턴 Entity 의 Row 구성
+            if (typeof p_index === "number") {
+                for(var i = 0; i < this.rows.count; i++) {
+                    if (typeof p_end === "number" && i === p_end) break;
+                    entity.rows.add(this.rows[i]);
+                }
+            } else if (Array.isArray(p_index)) {
+                for(var i = 0; i < p_index.length; i++) {
+                    idx = p_index[i];
+                    if (typeof idx === "number" && typeof this.rows[idx] !== "undefined") {
+                        entity.rows.add(this.rows[idx]);
+                    }
+                }
+            }
+            
+            return entity;
         };
 
-        Entity.prototype.setValue  = function(p_row) {
-            
-            if (p_row instanceof Row) throw new Error("Only [p_row] type 'Row' can be added");
-
-            for(var i = 0; this.items.count > i; i++) {
-                this.items[i].value = p_row[i];
-            }
-        };
-
-        Entity.prototype.getValue  = function() {
-            
-            var row = this.newRow();
-            
-            for(var i = 0; this.items.count > i; i++) {
-                row[i] = this.items[i].value;
-            }
-            return row;
+        /**@abstract IGroupControl */
+        Entity.prototype.copy  = function() {
+            throw new Error("[ clear() ] Abstract method definition, fail...");
         };
 
         /**@abstract IGroupControl */
@@ -292,11 +313,22 @@
             throw new Error("[ clear() ] Abstract method definition, fail...");
         };
         
-        /**@abstract IGroupControl */
-        Entity.prototype.copyTo  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
+        /**
+         * 
+         * @param {*} p_object 
+         * @param {Number} p_option 
+         *          - 1: 병합, item + row  (*기본값)
+         *          - 2: 데이터만 가져오기 (존재하는 아이템만)
+         */
+        Entity.prototype.load  = function(p_object, p_option) {
+
+            if (p_object instanceof Entity) {
+                this.__loadEntity(p_object, p_option);
+            } else {
+                this.__loadJSON(p_object, p_option);
+            }
         };
-        
+
         /**@abstract IAllControl */
         Entity.prototype.clone  = function() {
             throw new Error("[ clear() ] Abstract method definition, fail...");

@@ -317,7 +317,7 @@
 
             entity = p_entity || this.baseEntity;
 
-            // 속성목록을 등록
+            // 속성정보를 등록
             for(var i = 0; __attr.length > i; i++) {
                 propName = __attr[i];
                 if (typeof propName === "string" && typeof this.attr[propName] !== "undefined") {

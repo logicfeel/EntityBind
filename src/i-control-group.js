@@ -32,7 +32,7 @@
         /**
          * 로드 : 전체
          */
-        IGroupControl.prototype.copyTo  = function() {
+        IGroupControl.prototype.copy  = function() {
             throw new Error("[ copyTo() ] Abstract method definition, fail...");
         };
 

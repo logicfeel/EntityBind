@@ -85,12 +85,20 @@
         };
         
         EntityTable.prototype.clone  = function() {
-            // TODO::
+            
+            var entity = new EntityTable(this.name);
+            entity.items = new ItemCollection(entity);
+
+            for(var i = 0; i < this.items.count; i++) {
+                entity.items.add(this.items[i]);
+            }
+
+            for(var i = 0; i < this.rows.count; i++) {
+                entity.rows.add(this.rows[i]);
+            }
+            
+            return entity;
         };
-        
-        // EntityTable.prototype.load  = function() {
-        //     // TODO::
-        // };
         
         EntityTable.prototype.clear  = function() {
             // TODO::
