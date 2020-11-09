@@ -66,7 +66,9 @@
             if (p_refEntity && p_refEntity.instanceOf("Entity")) {
                 refCollection = p_refEntity.items;
             }
-
+            
+            this._refEntity = p_refEntity;
+            
             this._refEntities = [];
 
             this.items = new ItemRefCollection(this, refCollection);
@@ -95,27 +97,26 @@
         
         EntityView.prototype.clone  = function() {
             
-            var entity = new EntityView(this.name);
-            entity.items = new ItemRefCollection(entity);
+            var clone = new EntityView(this.name);  // 뷰를 복제하면 참조타입 >> 엔티티타입으로 변경
 
             for(var i = 0; i < this.items.count; i++) {
-                entity.items.add(this.items[i]);
+                clone.items.add(this.items[i].clone());
             }
 
             for(var i = 0; i < this.rows.count; i++) {
-                entity.rows.add(this.rows[i]);
+                clone.rows.add(this.rows[i].clone());
             }
             
-            return entity;
+            return clone;
         };        
         
         // EntityView.prototype.load  = function() {
         //     // TODO::
         // };
         
-        EntityView.prototype.clear  = function() {
-            // TODO::
-        };
+        // EntityView.prototype.clear  = function() {
+        //     // TODO::
+        // };
 
         return EntityView;
     
@@ -129,6 +130,8 @@
          */
         function EntityViewCollection(p_onwer) {
             _super.call(this, p_onwer);
+
+            this._elementType = EntityView;   // 컬렉션타입 설정
         }
         util.inherits(EntityViewCollection, _super);
 
@@ -167,20 +170,20 @@
          * EntityView 타입만 들어가게 제약조건 추가
          * @override
          */
-        EntityViewCollection.prototype._getPropDesciptor = function(p_idx) {
-            return {
-                get: function() { return this._element[p_idx]; },
-                set: function(newValue) { 
-                    if (newValue instanceof EntityView) {
-                        this._element[p_idx] = newValue;
-                    } else {
-                        throw new Error("Only [EntityView] type instances can be added");
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            };
-        };
+        // EntityViewCollection.prototype._getPropDesciptor = function(p_idx) {
+        //     return {
+        //         get: function() { return this._element[p_idx]; },
+        //         set: function(newValue) { 
+        //             if (newValue instanceof EntityView) {
+        //                 this._element[p_idx] = newValue;
+        //             } else {
+        //                 throw new Error("Only [EntityView] type instances can be added");
+        //             }
+        //         },
+        //         enumerable: true,
+        //         configurable: true
+        //     };
+        // };
 
 
         // TODO::

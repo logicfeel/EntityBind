@@ -52,7 +52,7 @@
         /**
          * @class
          */
-        function BindModelReadAjax(p_objectDI, p_isLoadAttr) {
+        function BindModelReadAjax(p_objectDI, p_isLoadAttr, p_itemType) {
             _super.call(this, p_objectDI);
 
             var __baseAjaxSetup = {
@@ -60,8 +60,12 @@
                 type: "POST"
             };
 
+            if (p_itemType) this.itemType = p_itemType;
+
             // Entity 추가 및 baseEntity 설정
             this.baseEntity = this.addEntity('first');
+
+            
 
             /** @override */
             this.read = new BindCommandReadAjax(this, this.baseEntity);

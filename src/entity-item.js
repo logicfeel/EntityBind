@@ -109,7 +109,7 @@
             {
                 get: function() { return __default; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "undefined" && ["string", "number", "boolean"].indexOf(typeof newValue) < 0) throw new Error("Only [default] type 'string | boolea | number' can be added");
+                    if(typeof newValue !== "undefined" && newValue !== null &&  ["string", "number", "boolean"].indexOf(typeof newValue) < 0) throw new Error("Only [default] type 'string | boolea | number' can be added");
                     __default = newValue; 
                 },
                 configurable: true,
@@ -145,7 +145,7 @@
             {
                 get: function() { return __callback; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "function") throw new Error("Only [callback] type 'function' can be added");
+                    if(newValue !== null && typeof newValue !== "function") throw new Error("Only [callback] type 'function' can be added");
                     __callback = newValue; 
                 },
                 configurable: true,
@@ -213,6 +213,7 @@
             {
                 get: function() { return __value; },
                 set: function(newValue) { 
+                    if(["number", "string", "boolean"].indexOf(typeof newValue) < 0) throw new Error("Only [value] type 'number' can be added");
                     __value = newValue;
                 },
                 configurable: true,
@@ -242,6 +243,27 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
         
+        /** @override */
+        Item.prototype.clone = function() {
+            
+            var clone = new Item(this.name);
+
+            if (this.entity) clone["entity"]            = this.entity;  // 참조값
+            if (this.type) clone["type"]                = this.type;
+            if (this.size) clone["size"]                = this.size;
+            if (this.default) clone["default"]          = this.default;
+            if (this.caption) clone["caption"]          = this.caption;
+            if (this.isNotNull) clone["isNotNull"]      = this.isNotNull;
+            if (this.callback) clone["callback"]        = this.callback;
+            if (this.constraints) clone["constraints"]  = JSON.parse(JSON.stringify(this.constraints));
+            if (this.constraints) clone["codeType"]     = this.codeType;  // 참조값
+            if (this.constraints) clone["order"]        = this.order;
+            if (this.constraints) clone["increase"]     = this.increase;
+            if (this.value) clone["value"]               = this.value;
+
+            return clone;
+        };
+
         /** @override */
         Item.prototype.getObject = function() {
             // TODO::
@@ -327,6 +349,19 @@
          */
         function ItemCollection(p_onwer) {
             _super.call(this, p_onwer);
+
+            this._elementType = Item;   // 컬렉션타입 설정
+
+            Object.defineProperty(this, "collectionType", 
+            {
+                get: function() { return this._elementType; },
+                set: function(newValue) { 
+                    if (!(new newValue() instanceof Item)) throw new Error("Only [Item] type 'Item' can be added");
+                    this._elementType = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
         }
         util.inherits(ItemCollection, _super);
 
@@ -342,8 +377,10 @@
 
             if (typeof p_object === "string") {      
                 i_name  = p_object;
-                i_value = new Item(i_name, this._onwer);
-            } else if (p_object instanceof Item) {
+                // i_value = new Item(i_name, this._onwer);
+                i_value = new this._elementType(i_name, this._onwer);
+            // } else if (p_object instanceof Item) {
+            } else if (p_object instanceof this._elementType) {
                 i_name  = p_object.name;
                 i_value = p_object;
             } else {
@@ -366,7 +403,8 @@
 
 
             if (typeof p_name === "string") {      
-                item = new Item(p_name, this._onwer, p_value);
+                // item = new Item(p_name, this._onwer, p_value);
+                item = new this._elementType(p_name, this._onwer, p_value);
             } else {
                 throw new Error("string | Item object [p_object].");
             }
@@ -378,20 +416,20 @@
          * Item 타입만 들어가게 제약조건 추가
          * @override
          */
-        ItemCollection.prototype._getPropDesciptor = function(p_idx) {
-            return {
-                get: function() { return this._element[p_idx]; },
-                set: function(newValue) { 
-                    if (newValue instanceof Item) {
-                        this._element[p_idx] = newValue;
-                    } else {
-                        throw new Error("Only [Item] type instances can be added");
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            };
-        };
+        // ItemCollection.prototype._getPropDesciptor = function(p_idx) {
+        //     return {
+        //         get: function() { return this._element[p_idx]; },
+        //         set: function(newValue) { 
+        //             if (newValue instanceof Item) {
+        //                 this._element[p_idx] = newValue;
+        //             } else {
+        //                 throw new Error("Only [Item] type instances can be added");
+        //             }
+        //         },
+        //         enumerable: true,
+        //         configurable: true
+        //     };
+        // };
 
 
         // TODO::

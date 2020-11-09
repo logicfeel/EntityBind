@@ -92,6 +92,14 @@
                 configurable: true,
                 enumerable: true
             });
+
+            if (typeof p_option === "object" ) {
+                for(var prop in p_option) {
+                    if (p_option.hasOwnProperty(prop) && ["domType", "isReadOnly", "isHide", "element"].indexOf(prop)) {
+                        this[prop] = p_option[prop];
+                    }
+                }
+            } 
         }
         util.inherits(ItemDOM, _super);
     
@@ -101,6 +109,25 @@
             var type = ["ItemDOM"];
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
+        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        ItemDOM.prototype.clone  = function() {
+                    
+            var top = _super.prototype.clone.call(this);
+            var clone = new ItemDOM(this.name);
+
+            for(var prop in top) {
+                if (top.hasOwnProperty(prop)) {
+                    if (top[prop]) clone[prop] = top[prop];
+                }
+            }
+
+            if (this.domType) clone["domType"]          = this.domType;     // 참조값
+            if (this.isReadOnly) clone["isReadOnly"]    = this.isReadOnly;
+            if (this.isHide) clone["isHide"]            = this.isHide;
+            
+            return clone;
         };
 
         /**

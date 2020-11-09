@@ -38,6 +38,8 @@
          */
         function PropertyObjectCollection(p_onwer) {
             _super.call(this, p_onwer);
+
+            this._elementType = Object;
         }
         util.inherits(PropertyObjectCollection, _super);
 
@@ -58,20 +60,20 @@
          * EntityTable 타입만 들어가게 제약조건 추가
          * @override
          */
-        PropertyObjectCollection.prototype._getPropDesciptor = function(p_idx) {
-            return {
-                get: function() { return this._element[p_idx]; },
-                set: function(newValue) { 
-                    if (newValue instanceof Object) {
-                        this._element[p_idx] = newValue;
-                    } else {
-                        throw new Error("Only [Object] type instances can be added");
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            };
-        };
+        // PropertyObjectCollection.prototype._getPropDesciptor = function(p_idx) {
+        //     return {
+        //         get: function() { return this._element[p_idx]; },
+        //         set: function(newValue) { 
+        //             if (newValue instanceof Object) {
+        //                 this._element[p_idx] = newValue;
+        //             } else {
+        //                 throw new Error("Only [Object] type instances can be added");
+        //             }
+        //         },
+        //         enumerable: true,
+        //         configurable: true
+        //     };
+        // };
 
 
         // TODO::

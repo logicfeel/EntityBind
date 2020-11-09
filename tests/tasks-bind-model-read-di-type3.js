@@ -4,6 +4,7 @@
 //===============================================
 // 선언
 var Item                    = require("../src/entity-item").Item;
+var ItemDOM                 = require("../src/entity-item-dom");
 var MetaElement             = require("../src/meta-element");
 
 
@@ -78,9 +79,21 @@ ReadDI.prototype.readView = function(entity) {
     // 테스트 위치
     console.log(entity.items.count);
     
-    var s1 = entity.select({__except: ["acc_idx", "adm_id"]})
+    var s1 = entity.select({__except: ["acc_idx", "adm_id"]}, 1)
     console.log(s1.items.count);
     
+    var i1 = this._model.first.items[3];
+    var i2 = this._model.first.items[3].clone();
+
+    var t1 = this._model.first.clone();
+    var t2 = entity.clone();
+    
+    console.log(i1);
+    console.log(i2);
+
+    var s2 = entity.copy({__except: ["acc_idx"]}, 0)
+    console.log(s2.items.count);
+
     console.log("-STOP-");
 };
 
@@ -93,7 +106,8 @@ ReadDI.prototype.readValid = function() {
 
 //===============================================
 // 테스크 1
-var e = new BindModelReadAjax(new ReadDI(), true);
+var e = new BindModelReadAjax(new ReadDI(), true, ItemDOM);
+
 e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_multi.asp";
 
 

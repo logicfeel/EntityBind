@@ -78,6 +78,29 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
+        /**
+         * @param {Object} p_filter 필터객체
+         */
+        Row.prototype.copy= function(p_filter) {
+          
+            var clone = new Row(this.entity);
+            
+            if (this.value) clone["value"]               = this.value;
+        };
+        
+        Row.prototype.clone  = function() {
+          
+            var clone = new Row(this.entity);
+            var itemName;
+
+            for (var i = 0; i < this.entity.items.count; i++) {
+                itemName = this.entity.items[i].name;
+                clone[itemName] = this[itemName];
+            }
+
+            return clone;
+        };
+        
         return Row;
     
     }(PropertyCollection));
@@ -90,6 +113,8 @@
          */
         function RowCollection(p_onwer) {
             _super.call(this, p_onwer);
+
+            this._elementType = Row;   // 컬렉션타입 설정
         }
         util.inherits(RowCollection, _super);
 
@@ -112,25 +137,25 @@
 
             return _super.prototype.add.call(this, i_value);
         };
-        
+
         /**
          * Row 타입만 들어가게 제약조건 추가
          * @override
          */
-        RowCollection.prototype._getPropDesciptor = function(p_idx) {
-            return {
-                get: function() { return this._element[p_idx]; },
-                set: function(newValue) { 
-                    if (newValue instanceof Row) {
-                        this._element[p_idx] = newValue;
-                    } else {
-                        throw new Error("Only [Row] type instances can be added");
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            };
-        };
+        // RowCollection.prototype._getPropDesciptor = function(p_idx) {
+        //     return {
+        //         get: function() { return this._element[p_idx]; },
+        //         set: function(newValue) { 
+        //             if (newValue instanceof Row) {
+        //                 this._element[p_idx] = newValue;
+        //             } else {
+        //                 throw new Error("Only [Row] type instances can be added");
+        //             }
+        //         },
+        //         enumerable: true,
+        //         configurable: true
+        //     };
+        // };
 
 
         // TODO::

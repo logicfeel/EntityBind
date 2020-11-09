@@ -21,6 +21,7 @@
     var IBindModel;
     var Entity;
     var EntityTable;
+    var Item;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         require("./object-implement"); // _implements() : 폴리필
@@ -33,6 +34,7 @@
         IBindModel                  = require("./i-bind-model");        
         Entity                      = require("./entity-base");
         EntityTable                 = require("./entity-table").EntityTable;
+        Item                        = require("./entity-item").Item;
     } else {
         util                        = global._W.Common.Util;
         BaseBind                    = global._W.Meta.Bind.BaseBind;
@@ -42,6 +44,7 @@
         IBindModel                  = global._W.Interface.IBindModel;        
         Entity                      = global._W.Meta.Entity.Entity;        
         EntityTable                 = global._W.Meta.Entity.EntityTable;        
+        Item                        = global._W.Meta.Entity.Item;        
     }
 
     //==============================================================
@@ -54,6 +57,7 @@
     if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
+    if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -72,8 +76,10 @@
             var __cbReady       = function() {};
             var __cbFail        = function() { console.warn("실패하였습니다."); };
             var __cbError       = function() { console.error("오류가 발생 하였습니다."); };
+            var __itemType      = Item;
 
             var propObject;
+
 
             /** @property {attr} */
             Object.defineProperty(this, "attr", 
@@ -154,6 +160,18 @@
                 set: function(newValue) { 
                     if (!(newValue instanceof Function)) throw new Error("Only [cbError] type 'Function' can be added");
                     __cbError = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {itemType} */
+            Object.defineProperty(this, "itemType", 
+            {
+                get: function() { return __itemType; },
+                set: function(newValue) { 
+                    if (!(new newValue() instanceof Item)) throw new Error("Only [itemType] type 'Item' can be added");
+                    __itemType = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -335,6 +353,8 @@
             if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
 
             entity = new EntityTable(p_name);
+            entity.items.collectionType = this.itemType;    // 아이템타입 설정
+            
             this[p_name] = entity;
             
             return entity;

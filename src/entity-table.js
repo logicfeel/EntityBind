@@ -86,23 +86,24 @@
         
         EntityTable.prototype.clone  = function() {
             
-            var entity = new EntityTable(this.name);
-            entity.items = new ItemCollection(entity);
-
+            var clone = new EntityTable(this.name);
+            
+            // items 복제본 추가
             for(var i = 0; i < this.items.count; i++) {
-                entity.items.add(this.items[i]);
-            }
-
-            for(var i = 0; i < this.rows.count; i++) {
-                entity.rows.add(this.rows[i]);
+                clone.items.add(this.items[i].clone());
             }
             
-            return entity;
+            // rows 복제본 추가
+            for(var i = 0; i < this.rows.count; i++) {
+                clone.rows.add(this.rows[i].clone());
+            }
+            
+            return clone;
         };
         
-        EntityTable.prototype.clear  = function() {
-            // TODO::
-        };
+        // EntityTable.prototype.clear  = function() {
+        //     this.rows.clear();
+        // };
 
         EntityTable.prototype.select  = function() {
             // TODO::
@@ -121,6 +122,8 @@
          */
         function EntityTableCollection(p_onwer) {
             _super.call(this, p_onwer);
+
+            this._elementType = EntityTable;   // 컬렉션타입 설정
         }
         util.inherits(EntityTableCollection, _super);
 
@@ -155,20 +158,20 @@
          * EntityTable 타입만 들어가게 제약조건 추가
          * @override
          */
-        EntityTableCollection.prototype._getPropDesciptor = function(p_idx) {
-            return {
-                get: function() { return this._element[p_idx]; },
-                set: function(newValue) { 
-                    if (newValue instanceof EntityTable) {
-                        this._element[p_idx] = newValue;
-                    } else {
-                        throw new Error("Only [EntityTable] type instances can be added");
-                    }
-                },
-                enumerable: true,
-                configurable: true
-            };
-        };
+        // EntityTableCollection.prototype._getPropDesciptor = function(p_idx) {
+        //     return {
+        //         get: function() { return this._element[p_idx]; },
+        //         set: function(newValue) { 
+        //             if (newValue instanceof EntityTable) {
+        //                 this._element[p_idx] = newValue;
+        //             } else {
+        //                 throw new Error("Only [EntityTable] type instances can be added");
+        //             }
+        //         },
+        //         enumerable: true,
+        //         configurable: true
+        //     };
+        // };
 
 
         // TODO::

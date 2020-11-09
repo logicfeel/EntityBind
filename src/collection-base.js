@@ -45,9 +45,11 @@
             this.__event     = new Observer(this, this);
 
             // Protected
-            this._onwer    = p_onwer;
+            this._onwer         = p_onwer;
     
-            this._element    = [];
+            this._element       = [];
+
+            this._elementType   = null;
 
             // Property
             this.setProperty("count", 
@@ -124,7 +126,16 @@
         BaseCollection.prototype._getPropDesciptor = function(p_idx) {
             return {
                 get: function() { return this._element[p_idx]; },
-                set: function(newValue) { this._element[p_idx] = newValue; },
+                set: function(newValue) {
+                    
+                    var typeName;
+
+                    if (this._elementType !== null && !(newValue instanceof this._elementType)) {
+                        typeName = this._elementType.constructor.name;
+                        throw new Error("Only [" + typeName + "] type instances can be added");
+                    }
+                    this._element[p_idx] = newValue; 
+                },
                 enumerable: true,
                 configurable: true
             };

@@ -170,7 +170,6 @@
             var entity = p_object;
             var row;
             var itemName;
-            var data;
 
             // 병합
             if (p_option === 1) {
@@ -248,6 +247,7 @@
             var obj, f;
             var filterItem;
             
+
             // 자신의 생성자로 생성
             // REVIEW:: 이후에 복제로 변경 검토
             var entity = new this.constructor(this.name);   
@@ -280,22 +280,42 @@
 
             list.sort(function(a, b) { return a.order - b.order; });
 
-            // 리턴 Entity 의 Item 구성
+            // 리턴 Entity 의 Item 구성 : 참조형
             for(var i = 0; i < list.length; i++) {
                 entity.items.add(list[i]);
             }
             
-            // 리턴 Entity 의 Row 구성
+            /**
+             * row 항목을 재구성하여 생성 (내부 함수)
+             * @param {*} rowIdx 
+             */
+            function __createRow(rowIdx) {
+
+                var row = entity.newRow();
+                var i_name;
+
+                for (var i = 0; entity.items.count > i ; i++) {
+                    i_name = entity.items[i].name
+                    if (row[i_name] && this.rows[rowIdx][i_name]) {
+                        row[rowIdx][i_name] = this.rows[rowIdx][i_name];
+                    }
+                }
+                return row;
+            }
+
+            // 리턴 Entity 의 Row 구성 : 참조형
             if (typeof p_index === "number") {
-                for(var i = 0; i < this.rows.count; i++) {
+                for(var i = p_index; i < this.rows.count; i++) {
                     if (typeof p_end === "number" && i === p_end) break;
-                    entity.rows.add(this.rows[i]);
+                    // entity.rows.add(this.rows[idx]);
+                    entity.rows.add(__createRow(i));
                 }
             } else if (Array.isArray(p_index)) {
                 for(var i = 0; i < p_index.length; i++) {
                     idx = p_index[i];
                     if (typeof idx === "number" && typeof this.rows[idx] !== "undefined") {
-                        entity.rows.add(this.rows[idx]);
+                        // entity.rows.add(this.rows[idx]);
+                        entity.rows.add(__createRow(idx));
                     }
                 }
             }
@@ -304,13 +324,37 @@
         };
 
         /**@abstract IGroupControl */
-        Entity.prototype.copy  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
+        Entity.prototype.copy  = function(p_filter, p_index, p_end) {
+            
+            var entity = this.select(p_filter, p_index, p_end);
+
+            return entity.clone();
+
         };
 
-        /**@abstract IGroupControl */
-        Entity.prototype.merge  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
+        /**
+         * 병합 : 컬렉션 순서에 따라 병한다.
+         * @param {*} p_terget 병합할 Entity
+         * @param {*} p_option 
+         * Item과 Row가 있는 경우
+         *  - 1: items, rows 병합 (덮어쓰기)  *기본값
+         *  - 2: items, rows 병합 (기존유지)
+         * Row만 있는 경우
+         *  - 3: item에 Row가 없으면 강제 생성
+         *  - 4: 존재하는 row 만 가져오기 병합
+         */
+        Entity.prototype.merge  = function(p_terget, p_option) {
+            p_option = p_option || 1;   // 기본값 덮어쓰기
+
+            var entity = p_terget;
+            var row;
+            var itemName;
+
+            // 유효성 검사
+            if (!(p_terget instanceof Entity)) throw new Error("Only [p_terget] type 'Entity' can be added");
+
+            // 
+            
         };
         
         /**
@@ -328,17 +372,17 @@
                 this.__loadJSON(p_object, p_option);
             }
         };
+        
+        /**@abstract IAllControl */
+        Entity.prototype.clear  = function() {
+            this.rows.clear();
+        };
 
         /**@abstract IAllControl */
         Entity.prototype.clone  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
+            throw new Error("[ clone() ] Abstract method definition, fail...");
         };
 
-        /**@abstract IAllControl */
-        Entity.prototype.clear  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
-        };
-        
         return Entity;
     
     }(MetaElement));
