@@ -186,12 +186,18 @@
 
                 for (var ii = 0; ii < this.items.count; ii++) {
                     itemName = this.items[ii].name;
-                    row[itemName] = typeof entity.rows[i][itemName] !== "undefined" ? entity.rows[i][itemName] : "";
+                    
+                    // row[itemName] = typeof entity.rows[i][itemName] !== "undefined" ? entity.rows[i][itemName] : "";
+                    // 이해하기 쉽게 코드 변경
+                    if (typeof entity.rows[i][itemName] !== "undefined") {
+                        row[itemName] = entity.rows[i][itemName];    
+                    } else {
+                        row[itemName] = "";
+                    }
                 }
                 this.rows.add(row);
             }
         };
-
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
         Entity.prototype.getTypes = function() {
@@ -201,12 +207,14 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-
+        /** @override */
+        Entity.prototype.getObject = function() {
+            // TODO::
+        };
 
         Entity.prototype.newRow  = function() {
             return new Row(this);
         };
-
 
         Entity.prototype.setValue  = function(p_row) {
             
@@ -334,27 +342,59 @@
 
         /**
          * 병합 : 컬렉션 순서에 따라 병한다.
-         * @param {*} p_terget 병합할 Entity
-         * @param {*} p_option 
+         * @param {*} p_target 병합할 Entity
+         * @param {*} p_option {item: 1, row:2}
          * Item과 Row가 있는 경우
-         *  - 1: items, rows 병합 (덮어쓰기)  *기본값
-         *  - 2: items, rows 병합 (기존유지)
-         * Row만 있는 경우
-         *  - 3: item에 Row가 없으면 강제 생성
-         *  - 4: 존재하는 row 만 가져오기 병합
+         * - 1 items, rows 병합 (기존유지) *기본값
+         * - 2 items, rows 병합 (덮어쓰기)  
+         * - 3 row 안가져오기    (기존유지)
          */
-        Entity.prototype.merge  = function(p_terget, p_option) {
-            p_option = p_option || 1;   // 기본값 덮어쓰기
+        Entity.prototype.merge  = function(p_target, p_option) {
+            p_option = p_option || 1;    // 기본값
 
-            var entity = p_terget;
+            var cloneTarget;
             var row;
             var itemName;
 
             // 유효성 검사
-            if (!(p_terget instanceof Entity)) throw new Error("Only [p_terget] type 'Entity' can be added");
+            if (!(p_target instanceof Entity)) throw new Error("Only [p_target] type 'Entity' can be added");
 
-            // 
-            
+
+            // 병합
+            // Item 기준으로 아이템 가져오기
+            for(var i = 0; p_target.items.count > i; i++) {
+                itemName = p_target.items[i].name;
+                
+                // 없으면 생성
+                if (typeof this.items[itemName] === "undefined") {
+                    this.items.add(p_target.items[i]);
+                }
+                
+                // option = 2: 기존 item 덮어쓰기
+                if (p_option === 2 || typeof this.items[i][itemName] !== "undefined") {
+                    this.items[i] = p_target.items[i];
+                }
+            }
+
+            if (p_option !== 3) {
+                // Row 데이터 가져오기
+                for(var i = 0; p_target.rows.count > i; i++) {
+                                
+                    // 기존 row와 동일 idx 여부 확인후 row 가져오기
+                    row = this.rows[i] ? this.rows[i] : this.newRow();
+
+                    for (var ii = 0; ii < p_target.items.count; ii++) {
+                        itemName = p_target[ii].name;
+                        
+                        // 옵션 = 2 : 덮어쓰기 경우 또는 없는 경우
+                        if (p_option === 2 || typeof this.rows[i][itemName] === "undefined") {
+                            row[itemName] = p_target.rows[i][itemName];
+                        }
+                    }
+                    // 기존 row가 없을경우 추가함
+                    if (typeof this.rows[i] === "undefined") this.rows.add(row);
+                }
+            }
         };
         
         /**
@@ -373,12 +413,13 @@
             }
         };
         
-        /**@abstract IAllControl */
+        /** @method */
         Entity.prototype.clear  = function() {
+            this.items.clear();
             this.rows.clear();
         };
 
-        /**@abstract IAllControl */
+        /** @abstract IAllControl */
         Entity.prototype.clone  = function() {
             throw new Error("[ clone() ] Abstract method definition, fail...");
         };

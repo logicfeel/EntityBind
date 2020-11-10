@@ -94,6 +94,8 @@ ReadDI.prototype.readView = function(entity) {
     var s2 = entity.copy({__except: ["acc_idx"]}, 0)
     console.log(s2.items.count);
 
+
+
     console.log("-STOP-");
 };
 
@@ -102,14 +104,11 @@ ReadDI.prototype.readValid = function() {
     return true;
 };
 
-
-
 //===============================================
 // 테스크 1
 var e = new BindModelReadAjax(new ReadDI(), true, ItemDOM);
 
 e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_multi.asp";
-
 
 e.init();
 //===============================================

@@ -44,7 +44,7 @@
          * @param {String} p_name 아이템명
          * @param {Entity} p_entity 소유 Entity
          */
-        function Item(p_name, p_entity, p_option) {
+        function Item(p_name, p_entity, p_property) {
             _super.call(this, p_name);
 
             var __entity        = null;
@@ -222,14 +222,14 @@
 
 
             // 아이템 옵션속성 추가
-            if (typeof p_option === "object" ) {
-                for(var prop in p_option) {
-                    if (p_option.hasOwnProperty(prop)) {
-                        this[prop] = p_option[prop];
+            if (typeof p_property === "object" ) {
+                for(var prop in p_property) {
+                    if (p_property.hasOwnProperty(prop)) {
+                        this[prop] = p_property[prop];
                     }
                 }
-            } else if (["number", "string", "boolean"].indexOf(typeof p_option) > -1) {
-                this.default = p_option;
+            } else if (["number", "string", "boolean"].indexOf(typeof p_property) > -1) {
+                this.default = p_property;
             }
 
         }
@@ -350,14 +350,14 @@
         function ItemCollection(p_onwer) {
             _super.call(this, p_onwer);
 
-            this._elementType = Item;   // 컬렉션타입 설정
+            var __elementType = Item;   // 컬렉션타입 설정
 
             Object.defineProperty(this, "collectionType", 
             {
-                get: function() { return this._elementType; },
+                get: function() { return __elementType; },
                 set: function(newValue) { 
                     if (!(new newValue() instanceof Item)) throw new Error("Only [Item] type 'Item' can be added");
-                    this._elementType = newValue; 
+                    __elementType = newValue; 
                 },
                 configurable: true,
                 enumerable: true
@@ -378,9 +378,9 @@
             if (typeof p_object === "string") {      
                 i_name  = p_object;
                 // i_value = new Item(i_name, this._onwer);
-                i_value = new this._elementType(i_name, this._onwer);
+                i_value = new this.collectionType(i_name, this._onwer);
             // } else if (p_object instanceof Item) {
-            } else if (p_object instanceof this._elementType) {
+            } else if (p_object instanceof this.collectionType) {
                 i_name  = p_object.name;
                 i_value = p_object;
             } else {
@@ -404,7 +404,7 @@
 
             if (typeof p_name === "string") {      
                 // item = new Item(p_name, this._onwer, p_value);
-                item = new this._elementType(p_name, this._onwer, p_value);
+                item = new this.collectionType(p_name, this._onwer, p_value);
             } else {
                 throw new Error("string | Item object [p_object].");
             }

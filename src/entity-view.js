@@ -75,6 +75,10 @@
         }
         util.inherits(EntityView, _super);
 
+        EntityView.prototype._regRefer  = function(p_entity) {
+            if (this._refEntities.indexOf(p_entity) < 0) this._refEntities.push(p_entity);
+        };
+        
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
         EntityView.prototype.getTypes  = function() {
             
@@ -82,19 +86,12 @@
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
-
-        EntityView.prototype._regRefer  = function(p_entity) {
-            if (this._refEntities.indexOf(p_entity) < 0) this._refEntities.push(p_entity);
-        };
-
-        EntityView.prototype.merge  = function() {
+        
+        /** @override */
+        EntityView.prototype.getObject = function() {
             // TODO::
         };
-        
-        EntityView.prototype.copyTo  = function() {
-            // TODO::
-        };
-        
+
         EntityView.prototype.clone  = function() {
             
             var clone = new EntityView(this.name);  // 뷰를 복제하면 참조타입 >> 엔티티타입으로 변경
@@ -110,14 +107,6 @@
             return clone;
         };        
         
-        // EntityView.prototype.load  = function() {
-        //     // TODO::
-        // };
-        
-        // EntityView.prototype.clear  = function() {
-        //     // TODO::
-        // };
-
         return EntityView;
     
     }(Entity));

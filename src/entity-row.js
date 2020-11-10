@@ -120,19 +120,19 @@
 
         /**
          * 
-         * @param {String | Item} p_object 
+         * @param {String | Item} p_row 
          * @returns {Item} 등록한 아이템
          */
-        RowCollection.prototype.add  = function(p_object) {
+        RowCollection.prototype.add  = function(p_row) {
 
             var i_value;
 
-            if (typeof p_object === "undefined") {      
+            if (typeof p_row === "undefined") {      
                 i_value = new Row(this._onwer);
-            } else if (p_object instanceof Row) {
-                i_value = p_object;
+            } else if (p_row instanceof Row) {
+                i_value = p_row;``
             } else {
-                throw new Error("Row | Row object [p_object].");
+                throw new Error("Row | Row object [p_row].");
             }
 
             return _super.prototype.add.call(this, i_value);

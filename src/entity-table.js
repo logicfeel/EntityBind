@@ -76,14 +76,11 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        EntityTable.prototype.merge  = function() {
+        /** @override */
+        EntityTable.prototype.getObject = function() {
             // TODO::
         };
-        
-        EntityTable.prototype.copyTo  = function() {
-            // TODO::
-        };
-        
+
         EntityTable.prototype.clone  = function() {
             
             var clone = new EntityTable(this.name);
@@ -99,14 +96,6 @@
             }
             
             return clone;
-        };
-        
-        // EntityTable.prototype.clear  = function() {
-        //     this.rows.clear();
-        // };
-
-        EntityTable.prototype.select  = function() {
-            // TODO::
         };
 
         return EntityTable;
@@ -139,8 +128,8 @@
 
             if (typeof p_object === "string") {      
                 i_name  = p_object;
-                i_value = new Item(i_name, this._onwer);
-            } else if (p_object instanceof Item) {
+                i_value = new EntityTable(i_name);
+            } else if (p_object instanceof EntityTable) {
                 i_name  = p_object.name;
                 i_value = p_object;
             } else {
