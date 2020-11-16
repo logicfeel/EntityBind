@@ -13,22 +13,16 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var errorCount = 0; 
-    
     var Observer;
-    // var IObject;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-    // require("./object-implement"); // _implements() : 폴리필
-    // 
         Observer                 = require("../src/observer");
-    //     IObject              = require("");
     } else {
         Observer                 = global._W.Task.Observer;
-    //     IObject              = global._W.Common.IObject;
     }
 
     //==============================================================
-    // 3. 테스트
+    // 3. 테스트 본문
     function run() {
 
         var errorCount = 0;
@@ -38,84 +32,109 @@
             this.__event    = new Observer(this, this);
         
             /** @property 등록 */
-            Object.defineProperty(this, "onExecute", {
+            Object.defineProperty(this, "onLoad", {
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "execute");
+                    this.__event.subscribe(p_fn, "load");
                 }
             });
             /** @property */
-            Object.defineProperty(this, "onExecuted", {
+            Object.defineProperty(this, "onClear", {
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "executed");
+                    this.__event.subscribe(p_fn, "clear");
                 }
             });    
         }
         /** @event 발생 */
-        EventTest.prototype._onExecute = function() {
-            this.__event.publish("execute"); 
+        EventTest.prototype._onLoad = function() {
+            this.__event.publish("load"); 
         };
         /** @event */
-        EventTest.prototype._onExecuted = function() {
-            this.__event.publish("executed"); 
+        EventTest.prototype._onClear = function() {
+            this.__event.publish("clear"); 
         };
+
+        
+        var result = [];        // 결과 확인 **사용시 초기화
 
         //===============================================
         // 이벤트 발생
         var e = new EventTest();
-        e.onExecute = function() {console.log(" onExecute()~~"); };
+        e.onLoad = function() { 
+            console.log(" onLoad ~~");
+            result.push("onLoad");  // 결과 등록
+        };
 
-        var event2 = function() {console.log(" onExecute2()~~"); };
-        e.onExecuted = event2;
+        var event2 = function() { 
+            console.log(" onClear ~~"); 
+            result.push("onClear");  // 결과 등록
+        };
+        e.onClear = event2;
 
         console.log("---------------------------------------");
-        console.log("이벤트 발생");
-        e._onExecute(); // 발생
-        e._onExecuted(); // 발생
+        console.log("이벤트 발생 :: 익명함수");
+        result = [];
+        e._onLoad(); // 테스크
+        if (result.indexOf("onLoad") > -1 ) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+        console.log("---------------------------------------");
+        console.log("이벤트 발생 :: 지정함수");
+        result = [];
+        e._onClear(); // 테스크
+        if (result.indexOf("onClear") > 0 ) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
 
         console.log("---------------------------------------");
         console.log("지정이벤트의 지정 함수 해지후 이벤트 발생");
-        e.__event.unsubscribe('execute');               // 작동안함 : 맞는것임
-        e.__event.unsubscribe(event2, 'executed');      // 지정 이벤트만 제거
-        e._onExecute(); // 발생
-        e._onExecuted(); // 발생
+        e.__event.unsubscribe('load');               // 작동안함 : 맞는것임
+        e.__event.unsubscribe(event2, 'clear');      // 지정 이벤트만 제거
+        e._onLoad(); // 발생
+        e._onClear(); // 발생
 
         console.log("---------------------------------------");
         console.log("지정이벤트의 모든 함수 제거후  이벤트 발생");
-        e.onExecuted = event2;                          // 테스트를 위해 재등록
-        e.__event.unsubscribeAll("executed");
-        e._onExecute(); // 발생
-        e._onExecuted(); // 발생
+        e.onClear = event2;                          // 테스트를 위해 재등록
+        e.__event.unsubscribeAll("clear");
+        e._onLoad(); // 발생
+        e._onClear(); // 발생
 
 
         console.log("---------------------------------------");
         console.log("전체이벤트 해지후 이벤트 발생");
-        e.onExecuted = event2;                  // 테스트를 위해 재등록
+        e.onClear = event2;                  // 테스트를 위해 재등록
         e.__event.unsubscribeAll();
-        e._onExecute(); // 발생
-        e._onExecuted(); // 발생
+        e._onLoad(); // 발생
+        e._onClear(); // 발생
 
 
         console.log("---------------------------------------");
         console.log("멀티모드(기본)");
 
-        var event22 = function() {console.log(" onExecute22()~~"); };
-        e.onExecuted = event2;
-        e.onExecuted = event22;
-        e._onExecuted(); // 발생
+        var event22 = function() {console.log(" onLoad22()~~"); };
+        e.onClear = event2;
+        e.onClear = event22;
+        e._onClear(); // 발생
 
         console.log("싱글모드");
         e.__event.isMultiMode = false;
         e.__event.unsubscribeAll();
-        e.onExecuted = event2;
-        e.onExecuted = event22;
-        e.onExecuted = event2;
-        e._onExecuted(); // 발생    
+        e.onClear = event2;
+        e.onClear = event22;
+        e.onClear = event2;
+        e._onClear(); // 발생    
 
-        errorCount = 10;
+        // errorCount = 10;
         return errorCount;
     }
 
