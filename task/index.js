@@ -12,6 +12,7 @@
     
     //==============================================================
     // 2. 변수 선언
+    var errorCount = 0;
     var tasks = [];  //{ns:..., file:.... }
     var result, task;
     var CLEAR;
@@ -20,20 +21,20 @@
     //==============================================================
     // 3. 모듈 등록
     tasks.push({ns: "_W.Task.Observer", file: "./Common.Observer.task.js"});
+    tasks.push({ns: "_W.Task.Object_implement", file: "./Common.Object.implement.task.js"});
+    // tasks.push({ns: "_W.Task.Object_implement", file: "./Common.Object.implement.task.js"});
 
 
     //==============================================================
     // 4. 테스트 본문 :: run()
     function run() {
         
-        var errorCount = 0;
 
         for (var i = 0; i < tasks.length; i++) {
             task = typeof module === "object" ?  tasks[i].file : tasks[i].ns;
-            console.log("#################################################################");
+            console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             console.log("단위 테스트 %s : %s", i, task);
-            console.log("#################################################################");
-
+            
 
             if (typeof module === "object" && typeof module.exports === "object") {     
                 task = tasks[i].file;
@@ -42,13 +43,14 @@
                 task = tasks[i].ns;
                 tasks[i].result = eval(tasks[i].ns);
             }
+
         }
         
         if (CLEAR) console.clear();
 
-        console.log("#################################################################");
+        console.log("*****************************************************************");
         console.log("통합 테스트 결과");
-        console.log("#################################################################");
+        console.log("*****************************************************************");
         for (var i = 0; i < tasks.length; i++) {            
 
             task = typeof module === "object" ?  tasks[i].file : tasks[i].ns;
@@ -59,7 +61,7 @@
                 console.warn("No: %s, Task : %s = Warning, ERR_COUNT = %s ", i, task, tasks[i].result);
                 errorCount++;
             }
-            console.log("-----------------------------------------------------------------");
+            console.log("_________________________________________________________________");
         }
 
         return errorCount;

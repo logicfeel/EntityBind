@@ -26,8 +26,8 @@
     var Observer = (function () {
         /**
          * @description 옵서버 클래스
-         * @param {*} p_this 호출 대상(this) 지정
-         * @param {*} p_onwer call 인수 목록 TODO:: 이부분 확인 필요
+         * @param {*} p_this 함수 호출식 this 역활 publish.apply(p_this, ...)
+         * @param {*} p_onwer Observer 클래스의 소유 함수 또는 클래스
          */
         function Observer(p_this, p_onwer) {
 
@@ -110,7 +110,7 @@
          * @description 구독 함수 호출
          * @param {String}} p_code 이벤트 코드명 : 기본값 "any"
          */
-        Observer.prototype.publish = function(p_code, p_params) {
+        Observer.prototype.publish = function(p_code) {
             p_code = p_code || "any";
             
             var args = Array.prototype.slice.call(arguments);
