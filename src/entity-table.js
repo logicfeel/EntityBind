@@ -147,7 +147,7 @@
          * EntityTable 타입만 들어가게 제약조건 추가
          * @override
          */
-        // EntityTableCollection.prototype._getPropDesciptor = function(p_idx) {
+        // EntityTableCollection.prototype._getPropDescriptor = function(p_idx) {
         //     return {
         //         get: function() { return this._element[p_idx]; },
         //         set: function(newValue) { 

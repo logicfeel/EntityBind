@@ -124,9 +124,9 @@ var get_set = 100;
 var getter = function() {return get_set};
 var setter = function(newValue) { get_set = newValue };
 
-b.setProperty("CCC", getter, setter);
+b.regProperty("CCC", getter, setter);
 
-b.setProperty("DDD");
+b.regProperty("DDD");
 
 b.delProperty("DDD");
 

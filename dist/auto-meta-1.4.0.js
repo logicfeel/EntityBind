@@ -1522,7 +1522,7 @@ if (typeof Array.isArray === "undefined") {
             this._element    = [];
 
             // Property
-            this.setProperty("count", 
+            this.regProperty("count", 
                 function() {
                     return this._element.length;
                 }, 
@@ -1530,7 +1530,7 @@ if (typeof Array.isArray === "undefined") {
             );
 
             // Property
-            this.setProperty("list", 
+            this.regProperty("list", 
                 function() {
                     return this._element;
                 }, 
@@ -1593,7 +1593,7 @@ if (typeof Array.isArray === "undefined") {
          * @method private 프로퍼티 옵션 객체 얻기
          * @param {Number} p_idx 인덱스
          */
-        BaseCollection.prototype._getPropDesciptor = function(p_idx) {
+        BaseCollection.prototype._getPropDescriptor = function(p_idx) {
             return {
                 get: function() { return this._element[p_idx]; },
                 set: function(newValue) { this._element[p_idx] = newValue; },
@@ -1633,7 +1633,7 @@ if (typeof Array.isArray === "undefined") {
          * @param {Function} p_getter getter 함수
          * @param {Function} p_setter setter 함수
          */
-        BaseCollection.prototype.setProperty = function(p_name, p_getter, p_setter) {
+        BaseCollection.prototype.regProperty = function(p_name, p_getter, p_setter) {
 
             var obj = {
                 enumerable: true,
@@ -1752,7 +1752,7 @@ if (typeof Array.isArray === "undefined") {
         
             this._element.push(p_value);
             index = (this._element.length === 1) ? 0 : this._element.length  - 1;
-            Object.defineProperty(this, [index], this._getPropDesciptor(index));
+            Object.defineProperty(this, [index], this._getPropDescriptor(index));
 
             this._onAdd();                          // 이벤트 발생 : 등록
             this._onChanged();                      // 이벤트 발생 : 변경후
@@ -1944,10 +1944,10 @@ if (typeof Array.isArray === "undefined") {
 
             this._element.push(p_value);
             index = (this._element.length === 1) ? 0 : this._element.length  - 1;
-            Object.defineProperty(this, [index], this._getPropDesciptor(index));
+            Object.defineProperty(this, [index], this._getPropDescriptor(index));
 
             if (p_name) {
-                Object.defineProperty(this, p_name, this._getPropDesciptor(index));
+                Object.defineProperty(this, p_name, this._getPropDescriptor(index));
             }
             this.properties.push(p_name);
 
@@ -2129,7 +2129,7 @@ if (typeof Array.isArray === "undefined") {
          * EntityTable 타입만 들어가게 제약조건 추가
          * @override
          */
-        PropertyObjectCollection.prototype._getPropDesciptor = function(p_idx) {
+        PropertyObjectCollection.prototype._getPropDescriptor = function(p_idx) {
             return {
                 get: function() { return this._element[p_idx]; },
                 set: function(newValue) { 
@@ -2221,7 +2221,7 @@ if (typeof Array.isArray === "undefined") {
          * EntityTable 타입만 들어가게 제약조건 추가
          * @override
          */
-        PropertyFunctionCollection.prototype._getPropDesciptor = function(p_idx) {
+        PropertyFunctionCollection.prototype._getPropDescriptor = function(p_idx) {
             return {
                 get: function() { return this._element[p_idx]; },
                 set: function(newValue) { 
@@ -2926,7 +2926,7 @@ if (typeof Array.isArray === "undefined") {
          * Item 타입만 들어가게 제약조건 추가
          * @override
          */
-        ItemCollection.prototype._getPropDesciptor = function(p_idx) {
+        ItemCollection.prototype._getPropDescriptor = function(p_idx) {
             return {
                 get: function() { return this._element[p_idx]; },
                 set: function(newValue) { 
@@ -3321,7 +3321,7 @@ if (typeof Array.isArray === "undefined") {
          * Row 타입만 들어가게 제약조건 추가
          * @override
          */
-        RowCollection.prototype._getPropDesciptor = function(p_idx) {
+        RowCollection.prototype._getPropDescriptor = function(p_idx) {
             return {
                 get: function() { return this._element[p_idx]; },
                 set: function(newValue) { 
@@ -3826,7 +3826,7 @@ if (typeof Array.isArray === "undefined") {
          * EntityTable 타입만 들어가게 제약조건 추가
          * @override
          */
-        EntityTableCollection.prototype._getPropDesciptor = function(p_idx) {
+        EntityTableCollection.prototype._getPropDescriptor = function(p_idx) {
             return {
                 get: function() { return this._element[p_idx]; },
                 set: function(newValue) { 
@@ -4016,7 +4016,7 @@ if (typeof Array.isArray === "undefined") {
          * EntityView 타입만 들어가게 제약조건 추가
          * @override
          */
-        EntityViewCollection.prototype._getPropDesciptor = function(p_idx) {
+        EntityViewCollection.prototype._getPropDescriptor = function(p_idx) {
             return {
                 get: function() { return this._element[p_idx]; },
                 set: function(newValue) { 

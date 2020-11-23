@@ -20,9 +20,9 @@
 
     //==============================================================
     // 3. 모듈 등록
-    tasks.push({ns: "_W.Task.Observer", file: "./Common.Observer.task.js"});
+    tasks.push({ns: "_W.Task.Observer"          , file: "./Common.Observer.task.js"});
+    tasks.push({ns: "_W.Task.ArrayCollection"   , file: "./Collection.ArrayCollection.task.js"});
     tasks.push({ns: "_W.Task.Object_implement", file: "./Common.Object.implement.task.js"});
-    // tasks.push({ns: "_W.Task.Object_implement", file: "./Common.Object.implement.task.js"});
 
 
     //==============================================================
@@ -32,7 +32,7 @@
 
         for (var i = 0; i < tasks.length; i++) {
             task = typeof module === "object" ?  tasks[i].file : tasks[i].ns;
-            console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            console.log("=================================================================");
             console.log("단위 테스트 %s : %s", i, task);
             
 

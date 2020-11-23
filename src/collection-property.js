@@ -63,23 +63,45 @@
          * @param {*} p_name 속성명
          * @returns {Number} 삭제한 인덱스
          */
-        PropertyCollection.prototype.__remove = function(p_name) {
+        // PropertyCollection.prototype.__remove = function(p_name) {
 
-            var idx = this.indexOf(p_name);
+        //     var idx = this.indexOf(p_name);
 
-            delete this[p_name];                                        // 내부 이름 삭제
-            delete this[idx];                                           // 내부 idx 삭제
-            delete this._element[idx];                                  // 내부 참조 삭제
-            delete this.properties[this.properties.indexOf(p_name)];    // 속성목록 삭제
+        //     delete this[p_name];                                        // 이름 삭제
+        //     delete this[idx];                                           // idx 삭제
+        //     delete this._element[idx];                                  // 내부참조 삭제
+        //     delete this.properties[this.properties.indexOf(p_name)];    // 속성목록 삭제
 
-            return idx;
+        //     return idx;
+        // };
+        PropertyCollection.prototype.__remove = function(p_idx) {
+            
+            var count = this._element.length - 1;
+            var propName;
+
+            this._element.splice(p_idx, 1);
+            
+            if (p_idx < count) {
+                // 참조 변경(이동)
+                for (var i = p_idx; i < count; i++) {
+                    Object.defineProperty(this, [i], this._getPropDescriptor(i));
+                    propName = this.propertyOf(i);
+                    Object.defineProperty(this, propName, this._getPropDescriptor(i));
+                }
+                delete this[count];                     // 마지막 idx 삭제
+            } else {
+                delete this[p_idx];                     // idx 삭제 (끝일 경우)
+            }
+            propName = this.propertyOf(p_idx);          
+            delete this[propName];                      // 이름 삭제
+            this.properties.splice(p_idx, 1);
         };
 
         /**
          * @method 배열속성 설정 및 속성값 등록
-         * @param {*} p_name [필수] 속성명
-         * @param {*} p_value 속성값
-         * @returns {*} 입력 속성 참조값
+         * @param {string} p_name [필수] 속성명
+         * @param {?any} p_value 속성값
+         * @returns {any} 입력 속성 참조값 REVIEW:: 필요성 검토
          */
         PropertyCollection.prototype.add = function(p_name, p_value) {
             p_value = p_value || "";
@@ -96,33 +118,41 @@
 
             this._element.push(p_value);
             index = (this._element.length === 1) ? 0 : this._element.length  - 1;
-            Object.defineProperty(this, [index], this._getPropDesciptor(index));
+            Object.defineProperty(this, [index], this._getPropDescriptor(index));
 
             if (p_name) {
-                Object.defineProperty(this, p_name, this._getPropDesciptor(index));
+                Object.defineProperty(this, p_name, this._getPropDescriptor(index));
             }
             this.properties.push(p_name);
 
-            this._onAdd();                          // 이벤트 발생 : 등록
+            this._onAdd(index, p_value);            // 이벤트 발생 : 등록
             this._onChanged();                      // 이벤트 발생 : 변경후
 
             return [index];
         };
 
         /**
+         * REVEIW: 테스트 필요
          * @method 배열속성 삭제
-         * @param {*} p_name 속성명
+         * @param {name | element} p_obj 속성명
          * @returns {Number} 삭제한 인덱스
          */
-        PropertyCollection.prototype.remove = function(p_name) {
+        PropertyCollection.prototype.remove = function(p_obj) {
 
             var idx;
+            var propName;
+            var elem;
 
             this._onChanging();                     // 이벤트 발생 : 변경전
 
-            if (this.contains(p_name)) idx = this.__remove(p_name);
+            if (typeof p_obj === "string") 
+
+            idx = this.indexOf(p_obj);
+            propName = this.propertyOf(idx);
+
+            if (this.contains(propName)) this.__remove(idx);
             
-            this._onRemove();                       // 이벤트 발생 : 삭제
+            this._onRemove(idx);                    // 이벤트 발생 : 삭제
             this._onChanged();                      // 이벤트 발생 : 변경후
 
             return idx;
@@ -138,7 +168,7 @@
             
             this._onChanging();                     // 이벤트 발생 : 변경전
 
-            if (typeof propName === "string") this.__remove(propName);
+            if (typeof propName === "string") this.__remove(p_idx);
 
             this._onRemove();                       // 이벤트 발생 : 삭제
             this._onChanged();                      // 이벤트 발생 : 변경후
@@ -155,7 +185,7 @@
 
             for (var i = 0; i < this._element.length; i++) {
                 propName = this.propertyOf(i);
-                if (typeof propName === "string") this.__remove(propName);
+                if (typeof propName === "string") this.__remove(i);
             }
             this._element = [];
 
@@ -195,16 +225,19 @@
          * @param {Number}} p_idx 인덱스
          * @returns {String}
          */
-        PropertyCollection.prototype.propertyOf = function(p_idx) {
+        // PropertyCollection.prototype.propertyOf = function(p_idx) {
             
-            for (var prop in this) {
-                if ( this.hasOwnProperty(prop)){
-                    if (!isFinite(prop) && this[prop] === this._element[p_idx]) {
-                        return prop;
-                    }
-                }
-            }
-            return null;
+        //     for (var prop in this) {
+        //         if ( this.hasOwnProperty(prop)){
+        //             if (!isFinite(prop) && this[prop] === this._element[p_idx]) {
+        //                 return prop;
+        //             }
+        //         }
+        //     }
+        //     return null;
+        // };
+        PropertyCollection.prototype.propertyOf = function(p_idx) {
+            return this.properties[p_idx];
         };
 
         return PropertyCollection;

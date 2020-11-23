@@ -52,17 +52,17 @@
             this._elementType   = null;
 
             // Property
-            this.setProperty("count", 
+            this.regProperty("list", 
                 function() {
-                    return this._element.length;
+                    return this._element;
                 }, 
                 null
             );
 
             // Property
-            this.setProperty("list", 
+            this.regProperty("count", 
                 function() {
-                    return this._element;
+                    return this._element.length;
                 }, 
                 null
             );
@@ -120,10 +120,10 @@
         }
     
         /**
-         * @method private 프로퍼티 옵션 객체 얻기
+         * @method private 프로퍼티 기술자 설정
          * @param {Number} p_idx 인덱스
          */
-        BaseCollection.prototype._getPropDesciptor = function(p_idx) {
+        BaseCollection.prototype._getPropDescriptor = function(p_idx) {
             return {
                 get: function() { return this._element[p_idx]; },
                 set: function(newValue) {
@@ -142,13 +142,13 @@
         };
 
         /** @event onAdd 등록 이벤트 발생 */
-        BaseCollection.prototype._onAdd = function() {
-            this.__event.publish("add"); 
+        BaseCollection.prototype._onAdd = function(p_idx, p_value) {
+            this.__event.publish("add", p_idx, p_value); 
         };
 
         /** @event onRemove 삭제 이벤트 발생 */
-        BaseCollection.prototype._onRemove = function() {
-            this.__event.publish("remove"); 
+        BaseCollection.prototype._onRemove = function(p_idx) {
+            this.__event.publish("remove", p_idx); 
         };
 
         /** @event onClear 전체삭제 이벤트 발생 */
@@ -167,12 +167,12 @@
         };
 
         /**
-         *  @method 고정속성 등록
+         *  @method 정적 속성 설정
          * @param {String} p_name 속성명
          * @param {Function} p_getter getter 함수
          * @param {Function} p_setter setter 함수
          */
-        BaseCollection.prototype.setProperty = function(p_name, p_getter, p_setter) {
+        BaseCollection.prototype.regProperty = function(p_name, p_getter, p_setter) {
 
             var obj = {
                 enumerable: true,
@@ -195,7 +195,7 @@
         };
 
         /**
-         * @method 고정속성 삭제 
+         * @method 정적 속성 제거 
          * @param {*} p_name 속성명
          */
         BaseCollection.prototype.delProperty = function(p_name) {

@@ -159,7 +159,7 @@
          * EntityView 타입만 들어가게 제약조건 추가
          * @override
          */
-        // EntityViewCollection.prototype._getPropDesciptor = function(p_idx) {
+        // EntityViewCollection.prototype._getPropDescriptor = function(p_idx) {
         //     return {
         //         get: function() { return this._element[p_idx]; },
         //         set: function(newValue) { 

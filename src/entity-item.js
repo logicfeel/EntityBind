@@ -416,7 +416,7 @@
          * Item 타입만 들어가게 제약조건 추가
          * @override
          */
-        // ItemCollection.prototype._getPropDesciptor = function(p_idx) {
+        // ItemCollection.prototype._getPropDescriptor = function(p_idx) {
         //     return {
         //         get: function() { return this._element[p_idx]; },
         //         set: function(newValue) { 

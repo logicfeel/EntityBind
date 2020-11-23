@@ -60,7 +60,7 @@
          * EntityTable 타입만 들어가게 제약조건 추가
          * @override
          */
-        // PropertyFunctionCollection.prototype._getPropDesciptor = function(p_idx) {
+        // PropertyFunctionCollection.prototype._getPropDescriptor = function(p_idx) {
         //     return {
         //         get: function() { return this._element[p_idx]; },
         //         set: function(newValue) { 

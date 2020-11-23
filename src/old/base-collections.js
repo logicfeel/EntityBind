@@ -126,7 +126,7 @@
          * @method private 프로퍼티 옵션 객체 얻기
          * @param {Number} p_idx 인덱스
          */
-        BaseCollection.prototype._getPropDesciptor = function(p_idx) {
+        BaseCollection.prototype._getPropDescriptor = function(p_idx) {
             var obj = {
                 get: function() { return this._items[p_idx]; },
                 set: function(newValue) { this._items[p_idx] = newValue; },
@@ -260,7 +260,7 @@
         
             this._items.push(p_value);
             index = (this._items.length === 1) ? 0 : this._items.length  - 1;
-            Object.defineProperty(this, [index], this._getPropDesciptor(index));
+            Object.defineProperty(this, [index], this._getPropDescriptor(index));
 
             this.__event.publish("add");             // 이벤트 발생
 
@@ -390,10 +390,10 @@
             
             this._items.push(p_value);
             index = (this._items.length === 1) ? 0 : this._items.length  - 1;
-            Object.defineProperty(this, [index], this._getPropDesciptor(index));
+            Object.defineProperty(this, [index], this._getPropDescriptor(index));
 
             if (p_name) {
-                Object.defineProperty(this, p_name, this._getPropDesciptor(index));
+                Object.defineProperty(this, p_name, this._getPropDescriptor(index));
             }
 
             this.__event.publish("add");             // 이벤트 발생
