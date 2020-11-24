@@ -248,7 +248,10 @@
         console.log("---------------------------------------");
         console.log("TODO:: propagation = false :: 이벤트 전파 금지??");
         
-        // errorCount = 10;
+
+        if (errorCount > 0) {
+            console.warn("Error Sub SUM : %dEA", errorCount);    
+        }
         return errorCount;
     }
 

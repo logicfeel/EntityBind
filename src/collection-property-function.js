@@ -39,7 +39,7 @@
         function PropertyFunctionCollection(p_onwer) {
             _super.call(this, p_onwer);
 
-            this._elementType = Function;
+            this.elementType = Function;
         }
         util.inherits(PropertyFunctionCollection, _super);
 

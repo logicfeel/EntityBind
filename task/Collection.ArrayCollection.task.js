@@ -166,31 +166,31 @@
             errorCount++;
         }
 
-        console.log("---------------------------------------");
-        console.log("BaseCollection.regProperty(name, getter, setter) :: 정적속성 등록 ");
-        var table = new TestTable();
-        table.items.add("A1");
-        table.items.add("A2");
-        table.items.regProperty('cnt', function() {return this.count}, function(val) { this[0] = val; });
-        table.items.cnt = 100;
-        if (table.items.cnt === 2 && table.items[0] === 100) {
-            console.log("Result = Success");
-        } else {
-            console.warn("Result = Fail");
-            errorCount++;
-        }
+        // console.log("---------------------------------------");
+        // console.log("BaseCollection.regProperty(name, getter, setter) :: 정적속성 등록 ");
+        // var table = new TestTable();
+        // table.items.add("A1");
+        // table.items.add("A2");
+        // table.items.regProperty('cnt', function() {return this.count}, function(val) { this[0] = val; });
+        // table.items.cnt = 100;
+        // if (table.items.cnt === 2 && table.items[0] === 100) {
+        //     console.log("Result = Success");
+        // } else {
+        //     console.warn("Result = Fail");
+        //     errorCount++;
+        // }
 
-        console.log("---------------------------------------");
-        console.log("BaseCollection.delProperty(name) :: 정적속성 제거 ");
-        var table = new TestTable();
-        table.items.regProperty('cnt', function() {return this.count});
-        table.items.delProperty('cnt');
-        if (table.items.cnt === undefined) {
-            console.log("Result = Success");
-        } else {
-            console.warn("Result = Fail");
-            errorCount++;
-        }
+        // console.log("---------------------------------------");
+        // console.log("BaseCollection.delProperty(name) :: 정적속성 제거 ");
+        // var table = new TestTable();
+        // table.items.regProperty('cnt', function() {return this.count});
+        // table.items.delProperty('cnt');
+        // if (table.items.cnt === undefined) {
+        //     console.log("Result = Success");
+        // } else {
+        //     console.warn("Result = Fail");
+        //     errorCount++;
+        // }
 
         console.log("---------------------------------------");
         console.log("BaseCollection.onAdd :: 등록 이벤트 ");
@@ -266,6 +266,9 @@
             errorCount++;
         }
 
+        if (errorCount > 0) {
+            console.warn("Error Sub SUM : %dEA", errorCount);    
+        }
         return errorCount;
     }
 

@@ -20,9 +20,12 @@
 
     //==============================================================
     // 3. 모듈 등록
-    tasks.push({ns: "_W.Task.Observer"          , file: "./Common.Observer.task.js"});
-    tasks.push({ns: "_W.Task.ArrayCollection"   , file: "./Collection.ArrayCollection.task.js"});
-    tasks.push({ns: "_W.Task.Object_implement", file: "./Common.Object.implement.task.js"});
+    tasks.push({ns: "_W.Task.Observer"              , file: "./Common.Observer.task.js"});
+    tasks.push({ns: "_W.Task.ArrayCollection"       , file: "./Collection.ArrayCollection.task.js"});
+    tasks.push({ns: "_W.Task.PropertyCollection"    , file: "./Collection.PropertyCollection.task.js"});
+    tasks.push({ns: "_W.Task.EntityTable"           , file: "./Meta.Entity.EntityTable.task.js"});
+    
+    // tasks.push({ns: "_W.Task.Object_implement"      , file: "./Common.Object.implement.task.js"});
 
 
     //==============================================================

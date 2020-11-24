@@ -213,7 +213,7 @@
             {
                 get: function() { return __value; },
                 set: function(newValue) { 
-                    if(["number", "string", "boolean"].indexOf(typeof newValue) < 0) throw new Error("Only [value] type 'number' can be added");
+                    if(["number", "string", "boolean"].indexOf(typeof newValue) < 0) throw new Error("Only [value] type 'number, string, boolean' can be added");
                     __value = newValue;
                 },
                 configurable: true,
@@ -349,19 +349,21 @@
          */
         function ItemCollection(p_onwer) {
             _super.call(this, p_onwer);
-
-            var __elementType = Item;   // 컬렉션타입 설정
-
-            Object.defineProperty(this, "collectionType", 
+            
+            this.elementType = Item;    // 기본 컬렉션 타입
+            
+            Object.defineProperty(this, "itemType", 
             {
-                get: function() { return __elementType; },
+                get: function() { return this.elementType; },
                 set: function(newValue) { 
                     if (!(new newValue() instanceof Item)) throw new Error("Only [Item] type 'Item' can be added");
-                    __elementType = newValue; 
+                    this.elementType = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
+
+            
         }
         util.inherits(ItemCollection, _super);
 
@@ -378,9 +380,9 @@
             if (typeof p_object === "string") {      
                 i_name  = p_object;
                 // i_value = new Item(i_name, this._onwer);
-                i_value = new this.collectionType(i_name, this._onwer);
+                i_value = new this.itemType(i_name, this._onwer);
             // } else if (p_object instanceof Item) {
-            } else if (p_object instanceof this.collectionType) {
+            } else if (p_object instanceof this.itemType) {
                 i_name  = p_object.name;
                 i_value = p_object;
             } else {
@@ -397,17 +399,14 @@
         ItemCollection.prototype.addValue  = function(p_name, p_value) {
 
             var item;
+            var property = {};
 
-            if (typeof p_name === "undefined") throw new Error("There is no required value [p_name].");
-            if (typeof p_value === "undefined") throw new Error("There is no required value [p_name].");
+            if (typeof p_name !== "string") throw new Error("There is no required value [p_name].");
+            if(["number", "string", "boolean"].indexOf(typeof p_value) < 0) throw new Error("Only [value] type 'number, string, boolean' can be added");
+            
+            property = { value: p_value}
 
-
-            if (typeof p_name === "string") {      
-                // item = new Item(p_name, this._onwer, p_value);
-                item = new this.collectionType(p_name, this._onwer, p_value);
-            } else {
-                throw new Error("string | Item object [p_object].");
-            }
+            item = new this.itemType(p_name, this._onwer, property);
 
             return this.add(item);
         };

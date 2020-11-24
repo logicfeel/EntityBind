@@ -15,18 +15,18 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var Entity;
+    // var Entity;
     var PropertyCollection;
     var ArrayCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("util");
-        Entity              = require("./entity-base");
+        util                = require("./utils");
+        // Entity              = require("./entity-base");
         PropertyCollection  = require("./collection-property");
         ArrayCollection     = require("./collection-array");
     } else {
         util                = global._W.Common.Util;
-        Entity              = global._W.Meta.Entity;
+        // Entity              = global._W.Meta.Entity;
         PropertyCollection  = global._W.Collection.PropertyCollection;
         ArrayCollection     = global._W.Collection.ArrayCollection;
     }
@@ -34,7 +34,7 @@
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
+    // if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
     if (typeof ArrayCollection === "undefined") throw new Error("[ArrayCollection] module load fail...");
 
@@ -45,7 +45,7 @@
          * @abstract @class
          */
         function Row(p_entity) {
-            _super.call(this, this);
+            _super.call(this, p_entity);
             
             var __entity        = null;
             var itemName = "";
@@ -114,7 +114,7 @@
         function RowCollection(p_onwer) {
             _super.call(this, p_onwer);
 
-            this._elementType = Row;   // 컬렉션타입 설정
+            this.elementType = Row;   // 컬렉션타입 설정
         }
         util.inherits(RowCollection, _super);
 

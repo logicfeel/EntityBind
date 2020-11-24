@@ -40,13 +40,10 @@
         util.inherits(ArrayCollection, _super);     // 상속(대상, 부모)    
 
         /**
-         * @method 배열속성 삭제 (내부처리)
+         * @method __remove 배열속성 삭제 (내부처리)
          * @param {*} p_idx 인덱스 번호
          */
-        ArrayCollection.prototype.__remove = function(p_idx) {
-            // delete this[p_idx];                      // 내부 idx 삭제
-            // delete this._element[p_idx];              // 내부 참조 삭제
-            
+        ArrayCollection.prototype._remove = function(p_idx) {
             // [idx] 포인트 이동
             var count = this._element.length - 1;
             
@@ -64,19 +61,25 @@
         };
 
         /**
-         * @method 배열속성 속성값 설정
+         * @method add 배열속성 속성값 설정
          * @param {*} p_value [필수] 속성값
          * @returns {*} 입력 속성 참조값
          */
         ArrayCollection.prototype.add = function(p_value) {
         
+            var typeName;
             var index   = -1;
 
             this._onChanging();                     // 이벤트 발생 : 변경전
 
             if (typeof p_value === "undefined") throw new Error("p_value param request fail...");
+            if (this.elementType !== null && !(p_value instanceof this.elementType)) {
+                typeName = this.elementType.constructor.name;
+                throw new Error("Only [" + typeName + "] type instances can be added");
+            }
         
             this._element.push(p_value);
+            
             index = (this._element.length === 1) ? 0 : this._element.length  - 1;
             Object.defineProperty(this, [index], this._getPropDescriptor(index));
 
@@ -87,45 +90,7 @@
         };
 
         /**
-         * @method 배열속성 삭제
-         * @param {element} p_elem 속성명
-         * @returns {Number} 삭제한 인덱스
-         */
-        ArrayCollection.prototype.remove = function(p_elem) {
-            
-            var idx;
-            
-            this._onChanging();                     // 이벤트 발생 : 변경전
-            
-            if (this.contains(p_elem)) {
-                idx = this.indexOf(p_elem);
-                this.__remove(idx);
-            }
-            
-            this._onRemove(idx);                    // 이벤트 발생 : 삭제
-            this._onChanged();                      // 이벤트 발생 : 변경후
-
-            return idx;
-        };
-        
-        /**
-         * @method 배열속성 삭제
-         * @param {*} p_idx 인덱스
-         */
-        ArrayCollection.prototype.removeAt = function(p_idx) {
-
-            var obj = this._element[p_idx];
-            
-            this._onChanging();                     // 이벤트 발생 : 변경전
-            
-            if (typeof obj !== "undefined") this.__remove(p_idx);
-
-            this._onRemove();                       // 이벤트 발생 : 삭제
-            this._onChanged();                      // 이벤트 발생 : 변경후
-        };
-        
-        /**
-         * @method 배열속성 전체삭제
+         * @method clear 배열속성 전체삭제
          */
         ArrayCollection.prototype.clear = function() {
             
@@ -135,7 +100,7 @@
 
             for (var i = 0; i < this._element.length; i++) {
                 // obj = this.indexOf(this[i]);
-                // if (typeof obj !== "undefined") this.__remove(i);
+                // if (typeof obj !== "undefined") this._remove(i);
                 delete this[i];
             }
 
@@ -143,24 +108,6 @@
         
             this._onClear();                        // 이벤트 발생 : 전체삭제
             this._onChanged();                      // 이벤트 발생 : 변경후            
-        };
-        
-        /**
-         * @method 배열속성 여부 
-         * @param {Object} p_elem 속성 객체
-         * @returns {Boolean}
-         */
-        ArrayCollection.prototype.contains = function(p_elem) {
-            return this._element.indexOf(p_elem) > -1;
-        };
-
-        /**
-         * @method 배열속성 인덱스 찾기
-         * @param {Object} p_elem 속성 객체
-         * @returns {Number}
-         */
-        ArrayCollection.prototype.indexOf = function(p_elem) {
-            return this._element.indexOf(p_elem);
         };
 
         return ArrayCollection;

@@ -35,6 +35,9 @@
             errorCount++;
         }
 
+        if (errorCount > 0) {
+            console.warn("Error Sub SUM : %dEA", errorCount);    
+        }
         return errorCount;
     }
 
@@ -46,4 +49,4 @@
         global._W.Task.네임스페이스 = run();
     }
 
-}(this));    
+}(this));

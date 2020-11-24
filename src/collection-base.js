@@ -39,33 +39,45 @@
          */
         function BaseCollection(p_onwer) {
     
-            this.isDebug    = false;       // 디버깅 플래그
+            var __elementType = null;
 
             // Private
             this.__event     = new Observer(this, this);
 
             // Protected
             this._onwer         = p_onwer;
-    
             this._element       = [];
 
-            this._elementType   = null;
+            /** @property */
+            Object.defineProperty(this, "elementType", {
+                enumerable: true,
+                configurable: true,
+                get: function() {
+                    return __elementType;
+                },
+                set: function(newValue) {
+                    if(typeof newValue !== "function") throw new Error("Only [elementType] type 'function' can be added");
+                    __elementType = newValue;
+                }
+            });
 
-            // Property
-            this.regProperty("list", 
-                function() {
+            /** @property */
+            Object.defineProperty(this, "list", {
+                enumerable: true,
+                configurable: true,
+                get: function() {
                     return this._element;
-                }, 
-                null
-            );
+                }
+            });
 
-            // Property
-            this.regProperty("count", 
-                function() {
+            /** @property */
+            Object.defineProperty(this, "count", {
+                enumerable: true,
+                configurable: true,
+                get: function() {
                     return this._element.length;
-                }, 
-                null
-            );
+                }
+            });
             
             /** @event */
             Object.defineProperty(this, "onAdd", {
@@ -130,8 +142,9 @@
                     
                     var typeName;
 
-                    if (this._elementType !== null && !(newValue instanceof this._elementType)) {
-                        typeName = this._elementType.constructor.name;
+                    if (this.elementType !== null && !(newValue instanceof this.elementType)) {
+                        // typeName = this.elementType.constructor.name;
+                        typeName = this.elementType.name || this.elementType.constructor.name;
                         throw new Error("Only [" + typeName + "] type instances can be added");
                     }
                     this._element[p_idx] = newValue; 
@@ -166,51 +179,76 @@
             this.__event.publish("changed"); 
         };
 
-        /**
-         *  @method 정적 속성 설정
-         * @param {String} p_name 속성명
-         * @param {Function} p_getter getter 함수
-         * @param {Function} p_setter setter 함수
-         */
-        BaseCollection.prototype.regProperty = function(p_name, p_getter, p_setter) {
+        /** @abstract */
+        BaseCollection.prototype._remove  = function() {
+            throw new Error("[ _remove() ] Abstract method definition, fail...");
+        };
 
-            var obj = {
-                enumerable: true,
-                configurable: true
-            };
-            
-            if (typeof p_getter === "function") {
-                obj.get = p_getter;
-            } else {    // G 기본값 설정
-                obj.get = function(){return null};
-            }
-    
-            if (typeof p_setter === "function") {
-                obj.set = p_setter;
-            } else {    // 셋터 기본값 설정
-                obj.set = function(){};
-            }
-    
-            Object.defineProperty(this, p_name, obj);
+        /** @abstract */
+        BaseCollection.prototype.add  = function() {
+            throw new Error("[ add() ] Abstract method definition, fail...");
+        };
+        
+        /** @abstract */
+        BaseCollection.prototype.clear  = function() {
+            throw new Error("[ clear() ] Abstract method definition, fail...");
         };
 
         /**
-         * @method 정적 속성 제거 
-         * @param {*} p_name 속성명
-         */
-        BaseCollection.prototype.delProperty = function(p_name) {
-            if (typeof p_name === "undefined") throw new Error("p_name param request fail...");
-            delete this[p_name];                    // 내부 이름 참조 삭제
-        };
-
-        /**
-         * @method add 배열속성 등록 및 값 설정
          * @method remove 배열속성 삭제
-         * @method removeAt 배열속성 삭제
-         * @method clear 배열속성 전체 삭제
-         * @method contains 배열속성 + 고정속성 여부 검사 
-         * @method indexOf 속성 인덱스 번호 얻기
+         * @param {element} p_elem 속성명
+         * @returns {Number} 삭제한 인덱스
          */
+        BaseCollection.prototype.remove = function(p_elem) {
+            
+            var idx;
+            
+            this._onChanging();                     // 이벤트 발생 : 변경전
+            
+            if (this.contains(p_elem)) {
+                idx = this.indexOf(p_elem);
+                this._remove(idx);
+            }
+            
+            this._onRemove(idx);                    // 이벤트 발생 : 삭제
+            this._onChanged();                      // 이벤트 발생 : 변경후
+
+            return idx;
+        };
+        
+        /**
+         * @method removeAt 배열속성 삭제
+         * @param {number} p_idx 인덱스
+         */
+        BaseCollection.prototype.removeAt = function(p_idx) {
+
+            var obj = this._element[p_idx];
+            
+            this._onChanging();                     // 이벤트 발생 : 변경전
+            
+            if (typeof obj !== "undefined") this._remove(p_idx);
+
+            this._onRemove();                       // 이벤트 발생 : 삭제
+            this._onChanged();                      // 이벤트 발생 : 변경후
+        };
+
+        /**
+         * @method contains 배열속성 여부 
+         * @param {Object} p_elem 속성 객체
+         * @returns {Boolean}
+         */
+        BaseCollection.prototype.contains = function(p_elem) {
+            return this._element.indexOf(p_elem) > -1;
+        };
+
+        /**
+         * @method 배열속성 인덱스 찾기
+         * @param {Object} p_elem 속성 객체
+         * @returns {Number}
+         */
+        BaseCollection.prototype.indexOf = function(p_elem) {
+            return this._element.indexOf(p_elem);
+        };
 
         return BaseCollection;
     }());

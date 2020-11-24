@@ -120,7 +120,7 @@
         function EntityViewCollection(p_onwer) {
             _super.call(this, p_onwer);
 
-            this._elementType = EntityView;   // 컬렉션타입 설정
+            this.elementType = EntityView;   // 컬렉션타입 설정
         }
         util.inherits(EntityViewCollection, _super);
 

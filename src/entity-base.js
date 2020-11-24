@@ -218,7 +218,7 @@
 
         Entity.prototype.setValue  = function(p_row) {
             
-            if (p_row instanceof Row) throw new Error("Only [p_row] type 'Row' can be added");
+            if (!(p_row instanceof Row)) throw new Error("Only [p_row] type 'Row' can be added");
 
             for(var i = 0; this.items.count > i; i++) {
                 this.items[i].value = p_row[i];
@@ -297,15 +297,15 @@
              * row 항목을 재구성하여 생성 (내부 함수)
              * @param {*} rowIdx 
              */
-            function __createRow(rowIdx) {
+            function __createRow(rowIdx, orgEntity) {
 
                 var row = entity.newRow();
                 var i_name;
 
                 for (var i = 0; entity.items.count > i ; i++) {
-                    i_name = entity.items[i].name
-                    if (row[i_name] && this.rows[rowIdx][i_name]) {
-                        row[rowIdx][i_name] = this.rows[rowIdx][i_name];
+                    i_name = entity.items[i].name;
+                    if (typeof row[i_name] !== "undefined" && typeof orgEntity.rows[rowIdx][i_name] !== "undefined") {
+                        row[i_name] = orgEntity.rows[rowIdx][i_name];
                     }
                 }
                 return row;
@@ -314,16 +314,16 @@
             // 리턴 Entity 의 Row 구성 : 참조형
             if (typeof p_index === "number") {
                 for(var i = p_index; i < this.rows.count; i++) {
-                    if (typeof p_end === "number" && i === p_end) break;
                     // entity.rows.add(this.rows[idx]);
-                    entity.rows.add(__createRow(i));
+                    entity.rows.add(__createRow(i, this));
+                    if (typeof p_end === "number" && i === p_end) break;
                 }
             } else if (Array.isArray(p_index)) {
                 for(var i = 0; i < p_index.length; i++) {
                     idx = p_index[i];
                     if (typeof idx === "number" && typeof this.rows[idx] !== "undefined") {
                         // entity.rows.add(this.rows[idx]);
-                        entity.rows.add(__createRow(idx));
+                        entity.rows.add(__createRow(idx, this));
                     }
                 }
             }

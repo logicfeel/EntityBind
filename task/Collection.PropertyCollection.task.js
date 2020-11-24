@@ -54,7 +54,11 @@
         }
 
         console.log("---------------------------------------");
-        console.log("remove(elem | name) :: 삭제");
+        console.log("remove(elem) :: 삭제");
+        var table = new TestTable();
+        table.items.add("a1", "A1");
+        table.items.add("a2", "A2");
+        table.items.remove(table.items["a2"]);
         if (true) {
             console.log("Result = Success");
         } else {
@@ -64,7 +68,14 @@
 
         console.log("---------------------------------------");
         console.log("removeAt(idx) :: 삭제 (중간) ");
-        if (true) {
+        var table = new TestTable();
+        table.items.add("a1", "A1");
+        table.items.add("a2", "A2");    // 삭제위치
+        table.items.add("a3", "A3");
+        table.items.removeAt(1);
+        if (table.items.count === 2 && 
+            table.items[0] === "A1" && table.items["a1"] === "A1" &&
+            table.items[1] === "A3" && table.items["a3"] === "A3") {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -73,7 +84,14 @@
 
         console.log("---------------------------------------");
         console.log("removeAt(idx) :: 삭제 (처음) ");
-        if (true) {
+        var table = new TestTable();
+        table.items.add("a1", "A1"); // 삭제위치
+        table.items.add("a2", "A2");    
+        table.items.add("a3", "A3");
+        table.items.removeAt(0);
+        if (table.items.count === 2 && 
+            table.items[0] === "A2" && table.items["a2"] === "A2" &&
+            table.items[1] === "A3" && table.items["a3"] === "A3") {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -82,7 +100,14 @@
 
         console.log("---------------------------------------");
         console.log("removeAt(idx) :: 삭제 (끝) ");
-        if (true) {
+        var table = new TestTable();
+        table.items.add("a1", "A1");
+        table.items.add("a2", "A2");    
+        table.items.add("a3", "A3");    // 삭제위치
+        table.items.removeAt(2);
+        if (table.items.count === 2 && 
+            table.items[0] === "A1" && table.items["a1"] === "A1" &&
+            table.items[1] === "A2" && table.items["a2"] === "A2") {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -91,7 +116,12 @@
 
         console.log("---------------------------------------");
         console.log("clear() :: 전체삭제(초기화) ");
-        if (true) {
+        var table = new TestTable();
+        table.items.add("a1", "A1");
+        table.items.add("a2", "A2");    
+        table.items.add("a3", "A3");
+        table.items.clear();
+        if (table.items.count === 0 && table.items[0] === undefined && table.items[1] === undefined) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -99,8 +129,12 @@
         }
 
         console.log("---------------------------------------");
-        console.log("contains(elem | name) :: 유무 검사 ");
-        if (true) {
+        console.log("contains(elem) :: 유무 검사 ");
+        var table = new TestTable();
+        table.items.add("a1", "A1");
+        table.items.add("a2", "A2");    
+        table.items.add("a3", "A3");
+        if (table.items.contains("A1") === true && table.items.contains("A4") === false) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -108,8 +142,25 @@
         }
 
         console.log("---------------------------------------");
-        console.log("indexOf(elem | name) :: idx 조회 ");
-        if (true) {
+        console.log("indexOf(elem) :: idx 조회 ");
+        var table = new TestTable();
+        table.items.add("a1", "A1");
+        table.items.add("a2", "A2");    
+        table.items.add("a3", "A3");        
+        if (table.items.indexOf("A1") === 0 && table.items.indexOf(table.items["a3"]) === 2 ) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------");
+        console.log("indexOfName(name) :: idx 조회 ");
+        var table = new TestTable();
+        table.items.add("a1", "A1");
+        table.items.add("a2", "A2");    
+        table.items.add("a3", "A3");        
+        if (table.items.indexOfName("a2") === 1 && table.items.indexOfName("a4") === -1) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -118,13 +169,38 @@
 
         console.log("---------------------------------------");
         console.log("propertyOf(idx) :: prop 조회 ");
-        if (true) {
+        var table = new TestTable();
+        table.items.add("a1", "A1");
+        table.items.add("a2", "A2");    
+        table.items.add("a3", "A3");        
+        if (table.items.propertyOf(1) === "a2" && table.items.propertyOf("a4") === undefined) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+        
+        console.log("---------------------------------------");
+        console.log("BaseCollection.elementType = function :: 값타입 설정 ");
+        var table = new TestTable();
+        table.items.elementType = String;  // 타입
+        var s1 = new String("s1");
+        var s2 = new String("s2");
+        table.items.add("a1", s1);
+        table.items["a1"] = s2;
+        table.items.add("a2", s1);    
+        // table.items.add("a3", "A3");        // new 통한 생성이 아니면 오류 !!
+        // 인스턴스로 비교해야함
+        if (table.items.propertyOf(1) === "a2" && table.items["a2"] === s1) {   
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
             errorCount++;
         }
 
+        if (errorCount > 0) {
+            console.warn("Error Sub SUM : %dEA", errorCount);    
+        }
         return errorCount;
     }
 

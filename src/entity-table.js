@@ -112,7 +112,7 @@
         function EntityTableCollection(p_onwer) {
             _super.call(this, p_onwer);
 
-            this._elementType = EntityTable;   // 컬렉션타입 설정
+            this.elementType = EntityTable;   // 컬렉션타입 설정
         }
         util.inherits(EntityTableCollection, _super);
 

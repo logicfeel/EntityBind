@@ -353,7 +353,7 @@
             if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
 
             entity = new EntityTable(p_name);
-            entity.items.collectionType = this.itemType;    // 아이템타입 설정
+            entity.items.itemType = this.itemType;    // 아이템타입 설정
             
             this[p_name] = entity;
             

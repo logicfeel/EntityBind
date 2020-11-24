@@ -39,7 +39,7 @@
         function PropertyObjectCollection(p_onwer) {
             _super.call(this, p_onwer);
 
-            this._elementType = Object;
+            this.elementType = Object;
         }
         util.inherits(PropertyObjectCollection, _super);
 
