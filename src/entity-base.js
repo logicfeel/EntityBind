@@ -98,7 +98,7 @@
 
         Entity.prototype.__addItem  = function(p_name, p_property) {
             
-            if(!this.items.contains(p_name)) this.items.add(p_name);
+            if(!this.items.contains(this.items[p_name])) this.items.add(p_name);
             
             if (typeof p_property === "object" ) {
                 for(var prop in p_property) {
@@ -107,12 +107,30 @@
             }
         };
 
+        /**
+         * 빈 row 채우기
+         * @param {*} p_target 
+         */
+        Entity.prototype.__fillRow  = function(p_target) {
+            
+            var itemName;
+            
+            for (var i = 0 ; i < this.rows.count; i++) {
+                for (var ii = 0; ii < p_target.items.count; ii++) {
+                    itemName = p_target.items[ii].name;
+                    if (typeof this.rows[i][itemName] === "undefined") {
+                        this.rows[i].add(itemName, "");
+                    }
+                }
+            }            
+        };
 
         Entity.prototype.__loadJSON  = function(p_object, p_option) {
             p_option = p_option || 1;   // 기본값 덮어쓰기
             
             var entity;
             var row;
+            var itemName;
 
             if (typeof p_object === "undefined") throw new Error("Only [p_object] type 'object' can be added");
             
@@ -150,7 +168,7 @@
             }
             
             // Row 데이터 가져오기
-            if (entity.rows && entity.rows[0]) {
+            if (this.items.count > 0 && entity.rows && entity.rows[0]) {
                 for(var i = 0; entity.rows.length > i; i++) {
                     
                     row = this.newRow();
@@ -159,9 +177,19 @@
                             row[prop] = entity.rows[i][prop];
                         }
                     }
-                    this.rows.add(row);
+                    if (row.count) this.rows.add(row);
                 }
-            }        
+            } 
+            
+            // 빈 Row 채우기
+            for (var i = 0 ; i < this.rows.count; i++) {
+                for (var ii = 0; ii < this.items.count; ii++) {
+                    itemName = this.items[ii].name;
+                    if (typeof this.rows[i][itemName] === "undefined") {
+                        this.rows[i].add(itemName, "");
+                    }
+                }
+            }   
         };
 
         Entity.prototype.__loadEntity  = function(p_object, p_option) {
@@ -175,7 +203,8 @@
             if (p_option === 1) {
                 // Item 기준으로 아이템 가져오기
                 for(var i = 0; entity.items.count > i; i++) {
-                    this.items.add(entity.items[i]);
+                    itemName = entity.items[i].name;
+                    if (typeof this.items[itemName] === "undefined") this.items.add(entity.items[i]);
                 }
             }
             
@@ -197,6 +226,8 @@
                 }
                 this.rows.add(row);
             }
+
+            if (p_option === 1) this.__fillRow(entity);
         };
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
@@ -341,8 +372,9 @@
         };
 
         /**
+         * "구조를 구성하는게 주용도임"
          * 병합 : 컬렉션 순서에 따라 병한다.
-         * @param {*} p_target 병합할 Entity
+         * * @param {*} p_target 병합할 Entity
          * @param {*} p_option {item: 1, row:2}
          * Item과 Row가 있는 경우
          * - 1 items, rows 병합 (기존유지) *기본값
@@ -355,13 +387,12 @@
             var cloneTarget;
             var row;
             var itemName;
+            // var rowMax;
 
             // 유효성 검사
             if (!(p_target instanceof Entity)) throw new Error("Only [p_target] type 'Entity' can be added");
 
-
-            // 병합
-            // Item 기준으로 아이템 가져오기
+            // 병합 : Item 기준으로 아이템 가져오기
             for(var i = 0; p_target.items.count > i; i++) {
                 itemName = p_target.items[i].name;
                 
@@ -371,38 +402,59 @@
                 }
                 
                 // option = 2: 기존 item 덮어쓰기
-                if (p_option === 2 || typeof this.items[i][itemName] !== "undefined") {
-                    this.items[i] = p_target.items[i];
+                if (p_option === 2 && typeof this.items[itemName] !== "undefined") {
+                    this.items[itemName] = p_target.items[itemName];
                 }
             }
 
             if (p_option !== 3) {
                 // Row 데이터 가져오기
                 for(var i = 0; p_target.rows.count > i; i++) {
-                                
-                    // 기존 row와 동일 idx 여부 확인후 row 가져오기
-                    row = this.rows[i] ? this.rows[i] : this.newRow();
-
-                    for (var ii = 0; ii < p_target.items.count; ii++) {
-                        itemName = p_target[ii].name;
-                        
-                        // 옵션 = 2 : 덮어쓰기 경우 또는 없는 경우
-                        if (p_option === 2 || typeof this.rows[i][itemName] === "undefined") {
-                            row[itemName] = p_target.rows[i][itemName];
+                    
+                    if (typeof this.rows[i] !== "undefined") {  // this.rows 있는 경우
+                        row = this.rows[i];
+                        for (var ii = 0; ii < p_target.items.count; ii++) {
+                            itemName = p_target.items[ii].name;
+                            if (typeof this.rows[i][itemName] === "undefined") {    // 이름이 없는 경우
+                                row.add(itemName, p_target.rows[i][itemName]);
+                            } else if (p_option === 2 && typeof this.rows[i][itemName] !== "undefined") {   // 덮어쓰기
+                                row[itemName] = p_target.rows[i][itemName];     
+                            }
                         }
+                        
+                    } else {                                    // this.rows 없는 경우
+                        row = this.newRow();
+                        for (var ii = 0; ii < p_target.items.count; ii++) {
+                            itemName = p_target.items[ii].name;
+                            if (p_option === 2) {   // 덮어쓰기
+                                row[itemName] = p_target.rows[i][itemName];     
+                            }
+                        }
+                        this.rows.add(row);
                     }
-                    // 기존 row가 없을경우 추가함
-                    if (typeof this.rows[i] === "undefined") this.rows.add(row);
                 }
             }
+
+            // 공백 채우기
+            this.__fillRow(p_target);
+            // for (var i = 0 ; i < this.rows.count; i++) {
+            //     for (var ii = 0; ii < p_target.items.count; ii++) {
+            //         itemName = p_target.items[ii].name;
+            //         if (typeof this.rows[i][itemName] === "undefined") {
+            //             this.rows[i].add(itemName, "");
+            //         }
+            //     }
+            // }
         };
         
         /**
-         * 
-         * @param {*} p_object 
+         * "데이터를 가져오는게 주용도임"
+         * 불러오기/가져오기 (!! 병합용도가 아님)
+         * 기존에 row 가 존재하면 newRow 부터 가져오고, 기존item 은 공백이 들어감
+         * @param {*} p_object Entity 는 item과 row 는 쌍으로 존재함, JSON 은 row만 존재할 수 있음
          * @param {Number} p_option 
-         *          - 1: 병합, item + row  (*기본값)
-         *          - 2: 데이터만 가져오기 (존재하는 아이템만)
+         *          - 1: row 기준으로 가져옴, 없을시 item 생성, item 중복시 기존유지  <*기본값> 
+         *          - 2: 존재하는 item 데이터만 가져오기
          */
         Entity.prototype.load  = function(p_object, p_option) {
 

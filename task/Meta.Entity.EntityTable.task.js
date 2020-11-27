@@ -258,7 +258,34 @@
             console.warn("Result = Fail");
             errorCount++;
         }
-        if (true) {
+
+        console.log("---------------------------------------");
+        console.log("merge(entity, option = 1) :: 엔티티 병합 (기존 item 유지, 원본 row > 타겟 row) ");
+        var table = new EntityTable("T1");
+        table.items.add("i1");
+        table.items.add("i2");
+        table.items["i2"].caption = "C1";
+        var row = table.newRow();
+        row["i1"] = "R1";
+        row["i2"] = "R2";
+        table.rows.add(row);
+        var row = table.newRow();
+        row["i1"] = "R10";
+        row["i2"] = "R20";
+        table.rows.add(row);
+        var table2 = new EntityTable("T2");
+        table2.items.add("i2");
+        table2.items.add("i3");
+        table2.items["i2"].caption = "C2";
+        var row = table.newRow();
+        row["i2"] = "R22";
+        row["i3"] = "R33";
+        table2.rows.add(row);
+        table.merge(table2, 1);
+        if (table.items.count === 3 && table.rows.count === 2 &&
+            table.items["i2"].caption === "C1" &&   // 기존 유지 
+            table.rows[0]["i1"] === "R1" && table.rows[0]["i2"] === "R2" && table.rows[0]["i3"] === "R33" &&
+            table.rows[1]["i1"] === "R10" && table.rows[1]["i2"] === "R20" && table.rows[1]["i3"] === "") {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -266,8 +293,32 @@
         }
 
         console.log("---------------------------------------");
-        console.log("merge(entity, ?option) :: 엔티티 병합 ");
-        if (true) {
+        console.log("merge(entity, option = 2) :: 엔티티 병합 (기존 item 덮어쓰기, 원본 row < 타겟 row) ");
+        var table = new EntityTable("T1");
+        table.items.add("i1");
+        table.items.add("i2");
+        table.items["i2"].caption = "C1";
+        var row = table.newRow();
+        row["i1"] = "R1";
+        row["i2"] = "R2";
+        table.rows.add(row);
+        var table2 = new EntityTable("T2");
+        table2.items.add("i2");
+        table2.items.add("i3");
+        table2.items["i2"].caption = "C2";
+        var row = table.newRow();
+        row["i2"] = "R22";
+        row["i3"] = "R33";
+        table2.rows.add(row);
+        var row = table.newRow();
+        row["i2"] = "R20";
+        row["i3"] = "R30";
+        table2.rows.add(row);
+        table.merge(table2, 2);
+        if (table.items.count === 3 && table.rows.count === 2 &&
+            table.items["i2"].caption === "C2" &&   // 덮어쓰기
+            table.rows[0]["i1"] === "R1" && table.rows[0]["i2"] === "R22" && table.rows[0]["i3"] === "R33" &&
+            table.rows[1]["i1"] === "" && table.rows[1]["i2"] === "R20" && table.rows[1]["i3"] === "R30") {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -275,17 +326,270 @@
         }
 
         console.log("---------------------------------------");
-        console.log("load(obj, option) :: 로드 ");
-        if (true) {
+        console.log("merge(entity, option = 3) :: 엔티티 병합 (row 안가져오기) ");
+        var table = new EntityTable("T1");
+        table.items.add("i1");
+        table.items.add("i2");
+        table.items["i2"].caption = "C1";
+        var row = table.newRow();
+        row["i1"] = "R1";
+        row["i2"] = "R2";
+        table.rows.add(row);
+        var table2 = new EntityTable("T2");
+        table2.items.add("i2");
+        table2.items.add("i3");
+        table2.items["i2"].caption = "C2";
+        var row = table.newRow();
+        row["i2"] = "R22";
+        row["i3"] = "R33";
+        table2.rows.add(row);
+        var row = table.newRow();
+        row["i2"] = "R20";
+        row["i3"] = "R30";
+        table2.rows.add(row);
+        table.merge(table2, 3);
+        if (table.items.count === 3 && table.rows.count === 1 && 
+            table.items["i2"].caption === "C1" &&
+            table.rows[0]["i1"] === "R1" && table.rows[0]["i2"] === "R2" && table.rows[0]["i3"] === "") {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
             errorCount++;
         }
+
+        console.log("---------------------------------------");
+        console.log("load(Entity, option = 1) :: 로드 (row 기준, 채워진 Entity) ");
+        var table = new EntityTable("T1");
+        table.items.add("i1");
+        table.items.add("i2");
+        table.items["i2"].caption = "C1";
+        var row = table.newRow();
+        row["i1"] = "R1";
+        row["i2"] = "R2";
+        table.rows.add(row);
+        var table2 = new EntityTable("T2");
+        table2.items.add("i2");
+        table2.items.add("i3");
+        table2.items["i2"].caption = "C2";
+        var row = table.newRow();
+        row["i2"] = "R22";
+        row["i3"] = "R33";
+        table2.rows.add(row);
+        var row = table.newRow();
+        row["i2"] = "R20";
+        row["i3"] = "R30";
+        table2.rows.add(row);
+        table.load(table2, 1);
+        if (table.items.count === 3 && table.rows.count === 3 &&
+            table.items["i2"].caption === "C1" &&
+            table.rows[0]["i1"] === "R1" && table.rows[0]["i2"] === "R2" && table.rows[0]["i3"] === "" &&
+            table.rows[1]["i1"] === "" && table.rows[1]["i2"] === "R22" && table.rows[1]["i3"] === "R33" &&
+            table.rows[2]["i1"] === "" && table.rows[2]["i2"] === "R20" && table.rows[2]["i3"] === "R30") {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------");
+        console.log("load(Entity, option = 2) :: 로드 (row 기준, 채워진 Entity) ");
+        var table = new EntityTable("T1");
+        table.items.add("i1");
+        table.items.add("i2");
+        table.items["i2"].caption = "C1";
+        var row = table.newRow();
+        row["i1"] = "R1";
+        row["i2"] = "R2";
+        table.rows.add(row);
+        var table2 = new EntityTable("T2");
+        table2.items.add("i2");
+        table2.items.add("i3");
+        table2.items["i2"].caption = "C2";
+        var row = table.newRow();
+        row["i2"] = "R22";
+        row["i3"] = "R33";
+        table2.rows.add(row);
+        var row = table.newRow();
+        row["i2"] = "R20";
+        row["i3"] = "R30";
+        table2.rows.add(row);
+        table.load(table2, 2);
+        if (table.items.count === 2 && table.rows.count === 3 &&
+            table.items["i2"].caption === "C1" &&
+            table.rows[0]["i1"] === "R1" && table.rows[0]["i2"] === "R2" && table.rows[0]["i3"] === undefined &&
+            table.rows[1]["i1"] === "" && table.rows[1]["i2"] === "R22" &&
+            table.rows[2]["i1"] === "" && table.rows[2]["i2"] === "R20") {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------");
+        console.log("load(Entity, option = 1) :: 로드 (row 기준) ");
+        var table = new EntityTable("T1");
+        var table2 = new EntityTable("T2");
+        table2.items.add("i2");
+        table2.items.add("i3");
+        table2.items["i2"].caption = "C2";
+        var row = table.newRow();
+        row["i2"] = "R22";
+        row["i3"] = "R33";
+        table2.rows.add(row);
+        var row = table.newRow();
+        row["i2"] = "R20";
+        row["i3"] = "R30";
+        table2.rows.add(row);
+        table.load(table2, 1);
+        if (table.items.count === 2 && table.rows.count === 2 &&
+            table.items["i2"].caption === "C2" &&
+            table.rows[0]["i2"] === "R22" && table.rows[0]["i3"] === "R33" &&
+            table.rows[1]["i2"] === "R20" && table.rows[1]["i3"] === "R30") {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------");
+        console.log("load(Entity, option = 2) :: 로드 (존재하는 item의 row만 가져오기) ");
+        var table = new EntityTable("T1");
+        table.items.add("i1");
+        table.items.add("i2");
+        table.items["i2"].caption = "C1";
+        var table2 = new EntityTable("T2");
+        table2.items.add("i2");
+        table2.items.add("i3");
+        table2.items["i2"].caption = "C2";
+        var row = table.newRow();
+        row["i2"] = "R22";
+        row["i3"] = "R33";
+        table2.rows.add(row);
+        var row = table.newRow();
+        row["i2"] = "R20";
+        row["i3"] = "R30";
+        table2.rows.add(row);
+        table.load(table2, 2);
+        if (table.items.count === 2 && table.rows.count === 2 &&
+            table.items["i2"].caption === "C1" &&
+            table.rows[0]["i1"] === "" && table.rows[0]["i2"] === "R22" &&
+            table.rows[1]["i1"] === "" && table.rows[1]["i2"] === "R20") {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------");
+        console.log("load(JSON, option = 1) :: 로드 (row 기준, 채워진 Entity) ");
+        var table = new EntityTable("T1");
+        table.items.add("i1");
+        table.items.add("i2");
+        table.items["i2"].caption = "C1";
+        var row = table.newRow();
+        row["i1"] = "R1";
+        row["i2"] = "R2";
+        table.rows.add(row);
+        var table2 = {
+            entity: {
+                items: [ { i2: { size : 10 }, }, { i3: { size: 20 } }],
+                rows_total: 2,
+                rows: [ { i2: "R22", i3: "R33"}, { i2: "R20", i3: "R30"}]
+            }            
+        };
+        table.load(table2, 1);
+        if (table.items.count === 3 && table.rows.count === 3 &&
+            table.items["i2"].caption === "C1" && table.items["i2"].size === 10 &&
+            table.rows[0]["i1"] === "R1" && table.rows[0]["i2"] === "R2" && table.rows[0]["i3"] === "" &&
+            table.rows[1]["i1"] === "" && table.rows[1]["i2"] === "R22" && table.rows[1]["i3"] === "R33" &&
+            table.rows[2]["i1"] === "" && table.rows[2]["i2"] === "R20" && table.rows[2]["i3"] === "R30") {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------");
+        console.log("load(JSON, option = 2) :: 로드 (존재하는 item의 row만 가져오기, 채워진 Entity)  ");
+        var table = new EntityTable("T1");
+        table.items.add("i1");
+        table.items.add("i2");
+        table.items["i2"].caption = "C1";
+        var row = table.newRow();
+        row["i1"] = "R1";
+        row["i2"] = "R2";
+        table.rows.add(row);
+        var table2 = {
+            entity: {
+                items: [ { i2: { size : 10 }, }, { i3: { size: 20 } }],
+                rows_total: 2,
+                rows: [ { i2: "R22", i3: "R33"}, { i2: "R20", i3: "R30"}]
+            }            
+        };
+        table.load(table2, 2);
+        if (table.items.count === 2 && table.rows.count === 3 &&
+            table.items["i2"].caption === "C1" && 
+            table.rows[0]["i1"] === "R1" && table.rows[0]["i2"] === "R2" && table.rows[0]["i3"] === undefined &&
+            table.rows[1]["i1"] === "" && table.rows[1]["i2"] === "R22" &&
+            table.rows[2]["i1"] === "" && table.rows[2]["i2"] === "R20" ) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+
+        console.log("---------------------------------------");
+        console.log("load(JSON, option = 1) :: 로드 (row 기준) ");
+        var table = new EntityTable("T1");
+        var table2 = {
+            entity: {
+                items: [ { i2: { size : 10 }, }, { i3: { size: 20 } }],
+                rows_total: 2,
+                rows: [ { i2: "R22", i3: "R33"}, { i2: "R20", i3: "R30"}]
+            }            
+        };
+        table.load(table2, 1);
+        if (table.items.count === 2 && table.rows.count === 2 &&
+            table.items["i2"].size === 10 &&  table.items["i3"].size === 20 &&
+            table.rows[0]["i2"] === "R22" && table.rows[0]["i3"] === "R33" &&
+            table.rows[1]["i2"] === "R20" && table.rows[1]["i3"] === "R30") {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------");
+        console.log("load(JSON, option = 2) :: 로드 (존재하는 item의 row만 가져오기)  ");
+        var table = new EntityTable("T1");
+        var table2 = {
+            entity: {
+                items: [ { i2: { size : 10 }, }, { i3: { size: 20 } }],
+                rows_total: 2,
+                rows: [ { i2: "R22", i3: "R33"}, { i2: "R20", i3: "R30"}]
+            }            
+        };
+        table.load(table2, 2);
+        if (table.items.count === 0 && table.rows.count === 0) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
 
         console.log("---------------------------------------");
         console.log("clear() :: 초기화 ");
-        if (true) {
+        var table = new EntityTable("T1");
+        table.items.add("i1");
+        table.items.add("i2");
+        var row = table.newRow();
+        row["i1"] = "R1";
+        row["i2"] = "R2";
+        table.rows.add(row);
+        table.clear();
+        if (table.items.count === 0 && table.rows.count === 0 ) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -294,7 +598,21 @@
 
         console.log("---------------------------------------");
         console.log("clone() : EntityTable :: 복제 ");
-        if (true) {
+        var table = new EntityTable("T1");
+        table.items.add("i1");
+        table.items.add("i2");
+        table.items["i2"].caption = "C1";
+        var row = table.newRow();
+        row["i1"] = "R1";
+        row["i2"] = "R2";
+        table.rows.add(row);
+        var table2 = table.clone();
+        if (table.name === "T1" && table.items.count === 2 && table.rows.count === 1 && 
+            table.items["i2"].caption === "C1" && 
+            table.rows[0]["i1"] === "R1" && table.rows[0]["i2"] === "R2" && 
+            table2.name === "T1" && table2.items.count === 2 && table2.rows.count === 1 && 
+            table2.items["i2"].caption === "C1" && 
+            table2.rows[0]["i1"] === "R1" && table2.rows[0]["i2"] === "R2" ) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -304,7 +622,7 @@
         console.log("---------------------------------------");
         console.log("getTypes() :: 타입 조회(상속) ");
         if (true) {
-            console.log("Result = Success");
+            // console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
             errorCount++;
@@ -313,7 +631,7 @@
         console.log("---------------------------------------");
         console.log("getObject() :: 타입 얻기(JSON) ");
         if (true) {
-            console.log("Result = Success");
+            // console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
             errorCount++;
