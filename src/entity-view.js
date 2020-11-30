@@ -58,16 +58,16 @@
         /**
          * @abstract @class
          */
-        function EntityView(p_name, p_refEntity) {
+        function EntityView(p_name, p_baseEntity) {
             _super.call(this, p_name);
 
             var refCollection;
 
-            if (p_refEntity && p_refEntity.instanceOf("Entity")) {
-                refCollection = p_refEntity.items;
+            if (p_baseEntity && p_baseEntity.instanceOf("Entity")) {
+                refCollection = p_baseEntity.items;
             }
             
-            this._refEntity = p_refEntity;
+            this._refEntity = p_baseEntity;
             
             this._refEntities = [];
 
@@ -102,9 +102,9 @@
             var clone = new EntityView(this.name);  // 뷰를 복제하면 참조타입 >> 엔티티타입으로 변경
 
             // 참조 복제
-            for(var i = 0; i < this._refEntities.length; i++) {
-                clone._refEntities.push(this._refEntities[i]);
-            }
+            // for(var i = 0; i < this._refEntities.length; i++) {
+            //     clone._refEntities.push(this._refEntities[i]);
+            // }
            
             for(var i = 0; i < this.items.count; i++) {
                 clone.items.add(this.items[i].clone());
@@ -141,19 +141,19 @@
          *  - entityView, collection    :         entityView  이름으로 등록 (collection보냄) => 오류발생
          * 
          * @param {String | EntityView} p_object 
-         * @param {I?temCollection} p_refEntity
+         * @param {I?temCollection} p_baseEntity
          * @returns {EntityView} 등록한 아이템
          */
-        EntityViewCollection.prototype.add  = function(p_object, p_refEntity) {
+        EntityViewCollection.prototype.add  = function(p_object, p_baseEntity) {
 
             var i_value;
             var i_name;
 
             if (typeof p_object === "string") {      
                 i_name  = p_object;
-                i_value = new EntityView(i_name, p_refEntity);
+                i_value = new EntityView(i_name, p_baseEntity);
             } else if (p_object instanceof EntityView) {
-                if (p_refEntity) throw new Error(" EntityView객체와 refEntity객체를 동시에 입력할 수 없습니다. !!");
+                if (p_baseEntity) throw new Error(" EntityView객체와 refEntity객체를 동시에 입력할 수 없습니다. !!");
                 i_name  = p_object.name;
                 i_value = p_object;
             } else {

@@ -123,7 +123,7 @@
             this._onAdd(index, p_value);            // 이벤트 발생 : 등록
             this._onChanged();                      // 이벤트 발생 : 변경후
 
-            return [index];
+            return this[index];
         };
 
         /**

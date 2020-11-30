@@ -2968,7 +2968,7 @@ if (typeof Array.isArray === "undefined") {
             /**
              * @protected @member
              */
-            this._refCollection = p_refCollection;
+            this._baseCollection = p_refCollection;
         }
         util.inherits(ItemViewCollection, _super);
 
@@ -3008,8 +3008,8 @@ if (typeof Array.isArray === "undefined") {
 
             if (p_refCollection instanceof ItemCollection) {
                 collection = p_refCollection;
-            } else if (this._refCollection instanceof ItemCollection) {
-                collection = this._refCollection;
+            } else if (this._baseCollection instanceof ItemCollection) {
+                collection = this._baseCollection;
             }
             
             // 기본참조 컬렉션 또는 전달참조 컬렉션인 경우

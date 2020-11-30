@@ -415,20 +415,20 @@
          * @class
          * @constructor
          * @param {*} p_onwer 소유자
-         * @param {?ItemCollection} p_refCollection 참조기본 컬렉션
+         * @param {?ItemCollection} p_baseCollection 참조기본 컬렉션
          */
-        function ItemViewCollection(p_onwer, p_refCollection) {
+        function ItemViewCollection(p_onwer, p_baseCollection) {
             _super.call(this, p_onwer);
 
-            // if (typeof p_refCollection !== "undefined" && !(p_refCollection instanceof ItemCollection)) {
-            if (p_refCollection && !(p_refCollection instanceof ItemCollection)) {
-                throw new Error("Error!! ItemCollection object [p_refCollection].");
+            // if (typeof p_baseCollection !== "undefined" && !(p_baseCollection instanceof ItemCollection)) {
+            if (p_baseCollection && !(p_baseCollection instanceof ItemCollection)) {
+                throw new Error("Error!! ItemCollection object [p_baseCollection].");
             }
             
             /**
              * @protected @member
              */
-            this._refCollection = p_refCollection;
+            this._baseCollection = p_baseCollection;
         }
         util.inherits(ItemViewCollection, _super);
 
@@ -441,10 +441,11 @@
          *  TODO:: 객체 비교는 string 이 아니고 값과 타입을 비교해야함 (그래야 참조를 사용)
          * 
          * @param {String, Item} p_object 
-         * @param {?ItemCollection} p_refCollection
+         * @param {?ItemCollection} p_baseCollection
          */
-        ItemViewCollection.prototype.add  = function(p_object, p_refCollection) {
-
+        ItemViewCollection.prototype.add  = function(p_object, p_baseCollection) {
+            
+            
             // string                       => 생성 및 자신에 등록
             // string <base>                => 생성 및 소유처에 등록
             // Item                         => 생성 및 자신에 등록
@@ -458,6 +459,7 @@
             var i_value;
 
             if (p_object instanceof Item) {
+                if (p_object.entity === null) p_object.entity = this._onwer;
                 i_name = p_object.name;
                 i_value = p_object;
             } else if (typeof p_object === "string") {
@@ -469,10 +471,10 @@
 
             // TODO:: 이름 충돌검사
 
-            if (p_refCollection instanceof ItemCollection) {            // 전달값으로 기본컬렉션 지정시
-                collection = p_refCollection;
-            } else if (this._refCollection instanceof ItemCollection) { // 기본컬렉션 존재시
-                collection = this._refCollection;
+            if (p_baseCollection instanceof ItemCollection) {            // 전달값으로 기본컬렉션 지정시
+                collection = p_baseCollection;
+            } else if (this._baseCollection instanceof ItemCollection) { // 기본컬렉션 존재시
+                collection = this._baseCollection;
             }
             
             // 기본참조 컬렉션 또는 전달참조 컬렉션인 경우
@@ -513,7 +515,7 @@
          * @class
          * @constructor
          * @param {*} p_onwer 소유자
-         * @param {?ItemCollection} p_refCollection 참조기본 컬렉션
+         * @param {?ItemCollection} p_baseCollection 참조기본 컬렉션
          */
         function ItemTableCollection(p_onwer) {
             _super.call(this, p_onwer);

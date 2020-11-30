@@ -631,12 +631,17 @@
 
         console.log("-----------------------------------------------------------------");
         console.log("getTypes() :: 타입 조회(상속) ");
-        if (true) {
-            // console.log("Result = Success");
+        var table = new EntityTable("T1");
+        var types = table.getTypes();
+        if (types.indexOf("EntityTable") > -1 &&
+            types[0] === "EntityTable" && types[1] === "Entity" && 
+            types[2] === "MetaElement" && types[3] === "MetaObject") {
+            console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
             errorCount++;
         }
+
         console.log("-----------------------------------------------------------------");
         console.log("getObject() :: 타입 얻기(JSON) ");
         if (true) {
