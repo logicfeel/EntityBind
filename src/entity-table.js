@@ -20,7 +20,7 @@
     var IGroupControl;
     var IAllControl;
     var RowCollection;
-    var ItemCollection;
+    var ItemTableCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
@@ -29,7 +29,7 @@
         IGroupControl       = require("./i-control-group");
         IAllControl         = require("./i-control-all");
         RowCollection       = require("./entity-row").RowCollection;
-        ItemCollection      = require("./entity-item").ItemCollection;
+        ItemTableCollection      = require("./entity-item").ItemTableCollection;
     } else {
         util                = global._W.Common.Util;
         Entity              = global._W.Meta.Entity.Entity;
@@ -37,7 +37,7 @@
         IGroupControl       = global._W.Interface.IGroupControl;
         IAllControl         = global._W.Interface.IAllControl;
         RowCollection       = global._W.Meta.Entity.RowCollection;
-        ItemCollection      = global._W.Meta.Entity.ItemCollection;
+        ItemTableCollection      = global._W.Meta.Entity.ItemTableCollection;
     }
 
     //==============================================================
@@ -48,7 +48,7 @@
     if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
     if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
-    if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
+    if (typeof ItemTableCollection === "undefined") throw new Error("[ItemTableCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -59,7 +59,7 @@
         function EntityTable(p_name) {
             _super.call(this, p_name);
 
-            this.items = new ItemCollection(this);
+            this.items = new ItemTableCollection(this);
 
             // /**
             //  * @interface IProperyCollection 인터페이스 선언

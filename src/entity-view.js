@@ -16,7 +16,7 @@
     // 2. 모듈 가져오기 (node | web)
     var util;
     var Entity;
-    var ItemRefCollection;
+    var ItemViewCollection;
     var PropertyCollection;
     var RowCollection;
     var IGroupControl;
@@ -26,7 +26,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
         Entity              = require("./entity-base");
-        ItemRefCollection   = require("./entity-item").ItemRefCollection;
+        ItemViewCollection   = require("./entity-item").ItemViewCollection;
         PropertyCollection  = require("./collection-property");
         RowCollection       = require("./entity-row").RowCollection;
         IGroupControl       = require("./i-control-group");
@@ -35,7 +35,7 @@
     } else {
         util                = global._W.Common.Util;
         Entity              = global._W.Meta.Entity.Entity;
-        ItemRefCollection   = global._W.Meta.Entity.ItemRefCollection;
+        ItemViewCollection   = global._W.Meta.Entity.ItemViewCollection;
         PropertyCollection  = global._W.Collection.PropertyCollection;
         RowCollection       = global._W.Meta.Entity.RowCollection;
         IGroupControl       = global._W.Interface.IGroupControl;
@@ -46,7 +46,7 @@
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
-    if (typeof ItemRefCollection === "undefined") throw new Error("[ItemRefCollection] module load fail...");
+    if (typeof ItemViewCollection === "undefined") throw new Error("[ItemViewCollection] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
     if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
     if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
@@ -71,11 +71,16 @@
             
             this._refEntities = [];
 
-            this.items = new ItemRefCollection(this, refCollection);
+            this.items = new ItemViewCollection(this, refCollection);
         }
         util.inherits(EntityView, _super);
 
+        /**
+         * 뷰 참조 등록
+         * @param {Entity} p_entity 
+         */
         EntityView.prototype._regRefer  = function(p_entity) {
+            if (!(p_entity instanceof Entity)) throw new Error("Only [p_entity] type 'Entity' can be added");
             if (this._refEntities.indexOf(p_entity) < 0) this._refEntities.push(p_entity);
         };
         
@@ -96,6 +101,11 @@
             
             var clone = new EntityView(this.name);  // 뷰를 복제하면 참조타입 >> 엔티티타입으로 변경
 
+            // 참조 복제
+            for(var i = 0; i < this._refEntities.length; i++) {
+                clone._refEntities.push(this._refEntities[i]);
+            }
+           
             for(var i = 0; i < this.items.count; i++) {
                 clone.items.add(this.items[i].clone());
             }

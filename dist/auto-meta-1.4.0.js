@@ -2561,7 +2561,7 @@ if (typeof Array.isArray === "undefined") {
 /**
  * @namespace _W.Meta.Entity.Item
  * @namespace _W.Meta.Entity.ItemCollection
- * @namespace _W.Meta.Entity.ItemRefCollection
+ * @namespace _W.Meta.Entity.ItemViewCollection
  */
 (function(global) {
 
@@ -2950,14 +2950,14 @@ if (typeof Array.isArray === "undefined") {
 
 
     //---------------------------------------
-    var ItemRefCollection  = (function (_super) {
+    var ItemViewCollection  = (function (_super) {
         /**
          * @class
          * @constructor
          * @param {*} p_onwer 소유자
          * @param {?ItemCollection} p_refCollection 참조기본 컬렉션
          */
-        function ItemRefCollection(p_onwer, p_refCollection) {
+        function ItemViewCollection(p_onwer, p_refCollection) {
             _super.call(this, p_onwer);
 
             // if (typeof p_refCollection !== "undefined" && !(p_refCollection instanceof ItemCollection)) {
@@ -2970,7 +2970,7 @@ if (typeof Array.isArray === "undefined") {
              */
             this._refCollection = p_refCollection;
         }
-        util.inherits(ItemRefCollection, _super);
+        util.inherits(ItemViewCollection, _super);
 
         /**
          *  - base(all),    string | Itme, Collection   => Collection 에 생성후 자신에 등록 
@@ -2983,7 +2983,7 @@ if (typeof Array.isArray === "undefined") {
          * @param {String, Item} p_object 
          * @param {?ItemCollection} p_refCollection
          */
-        ItemRefCollection.prototype.add  = function(p_object, p_refCollection) {
+        ItemViewCollection.prototype.add  = function(p_object, p_refCollection) {
 
             // string                       => 생성 및 자신에 등록
             // string <base>                => 생성 및 소유처에 등록
@@ -3036,7 +3036,7 @@ if (typeof Array.isArray === "undefined") {
         // ItemCollection.prototype.addValue  = function(p_name, p_value) {
         // };
 
-        return ItemRefCollection;
+        return ItemViewCollection;
     
     }(ItemCollection));
 
@@ -3045,11 +3045,11 @@ if (typeof Array.isArray === "undefined") {
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports.Item                     = Item;
         module.exports.ItemCollection           = ItemCollection;
-        module.exports.ItemRefCollection        = ItemRefCollection;
+        module.exports.ItemViewCollection        = ItemViewCollection;
     } else {
         global._W.Meta.Entity.Item              = Item;
         global._W.Meta.Entity.ItemCollection    = ItemCollection;
-        global._W.Meta.Entity.ItemRefCollection = ItemRefCollection;
+        global._W.Meta.Entity.ItemViewCollection = ItemViewCollection;
     }
 
 }(this));
@@ -3877,7 +3877,7 @@ if (typeof Array.isArray === "undefined") {
     // 2. 모듈 가져오기 (node | web)
     var util;
     var Entity;
-    var ItemRefCollection;
+    var ItemViewCollection;
     var PropertyCollection;
     var RowCollection;
     var IGroupControl;
@@ -3887,7 +3887,7 @@ if (typeof Array.isArray === "undefined") {
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
         Entity              = require("./entity-base");
-        ItemRefCollection   = require("./entity-item").ItemRefCollection;
+        ItemViewCollection   = require("./entity-item").ItemViewCollection;
         PropertyCollection  = require("./collection-property");
         RowCollection       = require("./entity-row").RowCollection;
         IGroupControl       = require("./i-control-group");
@@ -3896,7 +3896,7 @@ if (typeof Array.isArray === "undefined") {
     } else {
         util                = global._W.Common.Util;
         Entity              = global._W.Meta.Entity.Entity;
-        ItemRefCollection   = global._W.Meta.Entity.ItemRefCollection;
+        ItemViewCollection   = global._W.Meta.Entity.ItemViewCollection;
         PropertyCollection  = global._W.Collection.PropertyCollection;
         RowCollection       = global._W.Meta.Entity.RowCollection;
         IGroupControl       = global._W.Interface.IGroupControl;
@@ -3907,7 +3907,7 @@ if (typeof Array.isArray === "undefined") {
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
-    if (typeof ItemRefCollection === "undefined") throw new Error("[ItemRefCollection] module load fail...");
+    if (typeof ItemViewCollection === "undefined") throw new Error("[ItemViewCollection] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
     if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
     if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
@@ -3930,7 +3930,7 @@ if (typeof Array.isArray === "undefined") {
 
             this._refEntity = [];
 
-            this.items = new ItemRefCollection(this, refCollection);
+            this.items = new ItemViewCollection(this, refCollection);
         }
         util.inherits(EntityView, _super);
 

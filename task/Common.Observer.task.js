@@ -95,7 +95,7 @@
 
 
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("onLoad, _onLoad() :: 속성과 메소드 추가로 이벤트  커스텀, 익명함수");
         result = [];
         var e = new EventTest();
@@ -111,7 +111,7 @@
             errorCount++;
         }
         
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("onLoad, _onLoad() :: 속성과 메소드 추가로 이벤트  커스텀, 지정함수");
         result = [];
         var e = new EventTest();
@@ -124,7 +124,7 @@
             errorCount++;
         }
         
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("subscribe(fn, 'code') :: 지역(code) 등록");
         result = [];
         var e = new EventTest();
@@ -137,7 +137,7 @@
             errorCount++;
         }
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("unsubscribe(fn, 'code') :: 지역(code) 해지");
         result = [];
         var e = new EventTest();
@@ -151,7 +151,7 @@
             errorCount++;
         }
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("subscribe(fn) :: 전역 구독");
         result = [];
         var e = new EventTest();
@@ -164,7 +164,7 @@
             errorCount++;
         }
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("unsubscribe(fn) :: 전역 구독 해지");
         result = [];
         var e = new EventTest();
@@ -178,7 +178,7 @@
             errorCount++;
         }
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("unsubscribeAll() :: 전역, 지역(code) 전체 해지");
         result = [];
         var e = new EventTest();
@@ -194,7 +194,7 @@
             errorCount++;
         }
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("unsubscribeAll('code') :: 지역(code) 전체 해지");
         result = [];
         var e = new EventTest();
@@ -209,7 +209,7 @@
             errorCount++;
         }
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("isMultiMode = false :: 싱글 구독 모드");
         result = [];
         var e = new EventTest();
@@ -224,7 +224,7 @@
             errorCount++;
         }
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("_onParam(p1, p2) => publish(p1, p2) 시점에 파라메터 처리 ");
         result = [];
         var e = new EventTest();
@@ -242,13 +242,13 @@
             errorCount++;
         }
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("TODO:: isDebug 필요성 여부");
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("TODO:: propagation = false :: 이벤트 전파 금지??");
         
-
+        //#################################################
         if (errorCount > 0) {
             console.warn("Error Sub SUM : %dEA", errorCount);    
         }

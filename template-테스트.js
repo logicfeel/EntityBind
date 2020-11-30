@@ -26,15 +26,16 @@
     // 3. 테스트 본문
     function run() {
     
-        console.log("---------------------------------------");
-        console.log("메소드 :: 설명");
+        console.log("-----------------------------------------------------------------");
+        console.log("메소드 :: 설명 ");
         if (true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
             errorCount++;
         }
-
+        
+        //#################################################
         if (errorCount > 0) {
             console.warn("Error Sub SUM : %dEA", errorCount);    
         }

@@ -6,7 +6,7 @@
 var item                = require("../src/item");
 var Item                = item.Item;
 var ItemCollection      = item.ItemCollection;
-var ItemRefCollection   = item.ItemRefCollection;
+var ItemViewCollection   = item.ItemViewCollection;
 
 //===============================================
 // 본문 1
@@ -61,7 +61,7 @@ console.log("e.items.count      3 ==> " + e.items.count);
 // 본문 3
 
 function EntityRef() {
-    this.items = new ItemRefCollection(this, e.items);
+    this.items = new ItemViewCollection(this, e.items);
 }
 
 function Entity3() {
@@ -69,7 +69,7 @@ function Entity3() {
 }
 
 function EntityRef4() {
-    this.items = new ItemRefCollection(this);
+    this.items = new ItemViewCollection(this);
 }
 
 var e2 = new EntityRef();

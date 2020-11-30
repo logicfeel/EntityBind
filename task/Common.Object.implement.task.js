@@ -49,7 +49,7 @@
             return "Success";
         };
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("this._implements(interface) :: 인터페이스 선언, 기본");
         var a = new Animal();
         if (a.getSound() === "Success" && a.member === "Success") {
@@ -59,16 +59,16 @@
             errorCount++;
         }
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("this._implements(interface) :: 인터페이스 선언, 다중선언");
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("this._implements(interface) :: 인터페이스 상속");
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("this._implements(interface) :: 인터페이스 상속 + 선언");
 
-        console.log("---------------------------------------");
+        console.log("-----------------------------------------------------------------");
         console.log("Object.isImplementOf(interface) :: 인터페이스 타입 검사");
 
         return errorCount;
