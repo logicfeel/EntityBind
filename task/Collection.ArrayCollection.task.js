@@ -45,8 +45,11 @@
         var table = new TestTable();
         table.items.add(100);
         table.items.add(200);
-        if (table.items[0] === 100 && table.items[1] === 200 && 
-            table.items.count === 2 && table.items.list[0] === 100) {
+        if (table.items[0] === 100 && 
+            table.items[1] === 200 && 
+            table.items.count === 2 && 
+            table.items.list[0] === 100 &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -68,13 +71,10 @@
         console.log("remove(elem) :: 삭제 ");
         var table = new TestTable();
         var val = "VAL";
-
         table.items.add(val);
         table.items.remove(val);
-        
         table.items.add("A1");
         table.items.remove("A1");
-
         if (table.items.count === 0) {
             console.log("Result = Success");
         } else {
@@ -89,7 +89,10 @@
         table.items.add("A2");  // 삭제 위치
         table.items.add("A3");
         table.items.removeAt(1);
-        if (table.items.count === 2 && table.items[0] === "A1" && table.items[1] === "A3") {
+        if (table.items.count === 2 && 
+            table.items[0] === "A1" && 
+            table.items[1] === "A3" &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -103,7 +106,10 @@
         table.items.add("A2");  // 삭제 위치
         table.items.add("A3");
         table.items.removeAt(0);
-        if (table.items.count === 2 && table.items[0] === "A2" && table.items[1] === "A3") {
+        if (table.items.count === 2 && 
+            table.items[0] === "A2" && 
+            table.items[1] === "A3" &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -117,7 +123,10 @@
         table.items.add("A2");  // 삭제 위치
         table.items.add("A3");
         table.items.removeAt(2);
-        if (table.items.count === 2 && table.items[0] === "A1" && table.items[1] === "A2") {
+        if (table.items.count === 2 && 
+            table.items[0] === "A1" && 
+            table.items[1] === "A2" &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -131,7 +140,10 @@
         table.items.add("A2");
         table.items.add("A3");
         table.items.clear();
-        if (table.items.count === 0 && table.items[0] === undefined && table.items[1] === undefined) {
+        if (table.items.count === 0 && 
+            table.items[0] === undefined && 
+            table.items[1] === undefined &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -144,7 +156,9 @@
         table.items.add("A1");
         table.items.add("A2");
         table.items.add("A3");
-        if (table.items.contains("A1") === true && table.items.contains("A4") === false) {
+        if (table.items.contains("A1") === true && 
+            table.items.contains("A4") === false &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -158,8 +172,11 @@
         table.items.add("A2");
         table.items.add(100);
         table.items.add(2);
-        if (table.items.indexOf("A1") === 0 && table.items.indexOf(0) === -1 && 
-            table.items.indexOf(100) === 2 && table.items.indexOf(2) === 3) {
+        if (table.items.indexOf("A1") === 0 && 
+            table.items.indexOf(0) === -1 && 
+            table.items.indexOf(100) === 2 && 
+            table.items.indexOf(2) === 3 &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -201,7 +218,9 @@
             result.push(val);
         };
         table.items.add("A1");
-        if (result.indexOf("A1") > -1 && result.indexOf(0) > -1) {
+        if (result.indexOf("A1") > -1 && 
+            result.indexOf(0) > -1 &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -259,7 +278,9 @@
         table.items.add("A3");
         table.items.remove("A1");
         table.items.removeAt(0);
-        if (result.length === 10 && table.items.count === 1) {
+        if (result.length === 10 && 
+            table.items.count === 1 &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");

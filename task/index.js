@@ -25,7 +25,10 @@
     tasks.push({ns: "_W.Task.PropertyCollection"    , file: "./Collection.PropertyCollection.task.js"});
     tasks.push({ns: "_W.Task.EntityTable"           , file: "./Meta.Entity.EntityTable.task.js"});
     tasks.push({ns: "_W.Task.EntityView"            , file: "./Meta.Entity.EntityView.task.js"});
-    
+    tasks.push({ns: "_W.Task.ItemCollection"        , file: "./Meta.Entity.ItemCollection.task.js"});
+    tasks.push({ns: "_W.Task.Item"                  , file: "./Meta.Entity.Item.task.js"});
+    tasks.push({ns: "_W.Task.ItemDOM"               , file: "./Meta.Entity.ItemDOM.task.js"});
+
     // tasks.push({ns: "_W.Task.Object_implement"      , file: "./Common.Object.implement.task.js"});
 
 

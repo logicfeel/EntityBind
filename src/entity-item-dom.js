@@ -95,7 +95,8 @@
 
             if (typeof p_option === "object" ) {
                 for(var prop in p_option) {
-                    if (p_option.hasOwnProperty(prop) && ["domType", "isReadOnly", "isHide", "element"].indexOf(prop)) {
+                    if (p_option.hasOwnProperty(prop) && 
+                        ["domType", "isReadOnly", "isHide", "element"].indexOf(prop) > -1) {
                         this[prop] = p_option[prop];
                     }
                 }
@@ -126,6 +127,7 @@
             if (this.domType) clone["domType"]          = this.domType;     // 참조값
             if (this.isReadOnly) clone["isReadOnly"]    = this.isReadOnly;
             if (this.isHide) clone["isHide"]            = this.isHide;
+            if (this.isHide) clone["element"]           = this.element;
             
             return clone;
         };

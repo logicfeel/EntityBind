@@ -46,7 +46,9 @@
         var table = new TestTable();
         table.items.add("a1");
         table.items.add("a2", "A2");
-        if (table.items["a2"] === "A2" && table.items.count === 2) {
+        if (table.items["a2"] === "A2" && 
+            table.items.count === 2 &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -74,8 +76,11 @@
         table.items.add("a3", "A3");
         table.items.removeAt(1);
         if (table.items.count === 2 && 
-            table.items[0] === "A1" && table.items["a1"] === "A1" &&
-            table.items[1] === "A3" && table.items["a3"] === "A3") {
+            table.items[0] === "A1" && 
+            table.items["a1"] === "A1" &&
+            table.items[1] === "A3" && 
+            table.items["a3"] === "A3" &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -106,8 +111,11 @@
         table.items.add("a3", "A3");    // 삭제위치
         table.items.removeAt(2);
         if (table.items.count === 2 && 
-            table.items[0] === "A1" && table.items["a1"] === "A1" &&
-            table.items[1] === "A2" && table.items["a2"] === "A2") {
+            table.items[0] === "A1" && 
+            table.items["a1"] === "A1" &&
+            table.items[1] === "A2" && 
+            table.items["a2"] === "A2" &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -121,7 +129,10 @@
         table.items.add("a2", "A2");    
         table.items.add("a3", "A3");
         table.items.clear();
-        if (table.items.count === 0 && table.items[0] === undefined && table.items[1] === undefined) {
+        if (table.items.count === 0 && 
+            table.items[0] === undefined && 
+            table.items[1] === undefined &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -134,7 +145,9 @@
         table.items.add("a1", "A1");
         table.items.add("a2", "A2");    
         table.items.add("a3", "A3");
-        if (table.items.contains("A1") === true && table.items.contains("A4") === false) {
+        if (table.items.contains("A1") === true && 
+            table.items.contains("A4") === false &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -147,7 +160,9 @@
         table.items.add("a1", "A1");
         table.items.add("a2", "A2");    
         table.items.add("a3", "A3");        
-        if (table.items.indexOf("A1") === 0 && table.items.indexOf(table.items["a3"]) === 2 ) {
+        if (table.items.indexOf("A1") === 0 && 
+            table.items.indexOf(table.items["a3"]) === 2 &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -160,7 +175,9 @@
         table.items.add("a1", "A1");
         table.items.add("a2", "A2");    
         table.items.add("a3", "A3");        
-        if (table.items.indexOfName("a2") === 1 && table.items.indexOfName("a4") === -1) {
+        if (table.items.indexOfName("a2") === 1 && 
+            table.items.indexOfName("a4") === -1 &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -173,7 +190,9 @@
         table.items.add("a1", "A1");
         table.items.add("a2", "A2");    
         table.items.add("a3", "A3");        
-        if (table.items.propertyOf(1) === "a2" && table.items.propertyOf("a4") === undefined) {
+        if (table.items.propertyOf(1) === "a2" && 
+            table.items.propertyOf("a4") === undefined &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -191,7 +210,9 @@
         table.items.add("a2", s1);    
         // table.items.add("a3", "A3");        // new 통한 생성이 아니면 오류 !!
         // 인스턴스로 비교해야함
-        if (table.items.propertyOf(1) === "a2" && table.items["a2"] === s1) {   
+        if (table.items.propertyOf(1) === "a2" && 
+            table.items["a2"] === s1 &&
+            true) {   
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");

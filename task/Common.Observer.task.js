@@ -235,7 +235,10 @@
             result.push(this.id);  // Result 등록
         };
         e._onParam("P1", "P2"); // 테스크
-        if (result.indexOf("P1") > -1 && result.indexOf("P2") > -1 && result.indexOf("OBJ") > -1) {
+        if (result.indexOf("P1") > -1 && 
+            result.indexOf("P2") > -1 && 
+            result.indexOf("OBJ") > -1 &&
+            true) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");

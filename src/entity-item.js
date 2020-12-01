@@ -224,7 +224,8 @@
             // 아이템 옵션속성 추가
             if (typeof p_property === "object" ) {
                 for(var prop in p_property) {
-                    if (p_property.hasOwnProperty(prop)) {
+                    if (p_property.hasOwnProperty(prop) &&
+                    ["entity", "type", "size", "default", "caption", "isNotNull", "callback", "constraints", "codeType", "order", "increase", "value"].indexOf(prop) > -1) {
                         this[prop] = p_property[prop];
                     }
                 }
@@ -327,7 +328,7 @@
             }
             
             // Null 검사
-            if ((p_option === 1 && this.isNotNull && p_value.trim().length <= 0) || 
+            if ((p_option === 1 && this.isNotNull === true && p_value.trim().length <= 0) || 
                 (p_option === 2 && p_value.trim().length <= 0)) {
                 
                 r_result.msg   = this.caption+"("+this.name+")은  공백을 입력할 수 없습니다.";
@@ -501,10 +502,18 @@
             // return _super.prototype.add.call(this, item);           // 자신에 등록
         };
 
-        // POINT::
-        // ItemCollection.prototype.addValue  = function(p_name, p_value) {
-        // };
+        ItemViewCollection.prototype.addEntity  = function(p_entity) {
+            if (typeof p_entity === "undefined" || 
+                typeof p_entity.instanceOf === "undefined" || 
+                !p_entity.instanceOf("Entity")) {
+                throw new Error("There is no required value [p_name].");
+            }
 
+            for (var i = 0; p_entity.items.count > i; i++) {
+                this.add(p_entity.items[i]);
+            }
+        };
+        
         return ItemViewCollection;
     
     }(ItemCollection));
