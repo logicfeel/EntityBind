@@ -50,7 +50,7 @@
             var __entity        = null;
             var __type          = "string";
             var __size          = 0;
-            var __default       = null;
+            var __default       = "";
             var __caption       = "";
             var __isNotNull     = false;
             var __callback      = null;

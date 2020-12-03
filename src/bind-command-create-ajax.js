@@ -32,25 +32,25 @@
 
     //==============================================================
     // 4. 모듈 구현    
-    var BindCommandCreate  = (function (_super) {
+    var BindCommandCreateAjax  = (function (_super) {``
         /**
          * @class
          */
-        function BindCommandCreate(p_bindModel, p_baseEntity) {
+        function BindCommandCreateAjax(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
         }
-        util.inherits(BindCommandCreate, _super);
+        util.inherits(BindCommandCreateAjax, _super);
     
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
-        BindCommandCreate.prototype.getTypes  = function() {
+        BindCommandCreateAjax.prototype.getTypes  = function() {
                     
-            var type = ["BindCommandCreate"];
+            var type = ["BindCommandCreateAjax"];
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        BindCommandCreate.prototype.execValid = function() {
+        BindCommandCreateAjax.prototype.execValid = function() {
              // TODO::
              console.log("*************");
              console.log("_execValid()");
@@ -60,7 +60,7 @@
              return true;
         };
 
-        BindCommandCreate.prototype.execBind = function() {
+        BindCommandCreateAjax.prototype.execBind = function() {
             // TODO::
             console.log("*************");
             console.log("_execBind()");
@@ -70,7 +70,7 @@
             this._execSuccess();
         };
         
-        BindCommandCreate.prototype.execSuccess = function() {
+        BindCommandCreateAjax.prototype.execSuccess = function() {
              // TODO::
              console.log("*************");
              console.log("_execSuccess()");
@@ -79,7 +79,7 @@
         };
 
 
-        return BindCommandCreate;
+        return BindCommandCreateAjax;
     
     }(BindCommandInternal));
     
@@ -87,9 +87,9 @@
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = BindCommandCreate;
+        module.exports = BindCommandCreateAjax;
     } else {
-        global._W.Meta.Bind.BindCommandCreate = BindCommandCreate;
+        global._W.Meta.Bind.BindCommandCreateAjax = BindCommandCreateAjax;
     }
 
 }(this));

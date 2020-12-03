@@ -47,12 +47,13 @@
             _super.call(this);
 
             var __baseEntity;
+            var __propagation   = true;
             
             /** @private */
             this.__event    = new Observer(this, this);
 
             /** @property */
-            Object.defineProperty(this, "baseEntity", 
+            Object.defineProperty(this, "_baseEntity", 
             {
                 get: function() { return __baseEntity; },
                 set: function(newValue) { 
@@ -81,24 +82,17 @@
                 }
             });
 
-            // /** @property */
-            // Object.defineProperty(this, "onFail", {
-            //     enumerable: true,
-            //     configurable: true,
-            //     set: function(p_fn) {
-            //         this.__event.subscribe(p_fn, "fail");
-            //     }
-            // });
-
             /** @property */
             Object.defineProperty(this, "eventPropagation", {
                 enumerable: true,
                 configurable: true,
                 set: function(p_bool) {
-                    if (!(p_bool instanceof Boolean)) throw new Error("Only [p_bool] type 'Boolean' can be added");
-                    this.__event.propagation = p_bool;
+                    if (typeof p_bool !== "boolean") throw new Error("Only [p_bool] type 'Boolean' can be added");
+                    // this.__event.propagation = p_bool;
+                    __propagation = p_bool;
                 },
-                get: function() { return this.__event.propagation; }
+                get: function() { return __propagation; }
+                // get: function() { return this.__event.propagation; }
             });
         }
         util.inherits(BaseBind, _super);

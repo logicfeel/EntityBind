@@ -70,7 +70,7 @@
 
             var __firest    = new EntityTable("first");
 
-            this.baseEntity = __firest;
+            this._baseEntity = __firest;
             
             // var __create    = new BindCommandCreate(this, this.first);
             // var __read      = new BindCommandRead(this, this.first);

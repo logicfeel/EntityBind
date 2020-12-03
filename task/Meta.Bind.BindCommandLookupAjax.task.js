@@ -1,0 +1,211 @@
+/**
+ * @namespace _W.Task.BindCommandLookupAjax
+ */
+(function(global) {
+
+    "use strict";
+
+    //==============================================================
+    // 1. 모듈 네임스페이스 선언
+    global._W                = global._W || {};
+    global._W.Task           = global._W.Task || {};
+    
+    //==============================================================
+    // 2. 모듈 가져오기 (node | web)
+    var errorCount = 0;
+    var result = [];        // 결과 확인 **사용시 초기화    
+        
+    var util;        
+    var Row;
+    var Item;
+    var EntityView;
+    var EntityTable;
+    var BindModelReadAjax;
+
+    if (typeof module === "object" && typeof module.exports === "object") {  
+        util                    = require("../src/utils");
+        Row                     = require("../src/entity-row").Row;
+        Item                    = require("../src/entity-item").Item;
+        EntityView              = require("../src/entity-view").EntityView;
+        EntityTable             = require("../src/entity-table").EntityTable;
+        BindModelReadAjax       = require("../src/bind-model-ajax-read");
+    } else {
+        util                    = global._W.Common.Util;
+        Row                     = global._W.Meta.Entity.Row;
+        Item                    = global._W.Meta.Entity.Item;
+        EntityView              = global._W.Meta.Entity.EntityView;
+        EntityTable             = global._W.Meta.Entity.EntityTable;
+        BindModelReadAjax       = global._W.Meta.Bind.BindModelReadAjax;
+    }
+
+    //==============================================================
+    // 3. 테스트 본문
+    function run() {
+
+        console.log("-----------------------------------------------------------------");
+        console.log("cbValid        :: 검사시 실행 ");
+        console.log("cbBind         :: 바인딩시 실행 ");
+        console.log("cbOutput       :: 뷰 출력시 실행 [View 하위만] ");
+        console.log("cbEnd          :: 실행 완료시 실행 (명령간 연결의 용도 + 서버측 결과) ");
+        console.log("onExecute      :: 명령 엔티티 실행[execute()] 실행 전 ");
+        console.log("onExecuted     :: 명령 엔티티 실행[execute()] 실행 후 ");
+        result = []; 
+        var model = new BindModelReadAjax();
+        model.read.addItem("i1", "V1");
+        model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
+        // model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
+        // model.baseUrl = "sample_row_single.json";                    // 오류 2
+        // model.baseAjaxSetup.async = false;                           // 동기화로 변경
+        model.read.cbValid = function() {
+            result.push("cbValid");
+            return true;
+        };
+        model.read.cbBind = function(p_ajaxSetup) {
+            result.push("cbBind");
+        };
+        model.read.cbOutput = function() {
+            result.push("cbOutput");
+        };
+        model.read.cbEnd = function(p_result) {
+            result.push("cbEnd");
+        };
+        model.read.onExecute = function() {
+            result.push("read.onExecute");
+        };
+        model.read.onExecuted = function() {
+            result.push("read.onExecuted");
+        };
+        model.onExecute = function() {
+            result.push("onExecute");
+        };
+        model.onExecuted = function() {
+            result.push("onExecuted");
+            console.log("-----------------------------------------------------------------");
+            console.log("cbOutput, cbEnd, read.onExecuted, onExecuted :: 콜백 ");
+            // 콜백에서 검사
+            if (result[0] === "cbOutput" && 
+                result[1] === "cbEnd" && 
+                result[2] === "read.onExecuted" && 
+                result[3] === "onExecuted" && 
+                true) {
+                console.log("Result = Success");
+            } else {
+                console.warn("Result = Fail");
+                errorCount++;
+            }
+            result = [];    // 콜백 초기화
+        };
+        model.read.execute();
+        if (result[0] === "read.onExecute" && 
+            result[1] === "onExecute" && 
+            result[2] === "cbValid" && 
+            result[3] === "cbBind" && 
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+        result = [];    // 콜백 초기화
+
+        console.log("-----------------------------------------------------------------");
+        console.log("BaseBind.eventPropagation = false        :: 이벤트 전파 금지 ");
+        result = []; 
+        var model = new BindModelReadAjax();
+        model.read.addItem("i1", "V1");
+        model.read.eventPropagation = false;
+        model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
+        // model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
+        // model.baseUrl = "sample_row_single.json";                    // 오류 2
+        model.read.onExecute = function() {
+            result.push("read.onExecute");
+        };
+        model.read.onExecuted = function() {
+            result.push("read.onExecuted");
+            console.log("-----------------------------------------------------------------");
+            console.log("read.onExecuted, onExecuted :: 콜백 ");
+            // 콜백에서 검사
+            // REVIEW:: 이부분이 중복 하단과 결과가 중복됨 확인 필요
+            if (result.indexOf("read.onExecuted") > -1 &&       
+                result.indexOf("onExecuted") < 0 && 
+                true) {
+                console.log("Result = Success");
+            } else {
+                console.warn("Result = Fail");
+                errorCount++;
+            }
+            result = [];    // 콜백 초기화
+        };
+        model.onExecute = function() {
+            result.push("onExecute");
+        };
+        model.onExecuted = function() {
+            result.push("onExecuted");
+        };
+        model.read.execute();
+        if (result.indexOf("read.onExecute") > -1 && 
+            result.indexOf("onExecute") < 0 && 
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+        result = [];    // 콜백 초기화
+
+        console.log("-----------------------------------------------------------------");
+        console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 (outoption = 1) row 기준으로 가져옴 ");
+        // result = []; 
+        // var model = new BindModelReadAjax();
+        // model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
+        
+        // model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
+        // model.baseUrl = "sample_row_single.json";                    // 오류 2
+        // model.baseAjaxSetup.async = false;                           // 동기화로 변경
+
+
+        console.log("-----------------------------------------------------------------");
+        console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 (outoption = 2) 존재하는 아이템만 가져옴 ");
+
+        console.log("-----------------------------------------------------------------");
+        console.log("BindCommandLookupAjax.addOutput(name) :: 출력(뷰) 엔티티 추가 ");
+        if (true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("-----------------------------------------------------------------");
+        console.log("BindCommandEditAjax.getTypes() :: 타입 조회(상속) ");
+        var model = new BindModelReadAjax();
+        var types = model.read.getTypes();
+        if (types.indexOf("BindCommandLookupAjax") > -1 &&
+            types[0] === "BindCommandLookupAjax" && 
+            types[1] === "BindCommandAjax" && 
+            types[2] === "BindCommand" && 
+            types[3] === "BaseBind" && 
+            types[4] === "MetaObject" &&
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        //#################################################
+        if (errorCount > 0) {
+            console.warn("Error Sub SUM : %dEA", errorCount);    
+        }
+        return errorCount;
+    }
+
+    //==============================================================
+    // 5. 모듈 내보내기 (node | web)
+    if (typeof module === "object" && typeof module.exports === "object") {     
+        module.exports = run();
+    } else {
+        global._W.Task.BindCommandLookupAjax = run();
+    }
+
+}(this));

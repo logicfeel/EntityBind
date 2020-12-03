@@ -81,6 +81,22 @@
             errorCount++;
         }
         
+        console.log("-----------------------------------------------------------------");
+        console.log("getTypes() :: 타입 조회(상속) ");
+        var item = new ItemDOM("i1");
+        var types = item.getTypes();
+        if (types.indexOf("ItemDOM") > -1 &&
+            types[0] === "ItemDOM" &&
+            types[1] === "Item" && 
+            types[2] === "MetaElement" && 
+            types[3] === "MetaObject" &&
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
         //#################################################
         if (errorCount > 0) {
             console.warn("Error Sub SUM : %dEA", errorCount);    

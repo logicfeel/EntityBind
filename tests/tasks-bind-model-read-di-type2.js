@@ -96,9 +96,9 @@ e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";
 // 추가 등록 ----------------------
 // e.loadAttr();
 
-// e.baseEntity.items["sto_id"].setConstraint(/\D/, "숫자만 입력해야함...", 100);
-// e.baseEntity.items["sto_id"].setConstraint(/[0-9]{5}/, "5자리 미만 숫자만...", 200);
-// e.baseEntity.items["sto_id"].setConstraint(/\S/, "문자만 입력해야함....", 300);
+// e._baseEntity.items["sto_id"].setConstraint(/\D/, "숫자만 입력해야함...", 100);
+// e._baseEntity.items["sto_id"].setConstraint(/[0-9]{5}/, "5자리 미만 숫자만...", 200);
+// e._baseEntity.items["sto_id"].setConstraint(/\S/, "문자만 입력해야함....", 300);
 
 e.read.setItem(["title", "sto_id"], "valid");
 

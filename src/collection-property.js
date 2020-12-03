@@ -108,7 +108,7 @@
                 throw new Error("Only [" + typeName + "] type instances can be added");
             }
             
-            if (this.propertyOf(p_name) > -1) {
+            if (this.indexOfName(p_name) > -1) {
                 console.warn("Warning:: 프로퍼티 이름 중복 !!");
                 return this[p_name];     // 중복 등록 방지
             }

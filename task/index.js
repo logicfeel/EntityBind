@@ -28,6 +28,7 @@
     tasks.push({ns: "_W.Task.ItemCollection"        , file: "./Meta.Entity.ItemCollection.task.js"});
     tasks.push({ns: "_W.Task.Item"                  , file: "./Meta.Entity.Item.task.js"});
     tasks.push({ns: "_W.Task.ItemDOM"               , file: "./Meta.Entity.ItemDOM.task.js"});
+    tasks.push({ns: "_W.Task.BindCommandEditAjax"   , file: "./Meta.Bind.BindCommandEditAjax.task.js"});
 
     // tasks.push({ns: "_W.Task.Object_implement"      , file: "./Common.Object.implement.task.js"});
 

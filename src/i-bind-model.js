@@ -20,14 +20,19 @@
     // 4. 모듈 구현    
     var IBindModel  = (function () {
         function IBindModel() {
+
             this.attr      = null;
             this.mode       = null;
+
             this.cbRegister = null;
             this.cbValid    = null;
             this.cbReady    = null;
 
             this.onExecute  = null;
             this.onExecuted = null;
+
+            this.cbFail     = null;
+            this.cbError    = null;
         }
         
         return IBindModel;

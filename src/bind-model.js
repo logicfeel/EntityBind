@@ -74,8 +74,8 @@
             var __cbRegister    = function() {};
             var __cbValid       = function() {return true};
             var __cbReady       = function() {};
-            var __cbFail        = function() { console.warn("실패하였습니다."); };
-            var __cbError       = function() { console.error("오류가 발생 하였습니다."); };
+            var __cbFail        = function() { console.warn("바인딩 실패하였습니다."); };
+            var __cbError       = function() { console.error("바인딩 오류가 발생 하였습니다."); };
             var __itemType      = Item;
 
             var propObject;
@@ -302,7 +302,7 @@
                 throw new Error("Only [p_name] type 'string' can be added");
             }
 
-            item = this.baseEntity.items.addValue(p_name, p_value);
+            item = this._baseEntity.items.addValue(p_name, p_value);
 
             this.add(item, p_cmds);
         };
@@ -333,7 +333,7 @@
             }
             if (typeof p_entity !== "undefined" && !(p_entity instanceof Entity)) throw new Error("Only [p_entity] type 'Entity' can be added");
 
-            entity = p_entity || this.baseEntity;
+            entity = p_entity || this._baseEntity;
 
             // 속성정보를 등록
             for(var i = 0; __attr.length > i; i++) {

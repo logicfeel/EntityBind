@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Bind.BindCommandView
+ * @namespace _W.Meta.Bind.BindCommandLookupAjax
  */
 (function(global) {
 
@@ -14,20 +14,20 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BindCommandInternal;
+    var BindCommandAjax;
     var entityView;
     var EntityView;
     var EntityViewCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                    = require("util");
-        BindCommandInternal     = require("./bind-command-internal");
+        BindCommandAjax         = require("./bind-command-ajax");
         entityView              = require("./entity-view");
         EntityView              = entityView.EntityView;
         EntityViewCollection    = entityView.EntityViewCollection;
     } else {
         util                    = global._W.Common.Util;
-        BindCommandInternal     = global._W.Meta.Bind.BindCommandInternal;
+        BindCommandAjax         = global._W.Meta.Bind.BindCommandAjax;
         EntityView              = global._W.Meta.Entity.EntityView;
         EntityViewCollection    = global._W.Meta.Entity.EntityViewCollection;
     }
@@ -35,29 +35,25 @@
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BindCommandInternal === "undefined") throw new Error("[BindCommandInternal] module load fail...");
+    if (typeof BindCommandAjax === "undefined") throw new Error("[BindCommandAjax] module load fail...");
     if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
     if (typeof EntityViewCollection === "undefined") throw new Error("[EntityViewCollection] module load fail...");
 
 
     //==============================================================
     // 4. 모듈 구현    
-    var BindCommandView  = (function (_super) {
+    var BindCommandLookupAjax  = (function (_super) {
         /**
          * @class
          */
-        function BindCommandView(p_bindModel, p_baseEntity) {
+        function BindCommandLookupAjax(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
             var __cbOutput;
-
             var __outputOption = 1;     // 1: View 오버로딩 , 2: 있는자료만            
             
             this._output = new EntityViewCollection(this, this._baseEntity);
             
-            // 속성 생성 및 참조 등록
-            this.addOutput("outout");
-
             /** @property {outputOption} */
             Object.defineProperty(this, "outputOption", 
             {
@@ -82,9 +78,11 @@
                 configurable: true,
                 enumerable: true
             });
-                
+
+            // 속성 생성 및 참조 등록
+            this.addOutput("outout");
         }
-        util.inherits(BindCommandView, _super);
+        util.inherits(BindCommandLookupAjax, _super);
 
         /**
          * 콜백에서 받은 데이터를 기준으로 table(item, rows)을 만든다.
@@ -93,7 +91,7 @@
          * @param {*} p_status 
          * @param {*} p_xhr 
          */
-        BindCommandView.prototype._execSuccess = function(p_result, p_status, p_xhr) {
+        BindCommandLookupAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
 
             this["outout"].load(p_result, this.outputOption);
 
@@ -105,14 +103,14 @@
         };
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
-        BindCommandView.prototype.getTypes  = function() {
+        BindCommandLookupAjax.prototype.getTypes  = function() {
                     
-            var type = ["BindCommandView"];
+            var type = ["BindCommandLookupAjax"];
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        BindCommandView.prototype.addOutput = function(p_name) {
+        BindCommandLookupAjax.prototype.addOutput = function(p_name) {
 
             // 유효성 검사
             if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
@@ -123,17 +121,17 @@
             this[p_name] = this._output[p_name];
         };
 
-        return BindCommandView;
+        return BindCommandLookupAjax;
     
-    }(BindCommandInternal));
+    }(BindCommandAjax));
     
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = BindCommandView;
+        module.exports = BindCommandLookupAjax;
     } else {
-        global._W.Meta.Bind.BindCommandView = BindCommandView;
+        global._W.Meta.Bind.BindCommandLookupAjax = BindCommandLookupAjax;
     }
 
 }(this));

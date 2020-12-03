@@ -58,7 +58,7 @@
 
             var __read      = null;
 
-            this.baseEntity = __firest;
+            this._baseEntity = __firest;
 
             /** @property {first} */
             Object.defineProperty(this, "first", 

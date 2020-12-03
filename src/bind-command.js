@@ -53,27 +53,15 @@
         function BindCommand(p_bindModel, p_baseEntity) {
             _super.call(this);
             
-            var __cbEnd;
+            
 
-            if (p_baseEntity && !(p_bindModel.instanceOf("BindModel"))) throw new Error("Only [p_bindModel] type 'BindModel' can be added");
+            if (p_bindModel && !(p_bindModel.instanceOf("BindModel"))) throw new Error("Only [p_bindModel] type 'BindModel' can be added");
             if (p_baseEntity && !(p_baseEntity.instanceOf("Entity"))) throw new Error("Only [p_baseEntity] type 'Entity' can be added");
 
             /** @protected 소유자 */
             this._model = p_bindModel;
 
-            this.baseEntity = p_baseEntity;
-
-            /** @property {vbEnd} */
-            Object.defineProperty(this, "cbEnd", 
-            {
-                get: function() { return __cbEnd; },
-                set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbEnd] type 'Function' can be added");
-                    __cbEnd = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });            
+            this._baseEntity = p_baseEntity;
         }
         util.inherits(BindCommand, _super);
     
@@ -134,6 +122,13 @@
                 throw new Error("Only [p_entities] type 'Array | string' can be added");
             } 
             
+            // baseEntity 에 아이템 없으면 등록
+            if (!this._baseEntity.items.contains(p_item))  {
+                this._baseEntity.items.add(p_item);
+            } {
+
+            }
+
             // 설정 대상 가져오기
             if (entities.length > 0) {
                 for (var i = 0; i < entities.length; i++) {
@@ -169,9 +164,10 @@
                 //     property[i] = property[i] + "[0]"               // 기본 첫번째 배열 설정 
                 // }
                 
-                if (property[i].indexOf("[") > -1 && property[i].indexOf("]") > -1) {
-                    collection = eval("this." + property[i]).items;
-                } else if (this[property[i]] instanceof Entity){
+                // if (property[i].indexOf("[") > -1 && property[i].indexOf("]") > -1) {
+                //     collection = eval("this." + property[i]).items;
+                // } else if (this[property[i]] instanceof Entity){
+                if (this[property[i]] instanceof Entity ){
                     collection = this[property[i]].items;
                 } else {
                     console.warn("Warning!! [" + property[i] + "]속성이 this 에 없습니다. ");
@@ -179,12 +175,14 @@
 
                 collection.add(p_item);
             }
+
         };
 
         /**
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
          * @param {String} p_name
-         * @param {Object | String | Number | Boolean} p_value 
+         * @param {Object | String | Number | Boolean} p_value
+         * @param {?Array<String> | String} p_entities <선택> 추가할 아이템 명령
          */
         BindCommand.prototype.addItem = function(p_name, p_value, p_entities) {
 
@@ -195,7 +193,7 @@
                 throw new Error("Only [p_name] type 'string' can be added");
             }
 
-            item = this.baseEntity.items.addValue(p_name, p_value);
+            item = this._baseEntity.items.addValue(p_name, p_value);
 
             this.add(item, p_entities);
         };
@@ -222,11 +220,12 @@
             // 아이템 검사 및 등록 함수 this.add(..) 호출
             for(var i = 0; names.length > i; i++) {
                 itemName = names[i]; 
-                item = this._model.baseEntity.items[itemName];
+                item = this._model._baseEntity.items[itemName];
                 if (typeof item !== "undefined") {
                     this.add(item, p_entities);
                 } else {
-                    throw new Error("baseEntity에 [" + itemName + "] 아이템이 없습니다.");
+                    // throw new Error("baseEntity에 [" + itemName + "] 아이템이 없습니다.");
+                    console.warn("baseEntity에 [" + itemName + "] 아이템이 없습니다.");
                 }
             }
         };

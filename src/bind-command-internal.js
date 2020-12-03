@@ -42,8 +42,8 @@
         function BindCommandInternal(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            var __valid     = new EntityView("valid", this.baseEntity);
-            var __bind      = new EntityView("bind", this.baseEntity);
+            var __valid     = new EntityView("valid", this._baseEntity);
+            var __bind      = new EntityView("bind", this._baseEntity);
 
             var __cbValid   = function() {};
             var __cbBind    = function() {};
