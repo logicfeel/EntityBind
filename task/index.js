@@ -29,6 +29,9 @@
     tasks.push({ns: "_W.Task.Item"                  , file: "./Meta.Entity.Item.task.js"});
     tasks.push({ns: "_W.Task.ItemDOM"               , file: "./Meta.Entity.ItemDOM.task.js"});
     tasks.push({ns: "_W.Task.BindCommandEditAjax"   , file: "./Meta.Bind.BindCommandEditAjax.task.js"});
+    tasks.push({ns: "_W.Task.BindCommandLookupAjax" , file: "./Meta.Bind.BindCommandLookupAjax.task.js"});
+    tasks.push({ns: "_W.Task.BindModelCreateAjax"   , file: "./Meta.Bind.BindModelCreateAjax.task.js"});
+    tasks.push({ns: "_W.Task.BindModelReadAjax"     , file: "./Meta.Bind.BindModelReadAjax.task.js"});
 
     // tasks.push({ns: "_W.Task.Object_implement"      , file: "./Common.Object.implement.task.js"});
 

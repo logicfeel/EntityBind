@@ -136,7 +136,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("BindCommand.addItem(name, value, entityName) :: 아이템 생성 및 [지정된] 엔티티에 추가 ");
+        console.log("BindCommand.addItem(name, value, entityName) :: 아이템 생성 및 [특정] 엔티티에 추가 ");
         var model = new BindModelCreateAjax();
         var i1 = new Item("i1");
         model.create.addItem("i1", "V1", "valid");
@@ -247,32 +247,30 @@
 
         console.log("-----------------------------------------------------------------");
         console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 ");
-        result = []; 
+       
         var model = new BindModelCreateAjax();
-        // model.baseAjaxSetup.async = false;    // 동기화로 변경
         model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
-        // model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
-        // model.baseUrl = "sample_row_single.json";                    // 오류 2
+        model. result = [];  
         model.create.cbValid = function() {
-            result.push("Valid"); 
+            this._model.result.push("Valid"); 
             return true;
         };
         var err = function(p) {
-            result = [];
+            this.result = [];
             console.warn("실패! " + p);
             errorCount++;
         };
         model.cbFail = err;
         model.cbError = err;
-        model.create.cbEnd = function(result) {
-            if (result.entity["return"] !== 0) {
+        model.create.cbEnd = function(p_result) {
+            if (p_result.entity["return"] !== 0) {
                 errorCount++;
                 console.warn("서버측 처리가 실패하였습니다.");
             }
         };
         model.create.addItem("i1", "V1");
         model.create.execute();             // 실행
-        if (result.indexOf("Valid") > -1 &&
+        if (model.result.indexOf("Valid") > -1 &&
             true) {
             console.log("Result = Success");
         } else {

@@ -53,7 +53,7 @@
         function BindCommand(p_bindModel, p_baseEntity) {
             _super.call(this);
             
-            
+            var __propagation   = true;
 
             if (p_bindModel && !(p_bindModel.instanceOf("BindModel"))) throw new Error("Only [p_bindModel] type 'BindModel' can be added");
             if (p_baseEntity && !(p_baseEntity.instanceOf("Entity"))) throw new Error("Only [p_baseEntity] type 'Entity' can be added");
@@ -62,6 +62,19 @@
             this._model = p_bindModel;
 
             this._baseEntity = p_baseEntity;
+
+            /** @property */
+            Object.defineProperty(this, "eventPropagation", {
+                enumerable: true,
+                configurable: true,
+                set: function(p_bool) {
+                    if (typeof p_bool !== "boolean") throw new Error("Only [p_bool] type 'Boolean' can be added");
+                    // this.__event.propagation = p_bool;
+                    __propagation = p_bool;
+                },
+                get: function() { return __propagation; }
+                // get: function() { return this.__event.propagation; }
+            });            
         }
         util.inherits(BindCommand, _super);
     
@@ -107,12 +120,7 @@
 
             var entities = [];     // 파라메터 변수
             var property = [];      // 속성
-            var propStr;
             var collection;
-
-            // 초기화
-            if (Array.isArray(p_entities)) entities = p_entities;
-            else if (typeof p_entities === "string") entities.push(p_entities);
 
             // 유효성 검사
             if (!(p_item instanceof Item)) {
@@ -121,6 +129,10 @@
             if (typeof p_entities !== "undefined" && (!(Array.isArray(p_entities) || typeof p_entities === "string"))) {
                 throw new Error("Only [p_entities] type 'Array | string' can be added");
             } 
+
+            // 초기화 설정
+            if (Array.isArray(p_entities)) entities = p_entities;
+            else if (typeof p_entities === "string") entities.push(p_entities);
             
             // baseEntity 에 아이템 없으면 등록
             if (!this._baseEntity.items.contains(p_item))  {
@@ -135,15 +147,8 @@
                     
                     if (typeof entities[i] !== "string") throw new Error("Only [String] type instances can be added");
                    
-                    // 배열문자열 검사  => output[0]
-                    if (entities[i].indexOf("[") > -1) {
-                        propStr = entities[i].slice(0, entities[i].indexOf("[") - 1);
-                    } else {
-                        propStr = entities[i];
-                    }
-
                     // 속성 유무 검사
-                    if (this[propStr]) {
+                    if (this[entities[i]]) {
                         property.push(entities[i]);
                     } else {
                         console.warn("Warning!! Param p_entities 에 [" + entities[i] + "]가 없습니다. ");
@@ -157,22 +162,13 @@
                     }
                 }
             }
-
             // 설정
             for (var i = 0; i < property.length; i++) {
-                // if (this[property[i]] instanceof BaseCollection) {
-                //     property[i] = property[i] + "[0]"               // 기본 첫번째 배열 설정 
-                // }
-                
-                // if (property[i].indexOf("[") > -1 && property[i].indexOf("]") > -1) {
-                //     collection = eval("this." + property[i]).items;
-                // } else if (this[property[i]] instanceof Entity){
                 if (this[property[i]] instanceof Entity ){
                     collection = this[property[i]].items;
                 } else {
                     console.warn("Warning!! [" + property[i] + "]속성이 this 에 없습니다. ");
                 }
-
                 collection.add(p_item);
             }
 

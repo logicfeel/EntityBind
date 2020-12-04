@@ -22,6 +22,7 @@
     var Entity;
     var EntityTable;
     var Item;
+    var MetaObject;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         require("./object-implement"); // _implements() : 폴리필
@@ -35,6 +36,7 @@
         Entity                      = require("./entity-base");
         EntityTable                 = require("./entity-table").EntityTable;
         Item                        = require("./entity-item").Item;
+        MetaObject                  = require("./meta-object");
     } else {
         util                        = global._W.Common.Util;
         BaseBind                    = global._W.Meta.Bind.BaseBind;
@@ -45,6 +47,7 @@
         Entity                      = global._W.Meta.Entity.Entity;        
         EntityTable                 = global._W.Meta.Entity.EntityTable;        
         Item                        = global._W.Meta.Entity.Item;        
+        MetaObject                  = global._W.Meta.MetaObject;        
     }
 
     //==============================================================
@@ -243,6 +246,22 @@
                 this.cbReady.call(this)
             }
         };
+        
+        BindModel.prototype.addEntity = function(p_name) {
+
+            var entity;
+
+            // 유효성 검사
+            if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
+            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
+
+            entity = new EntityTable(p_name);
+            entity.items.itemType = this.itemType;    // 아이템타입 설정
+            
+            this[p_name] = entity;
+            
+            return entity;
+        }
 
         /**
          * 아이템을 추가하고 명령과 매핑한다.
@@ -252,39 +271,43 @@
         BindModel.prototype.add = function(p_item, p_cmds) {
 
             var cmds = [];
-
-            if (Array.isArray(p_cmds)) cmds = p_cmds;
+            var property = [];      // 속성
 
             // 유효성 검사
             if (!(p_item instanceof Item)) {
                 throw new Error("Only [Item] type 'Item' can be added");
             }
-            if (typeof p_cmds !== "undefined" && !Array.isArray(p_cmds)) {
+            if (typeof p_cmds !== "undefined" && (!(Array.isArray(p_cmds) || typeof p_cmds === "string"))) {
                 throw new Error("Only [a_cmd] type 'Array | string' can be added");
             }
             
+            // 초기화 설정
+            if (Array.isArray(p_cmds)) cmds = p_cmds;
+            else if (typeof p_cmds === "string") cmds.push(p_cmds);
+            
             // 설정 대상 가져오기
-            if (Array.isArray(p_cmds)) {
-                for (var i = 0; i< p_cmds.length; i++) {
-                    if (this[p_cmds[i]]) {
-                        cmds.push(p_cmds[i]);
+            if (cmds.length > 0) {
+                for (var i = 0; i< cmds.length; i++) {
+                    
+                    if (typeof cmds[i] !== "string") throw new Error("Only [String] type instances can be added");
+                    
+                    if (this[cmds[i]]) {
+                        property.push(cmds[i]);
                     } else {
-                        console.warn("Warning!! Param p_cmds 에 [" + p_cmds[i] + "]가 없습니다. ");
+                        console.warn("Warning!! Param p_cmds 에 [" + cmds[i] + "]가 없습니다. ");
                     }
                 }
             } else {
                 // public ItemCollection 프로퍼티 검사
                 for (var prop in this) {
-                    
-                    if (this[prop].instanceOf("BindCommand") && prop.substr(0, 1) !== "_") {
-                        cmds.push(prop.toString());
+                    if (this[prop] instanceof MetaObject && this[prop].instanceOf("BindCommand") && prop.substr(0, 1) !== "_") {
+                        property.push(prop.toString());
                     }
                 }
             }
-
             // 설정
-            for (var i = 0; i < cmds.length; i++) {
-                this[cmds[i]].add(p_item);
+            for (var i = 0; i < property.length; i++) {
+                this[property[i]].add(p_item);
             }
         };
 
@@ -327,38 +350,29 @@
             if (typeof p_attr !== "undefined" && (!Array.isArray(p_attr) || typeof p_attr === "string")) {
                 throw new Error("Only [p_entities] type 'Array | string' can be added");
             }
-
-            if (typeof p_entity !== "undefined" && !(typeof this[p_entity] !== "undefined")) {
+            if (typeof p_entity !== "undefined" && typeof p_entity !== "string") {
+                throw new Error("Only [p_entity] type 'string' can be added");
+            }
+            if (typeof p_entity !== "undefined" && typeof this[p_entity] === "undefined") {
                 throw new Error(" BindModel에 ["+ p_entity +"]의 Entity가 없습니다. ");
             }
-            if (typeof p_entity !== "undefined" && !(p_entity instanceof Entity)) throw new Error("Only [p_entity] type 'Entity' can be added");
 
-            entity = p_entity || this._baseEntity;
+            entity = this[p_entity] || this._baseEntity;
 
             // 속성정보를 등록
             for(var i = 0; __attr.length > i; i++) {
                 propName = __attr[i];
                 if (typeof propName === "string" && typeof this.attr[propName] !== "undefined") {
-                    entity.items.addValue(propName, this.attr[propName]);
+                    if(["number", "string", "boolean"].indexOf(typeof this.attr[propName]) > -1) {
+                        entity.items.addValue(propName, this.attr[propName]);
+                    } else if (this.attr[propName]  !== null && typeof this.attr[propName] === "object"){
+                        entity.items.add(new this.itemType(propName, entity, this.attr[propName]))
+                    }
                 }
             }
         };
 
-        BindModel.prototype.addEntity = function(p_name) {
-
-            var entity;
-
-            // 유효성 검사
-            if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
-            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
-
-            entity = new EntityTable(p_name);
-            entity.items.itemType = this.itemType;    // 아이템타입 설정
-            
-            this[p_name] = entity;
-            
-            return entity;
-        }
+        
 
         return BindModel;
     

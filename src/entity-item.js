@@ -367,6 +367,14 @@
             
         }
         util.inherits(ItemCollection, _super);
+        
+        ItemCollection.prototype.contains = function(p_elem) {
+            if (p_elem instanceof Item) {
+                return this.indexOfName(p_elem.name) > -1;
+            } else {
+                return _super.prototype.contains.call(this, p_elem);
+            }
+        };
 
         ItemCollection.prototype.addValue  = function(p_name, p_value) {
 

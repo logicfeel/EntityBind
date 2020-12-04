@@ -51,42 +51,47 @@
         console.log("onExecuted     :: 명령 엔티티 실행[execute()] 실행 후 ");
         result = []; 
         var model = new BindModelReadAjax();
+        model.result = [];
         model.read.addItem("i1", "V1");
         model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
         // model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
         // model.baseUrl = "sample_row_single.json";                    // 오류 2
         // model.baseAjaxSetup.async = false;                           // 동기화로 변경
         model.read.cbValid = function() {
-            result.push("cbValid");
+            this._model.result.push("cbValid");
             return true;
         };
         model.read.cbBind = function(p_ajaxSetup) {
-            result.push("cbBind");
+            this._model.result.push("cbBind");
         };
         model.read.cbOutput = function() {
-            result.push("cbOutput");
+            this._model.result.push("cbOutput");
         };
         model.read.cbEnd = function(p_result) {
-            result.push("cbEnd");
+            this._model.result.push("cbEnd");
         };
         model.read.onExecute = function() {
-            result.push("read.onExecute");
+            this._model.result.push("read.onExecute");
         };
         model.read.onExecuted = function() {
-            result.push("read.onExecuted");
+            this._model.result.push("read.onExecuted");
         };
         model.onExecute = function() {
-            result.push("onExecute");
+            this.result.push("onExecute");
         };
         model.onExecuted = function() {
-            result.push("onExecuted");
+            this.result.push("onExecuted");
             console.log("-----------------------------------------------------------------");
             console.log("cbOutput, cbEnd, read.onExecuted, onExecuted :: 콜백 ");
             // 콜백에서 검사
-            if (result[0] === "cbOutput" && 
-                result[1] === "cbEnd" && 
-                result[2] === "read.onExecuted" && 
-                result[3] === "onExecuted" && 
+            if (this.result[0] === "read.onExecute" && 
+                this.result[1] === "onExecute" && 
+                this.result[2] === "cbValid" && 
+                this.result[3] === "cbBind" && 
+                this.result[4] === "cbOutput" && 
+                this.result[5] === "cbEnd" && 
+                this.result[6] === "read.onExecuted" && 
+                this.result[7] === "onExecuted" && 
                 true) {
                 console.log("Result = Success");
             } else {
@@ -96,85 +101,98 @@
             result = [];    // 콜백 초기화
         };
         model.read.execute();
-        if (result[0] === "read.onExecute" && 
-            result[1] === "onExecute" && 
-            result[2] === "cbValid" && 
-            result[3] === "cbBind" && 
-            true) {
-            console.log("Result = Success");
-        } else {
-            console.warn("Result = Fail");
-            errorCount++;
-        }
-        result = [];    // 콜백 초기화
 
         console.log("-----------------------------------------------------------------");
         console.log("BaseBind.eventPropagation = false        :: 이벤트 전파 금지 ");
-        result = []; 
         var model = new BindModelReadAjax();
+        model.result = []; 
         model.read.addItem("i1", "V1");
         model.read.eventPropagation = false;
         model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
-        // model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
-        // model.baseUrl = "sample_row_single.json";                    // 오류 2
         model.read.onExecute = function() {
-            result.push("read.onExecute");
+            this._model.result.push("read.onExecute");
         };
         model.read.onExecuted = function() {
-            result.push("read.onExecuted");
+            this._model.result.push("read.onExecuted");
             console.log("-----------------------------------------------------------------");
             console.log("read.onExecuted, onExecuted :: 콜백 ");
-            // 콜백에서 검사
-            // REVIEW:: 이부분이 중복 하단과 결과가 중복됨 확인 필요
-            if (result.indexOf("read.onExecuted") > -1 &&       
-                result.indexOf("onExecuted") < 0 && 
+            if (this._model.result[0] === "read.onExecute" && 
+                this._model.result[1] === "read.onExecuted" && 
+                this._model.result.length === 2 &&
                 true) {
                 console.log("Result = Success");
             } else {
                 console.warn("Result = Fail");
                 errorCount++;
             }
-            result = [];    // 콜백 초기화
         };
         model.onExecute = function() {
-            result.push("onExecute");
+            this.result.push("onExecute");
         };
         model.onExecuted = function() {
-            result.push("onExecuted");
+            this.result.push("onExecuted");
         };
         model.read.execute();
-        if (result.indexOf("read.onExecute") > -1 && 
-            result.indexOf("onExecute") < 0 && 
-            true) {
-            console.log("Result = Success");
-        } else {
-            console.warn("Result = Fail");
-            errorCount++;
-        }
-        result = [];    // 콜백 초기화
 
         console.log("-----------------------------------------------------------------");
         console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 (outoption = 1) row 기준으로 가져옴 ");
-        // result = []; 
-        // var model = new BindModelReadAjax();
-        // model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
-        
-        // model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
-        // model.baseUrl = "sample_row_single.json";                    // 오류 2
-        // model.baseAjaxSetup.async = false;                           // 동기화로 변경
-
+        var model = new BindModelReadAjax();
+        model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
+        model.read.cbOutput = function(p_result) {
+            console.log("-----------------------------------------------------------------");
+            console.log("BindCommandAjax.execute() :: 콜백 ");
+            if (this.output.items.count > 0 &&
+                this.output.rows.count > 0 &&
+                true) {
+                console.log("Result = Success");
+            } else {
+                console.warn("Result = Fail");
+                errorCount++;
+            }
+        };
+        model.read.execute();
 
         console.log("-----------------------------------------------------------------");
         console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 (outoption = 2) 존재하는 아이템만 가져옴 ");
+        var model = new BindModelReadAjax();
+        model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
+        model.read.addItem("sto_id", "output");
+        model.read.addItem("adm_id", "output");
+        model.read.outputOption = 2;    // 존재하는 컬럼만 가져오기
+        model.read.cbOutput = function(p_result) {
+            console.log("-----------------------------------------------------------------");
+            console.log("BindCommandAjax.execute() :: 콜백 ");
+            if (this.output.items.count === 2 &&
+                this.output.rows.count === 1 &&
+                true) {
+                console.log("Result = Success");
+            } else {
+                console.warn("Result = Fail");
+                errorCount++;
+            }
+        };
+        model.read.execute();
 
         console.log("-----------------------------------------------------------------");
         console.log("BindCommandLookupAjax.addOutput(name) :: 출력(뷰) 엔티티 추가 ");
-        if (true) {
-            console.log("Result = Success");
-        } else {
-            console.warn("Result = Fail");
-            errorCount++;
-        }
+        var model = new BindModelReadAjax();
+        model.baseUrl = "http://rtwgs4.cafe24.com/sample_entity_multi.asp";       // 복수 엔티티
+        model.read.addOutput("output2");
+        model.read.cbOutput = function(p_result) {
+            console.log("-----------------------------------------------------------------");
+            console.log("BindCommandAjax.execute() :: 콜백 ");
+            if (this.output.items.count > 0 &&
+                this.output.rows.count > 0 &&
+                this.output2.items.count > 0 &&
+                this.output2.rows.count > 0 &&
+                true) {
+                console.log("Result = Success");
+            } else {
+                console.warn("Result = Fail");
+                errorCount++;
+            }
+        };
+        model.read.execute();
 
         console.log("-----------------------------------------------------------------");
         console.log("BindCommandEditAjax.getTypes() :: 타입 조회(상속) ");

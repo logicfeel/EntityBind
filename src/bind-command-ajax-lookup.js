@@ -80,7 +80,7 @@
             });
 
             // 속성 생성 및 참조 등록
-            this.addOutput("outout");
+            this.addOutput("output");
         }
         util.inherits(BindCommandLookupAjax, _super);
 
@@ -93,10 +93,16 @@
          */
         BindCommandLookupAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
 
-            this["outout"].load(p_result, this.outputOption);
+            if(typeof p_result["entity"] !== "undefined" || typeof p_result["table"] !== "undefined" ) {
+                this._output[0].load(p_result, this.outputOption); // this["output"]
+            } else if (Array.isArray(p_result["entities"])) {
+                for(var i = 0; p_result["entities"].length > i && typeof this._output[i] !== "undefined"; i++) {
+                    this._output[i].load(p_result["entities"][i], this.outputOption);
+                }
+            }
 
             // 뷰 콜백 호출  : EntitView를 전달함
-            if (typeof this.cbOutput === "function" ) this.cbOutput(this["outout"]);
+            if (typeof this.cbOutput === "function" ) this.cbOutput(p_result);
 
             // 상위 호출 : 데코레이션 패턴
             _super.prototype._execSuccess.call(this, p_result, p_status, p_xhr);

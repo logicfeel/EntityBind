@@ -63,8 +63,11 @@
 
             this.create = new BindCommandEditAjax(this, this._baseEntity);
 
-            if (p_itemType) this.itemType = p_itemType;
-
+            // if (p_itemType) this.itemType = p_itemType;
+            if (typeof p_itemType === "function") {
+                this.itemType = p_itemType;
+                this._baseEntity.items.itemType = this.itemType;
+            }
 
             // 속성 자동 로딩
             if (p_isLoadAttr) {
