@@ -14,6 +14,7 @@
     // 2. 모듈 가져오기 (node | web)
     var errorCount = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
+    var isCallback = global.isCallback === false ? false : true;
         
     var util;        
     var Row;
@@ -99,42 +100,44 @@
         }
         util.inherits(CreateDI, IBindModelCreate);
 
-
-        console.log("-----------------------------------------------------------------");
-        console.log("BaseBind.onExecute         :: 바인드 명령 실행[execute()] 실행 전 (공통처리의 관점) ");
-        console.log("BaseBind.onExecuted        :: 바인드 명령 실행execute() 실행 후 (공통처리의 관점) ");
-        console.log("BindModel.cbFail           :: 검사 실패 발생시 실행 ");
-        console.log("BindModel.cbError          :: 오류 발생시 실행 ");
-        var model = new BindModelCreateAjax();
-        model.result = [];        
-        model.create.addItem("i1", "V1");
-        model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
-        // model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
-        // model.baseUrl = "sample_row_single.json";                    // 오류 2
-        model.cbFail = function(p_msg, p_code){
-            this.result.push("cbFail");
-        };
-        model.cbError = function(p_msg, p_status){
-            this.result.push("cbError");
-        };
-        model.onExecute = function() {
-            this.result.push("onExecute");
-        };
-        model.onExecuted = function() {
-            this.result.push("onExecuted");
+        if (isCallback) {
             console.log("-----------------------------------------------------------------");
-            console.log("onExecute, onExecuted  :: 콜백 ");
-            if (this.result[0] === "onExecute" && 
-                this.result[1] === "onExecuted" && 
-                this.result.length === 2 && 
-                true) {
-                console.log("Result = Success");
-            } else {
-                console.warn("Result = Fail");
-                errorCount++;
-            }
-        };
-        model.create.execute();
+            console.log("BaseBind.onExecute         :: 바인드 명령 실행[execute()] 실행 전 (공통처리의 관점) ");
+            console.log("BaseBind.onExecuted        :: 바인드 명령 실행execute() 실행 후 (공통처리의 관점) ");
+            console.log("BindModel.cbFail           :: 검사 실패 발생시 실행 ");
+            console.log("BindModel.cbError          :: 오류 발생시 실행 ");
+            var model = new BindModelCreateAjax();
+            model.result = [];        
+            model.create.addItem("i1", "V1");
+            model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
+            // model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
+            // model.baseUrl = "sample_row_single.json";                    // 오류 2
+            model.cbFail = function(p_msg, p_code){
+                this.result.push("cbFail");
+            };
+            model.cbError = function(p_msg, p_status){
+                this.result.push("cbError");
+            };
+            model.onExecute = function() {
+                this.result.push("onExecute");
+            };
+            model.onExecuted = function() {
+                this.result.push("onExecuted");
+                console.log("-----------------------------------------------------------------");
+                console.log("onExecute, onExecuted  :: 콜백 ");
+                if (this.result[0] === "onExecute" && 
+                    this.result[1] === "onExecuted" && 
+                    this.result.length === 2 && 
+                    true) {
+                    console.log("Result = Success");
+                } else {
+                    console.warn("Result = Fail");
+                    errorCount++;
+                }
+            };
+            model.create.execute();
+        }
+
 
         console.log("-----------------------------------------------------------------");
         console.log("BindModel.init() ");
@@ -187,32 +190,34 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
-        console.log("BindModel.cbError          :: 오류 발생시 실행 ");
-        var model = new BindModelCreateAjax();
-        model.result = [];
-        // model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
-        model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
-        model.baseUrl = "sample_row_single.json";                    // 오류 2
-        model.cbFail = function(p_msg, p_code){
-            this.result.push("cbFail");
-        };
-        model.cbError = function(p_msg, p_status){
-            this.result.push("cbError");
-        };
-        model.onExecuted = function() {
+        if (isCallback) {
             console.log("-----------------------------------------------------------------");
-            console.log("BindModel.cbError      :: 콜백 ");
-            if (this.result[0] === "cbError" && 
-                this.result.length === 1 && 
-                true) {
-                console.log("Result = Success");
-            } else {
-                console.warn("Result = Fail");
-                errorCount++;
-            }
-        };
-        model.create.execute();
+            console.log("BindModel.cbError          :: 오류 발생시 실행 ");
+            var model = new BindModelCreateAjax();
+            model.result = [];
+            // model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
+            model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
+            model.baseUrl = "sample_row_single.json";                    // 오류 2
+            model.cbFail = function(p_msg, p_code){
+                this.result.push("cbFail");
+            };
+            model.cbError = function(p_msg, p_status){
+                this.result.push("cbError");
+            };
+            model.onExecuted = function() {
+                console.log("-----------------------------------------------------------------");
+                console.log("BindModel.cbError      :: 콜백 ");
+                if (this.result[0] === "cbError" && 
+                    this.result.length === 1 && 
+                    true) {
+                    console.log("Result = Success");
+                } else {
+                    console.warn("Result = Fail");
+                    errorCount++;
+                }
+            };
+            model.create.execute();            
+        }
 
         console.log("-----------------------------------------------------------------");
         console.log("BindModel.add(item) :: 전체 cmd에 아이템 등록 (cmd 사용자 추가후) ");
@@ -581,4 +586,4 @@
         global._W.Task.BindModelCreateAjax = run();
     }
 
-}(this));
+}(global || this));

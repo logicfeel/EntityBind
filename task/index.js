@@ -15,9 +15,13 @@
     var errorCount = 0;
     var tasks = [];  //{ns:..., file:.... }
     var result, task;
-    var CLEAR;
+    var isCallback = false;
+    var CLEAR = true;
+    
+    // 단순 로그 보기
     // CLEAR = true;   // 단순 로그
-
+    // global.isCallback = isCallback;
+    
     //==============================================================
     // 3. 모듈 등록
     tasks.push({ns: "_W.Task.Observer"              , file: "./Common.Observer.task.js"});
@@ -32,6 +36,7 @@
     tasks.push({ns: "_W.Task.BindCommandLookupAjax" , file: "./Meta.Bind.BindCommandLookupAjax.task.js"});
     tasks.push({ns: "_W.Task.BindModelCreateAjax"   , file: "./Meta.Bind.BindModelCreateAjax.task.js"});
     tasks.push({ns: "_W.Task.BindModelReadAjax"     , file: "./Meta.Bind.BindModelReadAjax.task.js"});
+    tasks.push({ns: "_W.Task.BindModelDI"           , file: "./Meta.Bind.BindModelDI.task.js"});
 
     // tasks.push({ns: "_W.Task.Object_implement"      , file: "./Common.Object.implement.task.js"});
 
@@ -86,4 +91,4 @@
         global._W.Task.errorCount = run();
     }
 
-}(this));
+}(global || this));

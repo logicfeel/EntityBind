@@ -33,6 +33,9 @@
 
             this.cbFail     = null;
             this.cbError    = null;
+
+            this.onExecute  = null;
+            this.onExecuted = null;
         }
         
         return IBindModel;

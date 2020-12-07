@@ -57,6 +57,9 @@
                 },
                 set: function(newValue) {
                     if(typeof newValue !== "function") throw new Error("Only [elementType] type 'function' can be added");
+                    if(typeof newValue === "function" && typeof ["number", "string", "boolean"].indexOf(newValue.name) > -1) {
+                        throw new Error("Only [elementType] type Not 'number', 'string', 'boolean' can be added");
+                    }
                     __elementType = newValue;
                 }
             });

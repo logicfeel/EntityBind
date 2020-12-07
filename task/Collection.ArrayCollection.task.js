@@ -41,7 +41,7 @@
         }
         
         console.log("-----------------------------------------------------------------");
-        console.log("collection[0], count, list :: 컬렉션, 속성 ");
+        console.log("ArrayCollection.count, list :: 컬렉션, 속성 ");
         var table = new TestTable();
         table.items.add(100);
         table.items.add(200);
@@ -57,7 +57,7 @@
         }
                 
         console.log("-----------------------------------------------------------------");
-        console.log("add(value) :: 추가 ");
+        console.log("ArrayCollection.add(value) :: 추가 ");
         var table = new TestTable();
         table.items.add("A1");
         if (table.items[0] === "A1") {
@@ -68,7 +68,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("remove(elem) :: 삭제 ");
+        console.log("ArrayCollection.remove(elem) :: 삭제 ");
         var table = new TestTable();
         var val = "VAL";
         table.items.add(val);
@@ -83,7 +83,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("removeAt(idx) :: idx 삭제 (중간) ");
+        console.log("ArrayCollection.removeAt(idx) :: idx 삭제 (중간) ");
         var table = new TestTable();
         table.items.add("A1");
         table.items.add("A2");  // 삭제 위치
@@ -100,7 +100,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("removeAt(idx) :: idx 삭제 (처음) ");
+        console.log("ArrayCollection.removeAt(idx) :: idx 삭제 (처음) ");
         var table = new TestTable();
         table.items.add("A1");
         table.items.add("A2");  // 삭제 위치
@@ -117,7 +117,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("removeAt(idx) :: idx 삭제 (끝) ");
+        console.log("ArrayCollection.removeAt(idx) :: idx 삭제 (끝) ");
         var table = new TestTable();
         table.items.add("A1");
         table.items.add("A2");  // 삭제 위치
@@ -134,7 +134,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("clear() :: 전체 삭제(초기화) ");
+        console.log("ArrayCollection.clear() :: 전체 삭제(초기화) ");
         var table = new TestTable();
         table.items.add("A1");
         table.items.add("A2");
@@ -151,7 +151,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("contains(elem) :: 유무 검사 ");
+        console.log("ArrayCollection.contains(elem) :: 유무 검사 ");
         var table = new TestTable();
         table.items.add("A1");
         table.items.add("A2");
@@ -166,7 +166,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("indexOf(elem) :: idx 조회 ");
+        console.log("ArrayCollection.indexOf(elem) :: idx 조회 ");
         var table = new TestTable();
         table.items.add("A1");
         table.items.add("A2");
@@ -208,6 +208,26 @@
         //     console.warn("Result = Fail");
         //     errorCount++;
         // }
+        console.log("-----------------------------------------------------------------");
+        console.log("BaseCollection.elementType = function :: 값타입 설정 ");
+        var table = new TestTable();
+        var Class1  = function(p_name) {
+            this.name = p_name;
+        };
+        table.items.elementType = Class1;  // 타입 (string, number, boolean, null 입력 불가)
+        var s1 = new Class1("s1");
+        var s2 = new Class1("s2");
+        table.items.add(s1);
+        table.items[0] = s2;
+        table.items.add(s1);    
+        if (table.items[1].name === "s1" &&     // 값으로 비교
+            table.items[0] === s2 &&            // 객체로 비교
+            true) {   
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
 
         console.log("-----------------------------------------------------------------");
         console.log("BaseCollection.onAdd :: 등록 이벤트 ");

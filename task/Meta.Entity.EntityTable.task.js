@@ -14,6 +14,7 @@
     // 2. 모듈 가져오기 (node | web)
     var errorCount = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
+    var isCallback = global.isCallback === false ? false : true;
         
     var Row;
     var Item;
@@ -35,7 +36,7 @@
     function run() {
     
         console.log("-----------------------------------------------------------------");
-        console.log("newRow() :: Row 생성 ");
+        console.log("Entity.newRow() :: Row 생성 ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -60,7 +61,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("newRow() :: Row 생성 ");
+        console.log("Entity.newRow() :: Row 생성 ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -83,7 +84,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("setValue(row) :: row  설정(단일) ");
+        console.log("Entity.setValue(row) :: row  설정(단일) ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -104,7 +105,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("getValue() : Row :: row 얻기(단일) ");
+        console.log("Entity.getValue() : Row :: row 얻기(단일) ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -127,7 +128,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("select(filter) : Entity :: 언티티 조회(참조값), 필터  ");
+        console.log("Entity.select(filter) : Entity :: 언티티 조회(참조값), 필터  ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -161,7 +162,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("select(filter, start) : Entity :: 언티티 조회(참조값), 필터 + 레코드 레코드범위 ");
+        console.log("Entity.select(filter, start) : Entity :: 언티티 조회(참조값), 필터 + 레코드 레코드범위 ");
         var table = new EntityTable("T1");
         var filter = {
             __except: ["i1"],                   // 제외
@@ -200,7 +201,7 @@
         }
         
         console.log("-----------------------------------------------------------------");
-        console.log("select(null, start, end) : Entity :: 언티티 조회(참조값), 레코드 레코드범위 ");
+        console.log("Entity.select(null, start, end) : Entity :: 언티티 조회(참조값), 레코드 레코드범위 ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -238,7 +239,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("select(null, [list]) : Entity :: 언티티 조회(참조값), 레코드 레코드범위 ");
+        console.log("Entity.select(null, [list]) : Entity :: 언티티 조회(참조값), 레코드 레코드범위 ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -276,7 +277,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("copy(filter, start) : Entity :: 언티티 조회  ");
+        console.log("Entity.copy(filter, start) : Entity :: 언티티 조회  ");
         var table = new EntityTable("T1");
         var filter = {
             __except: ["i1"],                   // 제외
@@ -319,7 +320,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("merge(entity, option = 1) :: 엔티티 병합 (기존 item 유지, 원본 row > 타겟 row) ");
+        console.log("Entity.merge(entity, option = 1) :: 엔티티 병합 (기존 item 유지, 원본 row > 타겟 row) ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -358,7 +359,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("merge(entity, option = 2) :: 엔티티 병합 (기존 item 덮어쓰기, 원본 row < 타겟 row) ");
+        console.log("Entity.merge(entity, option = 2) :: 엔티티 병합 (기존 item 덮어쓰기, 원본 row < 타겟 row) ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -397,7 +398,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("merge(entity, option = 3) :: 엔티티 병합 (row 안가져오기) ");
+        console.log("Entity.merge(entity, option = 3) :: 엔티티 병합 (row 안가져오기) ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -429,7 +430,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("load(Entity, option = 1) :: 로드 (row 기준, 채워진 Entity) ");
+        console.log("Entity.load(Entity, option = 1) :: 로드 (row 기준, 채워진 Entity) ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -471,7 +472,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("load(Entity, option = 2) :: 로드 (row 기준, 채워진 Entity) ");
+        console.log("Entity.load(Entity, option = 2) :: 로드 (row 기준, 채워진 Entity) ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -511,7 +512,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("load(Entity, option = 1) :: 로드 (row 기준) ");
+        console.log("Entity.load(Entity, option = 1) :: 로드 (row 기준) ");
         var table = new EntityTable("T1");
         var table2 = new EntityTable("T2");
         table2.items.add("i2");
@@ -541,7 +542,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("load(Entity, option = 2) :: 로드 (존재하는 item의 row만 가져오기) ");
+        console.log("Entity.load(Entity, option = 2) :: 로드 (존재하는 item의 row만 가져오기) ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -573,7 +574,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("load(JSON, option = 1) :: 로드 (row 기준, 채워진 Entity) ");
+        console.log("Entity.load(JSON, option = 1) :: 로드 (row 기준, 채워진 Entity) ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -611,7 +612,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("load(JSON, option = 2) :: 로드 (존재하는 item의 row만 가져오기, 채워진 Entity)  ");
+        console.log("Entity.load(JSON, option = 2) :: 로드 (존재하는 item의 row만 가져오기, 채워진 Entity)  ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -647,7 +648,7 @@
 
 
         console.log("-----------------------------------------------------------------");
-        console.log("load(JSON, option = 1) :: 로드 (row 기준) ");
+        console.log("Entity.load(JSON, option = 1) :: 로드 (row 기준) ");
         var table = new EntityTable("T1");
         var table2 = {
             entity: {
@@ -673,7 +674,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("load(JSON, option = 2) :: 로드 (존재하는 item의 row만 가져오기)  ");
+        console.log("Entity.load(JSON, option = 2) :: 로드 (존재하는 item의 row만 가져오기)  ");
         var table = new EntityTable("T1");
         var table2 = {
             entity: {
@@ -694,7 +695,7 @@
 
 
         console.log("-----------------------------------------------------------------");
-        console.log("clear() :: 초기화 ");
+        console.log("Entity.clear() :: 초기화 ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -713,7 +714,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("clone() : EntityTable :: 복제 ");
+        console.log("EntityTable.clone() : EntityTable :: 복제 ");
         var table = new EntityTable("T1");
         table.items.add("i1");
         table.items.add("i2");
@@ -743,7 +744,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("getTypes() :: 타입 조회(상속) ");
+        console.log("EntityTable.getTypes() :: 타입 조회(상속) ");
         var table = new EntityTable("T1");
         var types = table.getTypes();
         if (types.indexOf("EntityTable") > -1 &&
@@ -759,7 +760,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("getObject() :: 타입 얻기(JSON) ");
+        console.log("TODO:: EntityTable.getObject() :: 타입 얻기(JSON) ");
         if (true) {
             // console.log("Result = Success");
         } else {
@@ -782,4 +783,4 @@
         global._W.Task.EntityTable = run();
     }
 
-}(this));
+}(global || this));

@@ -34,7 +34,7 @@
 
         function EventTest() {
         
-            this.__event    = new Observer(eventObj, this);
+            this.__event    = new Observer(this, eventObj);
             
             this.id = "Class";
 
@@ -76,27 +76,20 @@
             this.__event.publish("param", param1, param2);
         };
 
-        
-
-
         //===============================================
         // 이벤트 발생
         var e = new EventTest();
-
         var event2 = function() { 
             console.log(" onClear ~~"); 
             result.push("onClear");  // Result 등록
         };
-
         var event3 = function() { 
             console.log(" onClear ~~"); 
             result.push("onClear");  // Result 등록
         };
 
-
-
         console.log("-----------------------------------------------------------------");
-        console.log("onLoad, _onLoad() :: 속성과 메소드 추가로 이벤트  커스텀, 익명함수");
+        console.log("Observer.onLoad, _onLoad() :: 속성과 메소드 추가로 이벤트  커스텀, 익명함수");
         result = [];
         var e = new EventTest();
         e.onLoad = function() { 
@@ -112,7 +105,7 @@
         }
         
         console.log("-----------------------------------------------------------------");
-        console.log("onLoad, _onLoad() :: 속성과 메소드 추가로 이벤트  커스텀, 지정함수");
+        console.log("Observer.onLoad, _onLoad() :: 속성과 메소드 추가로 이벤트  커스텀, 지정함수");
         result = [];
         var e = new EventTest();
         e.onClear = event2;
@@ -125,7 +118,7 @@
         }
         
         console.log("-----------------------------------------------------------------");
-        console.log("subscribe(fn, 'code') :: 지역(code) 등록");
+        console.log("Observer.subscribe(fn, 'code') :: 지역(code) 등록");
         result = [];
         var e = new EventTest();
         e.__event.subscribe(event2, 'code');
@@ -138,7 +131,20 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("unsubscribe(fn, 'code') :: 지역(code) 해지");
+        console.log("Observer.subscribe(fn) :: 전역 구독");
+        result = [];
+        var e = new EventTest();
+        e.__event.subscribe(event2);
+        e.__event.publish();
+        if (result.indexOf("onClear") > -1 ) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("-----------------------------------------------------------------");
+        console.log("Observer.unsubscribe(fn, 'code') :: 지역(code) 해지");
         result = [];
         var e = new EventTest();
         e.__event.subscribe(event2, 'code');
@@ -152,20 +158,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("subscribe(fn) :: 전역 구독");
-        result = [];
-        var e = new EventTest();
-        e.__event.subscribe(event2);
-        e.__event.publish();
-        if (result.indexOf("onClear") > -1 ) {
-            console.log("Result = Success");
-        } else {
-            console.warn("Result = Fail");
-            errorCount++;
-        }
-
-        console.log("-----------------------------------------------------------------");
-        console.log("unsubscribe(fn) :: 전역 구독 해지");
+        console.log("Observer.unsubscribe(fn) :: 전역 구독 해지");
         result = [];
         var e = new EventTest();
         e.__event.subscribe(event2);
@@ -179,7 +172,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("unsubscribeAll() :: 전역, 지역(code) 전체 해지");
+        console.log("Observer.unsubscribeAll() :: 전역, 지역(code) 전체 해지");
         result = [];
         var e = new EventTest();
         e.__event.subscribe(event2);            // 전역
@@ -195,7 +188,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("unsubscribeAll('code') :: 지역(code) 전체 해지");
+        console.log("Observer.unsubscribeAll('code') :: 지역(code) 전체 해지");
         result = [];
         var e = new EventTest();
         e.__event.subscribe(event2, 'code');    // 지역
@@ -210,7 +203,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("isMultiMode = false :: 싱글 구독 모드");
+        console.log("Observer.isMultiMode = false :: 싱글 구독 모드");
         result = [];
         var e = new EventTest();
         e.__event.isMultiMode = false;
@@ -225,7 +218,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("_onParam(p1, p2) => publish(p1, p2) 시점에 파라메터 처리 ");
+        console.log("_onParam(p1, p2) => Observer.publish(p1, p2) :: 시점에 파라메터 처리 ");
         result = [];
         var e = new EventTest();
         e.onParam = function(p1, p2) { 
@@ -246,11 +239,12 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("TODO:: isDebug 필요성 여부");
+        console.log("TODO:: Observer.isDebug 필요성 여부");
 
         console.log("-----------------------------------------------------------------");
-        console.log("TODO:: propagation = false :: 이벤트 전파 금지??");
+        console.log("TODO:: Observer.propagation = false :: 이벤트 전파 금지??");
         
+
         //#################################################
         if (errorCount > 0) {
             console.warn("Error Sub SUM : %dEA", errorCount);    

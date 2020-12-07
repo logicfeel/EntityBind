@@ -14,6 +14,7 @@
     // 2. 모듈 가져오기 (node | web)
     var errorCount = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
+    var isCallback = global.isCallback === false ? false : true;
         
     var Row;
     var Item;
@@ -86,7 +87,7 @@
 
         console.log("-----------------------------------------------------------------");
         console.log("new ItemViewCollection(onwer) :: 독립형 생성 ");
-        console.log("add(name, ?baseCollection) :: 독립 아이템추가, 기본컬렉션 지정 ");
+        console.log("ItemViewCollection.add(name, ?baseCollection) :: 독립 아이템추가, 기본컬렉션 지정 ");
         var view = new EntityView("T1");        // 독립형 생성
         view.items.add("i1");                   // 아이템 추가
         view.items.add("i2");
@@ -117,7 +118,7 @@
 
         console.log("-----------------------------------------------------------------");
         console.log("new ItemViewCollection(onwer, baseCollection) :: 참조형 생성 ");
-        console.log("add(name, ?baseCollection) :: 독립 아이템추가, 기본컬렉션 지정 ");
+        console.log("ItemViewCollection.add(name, ?baseCollection) :: 독립 아이템추가, 기본컬렉션 지정 ");
         console.log("ItemViewCollection.addValue(name, value) :: 속성명 + 값 추가 (name) ");
         var view3 = new EntityView("T3");      // 독립형 생성
         var view = new EntityView("T1");        // 독립형 생성
@@ -194,4 +195,4 @@
         global._W.Task.ItemCollection = run();
     }
 
-}(this));
+}(global || this));

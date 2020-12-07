@@ -42,7 +42,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("add(name, ?value) :: 추가");
+        console.log("PropertyCollection.add(name, ?value) :: 추가");
         var table = new TestTable();
         table.items.add("a1");
         table.items.add("a2", "A2");
@@ -56,7 +56,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("remove(elem) :: 삭제");
+        console.log("PropertyCollection.remove(elem) :: 삭제");
         var table = new TestTable();
         table.items.add("a1", "A1");
         table.items.add("a2", "A2");
@@ -69,7 +69,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("removeAt(idx) :: 삭제 (중간) ");
+        console.log("PropertyCollection.removeAt(idx) :: 삭제 (중간) ");
         var table = new TestTable();
         table.items.add("a1", "A1");
         table.items.add("a2", "A2");    // 삭제위치
@@ -88,7 +88,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("removeAt(idx) :: 삭제 (처음) ");
+        console.log("PropertyCollection.removeAt(idx) :: 삭제 (처음) ");
         var table = new TestTable();
         table.items.add("a1", "A1"); // 삭제위치
         table.items.add("a2", "A2");    
@@ -104,7 +104,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("removeAt(idx) :: 삭제 (끝) ");
+        console.log("PropertyCollection.removeAt(idx) :: 삭제 (끝) ");
         var table = new TestTable();
         table.items.add("a1", "A1");
         table.items.add("a2", "A2");    
@@ -123,7 +123,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("clear() :: 전체삭제(초기화) ");
+        console.log("PropertyCollection.clear() :: 전체삭제(초기화) ");
         var table = new TestTable();
         table.items.add("a1", "A1");
         table.items.add("a2", "A2");    
@@ -140,7 +140,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("contains(elem) :: 유무 검사 ");
+        console.log("PropertyCollection.contains(elem) :: 유무 검사 ");
         var table = new TestTable();
         table.items.add("a1", "A1");
         table.items.add("a2", "A2");    
@@ -155,7 +155,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("indexOf(elem) :: idx 조회 ");
+        console.log("PropertyCollection.indexOf(elem) :: idx 조회 ");
         var table = new TestTable();
         table.items.add("a1", "A1");
         table.items.add("a2", "A2");    
@@ -170,7 +170,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("indexOfName(name) :: idx 조회 ");
+        console.log("PropertyCollection.indexOfName(name) :: idx 조회 ");
         var table = new TestTable();
         table.items.add("a1", "A1");
         table.items.add("a2", "A2");    
@@ -185,7 +185,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("propertyOf(idx) :: prop 조회 ");
+        console.log("PropertyCollection.propertyOf(idx) :: prop 조회 ");
         var table = new TestTable();
         table.items.add("a1", "A1");
         table.items.add("a2", "A2");    

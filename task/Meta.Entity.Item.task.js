@@ -14,6 +14,7 @@
     // 2. 모듈 가져오기 (node | web)
     var errorCount = 0;
     var result = [];        // 결과 확인 **사용시 초기화
+    var isCallback = global.isCallback === false ? false : true;
 
     var Row;
     var Item;
@@ -69,7 +70,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("setConstraint(regex, msg, code, return) :: 제약조건 등록 ");
+        console.log("Item.setConstraint(regex, msg, code, return) :: 제약조건 등록 ");
         var item = new Item("i1");
         item.setConstraint(/10/, "10 시작...", 100, true);
         item.setConstraint(/[0-9]{5}/, "5자리 이하만...", 200, false);
@@ -86,7 +87,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("valid(value, r_result) :: 제약조건 검사 ");
+        console.log("Item.valid(value, r_result) :: 제약조건 검사 ");
         var item = new Item("i1");
         item.isNotNull = false;
         item.setConstraint(/10/, "10 시작...", 100, true);
@@ -106,7 +107,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("valid(value, r_result, 1) :: 제약조건 검사 (isNotNull 참조) ");
+        console.log("Item.valid(value, r_result, 1) :: 제약조건 검사 (isNotNull 참조) ");
         var item = new Item("i1");
         item.isNotNull = false;
         var item2 = new Item("i2");
@@ -123,7 +124,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("valid(value, r_result, 2) :: 제약조건 검사 (null검사 진행 ) ");
+        console.log("Item.valid(value, r_result, 2) :: 제약조건 검사 (null검사 진행 ) ");
         var item = new Item("i1");
         item.isNotNull = false;
         var item2 = new Item("i2");
@@ -140,7 +141,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("valid(value, r_result, 3) :: 제약조건 검사 (null검사 무시) ");
+        console.log("Item.valid(value, r_result, 3) :: 제약조건 검사 (null검사 무시) ");
         var item = new Item("i1");
         item.isNotNull = false;
         var item2 = new Item("i2");
@@ -157,7 +158,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("clone()  :: 복제 ");
+        console.log("Item.clone()  :: 복제 ");
         var table = new EntityTable("T1");
         var item = new Item("i1", table, {
             type: "text",
@@ -193,7 +194,7 @@
 
 
         console.log("-----------------------------------------------------------------");
-        console.log("getTypes() :: 타입 조회(상속) ");
+        console.log("Item.getTypes() :: 타입 조회(상속) ");
         var item = new Item("i1");
         var types = item.getTypes();
         if (types.indexOf("Item") > -1 &&
@@ -222,4 +223,4 @@
         global._W.Task.Item = run();
     }
 
-}(this));
+}(global || this));

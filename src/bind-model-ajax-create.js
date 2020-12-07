@@ -60,7 +60,9 @@
          */
         function BindModelCreateAjax(p_objectDI, p_isLoadAttr, p_itemType) {
             _super.call(this, p_objectDI);
-
+            
+            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelCreate)) throw new Error("Only [p_objectDI] type 'IBindModelCreate' can be added");
+            
             this.create = new BindCommandEditAjax(this, this._baseEntity);
 
             // if (p_itemType) this.itemType = p_itemType;

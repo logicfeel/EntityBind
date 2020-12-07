@@ -169,7 +169,7 @@
                             throw new Error("Only [constraints] type '{regex:object, msg:string, ?code:number}' can be added");
                         }
                     }
-                    __constraints = newValue; 
+                    __constraints = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -248,6 +248,7 @@
         Item.prototype.clone = function() {
             
             var clone = new Item(this.name);
+            var constraints = [];
 
             if (this.entity) clone["entity"]            = this.entity;  // 참조값
             if (this.type) clone["type"]                = this.type;
@@ -256,7 +257,10 @@
             if (this.caption) clone["caption"]          = this.caption;
             if (this.isNotNull) clone["isNotNull"]      = this.isNotNull;
             if (this.callback) clone["callback"]        = this.callback;
-            if (this.constraints) clone["constraints"]  = JSON.parse(JSON.stringify(this.constraints));
+            for (var i = 0; this.constraints.length > i; i++) {
+                constraints.push(this.constraints[i]);
+            }
+            if (this.constraints) clone["constraints"]  = constraints;
             if (this.constraints) clone["codeType"]     = this.codeType;  // 참조값
             if (this.constraints) clone["order"]        = this.order;
             if (this.constraints) clone["increase"]     = this.increase;

@@ -14,6 +14,7 @@
     // 2. 모듈 가져오기 (node | web)
     var errorCount = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
+    var isCallback = global.isCallback === false ? false : true;
         
     var Row;
     var ItemDOM;
@@ -112,4 +113,4 @@
         global._W.Task.ItemDOM = run();
     }
 
-}(this));
+}(global || this));

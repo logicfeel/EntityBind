@@ -14,6 +14,7 @@
     // 2. 모듈 가져오기 (node | web)
     var errorCount = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
+    var isCallback = global.isCallback === false ? false : true;
         
     var Row;
     var Item;
@@ -34,30 +35,7 @@
     function run() {
     
         console.log("-----------------------------------------------------------------");
-        console.log("clone() :: 복제 (일반 뷰) ");
-        var view = new EntityView("T1");
-        view.items.add("i1");
-        view.items.add("i2");
-        view.items["i2"].caption = "C1";
-        var row = view.newRow();
-        row["i1"] = "R1";
-        row["i2"] = "R2";
-        view.rows.add(row);
-        var view2 = view.clone();
-        if (view.name === "T1" && view.items.count === 2 && view.rows.count === 1 && 
-            view.items["i2"].caption === "C1" &&
-            view.rows[0]["i1"] === "R1" && view.rows[0]["i2"] === "R2" && 
-            view2.name === "T1" && view2.items.count === 2 && view2.rows.count === 1 && 
-            view2.items["i2"].caption === "C1" && 
-            view2.rows[0]["i1"] === "R1" && view2.rows[0]["i2"] === "R2" ) {
-            console.log("Result = Success");
-        } else {
-            console.warn("Result = Fail");
-            errorCount++;
-        }
-
-        console.log("-----------------------------------------------------------------");
-        console.log("new Entity(이름, baseEntity) :: Item 참조 (생성시) ");
+        console.log("new EntityView(이름, baseEntity) :: Item 참조 (생성시) ");
         var view = new EntityView("T1");        // 일반 뷰
         view.items.add("i1");
         view.items.add("i2");
@@ -107,7 +85,30 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("getTypes() :: 타입 조회(상속) ");
+        console.log("EntityView.clone() :: 복제 (일반 뷰) ");
+        var view = new EntityView("T1");
+        view.items.add("i1");
+        view.items.add("i2");
+        view.items["i2"].caption = "C1";
+        var row = view.newRow();
+        row["i1"] = "R1";
+        row["i2"] = "R2";
+        view.rows.add(row);
+        var view2 = view.clone();
+        if (view.name === "T1" && view.items.count === 2 && view.rows.count === 1 && 
+            view.items["i2"].caption === "C1" &&
+            view.rows[0]["i1"] === "R1" && view.rows[0]["i2"] === "R2" && 
+            view2.name === "T1" && view2.items.count === 2 && view2.rows.count === 1 && 
+            view2.items["i2"].caption === "C1" && 
+            view2.rows[0]["i1"] === "R1" && view2.rows[0]["i2"] === "R2" ) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("-----------------------------------------------------------------");
+        console.log("EntityView.getTypes() :: 타입 조회(상속) ");
         var table = new EntityView("T1");
         var types = table.getTypes();
         if (types.indexOf("EntityView") > -1 &&
@@ -139,4 +140,4 @@
         global._W.Task.EntityView = run();
     }
 
-}(this));
+}(global || this));
