@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Task
+ * @namespace _W.Task.Main 메인 테스크 
  */
 (function(global) {
 
@@ -16,15 +16,17 @@
     var tasks = [];  //{ns:..., file:.... }
     var result, task;
     var isCallback = false;
-    var CLEAR = true;
+    var CLEAR = false;
     
     // 단순 로그 보기
-    // CLEAR = true;   // 단순 로그
-    // global.isCallback = isCallback;
+    CLEAR = true;   // 단순 로그
+    global.isCallback = isCallback;
     
     //==============================================================
     // 3. 모듈 등록
+    tasks.push({ns: "_W.Task.Object_implement"      , file: "./Common.Object.implement.task.js"});
     tasks.push({ns: "_W.Task.Observer"              , file: "./Common.Observer.task.js"});
+    tasks.push({ns: "_W.Task.Util"                  , file: "./Common.Util.task.js"});
     tasks.push({ns: "_W.Task.ArrayCollection"       , file: "./Collection.ArrayCollection.task.js"});
     tasks.push({ns: "_W.Task.PropertyCollection"    , file: "./Collection.PropertyCollection.task.js"});
     tasks.push({ns: "_W.Task.EntityTable"           , file: "./Meta.Entity.EntityTable.task.js"});
@@ -32,13 +34,12 @@
     tasks.push({ns: "_W.Task.ItemCollection"        , file: "./Meta.Entity.ItemCollection.task.js"});
     tasks.push({ns: "_W.Task.Item"                  , file: "./Meta.Entity.Item.task.js"});
     tasks.push({ns: "_W.Task.ItemDOM"               , file: "./Meta.Entity.ItemDOM.task.js"});
+    tasks.push({ns: "_W.Task.Row"                   , file: "./Meta.Entity.Row.task.js"});
     tasks.push({ns: "_W.Task.BindCommandEditAjax"   , file: "./Meta.Bind.BindCommandEditAjax.task.js"});
     tasks.push({ns: "_W.Task.BindCommandLookupAjax" , file: "./Meta.Bind.BindCommandLookupAjax.task.js"});
     tasks.push({ns: "_W.Task.BindModelCreateAjax"   , file: "./Meta.Bind.BindModelCreateAjax.task.js"});
     tasks.push({ns: "_W.Task.BindModelReadAjax"     , file: "./Meta.Bind.BindModelReadAjax.task.js"});
     tasks.push({ns: "_W.Task.BindModelDI"           , file: "./Meta.Bind.BindModelDI.task.js"});
-
-    // tasks.push({ns: "_W.Task.Object_implement"      , file: "./Common.Object.implement.task.js"});
 
 
     //==============================================================
@@ -88,7 +89,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Task.errorCount = run();
+        global._W.Task.Main = run();
     }
 
 }(global || this));

@@ -33,8 +33,7 @@
          * @class 메타 최상위 클래스 (실체)
          */
         function MetaObject() {
-            this.__GUID = null;
-
+            
             // 구현할 인터페이스 선언
             this._implements(IObject);
         }

@@ -48,7 +48,7 @@
             _super.call(this, p_entity);
             
             var __entity        = null;
-            var itemName = "";
+            var itemName;
 
             // Entity 등록 & order(순서) 값 계산
             if (p_entity && p_entity.instanceOf("Entity")) {
@@ -81,7 +81,7 @@
         /**
          * @param {Object} p_filter 필터객체
          */
-        Row.prototype.copy= function(p_filter) {
+        Row.prototype.copy = function(p_filter) {
           
             var clone = new Row(this.entity);
             

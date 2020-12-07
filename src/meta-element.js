@@ -50,6 +50,8 @@
             
             p_name = p_name || "";
             
+            this.__GUID = null;
+
             this.name = p_name;
             
             /**

@@ -1,1 +1,129 @@
-//
+/**
+ * @namespace _W.Task.Util
+ */
+(function(global) {
+
+    "use strict";
+
+    //==============================================================
+    // 1. 모듈 네임스페이스 선언
+    global._W                = global._W || {};
+    global._W.Task           = global._W.Task || {};
+    
+    //==============================================================
+    // 2. 모듈 가져오기 (node | web)
+    var errorCount = 0;
+    var result = [];        // 결과 확인 **사용시 초기화    
+    var isCallback = global.isCallback === false ? false : true;
+
+    var util
+
+    if (typeof module === "object" && typeof module.exports === "object") {     
+        util                = require("../src/utils");
+    } else {
+        util                = global._W.Common.Util;
+    }
+
+    //==============================================================
+    // 3. 테스트 본문
+    function run() {
+    
+        console.log("-----------------------------------------------------------------");
+        console.log("Util.inherits(super, target) :: 상속 ");
+        var Super  = (function (_super) {
+            function Super(p_name) {
+                this.name = p_name;
+            }
+            Super.prototype.m2 = function() { return "C2"; };
+            return Super;
+        }());
+        var CoClass  = (function (_super) {
+            function CoClass(p_name) {
+                _super.call(this, p_name);   
+            }
+            util.inherits(CoClass, _super); 
+            CoClass.prototype.m1 = function() { return "C1"; }
+            return CoClass;
+        }(Super));
+
+        var c = new CoClass("NM");
+        if (c.m1() === "C1" &&
+            c.m2() === "C2" && 
+            c.name === "NM" &&
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+        
+        console.log("-----------------------------------------------------------------");
+        console.log("Util.getArrayLevel(elem, deps) :: 배열 깊이  (첫번째 배열 깊이만 검사함) ");
+        var arr = [1,2];
+        var arr2 = [
+            [10],
+            2,
+            [[100], 20]
+        ];
+        var arr3 = [
+            [[100], 20],
+            [10],
+            2
+        ];
+        var arr4 = [
+            2
+            [[100], 20],
+            [10]
+        ];
+        if (util.getArrayLevel(arr) === 1 &&
+            util.getArrayLevel(arr2) === 2 &&
+            util.getArrayLevel(arr3) === 3 &&
+            util.getArrayLevel(arr4) === 1 &&
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("-----------------------------------------------------------------");
+        console.log("Util.createGUID() :: GUID 생성 ");
+        var guid = util.createGUID();
+        if (guid.length === 36 &&
+            guid.match(/-/g).length === 4 &&
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("-----------------------------------------------------------------");
+        console.log("Util.validSelector(obj.string) :: 셀렉터 유무 검사 ");
+
+        console.log("-----------------------------------------------------------------");
+        console.log("Util.validSelector(obj.array<string>) :: 셀렉터 유무 검사 ");
+
+        console.log("-----------------------------------------------------------------");
+        console.log("Util.validSelector(string) :: 셀렉터 유무 검사 ");
+
+        console.log("-----------------------------------------------------------------");
+        console.log("Util.validSelector(array<string>) :: 셀렉터 유무 검사 ");
+
+
+        //#################################################
+        if (errorCount > 0) {
+            console.warn("Error Sub SUM : %dEA", errorCount);    
+        }
+        return errorCount;
+    }
+
+    //==============================================================
+    // 5. 모듈 내보내기 (node | web)
+    if (typeof module === "object" && typeof module.exports === "object") {     
+        module.exports = run();
+    } else {
+        global._W.Task.Util = run();
+    }
+
+}(global || this));

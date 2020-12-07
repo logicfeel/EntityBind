@@ -91,7 +91,7 @@
     /**
      * 셀렉터의 유효성 검사 : 대상을 모두 검사하여 결과를 리턴한다.
      * 주의!! DOM(web) 에서만 작동한다.
-     * @param {Object | Array<String> | String} p_obj 
+     * @param {object<array | string> | array<string> | string} p_obj 
      * @returns {String} 없는 셀렉터, 통화하면 null 리턴
      */
     var validSelector = function(p_obj) {
