@@ -36,4 +36,4 @@
     //     global._W.namespace = namespace;
     // }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

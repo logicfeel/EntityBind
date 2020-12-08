@@ -15,7 +15,6 @@
     // 2. 모듈 가져오기 (node | web)
     var util;
     var BindModel;
-    var BindCommandRead;
     var EntityTable;
     
     if (typeof module === "object" && typeof module.exports === "object") {    
@@ -23,12 +22,10 @@
          
         util                    = require("./utils");
         BindModel               = require("./bind-model");
-        BindCommandRead         = require("./bind-command-read");
         EntityTable             = require("./entity-table").EntityTable;
     } else {
         util                    = global._W.Common.Util;
         BindModel               = global._W.Meta.Bind.BindModel;
-        BindCommandRead         = global._W.Meta.Bind.BindCommandRead;
         EntityTable             = global._W.Meta.Entity.EntityTable;
     }
 
@@ -36,7 +33,6 @@
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
-    if (typeof BindCommandRead === "undefined") throw new Error("[BindCommandRead] module load fail...");
     if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
 
     //==============================================================
@@ -45,16 +41,21 @@
         /**
          * @class
          */
-        function BindModelAjax(p_objectDI) {
+        function BindModelAjax(p_objectDI, p_itemType) {
             _super.call(this, p_objectDI);
 
             var __baseAjaxSetup = {
                 url: "",
                 type: "POST"
             };
-            
+
             // Entity 추가 및 baseEntity 설정
             this._baseEntity = this.addEntity('first');
+
+            if (typeof p_itemType === "function") {
+                this.itemType = p_itemType;
+                this._baseEntity.items.itemType = this.itemType;
+            }
 
             /** @property {baseAjaxSetup} */
             Object.defineProperty(this, "baseAjaxSetup", 
@@ -99,4 +100,4 @@
         global._W.Meta.Bind.BindModelAjax = BindModelAjax;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

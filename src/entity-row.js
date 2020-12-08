@@ -174,4 +174,4 @@
         global._W.Meta.Entity.RowCollection = RowCollection;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

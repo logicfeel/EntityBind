@@ -54,4 +54,4 @@
         global._W.Interface.IAllControl = IAllControl;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

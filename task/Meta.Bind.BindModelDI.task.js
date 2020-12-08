@@ -284,7 +284,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Task.BindModelDI = run();
+        global._W.Task.BindModelDI = {run: run};
     }
 
-}(global || this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

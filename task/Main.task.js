@@ -15,12 +15,12 @@
     var errorCount = 0;
     var tasks = [];  //{ns:..., file:.... }
     var result, task;
-    var isCallback = false;
-    var CLEAR = false;
+    var isCallback      = false;
+    var CLEAR           = false;
     
-    // 단순 로그 보기
-    CLEAR = true;   // 단순 로그
-    global.isCallback = isCallback;
+    /* 단순 로그 보기 */
+    // CLEAR = true;
+    // global.isCallback = isCallback;
     
     //==============================================================
     // 3. 모듈 등록
@@ -29,6 +29,9 @@
     tasks.push({ns: "_W.Task.Util"                  , file: "./Common.Util.task.js"});
     tasks.push({ns: "_W.Task.ArrayCollection"       , file: "./Collection.ArrayCollection.task.js"});
     tasks.push({ns: "_W.Task.PropertyCollection"    , file: "./Collection.PropertyCollection.task.js"});
+    tasks.push({ns: "_W.Task.MetaObject_Sub"        , file: "./Meta.MetaObject-Sub.task.js"});
+    tasks.push({ns: "_W.Task.MetaElement_Sub"       , file: "./Meta.MetaElement-Sub.task.js"});
+    tasks.push({ns: "_W.Task.ComplexElement_Sub"    , file: "./Meta.ComplexElement-Sub.task.js"});
     tasks.push({ns: "_W.Task.EntityTable"           , file: "./Meta.Entity.EntityTable.task.js"});
     tasks.push({ns: "_W.Task.EntityView"            , file: "./Meta.Entity.EntityView.task.js"});
     tasks.push({ns: "_W.Task.ItemCollection"        , file: "./Meta.Entity.ItemCollection.task.js"});
@@ -40,7 +43,7 @@
     tasks.push({ns: "_W.Task.BindModelCreateAjax"   , file: "./Meta.Bind.BindModelCreateAjax.task.js"});
     tasks.push({ns: "_W.Task.BindModelReadAjax"     , file: "./Meta.Bind.BindModelReadAjax.task.js"});
     tasks.push({ns: "_W.Task.BindModelDI"           , file: "./Meta.Bind.BindModelDI.task.js"});
-
+    tasks.push({ns: "_W.Task.DOM_Node"              , file: "./Etc.DOM-Node.task.js"});
 
     //==============================================================
     // 4. 테스트 본문 :: run()
@@ -57,8 +60,10 @@
                 task = tasks[i].file;
                 tasks[i].result = require(tasks[i].file);
             } else {
+                // task = tasks[i].ns;
+                // tasks[i].result = eval(tasks[i].ns);
                 task = tasks[i].ns;
-                tasks[i].result = eval(tasks[i].ns);
+                tasks[i].result = eval(tasks[i].ns + ".run()");
             }
 
         }
@@ -89,7 +94,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Task.Main = run();
+        global._W.Task.Main = {run: run};
     }
 
-}(global || this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

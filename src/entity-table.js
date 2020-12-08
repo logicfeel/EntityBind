@@ -179,4 +179,4 @@
         global._W.Meta.Entity.EntityTableCollection = EntityTableCollection;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

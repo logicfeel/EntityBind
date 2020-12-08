@@ -49,4 +49,4 @@
         global._W.Interface.IBindModelReadDel = IBindModelReadDel;
     }
     
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

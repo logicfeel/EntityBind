@@ -47,4 +47,4 @@
         global._W.Collection.PropertyCollection     = PropertyCollection;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

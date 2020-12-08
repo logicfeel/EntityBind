@@ -56,4 +56,4 @@
         global._W.Interface.IMarshal = IMarshal;
     }
     
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

@@ -30,5 +30,5 @@ if (typeof Array.isArray === "undefined") {
         // 5. 모듈 내보내기 (node | web)
         Arrary.isArray = isArray;
 
-    }(this));
+    }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 }

@@ -28,21 +28,21 @@ var paths = {
         'src/collection-property-object.js','src/collection-property-function.js',
         // 메타 최상위
         'src/meta-object.js', 'src/meta-element.js', 'src/meta-element-complex.js', 
-        // Entity
+        // 엔티티
         'src/entity-item.js', 'src/entity-item-dom.js','src/entity-row.js', 'src/entity-base.js', 
         'src/entity-table.js', 'src/entity-view.js', 'src/entity-set.js', 
-        // Bind
-        'src/bind-base.js', 'src/bind-command.js', 'src/bind-model.js', 
-        'src/bind-command-internal.js', 'src/bind-command-view.js', 
-        'src/bind-command-read.js', 'src/bind-command-create.js', 'src/bind-command-update.js', 
-        'src/bind-command-delete.js', 'src/bind-command-list.js', 
-        'src/bind-command-read-ajax.js',
-        'src/bind-model-list.js', 'src/bind-model-read.js', 'src/bind-model-create.js',
-        'src/bind-model-list-del.js', 'src/bind-model-read-del.js', 
-        'src/bind-model-edit.js', 'src/bind-model-form.js', 
-        'src/bind-model-read-ajax.js'
+        // 바인드
+        'src/bind-base.js', 'src/bind-command.js', 'src/bind-model.js', 'src/bind-command-ajax.js', 
+        'src/bind-command-ajax-edit.js', 'src/bind-command-ajax-lookup.js', 
+        'src/bind-model-ajax.js', 
+        'src/bind-model-ajax-create.js', 
+        'src/bind-model-ajax-read.js', 'src/bind-model-ajax-read-del.js', 
+        'src/bind-model-ajax-list.js', 'src/bind-model-ajax-list-del.js', 
+        'src/bind-model-ajax-edit.js', 'src/bind-model-ajax-form.js'
     ],
-	scss: src + '/scss/*.scss',
+    task: 'task/*.task.js',
+    // task: ['task/Collection.ArrayCollection.task.js', 'task/Main.task.js'],     // 임시 테스트
+    scss: src + '/scss/*.scss',
 	html: src + '/**/*.html'
 };
 
@@ -64,6 +64,12 @@ gulp.task('auto-min', function () {
     return gulp.src(paths.js)
         .pipe(minifyhtml())
 		.pipe(concat('auto-meta-' + package.version + '.min.js'))
+		.pipe(gulp.dest(dist));
+});
+
+gulp.task('task', function () {
+	return gulp.src(paths.task)
+		.pipe(concat('auto-meta-' + package.version + '.task.js'))
 		.pipe(gulp.dest(dist));
 });
 

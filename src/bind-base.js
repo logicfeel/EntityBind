@@ -133,4 +133,4 @@
         global._W.Meta.Bind.BaseBind = BaseBind;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

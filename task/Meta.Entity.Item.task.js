@@ -220,7 +220,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Task.Item = run();
+        global._W.Task.Item = {run: run};
     }
 
-}(global || this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

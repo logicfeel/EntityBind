@@ -91,4 +91,4 @@
         global._W.Collection.PropertyFunctionCollection = PropertyFunctionCollection;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

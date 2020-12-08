@@ -44,4 +44,5 @@
         global._W.Meta = modules;
     }
 
-}(this));
+// }(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

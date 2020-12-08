@@ -40,4 +40,4 @@
         global._W.Interface.IImportControl = IImportControl;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

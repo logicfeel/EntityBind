@@ -47,4 +47,4 @@
         global._W.Interface.IPartControl = IPartControl;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

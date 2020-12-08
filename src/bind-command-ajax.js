@@ -273,9 +273,12 @@
             }
 
             if (ajax && typeof ajax === "function") {
-                
+                // try {
+                //     ajax(p_ajaxSetup);
+                // } catch (e) {
+                //     p_ajaxSetup.error();
+                // }
                 ajax(p_ajaxSetup);
-
             } else {
                 option.uri = p_ajaxSetup.url;
                 // option.json = true // json 으로 JSON 으로 요청함
@@ -328,4 +331,4 @@
         global._W.Meta.Bind.BindCommandAjax = BindCommandAjax;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

@@ -319,7 +319,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Task.ArrayCollection = run();
+        global._W.Task.ArrayCollection = {run: run};
     }
 
-}(this));    
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

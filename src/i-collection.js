@@ -99,4 +99,4 @@
         global._W.Interface.ICollection = ICollection;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

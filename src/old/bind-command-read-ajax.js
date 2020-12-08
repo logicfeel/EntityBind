@@ -17,6 +17,7 @@
     var BindCommandView;
     var EntityView;
     var request;
+    var jquery;
     var ajax;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
@@ -28,7 +29,8 @@
         util                = global._W.Common.Util;
         BindCommandView     = global._W.Meta.Bind.BindCommandView;
         EntityView          = global._W.Meta.Entity.EntityView;
-        ajax                = global.jQuery.ajax || global.$.ajax;     // jquery 로딩 REVIEW:: 로딩 확인
+        jquery              = global.jQuery || global.$;     // jquery 로딩 REVIEW:: 로딩 확인
+        ajax                = jquery.ajax;
     }
 
     //==============================================================
@@ -46,11 +48,14 @@
         function BindCommandReadAjax(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            // TODO:: jquery 등 외부 모듈을 이용하여, 검사 진행, 하지만 꼭 필요한지 사용시 재검토
             var __ajaxSetup = {
-                url: "",
-                method: "POST",
-                dataType: "json"
+                url: "",            // 요청 경로
+                type: "POST",       // 전송 방법 : GET, POST
+                dataType: "json",   //
+                async: true,        // [*]비동기(ture), 동기(false)
+                success: null,      // 성공 콜백
+                error: null,        // 실패 콜백
+                complete: null      // 완료 콜백
             };
 
             /** @property {ajaxSetup} */
@@ -72,20 +77,6 @@
                 configurable: true,
                 enumerable: true
             }); 
-
-            /** @property {method} */
-            Object.defineProperty(this, "method", 
-            {
-                get: function() { return __ajaxSetup.method; },
-                set: function(newValue) { 
-                    if (!(typeof newValue === "string")) throw new Error("Only [method] type 'string' can be added");
-                    __ajaxSetup.method = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            }); 
-
-            
         }
         util.inherits(BindCommandReadAjax, _super);
     
@@ -98,148 +89,104 @@
         };
 
         /**
+         * Ajax 바인딩 구현
+         * @method
+         */
+        BindCommandReadAjax.prototype._execBind = function() {
+            
+            var value;
+            var item;
+            var ajaxSetup = {};
+            var complete = this.ajaxSetup.complete || this._model.baseAjaxSetup.complete || null;
+            
+            ajaxSetup.url       = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
+            ajaxSetup.type      = this.ajaxSetup.type || this._model.baseAjaxSetup.type;
+            ajaxSetup.dataType  = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType;
+            ajaxSetup.complete  = (typeof complete === "function") ? complete.bind(this) : null;
+            ajaxSetup.success   = this._execSuccess.bind(this);
+            ajaxSetup.error     = this._execError.bind(this);
+
+            for(var i = 0; i < this.bind.items.count; i++) {
+                if(typeof ajaxSetup.data !== "object") ajaxSetup.data = {};
+                item = this.bind.items[i];
+                value = item.value || item.default;     // 값이 없으면 기본값 설정
+                ajaxSetup.data[item.name] = value;
+            }
+            
+
+            this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
+        };
+
+        /**
+         * AJAX 를 기준으로 구성함 (requst는 맞춤)
+         * error(xhr,status,error)
+         * @param {*} p_xhr 
+         * @param {*} p_status 
+         * @param {*} p_error 
+         */
+        BindCommandReadAjax.prototype._execError = function(p_xhr, p_status, p_error) {
+            
+            var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;
+
+            // 상위 호출 : 데코레이션 패턴
+            _super.prototype._execError.call(this, msg, p_status);
+        }
+
+        /**
          * (WEB & NodeJs 의 어뎁터 패턴)
          * node 에서는 비동기만 반영함 (테스트 용도) =>> 필요시 개발함
-         * @param {Object} p_setup 
+         * @param {Object} p_ajaxSetup 
          */
-        BindCommandReadAjax.prototype.bindAjaxAdapter = function(p_setup) {
+        BindCommandReadAjax.prototype._ajaxAdapter = function(p_ajaxSetup) {
             
             var option = {};
             var result;
-    
-            if (ajax) {
-                if (typeof ajax === "undefined") throw new Error("[ajax] module load fail...");
-                ajax(p_setup);
+            
+            var msg;
+            var code;
+
+            // request VS Jquery.ajax 와 콜백 어뎁터 연결 함수
+            function callback(error, response, body) {
+
+                var status = response ? response.statusCode : null;
+                var msg    = response ? response.statusMessage : "";
+
+                // (xhr,status) : 완료콜백
+                if (p_ajaxSetup && typeof p_ajaxSetup.complete === "function") p_ajaxSetup.complete(response, status);
+
+                if (error || response.statusCode !== 200) {    // 실패시
+                    msg = error ? (msg + " " + error) : msg;
+                    // (xhr,status,error)
+                    p_ajaxSetup.error(response, status, msg);
+                } else {                                        // 성공시
+                    if (p_ajaxSetup.dataType === "json") result = JSON.parse(body);
+                    result = result || body;
+                    // (result,status,xhr)
+                    p_ajaxSetup.success(result, error, response);
+                }                
+            }
+
+            if (ajax && typeof ajax === "function") {
+                
+                ajax(p_ajaxSetup);
+
             } else {
-                option.uri = p_setup.url;
+                option.uri = p_ajaxSetup.url;
                 // option.json = true // json 으로 JSON 으로 요청함
     
-                if (p_setup.method === "GET") {
+                if (p_ajaxSetup.type === "GET") {
                     option.method = "POST";
-                    option.qs = p_setup.data;
-                    request.get(option, p_setup.success);
-                } else if (p_setup.method === "POST") {
+                    option.qs = p_ajaxSetup.data;
+                    request.get(option, callback);
+                } else if (p_ajaxSetup.type === "POST") {
                     option.method = "POST";
-                    option.form = p_setup.data;
-                    request.post(option, function(err, res, body) {
-                        // TODO:: 에러처리 추가해야함
-                        if (p_setup.dataType === "json") result = JSON.parse(body);
-                        
-                        result = result || body;
-                        p_setup.success(result, err, res);
-                    });
+                    option.form = p_ajaxSetup.data;
+                    request.post(option, callback);
                 } else {
-                    // 기타 
-                    option.method = p_setup.method;
-                    request(option, p_setup.success);
+                    // 기타 :: 결과는 확인 안함
+                    request(option, callback);
                 }
             }
-        };
-
-
-        // TODO:: 상위로 이동 검토
-        BindCommandReadAjax.prototype._execValid = function() {
-            
-
-            var o_msg = {};
-
-            // item 의 제약 조건을 기준으로 검사함
-            // if item.Valid("값", o_msg, o_code) 
-            
-            // 오류 발생시 _onFail(i_msg, i_code);
-
-            // TODO::
-            console.log("*************");
-            // console.log("_execValid()");
-            for(var i = 0; i < this.valid.items.count; i++) {
-                if (!(this.valid.items[i].valid(this.bind.items[i].refValue, o_msg))) {
-                    this._onFail(o_msg);
-                    return false;
-                }
-                // console.log("valid : " + this.valid.items[i].name);
-            }
-            return true;
-        };
-
-        BindCommandReadAjax.prototype._execBind = function() {
-            
-            var ajaxSetup = {};
-            
-            ajaxSetup.url = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            ajaxSetup.method = this.ajaxSetup.method || this._model.baseAjaxSetup.method;
-            // TODO:: 프로퍼티에 추가해야함
-            ajaxSetup.dataType = "json";
-            ajaxSetup.data = {};   // items에서 받아와야함
-            ajaxSetup.success = this._execSuccess.bind(this);
-            
-            for(var i = 0; i < this.bind.items.count; i++) {
-                ajaxSetup.data[this.bind.items[i].name] = this.bind.items[i].refValue; // 값
-            }
-            
-            // $.ajax(this.ajaxSetup);
-            this.bindAjaxAdapter(ajaxSetup);
-
-            // REVIEW:: 확인후 삭제
-            console.log("*************");
-            console.log("_execBind(ajax load)");
-        };
-        
-        /**
-         * 콜백에서 받은 데이터를 기준으로 table(item, rows)을 만든다.
-         * 리턴데이터 형식이 다를 경우 오버라이딩해서 수정함
-         * @param {*} p_result 
-         * @param {*} p_status 
-         * @param {*} p_xhr 
-         */
-        BindCommandReadAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
-            
-            var entity;
-
-            entity = new EntityView("result");
-            entity.load(p_result);
-
-            console.log("*************");
-            console.log("_execSuccess()");
-            this._execView(entity);
-        };
-
-        
-        
-        /**
-         * TODO:: 이 부분은 사용시 구현이 되어야함.
-         * 임시테이블과 View 지정 테이블과 매핑한다.
-         * @param {*} entity 
-         */
-        BindCommandReadAjax.prototype._execView = function(entity) {
-            
-            var itemName;
-            
-            // this.view.newRow();
-            this.view.load(entity, this.outputOption);
-
-            // for (var i = 0; entity.items.count > i; i++) {
-                
-            //     if (this.view.items.contains(entity.items[i].name)) {
-            //         itemName = entity.items[i].name;
-            //         this.view.rows[0][itemName] = entity.rows[0][itemName]; // 데이터 복사
-            //     }
-            // }
-            // TODO::
-            // console.log("*************");
-            // console.log("_execView()");
-            // for(var i = 0; i < this._output.count; i++) {
-            //     for (var ii = 0; ii < this._output[i].items.count; ii++) {
-            //         console.log("output["+ i +"] : " + this._output[i].items[ii].name);
-            //     }
-            // }
-            
-            // 뷰 콜백 호출  : EntitView를 전달함
-            if (typeof this.cbOutput === "function" ) this.cbOutput(this.view);
-
-            // 처리 종료 콜백 호출
-            if (typeof this.cbEnd === "function" ) this.cbEnd();
-            
-            this._onExecuted();  // "실행 종료" 이벤트 발생
         };
 
         return BindCommandReadAjax;
@@ -255,4 +202,4 @@
         global._W.Meta.Bind.BindCommandReadAjax = BindCommandReadAjax;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

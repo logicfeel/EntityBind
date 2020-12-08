@@ -213,7 +213,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Task.Object_implement = run();
+        global._W.Task.Object_implement = {run: run};
     }
 
-}(global, this));    
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

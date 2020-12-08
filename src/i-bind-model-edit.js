@@ -51,4 +51,4 @@
         global._W.Interface.IBindModelEdit = IBindModelEdit;
     }
     
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

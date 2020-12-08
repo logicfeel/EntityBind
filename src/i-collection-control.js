@@ -94,4 +94,4 @@
         global._W.Interface.IControlCollection = IControlCollection;
     }
     
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

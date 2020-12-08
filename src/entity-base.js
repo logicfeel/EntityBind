@@ -489,4 +489,4 @@
         global._W.Meta.Entity.Entity = Entity;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

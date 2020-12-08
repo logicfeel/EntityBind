@@ -231,7 +231,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Task.PropertyCollection = run();
+        global._W.Task.PropertyCollection = {run: run};
     }
 
-}(this));    
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

@@ -265,4 +265,4 @@
         global._W.Collection.BaseCollection = BaseCollection;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

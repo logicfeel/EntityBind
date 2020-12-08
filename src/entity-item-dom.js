@@ -175,4 +175,4 @@
         global._W.Meta.Entity.ItemDOM = ItemDOM;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

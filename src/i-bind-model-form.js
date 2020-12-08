@@ -49,4 +49,4 @@
         global._W.Interface.IBindModelForm = IBindModelForm;
     }
     
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

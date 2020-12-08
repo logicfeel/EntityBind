@@ -593,4 +593,4 @@
         global._W.Meta.Entity.ItemTableCollection   = ItemTableCollection;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

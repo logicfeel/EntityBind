@@ -41,4 +41,4 @@
         global._W.Interface.IObject = IObject;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

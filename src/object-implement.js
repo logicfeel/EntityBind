@@ -85,5 +85,5 @@ if ((typeof Object.prototype._implements === "undefined") ||
 	        enumerable: false
         });
         
-    }(this));
+    }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 }

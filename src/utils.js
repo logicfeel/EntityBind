@@ -143,4 +143,4 @@
         global._W.Common.Util.validSelector = validSelector;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

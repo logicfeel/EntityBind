@@ -239,4 +239,4 @@
         global._W.Meta.Bind.BindCommand = BindCommand;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

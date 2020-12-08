@@ -40,4 +40,4 @@
         global._W.Interface.IExportControl = IExportControl;
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

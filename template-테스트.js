@@ -47,7 +47,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Task.네임스페이스 = run();
+        global._W.Task.네임스페이스 = {run: run};
     }
 
-}(global || this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

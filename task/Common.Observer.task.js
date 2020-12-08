@@ -257,7 +257,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Task.Observer = run();
+        global._W.Task.Observer = {run: run};
     }
 
-}(this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));

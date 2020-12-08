@@ -169,7 +169,7 @@
         }
 
         console.log("-----------------------------------------------------------------");
-        console.log("BindModel.cbFail           :: 검사 실패 발생시 실행 ");
+        console.log("BindModel.cbFail           :: 실패 발생시 실행 (검사) ");
         var model = new BindModelCreateAjax();
         model.result = [];
         model.create.addItem("i1", "");
@@ -197,7 +197,7 @@
             model.result = [];
             // model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
             model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
-            model.baseUrl = "sample_row_single.json";                    // 오류 2
+            // model.baseUrl = "sample_row_single2.json";                // 오류 2
             model.cbFail = function(p_msg, p_code){
                 this.result.push("cbFail");
             };
@@ -216,7 +216,13 @@
                     errorCount++;
                 }
             };
-            model.create.execute();            
+            
+            try {
+                model.create.execute();            
+            } catch (e) {
+                console.warn("Result = Fail");
+            }
+            // model.create.execute();
         }
 
         console.log("-----------------------------------------------------------------");
@@ -583,7 +589,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Task.BindModelCreateAjax = run();
+        global._W.Task.BindModelCreateAjax = {run: run};
     }
 
-}(global || this));
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));
