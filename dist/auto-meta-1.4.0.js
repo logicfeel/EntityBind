@@ -5391,13 +5391,14 @@ if (typeof Array.isArray === "undefined") {
             var ajaxSetup = {};
             var complete = this.ajaxSetup.complete || this._model.baseAjaxSetup.complete || null;
             
-            ajaxSetup.url       = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            ajaxSetup.type      = this.ajaxSetup.type || this._model.baseAjaxSetup.type;
-            ajaxSetup.dataType  = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType;
-            ajaxSetup.async     = this.ajaxSetup.async || this._model.baseAjaxSetup.async;
-            ajaxSetup.complete  = (typeof complete === "function") ? complete.bind(this) : null;
-            ajaxSetup.success   = this._execSuccess.bind(this);
-            ajaxSetup.error     = this._execError.bind(this);
+            ajaxSetup.url           = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
+            ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type;
+            ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType;
+            ajaxSetup.async         = this.ajaxSetup.async || this._model.baseAjaxSetup.async;
+            ajaxSetup.crossDomain   = this.ajaxSetup.crossDomain || this._model.baseAjaxSetup.crossDomain;
+            ajaxSetup.complete      = (typeof complete === "function") ? complete.bind(this) : null;
+            ajaxSetup.success       = this._execSuccess.bind(this);
+            ajaxSetup.error         = this._execError.bind(this);
 
             for(var i = 0; i < this.bind.items.count; i++) {
                 if(typeof ajaxSetup.data !== "object") ajaxSetup.data = {};

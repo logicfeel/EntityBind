@@ -6,12 +6,9 @@
 </head>
 <body>
     <p class="msg">msg : </p>
+    <p>테스트함</p>
 
-    테스트함
-<!--
-   <script src="auto-meta-1.1.0.js"></script>
--->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js?aaa"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js?a"></script>
 <script src="auto-meta-1.4.0.js?a"></script>
 <script src="auto-meta-1.4.0.task.js?a"></script>
 
@@ -31,24 +28,19 @@
             this.read.cbOutput = __this.readView;
             this.read.cbValid = __this.readValid;
         };
-
         this.cbValid = function() {   // 2.검사
             if (this.attr.cmd === "") Msg("에러! 잘못된 접근경로입니다.");
             return true;
         };
-
         this.cbReady = function(model) {
             this.read.execute();
         };
-
         this.cbFail = function(p_msg, p_code) {
             console.log("실패 :: Code= \"%s\", Message= %s ", p_code, p_msg);
         };
-
         this.cbError = function(p_msg, p_status) {
             console.log("오류 :: Status= \"%s\" , Message= %s ", p_status, p_msg);
         };
-
         this.onExecute = function() {       // 실행시 이벤트 등록
             console.log("onExecute 이벤트. ");
         };
@@ -61,11 +53,8 @@
     ReadDI.prototype.readValid = function() {
         // console.log("경고창:등록하시겠습니까 ?  => Yes ");
         // return true;
-
-        // return confirm("경고창:등록하시겠습니까 ?");
+        return confirm("경고창:등록하시겠습니까 ?");
     };
-    // xhr.send( options.hasContent && options.data || null );
-    // this.ReadDI = ReadDI;
 </script>
 
 <script>
@@ -84,7 +73,7 @@
             listURL: "Notice_Lst.asp",
             sto_id: {
                 caption: "상점코드", 
-                value: "1220",
+                value: "12200",
                 constraints: [
                     { regex: /\D/, msg: "숫자만 입력해야함...", code: 100, return: false },
                     { regex: /[0-9]{5}/, msg: "5자리 미만 숫자만...", code: 200, return: true }
@@ -108,19 +97,28 @@
 
     //-----------------------------------------------------
     // 연결
-    var e = new BindModelReadAjax(new ReadDIView(), true);
+    $.ajaxPrefilter('json', function(options, orig, jqueryXHR) {
+        return 'jsonp';
+    })
 
+    var e = new BindModelReadAjax(new ReadDIView(), true);
+    e.read.cbBind = function(setup) {
+        console.log("-STOP-");
+        setup.crossDomain = true;
+    };
     // 등록
     e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";    // 로컬로딩
     // e.baseUrl = "./sample_row_single.json";     // 로컬 로딩
     // e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.as";    // 오류 1
-    // e.baseUrl = "sample_row_single.jsona";                      // 오류 2
+    // e.baseUrl = "sample_row_single.json";                      // 오류 2
 
     e.read.setItem(["title", "sto_id"], "valid");
+    e.read.ajaxSetup.crossDomain = true;
+    e.read.ajaxSetup.type = "GET";
     //------------------------------
     e.init();
-    console.log("-End-");
 
+    console.log("-End-");
 </script>
 </body>
 </html>
