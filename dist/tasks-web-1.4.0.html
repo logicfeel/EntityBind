@@ -6,11 +6,15 @@
 </head>
 <body>
     <p class="msg">msg : </p>
-    <p>테스트함</p>
+    <p id="read_data">테스트함</p>
+    <input class="form-control" name="adm_id" id="adm_id" type="text" value=""  maxlength="10"/>
+    <input class="form-control" name="passwd" id="passwd" type="text" value=""  maxlength="10"/>
+    <input class="form-control" name="sto_id" id="sto_id" type="text" value="3000"  maxlength="10"/>
+    <button type="button" id="btn_Read" class="btn btn-danger">읽기</button>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js?a"></script>
-<script src="auto-meta-1.4.0.js?a"></script>
-<script src="auto-meta-1.4.0.task.js?a"></script>
+<script src="auto-meta-1.4.0.js?aaaa"></script>
+<script src="auto-meta-1.4.0.task.js?aaaa"></script>
 
 <script>
 
@@ -27,13 +31,23 @@
             console.log("cbREgister.#btn_List 이벤트 등록..");
             this.read.cbOutput = __this.readView;
             this.read.cbValid = __this.readValid;
+            
+            var _this = this;   // BindModel
+            
+            $("#btn_Read").click(function () {
+                // var __this;
+                console.log("cbREgister.#btn_List 이벤트 등록..");
+                _this.read.execute();
+
+                // _this.read.execute();
+            });
         };
         this.cbValid = function() {   // 2.검사
             if (this.attr.cmd === "") Msg("에러! 잘못된 접근경로입니다.");
             return true;
         };
         this.cbReady = function(model) {
-            this.read.execute();
+            // this.read.execute();
         };
         this.cbFail = function(p_msg, p_code) {
             console.log("실패 :: Code= \"%s\", Message= %s ", p_code, p_msg);
@@ -77,7 +91,9 @@
                 constraints: [
                     { regex: /\D/, msg: "숫자만 입력해야함...", code: 100, return: false },
                     { regex: /[0-9]{5}/, msg: "5자리 미만 숫자만...", code: 200, return: true }
-                ]
+                ],
+                getter: function() { return $("#sto_id").val(); },
+                setter: function(val) { $("#sto_id").val(val); }
             }, 
             ntc_idx: {caption: "일련번호", value: 12},
             title: {caption: "제목", value: "제목이요"},
@@ -86,35 +102,39 @@
         };
     }
     util.inherits(ReadDIView, ReadDI);
-    ReadDIView.prototype.readView = function(entity) {
+    ReadDIView.prototype.readView = function(p_entity) {
+        var entity = this.output;
         console.log("-------------------------------------------------------");
         console.log("cbOutput  호출");
         console.log("this._model.first.items.count  10 ==> " + this._model.first.items.count);   
         console.log("entity.items.count             10 ==> " + entity.items.count);   
         console.log("entity.rows.count              1  ==> " + entity.rows.count);   
-        console.log("entity.rows[0]                 ,, ==> " + entity.rows[0]._element);       
+        console.log("entity.rows[0]                 ,, ==> " + entity.rows[0]._element); 
+        $("#read_data").html(entity.rows[0]._element);      
     };
 
     //-----------------------------------------------------
     // 연결
-    $.ajaxPrefilter('json', function(options, orig, jqueryXHR) {
-        return 'jsonp';
-    })
+    // $.ajaxPrefilter('json', function(options, orig, jqueryXHR) {
+    //     return 'jsonp';
+    // });
 
     var e = new BindModelReadAjax(new ReadDIView(), true);
-    e.read.cbBind = function(setup) {
-        console.log("-STOP-");
-        setup.crossDomain = true;
-    };
     // 등록
     e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";    // 로컬로딩
     // e.baseUrl = "./sample_row_single.json";     // 로컬 로딩
     // e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.as";    // 오류 1
     // e.baseUrl = "sample_row_single.json";                      // 오류 2
-
-    e.read.setItem(["title", "sto_id"], "valid");
-    e.read.ajaxSetup.crossDomain = true;
-    e.read.ajaxSetup.type = "GET";
+    e.read.cbBind = function(setup) {
+        console.log("-STOP-");
+    };
+    e.read.setItem(["title"], "valid");
+    e.read.setItem(["sto_id"], "output");
+    e.read.outputOption = 3;
+    // e.first.items["sto_id"].defineValueProperty(
+    //     function() { return $("#sto_id").val(); }, 
+    //     function(val) { $("#sto_id").val(val); }
+    // ); 
     //------------------------------
     e.init();
 

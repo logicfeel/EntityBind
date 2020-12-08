@@ -2622,7 +2622,13 @@ if (typeof Array.isArray === "undefined") {
             var __codeType      = null;
             var __order         = 100;
             var __increase      = 100;      // order 의 자동 추가수
-            var __value         = null;
+            var __getter        = function() { return this.__value; };
+            var __setter        = function(val) { 
+                if(["number", "string", "boolean"].indexOf(typeof val) < 0) throw new Error("Only [value] type 'number, string, boolean' can be added");
+                this.__value = val;
+            }
+
+            this.__value         = null;
 
             // Entity 등록 & order(순서) 값 계산
             if (p_entity && p_entity.instanceOf("Entity")) {
@@ -2775,10 +2781,41 @@ if (typeof Array.isArray === "undefined") {
             /** @property {value} */
             Object.defineProperty(this, "value", 
             {
-                get: function() { return __value; },
-                set: function(newValue) { 
-                    if(["number", "string", "boolean"].indexOf(typeof newValue) < 0) throw new Error("Only [value] type 'number, string, boolean' can be added");
-                    __value = newValue;
+                get: __getter,
+                set: __setter,
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {value} */
+            Object.defineProperty(this, "getter", 
+            {
+                get: function() { return __getter; },
+                set: function(val) { 
+                    if(val !== null && typeof val !== "function") throw new Error("Only [getter] type 'function' can be added");
+                    __getter = val;
+                    Object.defineProperty(this, "value", {
+                        get: __getter,
+                        configurable: true,
+                        enumerable: true
+                    });
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {value} */
+            Object.defineProperty(this, "setter", 
+            {
+                get: function() { return __setter; },
+                set: function(val) { 
+                    if(val !== null && typeof val !== "function") throw new Error("Only [setter] type 'function' can be added");
+                    __setter = val;
+                    Object.defineProperty(this, "value", {
+                        set: __setter,
+                        configurable: true,
+                        enumerable: true
+                    });
                 },
                 configurable: true,
                 enumerable: true
@@ -2789,7 +2826,11 @@ if (typeof Array.isArray === "undefined") {
             if (typeof p_property === "object" ) {
                 for(var prop in p_property) {
                     if (p_property.hasOwnProperty(prop) &&
-                    ["entity", "type", "size", "default", "caption", "isNotNull", "callback", "constraints", "codeType", "order", "increase", "value"].indexOf(prop) > -1) {
+                    [
+                        "entity", "type", "size", "default", "caption", 
+                        "isNotNull", "callback", "constraints", 
+                        "codeType", "order", "increase", "value", "getter", "setter", 
+                    ].indexOf(prop) > -1) {
                         this[prop] = p_property[prop];
                     }
                 }
@@ -2825,10 +2866,12 @@ if (typeof Array.isArray === "undefined") {
                 constraints.push(this.constraints[i]);
             }
             if (this.constraints) clone["constraints"]  = constraints;
-            if (this.constraints) clone["codeType"]     = this.codeType;  // 참조값
-            if (this.constraints) clone["order"]        = this.order;
-            if (this.constraints) clone["increase"]     = this.increase;
-            if (this.value) clone["value"]               = this.value;
+            if (this.codeType) clone["codeType"]        = this.codeType;  // 참조값
+            if (this.order) clone["order"]              = this.order;
+            if (this.increase) clone["increase"]        = this.increase;
+            if (this.value) clone["value"]              = this.value;
+            if (this.getter) clone["getter"]            = this.getter;
+            if (this.getter) clone["setter"]            = this.setter;
 
             return clone;
         };
@@ -2857,6 +2900,31 @@ if (typeof Array.isArray === "undefined") {
             this.constraints.push(constraint);
         };
 
+        /**
+         * @method
+         */
+        Item.prototype.defineValueProperty = function(p_getter, p_setter) {
+
+            // 타입검사 
+            if(typeof p_getter !== "undefined" && typeof p_getter !== "function") {
+                throw new Error("Only [p_getter] type 'function' can be added");
+            }
+            if(typeof p_setter !== "undefined" && typeof p_setter !== "function") {
+                throw new Error("Only [p_getter] type 'function' can be added");
+            }
+
+            // 기본값 설정
+            p_getter = p_getter || function() { return this.__value; };
+            p_setter = p_setter || function(val) { this.__value = val; };
+
+            /** @event */
+            Object.defineProperty(this, "value", {
+                enumerable: true,
+                configurable: true,
+                get: p_getter,
+                set: p_setter
+            });
+        };
         
         /**
          * 

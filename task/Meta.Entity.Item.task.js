@@ -87,6 +87,101 @@
         }
 
         console.log("-----------------------------------------------------------------");
+        console.log("Item.defineValueProperty(getter) :: value getter만 설정 ");
+        var item = new Item("i1");
+        var item_value = 10;
+        item.value = "V1";
+        item.defineValueProperty(function() { return item_value; });
+        if (item.value  === 10 && 
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("-----------------------------------------------------------------");
+        console.log("Item.defineValueProperty( , setter) :: value setter만 설정 ");
+        var item = new Item("i1");
+        var item_value = 10;
+        item.value = "V1";
+        item.defineValueProperty(undefined, function(val) { item_value = val; });
+        item.value = "V11";
+        if (item.value  === "V1" && 
+            item_value  === "V11" && 
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("-----------------------------------------------------------------");
+        console.log("Item.defineValueProperty(?getter, ?setter) :: value getter/setter ");
+        var item = new Item("i1");
+        var item_value = 10;
+        item.value = "V1";
+        item.defineValueProperty(function() { return item_value; }, function(val) { item_value = val; });
+        item.value = "V11";
+        if (item.value  === "V11" && 
+            item_value  === "V11" && 
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("-----------------------------------------------------------------");
+        console.log("Item.getter = func :: getter 만 설정 ");
+        var item = new Item("i1");
+        var item_value = 10;
+        item.value = "V1";
+        item.getter = function() { return item_value; };
+        item.value = "V11";
+        if (item.value  === 10 && 
+            item_value  === 10 && 
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("-----------------------------------------------------------------");
+        console.log("Item.getter = func :: setter 만 설정 ");
+        var item = new Item("i1");
+        var item_value = 10;
+        item.value = "V1";
+        item.setter = function(val) { item_value = val; };
+        item.value = "V11";
+        if (item.value  === "V1" && 
+            item_value  === "V11" && 
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("-----------------------------------------------------------------");
+        console.log("Item.getter = func :: getter/setter 설정 ");
+        var item = new Item("i1");
+        var item_value = 10;
+        item.value = "V1";
+        item.getter = function() { return item_value; };
+        item.setter = function(val) { item_value = val; };
+        item.value = "V11";
+        if (item.value  === "V11" && 
+            item_value  === "V11" && 
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("-----------------------------------------------------------------");
         console.log("Item.valid(value, r_result) :: 제약조건 검사 ");
         var item = new Item("i1");
         item.isNotNull = false;
