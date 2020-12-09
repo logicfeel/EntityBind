@@ -37,15 +37,15 @@
         function ArrayCollection(p_onwer) {
             _super.call(this, p_onwer); 
         }
-        util.inherits(ArrayCollection, _super);     // 상속(대상, 부모)    
+        util.inherits(ArrayCollection, _super);
 
         /**
          * @method __remove 배열속성 삭제 (내부처리)
          * @param {*} p_idx 인덱스 번호
          */
         ArrayCollection.prototype._remove = function(p_idx) {
-            // [idx] 포인트 이동
-            var count = this._element.length - 1;
+            
+            var count = this._element.length - 1;   // [idx] 포인트 이동
             
             this._element.splice(p_idx, 1);
             
@@ -99,8 +99,6 @@
             this._onChanging();                     // 이벤트 발생 : 변경전
 
             for (var i = 0; i < this._element.length; i++) {
-                // obj = this.indexOf(this[i]);
-                // if (typeof obj !== "undefined") this._remove(i);
                 delete this[i];
             }
 

@@ -14,21 +14,22 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
+    var MetaObject;
     var BaseCollection;
     var BaseBind;
-    var item;
     var Item;
     var Entity;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
+        MetaObject          = require("./meta-object");
         BaseCollection      = require("./collection-base");
         BaseBind            = require("./bind-base");
-        item                = require("./entity-item");
-        Item                = item.Item;
+        Item                = require("./entity-item").Item;
         Entity              = require("./entity-base");
     } else {
         util                = global._W.Common.Util;
+        MetaObject          = global._W.Meta.MetaObject;
         BaseCollection      = global._W.Collection.BaseCollection;
         BaseBind            = global._W.Meta.Bind.BaseBind;
         Entity              = global._W.Meta.Entity.Entity;
@@ -38,6 +39,7 @@
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
+    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
     if (typeof BaseCollection === "undefined") throw new Error("[BaseCollection] module load fail...");
     if (typeof BaseBind === "undefined") throw new Error("[BaseBind] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
@@ -55,8 +57,12 @@
             
             var __propagation   = true;
 
-            if (p_bindModel && !(p_bindModel.instanceOf("BindModel"))) throw new Error("Only [p_bindModel] type 'BindModel' can be added");
-            if (p_baseEntity && !(p_baseEntity.instanceOf("Entity"))) throw new Error("Only [p_baseEntity] type 'Entity' can be added");
+            if (p_bindModel && !(p_bindModel instanceof MetaObject && p_bindModel.instanceOf("BindModel"))) {
+                throw new Error("Only [p_bindModel] type 'BindModel' can be added");
+            }
+            if (p_baseEntity && !(p_bindModel instanceof MetaObject && p_baseEntity.instanceOf("Entity"))) {
+                throw new Error("Only [p_baseEntity] type 'Entity' can be added");
+            }
 
             /** @protected 소유자 */
             this._model = p_bindModel;
@@ -69,11 +75,9 @@
                 configurable: true,
                 set: function(p_bool) {
                     if (typeof p_bool !== "boolean") throw new Error("Only [p_bool] type 'Boolean' can be added");
-                    // this.__event.propagation = p_bool;
                     __propagation = p_bool;
                 },
                 get: function() { return __propagation; }
-                // get: function() { return this.__event.propagation; }
             });            
         }
         util.inherits(BindCommand, _super);
@@ -85,23 +89,17 @@
         };
 
         /** @override */
-        BindCommand.prototype._onExecute = function() {
+        BindCommand.prototype._onExecute = function(p_bindCommand) {
             
-            _super.prototype._onExecute.call(this);                         // 자신에 이벤트 발생
-            if (this.eventPropagation) this._model._onExecute();    // 모델에 이벤트 추가 발생
+            _super.prototype._onExecute.call(this, p_bindCommand);               // 자신에 이벤트 발생
+            if (this.eventPropagation) this._model._onExecute(p_bindCommand);    // 모델에 이벤트 추가 발생
         };
 
         /** @override */
-        BindCommand.prototype._onExecuted = function() {
-            _super.prototype._onExecuted.call(this);
-            if (this.eventPropagation) this._model._onExecuted();
+        BindCommand.prototype._onExecuted = function(p_bindCommand) {
+            _super.prototype._onExecuted.call(this, p_bindCommand);
+            if (this.eventPropagation) this._model._onExecuted(p_bindCommand);
         };
-
-        // /** @override */
-        // BindCommand.prototype._onFail = function(p_msg) {
-        //     _super.prototype._onFail.call(this, p_msg);
-        //     if (this.eventPropagation) this._model._onFail(p_msg);
-        // };        
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommand.prototype.getTypes  = function() {
@@ -114,7 +112,7 @@
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?Array<String> | String} p_entities <선택> 추가할 아이템 명령
+         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
          */
         BindCommand.prototype.add = function(p_item, p_entities) {
 
@@ -122,7 +120,7 @@
             var property = [];      // 속성
             var collection;
 
-            // 유효성 검사
+            // 1.유효성 검사
             if (!(p_item instanceof Item)) {
                 throw new Error("Only [p_item] type 'Item' can be added");
             }
@@ -130,18 +128,16 @@
                 throw new Error("Only [p_entities] type 'Array | string' can be added");
             } 
 
-            // 초기화 설정
+            // 2.초기화 설정
             if (Array.isArray(p_entities)) entities = p_entities;
             else if (typeof p_entities === "string") entities.push(p_entities);
             
             // baseEntity 에 아이템 없으면 등록
             if (!this._baseEntity.items.contains(p_item))  {
                 this._baseEntity.items.add(p_item);
-            } {
-
             }
 
-            // 설정 대상 가져오기
+            // 3.설정 대상 가져오기
             if (entities.length > 0) {
                 for (var i = 0; i < entities.length; i++) {
                     
@@ -158,11 +154,12 @@
                 // 공개(public) Entity 프로퍼티 검사
                 for (var prop in this) {
                     if (this[prop] instanceof Entity && prop.substr(0, 1) !== "_") {
-                                property.push(prop.toString());
+                        property.push(prop.toString());
                     }
                 }
             }
-            // 설정
+
+            // 4.컬렉션 추가(등록)
             for (var i = 0; i < property.length; i++) {
                 if (this[property[i]] instanceof Entity ){
                     collection = this[property[i]].items;
@@ -171,14 +168,13 @@
                 }
                 collection.add(p_item);
             }
-
         };
 
         /**
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
-         * @param {String} p_name
-         * @param {Object | String | Number | Boolean} p_value
-         * @param {?Array<String> | String} p_entities <선택> 추가할 아이템 명령
+         * @param {string} p_name
+         * @param {object | string | number | boolean} p_value
+         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
          */
         BindCommand.prototype.addItem = function(p_name, p_value, p_entities) {
 
@@ -197,8 +193,8 @@
         /**
          * 예시>
          * e.read.setEntity(['idx', 'addr'], 'valid');
-         * @param {String | Array} p_names 
-         * @param {?String | Array<String>} p_entities 
+         * @param {string | array} p_names 
+         * @param {?string | array<string>} p_entities 
          */
         BindCommand.prototype.setItem = function(p_names, p_entities) {
 
@@ -220,7 +216,6 @@
                 if (typeof item !== "undefined") {
                     this.add(item, p_entities);
                 } else {
-                    // throw new Error("baseEntity에 [" + itemName + "] 아이템이 없습니다.");
                     console.warn("baseEntity에 [" + itemName + "] 아이템이 없습니다.");
                 }
             }
@@ -229,7 +224,6 @@
         return BindCommand;
     
     }(BaseBind));
-    
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)

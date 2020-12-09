@@ -63,7 +63,7 @@
                 this.loadAttr();
             }
 
-            /** @interface IBindModel 인터페이스 선언 */
+            /** @implements IBindModelForm 인터페이스 구현 */
             this._implements(IBindModelForm);
         }
         util.inherits(BindModelFormAjax, _super);

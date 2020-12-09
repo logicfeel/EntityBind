@@ -21,6 +21,7 @@
     var EntityView;
     
     if (typeof module === "object" && typeof module.exports === "object") {     
+        require("../src/object-implement"); // _implements() : 폴리필
         Row                     = require("../src/entity-row").Row;
         Item                    = require("../src/entity-item").Item;
         EntityView              = require("../src/entity-view").EntityView;
@@ -34,7 +35,7 @@
     // 3. 테스트 본문
     function run() {
     
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("new EntityView(이름, baseEntity) :: Item 참조 (생성시) ");
         var view = new EntityView("T1");        // 일반 뷰
         view.items.add("i1");
@@ -84,7 +85,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("EntityView.clone() :: 복제 (일반 뷰) ");
         var view = new EntityView("T1");
         view.items.add("i1");
@@ -107,7 +108,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("EntityView.getTypes() :: 타입 조회(상속) ");
         var table = new EntityView("T1");
         var types = table.getTypes();

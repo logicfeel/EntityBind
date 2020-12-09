@@ -21,6 +21,10 @@
     /* 단순 로그 보기 */
     // CLEAR = true;
     // global.isCallback = isCallback;
+
+    if (typeof module === "object" && typeof module.exports === "object") {     
+        require("../src/object-implement"); // _implements() : 폴리필
+    }
     
     //==============================================================
     // 3. 모듈 등록
@@ -52,27 +56,23 @@
 
         for (var i = 0; i < tasks.length; i++) {
             task = typeof module === "object" ?  tasks[i].file : tasks[i].ns;
-            console.log("=================================================================");
+            console.log("===========================================================================");
             console.log("단위 테스트 %s : %s", i, task);
             
-
             if (typeof module === "object" && typeof module.exports === "object") {     
                 task = tasks[i].file;
                 tasks[i].result = require(tasks[i].file);
             } else {
-                // task = tasks[i].ns;
-                // tasks[i].result = eval(tasks[i].ns);
                 task = tasks[i].ns;
                 tasks[i].result = eval(tasks[i].ns + ".run()");
             }
-
         }
         
         if (CLEAR) console.clear();
 
-        console.log("*****************************************************************");
+        console.log("***************************************************************************");
         console.log("통합 테스트 결과");
-        console.log("*****************************************************************");
+        console.log("***************************************************************************");
         for (var i = 0; i < tasks.length; i++) {            
 
             task = typeof module === "object" ?  tasks[i].file : tasks[i].ns;
@@ -83,7 +83,7 @@
                 console.warn("No: %s, Task : %s = Warning, ERR_COUNT = %s ", i, task, tasks[i].result);
                 errorCount++;
             }
-            console.log("_________________________________________________________________");
+            console.log("___________________________________________________________________________");
         }
 
         return errorCount;

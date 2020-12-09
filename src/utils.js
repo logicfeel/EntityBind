@@ -1,8 +1,8 @@
 /**
- * @namespace _W.Common.Util
- *      - inherits() : 상속
- *      - getArrayLevel() : 배열 깊이 얻기
- *      - createGUID() : GUID 생성
+ * @namespace _W.Common.Util.inherits : 상속
+ * @namespace _W.Common.Util.getArrayLevel : 배열 깊이 얻기
+ * @namespace _W.Common.Util.createGUID : GUID 생성
+ * @namespace _W.Common.Util.validSelector : 셀렉터의 유효성 검사
  */
 (function(global) {
 
@@ -16,15 +16,13 @@
 
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {
-    } else {
-    }
 
     //==============================================================
     // 3. 의존성 검사
 
     //==============================================================
     // 4. 모듈 구현    
+
     /**
      * inherits(대상, 부모) : 상속
      */
@@ -78,7 +76,7 @@
     };
     
     /**
-     * @function GUID 생성
+     * @function createGUID GUID 생성
      */
     var createGUID = function() {
         function _p8(s) {  

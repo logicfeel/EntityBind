@@ -15,18 +15,18 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    // var Entity;
+    var MetaObject;
     var PropertyCollection;
     var ArrayCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
-        // Entity              = require("./entity-base");
+        MetaObject          = require("./meta-object");
         PropertyCollection  = require("./collection-property");
         ArrayCollection     = require("./collection-array");
     } else {
         util                = global._W.Common.Util;
-        // Entity              = global._W.Meta.Entity;
+        MetaObject          = global._W.Meta.MetaObject;
         PropertyCollection  = global._W.Collection.PropertyCollection;
         ArrayCollection     = global._W.Collection.ArrayCollection;
     }
@@ -34,7 +34,7 @@
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    // if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
+    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
     if (typeof ArrayCollection === "undefined") throw new Error("[ArrayCollection] module load fail...");
 
@@ -51,7 +51,7 @@
             var itemName;
 
             // Entity 등록 & order(순서) 값 계산
-            if (p_entity && p_entity.instanceOf("Entity")) {
+            if (p_entity && p_entity instanceof MetaObject && p_entity.instanceOf("Entity")) {
                 __entity    = p_entity;
 
                 for (var i = 0; i < __entity.items.count; i++) {
@@ -85,7 +85,7 @@
           
             var clone = new Row(this.entity);
             
-            if (this.value) clone["value"]               = this.value;
+            if (this.value) clone["value"] = this.value;
         };
         
         Row.prototype.clone  = function() {
@@ -138,28 +138,6 @@
             return _super.prototype.add.call(this, i_value);
         };
 
-        /**
-         * Row 타입만 들어가게 제약조건 추가
-         * @override
-         */
-        // RowCollection.prototype._getPropDescriptor = function(p_idx) {
-        //     return {
-        //         get: function() { return this._element[p_idx]; },
-        //         set: function(newValue) { 
-        //             if (newValue instanceof Row) {
-        //                 this._element[p_idx] = newValue;
-        //             } else {
-        //                 throw new Error("Only [Row] type instances can be added");
-        //             }
-        //         },
-        //         enumerable: true,
-        //         configurable: true
-        //     };
-        // };
-
-
-        // TODO::
-        
         return RowCollection;
         
     }(ArrayCollection));

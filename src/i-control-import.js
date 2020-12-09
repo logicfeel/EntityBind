@@ -23,7 +23,7 @@
         }
     
         /**
-         * 출력 : 전체
+         * 입력 : 전체
          */
         IImportControl.prototype.read  = function() {
             throw new Error("[ read() ] Abstract method definition, fail...");

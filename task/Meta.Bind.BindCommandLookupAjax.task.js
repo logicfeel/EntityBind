@@ -24,6 +24,7 @@
     var BindModelReadAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {  
+        require("../src/object-implement"); // _implements() : 폴리필
         util                    = require("../src/utils");
         Row                     = require("../src/entity-row").Row;
         Item                    = require("../src/entity-item").Item;
@@ -44,7 +45,7 @@
     function run() {
 
         if (isCallback) {
-            console.log("-----------------------------------------------------------------");
+            console.log("---------------------------------------------------------------------------");
             console.log("cbValid        :: 검사시 실행 ");
             console.log("cbBind         :: 바인딩시 실행 ");
             console.log("cbOutput       :: 뷰 출력시 실행 [View 하위만] ");
@@ -83,7 +84,7 @@
             };
             model.onExecuted = function() {
                 this.result.push("onExecuted");
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("cbOutput, cbEnd, read.onExecuted, onExecuted :: 콜백 ");
                 // 콜백에서 검사
                 if (this.result[0] === "read.onExecute" && 
@@ -105,7 +106,7 @@
             model.read.execute();
         }
         if (isCallback) {
-            console.log("-----------------------------------------------------------------");
+            console.log("---------------------------------------------------------------------------");
             console.log("BaseBind.eventPropagation = false        :: 이벤트 전파 금지 ");
             var model = new BindModelReadAjax();
             model.result = []; 
@@ -117,7 +118,7 @@
             };
             model.read.onExecuted = function() {
                 this._model.result.push("read.onExecuted");
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("read.onExecuted, onExecuted :: 콜백 ");
                 if (this._model.result[0] === "read.onExecute" && 
                     this._model.result[1] === "read.onExecuted" && 
@@ -139,12 +140,12 @@
         }
 
         if (isCallback) {
-            console.log("-----------------------------------------------------------------");
+            console.log("---------------------------------------------------------------------------");
             console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 (outoption = 1) row 기준으로 가져옴 ");
             var model = new BindModelReadAjax();
             model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
             model.read.cbOutput = function(p_result) {
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("BindCommandAjax.execute() :: 콜백 ");
                 if (this.output.items.count > 0 &&
                     this.output.rows.count > 0 &&
@@ -158,7 +159,7 @@
             model.read.execute();
         }
         if (isCallback) {
-            console.log("-----------------------------------------------------------------");
+            console.log("---------------------------------------------------------------------------");
             console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 (outoption = 2) 존재하는 아이템만 가져옴 ");
             var model = new BindModelReadAjax();
             model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
@@ -166,7 +167,7 @@
             model.read.addItem("adm_id", "output");
             model.read.outputOption = 2;    // 존재하는 컬럼만 가져오기
             model.read.cbOutput = function(p_result) {
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("BindCommandAjax.execute() :: 콜백 ");
                 if (this.output.items.count === 2 &&
                     this.output.rows.count === 1 &&
@@ -181,7 +182,7 @@
         }
 
         if (isCallback) {
-            console.log("-----------------------------------------------------------------");
+            console.log("---------------------------------------------------------------------------");
             console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 (outoption = 3) 존재하는 아이템만 가져옴, + rows[0] value 설정 ");
             var model = new BindModelReadAjax();
             model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
@@ -189,7 +190,7 @@
             model.read.addItem("adm_id", "output");
             model.read.outputOption = 3;    // 존재하는 컬럼만 가져오기
             model.read.cbOutput = function(p_result) {
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("BindCommandAjax.execute() :: 콜백 ");
                 if (this.output.items.count === 2 &&
                     this.output.rows.count === 1 &&
@@ -207,13 +208,13 @@
         }
 
         if (isCallback) {
-            console.log("-----------------------------------------------------------------");
+            console.log("---------------------------------------------------------------------------");
             console.log("BindCommandLookupAjax.addOutput(name) :: 출력(뷰) 엔티티 추가 ");
             var model = new BindModelReadAjax();
             model.baseUrl = "http://rtwgs4.cafe24.com/sample_entity_multi.asp";       // 복수 엔티티
             model.read.addOutput("output2");
             model.read.cbOutput = function(p_result) {
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("BindCommandAjax.execute() :: 콜백 ");
                 if (this.output.items.count > 0 &&
                     this.output.rows.count > 0 &&
@@ -229,7 +230,7 @@
             model.read.execute();
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindCommandEditAjax.getTypes() :: 타입 조회(상속) ");
         var model = new BindModelReadAjax();
         var types = model.read.getTypes();

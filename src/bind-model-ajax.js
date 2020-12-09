@@ -15,25 +15,19 @@
     // 2. 모듈 가져오기 (node | web)
     var util;
     var BindModel;
-    var EntityTable;
     
     if (typeof module === "object" && typeof module.exports === "object") {    
-        require("./object-implement"); // _implements() : 폴리필
-         
         util                    = require("./utils");
         BindModel               = require("./bind-model");
-        EntityTable             = require("./entity-table").EntityTable;
     } else {
         util                    = global._W.Common.Util;
         BindModel               = global._W.Meta.Bind.BindModel;
-        EntityTable             = global._W.Meta.Entity.EntityTable;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
-    if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -91,7 +85,6 @@
     
     }(BindModel));
     
-
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     

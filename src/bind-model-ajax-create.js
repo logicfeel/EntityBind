@@ -19,8 +19,6 @@
     var BindCommandEditAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
-        require("./object-implement"); // _implements() : 폴리필
-         
         util                    = require("./utils");
         IBindModelCreate        = require("./i-bind-model-create");
         BindModelAjax           = require("./bind-model-ajax");
@@ -59,7 +57,7 @@
                 this.loadAttr();
             }
 
-            /** @interface IBindModelCreate 인터페이스 선언 */
+            /** @implements IBindModelCreate 인터페이스 구현 */
             this._implements(IBindModelCreate);
         }
         util.inherits(BindModelCreateAjax, _super);

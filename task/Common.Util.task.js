@@ -19,6 +19,7 @@
     var util
 
     if (typeof module === "object" && typeof module.exports === "object") {     
+        require("../src/object-implement"); // _implements() : 폴리필
         util                = require("../src/utils");
     } else {
         util                = global._W.Common.Util;
@@ -28,7 +29,7 @@
     // 3. 테스트 본문
     function run() {
     
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Util.inherits(super, target) :: 상속 ");
         var Super  = (function (_super) {
             function Super(p_name) {
@@ -57,7 +58,7 @@
             errorCount++;
         }
         
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Util.getArrayLevel(elem, deps) :: 배열 깊이  (첫번째 배열 깊이만 검사함) ");
         var arr = [1,2];
         var arr2 = [
@@ -86,7 +87,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Util.createGUID() :: GUID 생성 ");
         var guid = util.createGUID();
         if (guid.length === 36 &&
@@ -98,16 +99,16 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Util.validSelector(obj.string) :: 셀렉터 유무 검사 ");
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Util.validSelector(obj.array<string>) :: 셀렉터 유무 검사 ");
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Util.validSelector(string) :: 셀렉터 유무 검사 ");
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Util.validSelector(array<string>) :: 셀렉터 유무 검사 ");
 
 

@@ -22,6 +22,7 @@
     var EntityTable;
     
     if (typeof module === "object" && typeof module.exports === "object") {     
+        require("../src/object-implement"); // _implements() : 폴리필
         Row                     = require("../src/entity-row").Row;
         Item                    = require("../src/entity-item").Item;
         EntityView              = require("../src/entity-view").EntityView;
@@ -36,7 +37,7 @@
     // 3. 테스트 본문
     function run() {
     
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("ItemTableCollection.add(name) :: 아이템 추가 (name) ");
         var table = new EntityTable("T1");
         table.items.add("i1");
@@ -48,7 +49,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("ItemTableCollection.add(item) :: 아이템 추가 (item) ");
         var table = new EntityTable("T1");
         table.items.add(new Item("i1"));
@@ -70,7 +71,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("ItemTableCollection.addValue(name, value) :: 속성명 + 값 추가 (name) ");
         var table = new EntityTable("T1");
         table.items.addValue("i1", "V1");
@@ -85,7 +86,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("new ItemViewCollection(onwer) :: 독립형 생성 ");
         console.log("ItemViewCollection.add(name, ?baseCollection) :: 독립 아이템추가, 기본컬렉션 지정 ");
         var view = new EntityView("T1");        // 독립형 생성
@@ -116,7 +117,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("new ItemViewCollection(onwer, baseCollection) :: 참조형 생성 ");
         console.log("ItemViewCollection.add(name, ?baseCollection) :: 독립 아이템추가, 기본컬렉션 지정 ");
         console.log("ItemViewCollection.addValue(name, value) :: 속성명 + 값 추가 (name) ");
@@ -157,7 +158,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("ItemViewCollection.addEntity(entity) :: 엔티티 전체 추가 ");
         var view = new EntityView("T1");
         view.items.addValue("i1", "V1");

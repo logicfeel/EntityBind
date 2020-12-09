@@ -46,19 +46,19 @@ e.onExecute = function() {console.log(" onExecute()~~"); };
 var event2 = function() {console.log(" onExecute2()~~"); };
 e.onExecuted = event2;
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("이벤트 발생");
 e._onExecute(); // 발생
 e._onExecuted(); // 발생
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("지정이벤트의 지정 함수 해지후 이벤트 발생");
 e.__event.unsubscribe('execute');               // 작동안함 : 맞는것임
 e.__event.unsubscribe(event2, 'executed');      // 지정 이벤트만 제거
 e._onExecute(); // 발생
 e._onExecuted(); // 발생
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("지정이벤트의 모든 함수 제거후  이벤트 발생");
 e.onExecuted = event2;                          // 테스트를 위해 재등록
 e.__event.unsubscribeAll("executed");
@@ -66,7 +66,7 @@ e._onExecute(); // 발생
 e._onExecuted(); // 발생
 
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("전체이벤트 해지후 이벤트 발생");
 e.onExecuted = event2;                  // 테스트를 위해 재등록
 e.__event.unsubscribeAll();
@@ -74,7 +74,7 @@ e._onExecute(); // 발생
 e._onExecuted(); // 발생
 
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("멀티모드(기본)");
 
 var event22 = function() {console.log(" onExecute22()~~"); };

@@ -18,6 +18,7 @@
     var Observer;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
+        require("../src/object-implement"); // _implements() : 폴리필
         Observer                 = require("../src/observer");
     } else {
         Observer                 = global._W.Common.Observer;
@@ -88,7 +89,7 @@
             result.push("onClear");  // Result 등록
         };
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Observer.onLoad, _onLoad() :: 속성과 메소드 추가로 이벤트  커스텀, 익명함수");
         result = [];
         var e = new EventTest();
@@ -104,7 +105,7 @@
             errorCount++;
         }
         
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Observer.onLoad, _onLoad() :: 속성과 메소드 추가로 이벤트  커스텀, 지정함수");
         result = [];
         var e = new EventTest();
@@ -117,7 +118,7 @@
             errorCount++;
         }
         
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Observer.subscribe(fn, 'code') :: 지역(code) 등록");
         result = [];
         var e = new EventTest();
@@ -130,7 +131,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Observer.subscribe(fn) :: 전역 구독");
         result = [];
         var e = new EventTest();
@@ -143,7 +144,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Observer.unsubscribe(fn, 'code') :: 지역(code) 해지");
         result = [];
         var e = new EventTest();
@@ -157,7 +158,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Observer.unsubscribe(fn) :: 전역 구독 해지");
         result = [];
         var e = new EventTest();
@@ -171,7 +172,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Observer.unsubscribeAll() :: 전역, 지역(code) 전체 해지");
         result = [];
         var e = new EventTest();
@@ -187,7 +188,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Observer.unsubscribeAll('code') :: 지역(code) 전체 해지");
         result = [];
         var e = new EventTest();
@@ -202,7 +203,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Observer.isMultiMode = false :: 싱글 구독 모드");
         result = [];
         var e = new EventTest();
@@ -217,7 +218,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("_onParam(p1, p2) => Observer.publish(p1, p2) :: 시점에 파라메터 처리 ");
         result = [];
         var e = new EventTest();
@@ -238,10 +239,10 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("TODO:: Observer.isDebug 필요성 여부");
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("TODO:: Observer.propagation = false :: 이벤트 전파 금지??");
         
 

@@ -55,6 +55,7 @@
                 type: "POST",       // 전송 방법 : GET, POST
                 dataType: "json",   //
                 async: true,        // [*]비동기(ture), 동기(false)
+                crossDomain: false, // 크로스 도메인
                 success: null,      // 성공 콜백
                 error: null,        // 실패 콜백
                 complete: null      // 완료 콜백
@@ -116,7 +117,7 @@
             {
                 get: function() { return __cbValid; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbValid] type 'Function' can be added");
+                    if (typeof newValue !== "function") throw new Error("Only [cbValid] type 'Function' can be added");
                     __cbValid = newValue;
                 },
                 configurable: true,
@@ -128,7 +129,7 @@
             {
                 get: function() { return __cbBind; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbBind] type 'Function' can be added");
+                    if (typeof newValue !== "function") throw new Error("Only [cbBind] type 'Function' can be added");
                     __cbBind = newValue;
                 },
                 configurable: true,
@@ -140,7 +141,7 @@
             {
                 get: function() { return __cbEnd; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbEnd] type 'Function' can be added");
+                    if (typeof newValue !== "function") throw new Error("Only [cbEnd] type 'Function' can be added");
                     __cbEnd = newValue;
                 },
                 configurable: true,
@@ -149,8 +150,6 @@
         }
         util.inherits(BindCommandAjax, _super);
 
-
-
         /** @virtual */
         BindCommandAjax.prototype._execValid = function() {
             
@@ -158,9 +157,9 @@
             var value = null;
 
             // 콜백 검사
-            if (!this.cbValid()) {
+            if (!this.cbValid(this.valid)) {
                 this._model.cbFail("cbValid() => false 리턴 ");
-                this._onExecuted();     // "실행 종료" 이벤트 발생
+                this._onExecuted(this);     // "실행 종료" 이벤트 발생
                 return false;
             } else {
                 // 아이템 검사
@@ -169,8 +168,8 @@
                     value = this.valid.items[i].value === null ? this.valid.items[i].default : this.valid.items[i].value;
                     // null 검사를 모두 수행 : option 2
                     if (!(this.valid.items[i].valid(value, result, 2))) {
-                        this._model.cbFail(result.msg, result.code);
-                        this._onExecuted();     // "실행 종료" 이벤트 발생
+                        this._model.cbFail(result.value, result.msg, result.code);
+                        this._onExecuted(this);     // "실행 종료" 이벤트 발생
                         return false;
                     }
                 }
@@ -206,7 +205,6 @@
             }
             
             this.cbBind(ajaxSetup);
-
             this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
 
@@ -219,9 +217,9 @@
             var result = typeof p_result === "object" ? p_result : JSON.parse(JSON.stringify(p_result));
             
             // 처리 종료 콜백 호출
-            if (typeof this.cbEnd === "function" ) this.cbEnd(result);
+            if (typeof this.cbEnd === "function" ) this.cbEnd(result, p_status, p_xhr);
             
-            this._onExecuted();  // "실행 종료" 이벤트 발생
+            this._onExecuted(this);  // "실행 종료" 이벤트 발생
         };
 
         /**
@@ -236,7 +234,7 @@
             var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;
 
             this._model.cbError(msg, p_status);
-            this._onExecuted();     // "실행 종료" 이벤트 발생
+            this._onExecuted(this);     // "실행 종료" 이벤트 발생
         };
 
         /**
@@ -248,9 +246,6 @@
             
             var option = {};
             var result;
-            
-            var msg;
-            var code;
 
             // request VS Jquery.ajax 와 콜백 어뎁터 연결 함수
             function callback(error, response, body) {
@@ -274,18 +269,15 @@
             }
 
             if (ajax && typeof ajax === "function") {
-                // try {
-                //     ajax(p_ajaxSetup);
-                // } catch (e) {
-                //     p_ajaxSetup.error();
-                // }
+
+                // REVIEW:: Jquery.ajax 사용
                 ajax(p_ajaxSetup);
+
             } else {
+
                 option.uri = p_ajaxSetup.url;
-                // option.json = true // json 으로 JSON 으로 요청함
-                
-                // 동기화 처리
-                if (p_ajaxSetup.async === false) request = sync_request;
+
+                if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리
 
                 if (p_ajaxSetup.type === "GET") {
                     option.method = "POST";
@@ -314,7 +306,7 @@
          * @method 
          */
         BindCommandAjax.prototype.execute = function() {
-            this._onExecute();  // "실행 시작" 이벤트 발생
+            this._onExecute(this);  // "실행 시작" 이벤트 발생
             if (this._execValid()) this._execBind();
         };
         

@@ -17,7 +17,7 @@ var t = new EntityTable("second");
 
 //===============================================
 // 테스크 1
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("e.read.add(new Item('ITEM1'));");
 e.read.add(new Item("ITEM1"));  // 전체추가
 // e.first["ITEM1"].refValue = "11";
@@ -27,7 +27,7 @@ console.log("e.read.bind.items.count        1 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       1 ==> " + e.read.valid.items.count);
 console.log("e.read._output[0].items.count  1 ==> " + e.read._output[0].items.count);
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("e.read.view.item.add(new Item('ITEM2'));");
 e.read._output[0].items.add(new Item("ITEM2"));  // view 추가
 console.log("e.first.items.count            2 ==> " + e.first.items.count);
@@ -35,7 +35,7 @@ console.log("e.read.bind.items.count        1 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       1 ==> " + e.read.valid.items.count);
 console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("e.read.valid.add(e.first.items['ITEM2']);");
 e.read.valid.items.add(e.first.items["ITEM2"]);  // valid 참조 추가
 console.log("e.first.items.count            2 ==> " + e.first.items.count);
@@ -43,7 +43,7 @@ console.log("e.read.bind.items.count        1 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       2 ==> " + e.read.valid.items.count);
 console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("e.read.valid.add(e.first.items['ITEM2']);");
 e.read.bind.items.add(new Item("ITEM2"));  // bind 참조 추가
 console.log("e.first.items.count            2 ==> " + e.first.items.count);
@@ -51,7 +51,7 @@ console.log("e.read.bind.items.count        2 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       2 ==> " + e.read.valid.items.count);
 console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("e.first.items.add(new Item('ITEM3'));");
 e.first.items.add(new Item("ITEM3"));  // 엔티티에 추가
 console.log("e.first.items.count            3 ==> " + e.first.items.count);
@@ -59,7 +59,7 @@ console.log("e.read.bind.items.count        2 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       2 ==> " + e.read.valid.items.count);
 console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("e.first.items.add(new Item('ITEM3')); //  중복 발생");
 e.first.items.add(new Item("ITEM3"));  // 엔티티에 추가 (중복)
 console.log("e.first.items.count            3 ==> " + e.first.items.count);
@@ -67,7 +67,7 @@ console.log("e.read.bind.items.count        2 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       2 ==> " + e.read.valid.items.count);
 console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("e.read.valid.add(e.first.items['ITEM2']); // 중복 발생");
 e.read.bind.items.add(new Item("ITEM2"));  // bind 참조 추가 (중복)
 console.log("e.first.items.count            3 ==> " + e.first.items.count);
@@ -75,7 +75,7 @@ console.log("e.read.bind.items.count        2 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       2 ==> " + e.read.valid.items.count);
 console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("new Item('ITEM4'),['bind', 'valid']);");
 e.read.add(new Item("ITEM4"),["bind", "valid"]);  // 지정 명칭에 등록
 console.log("e.first.items.count            4 ==> " + e.first.items.count);
@@ -83,7 +83,7 @@ console.log("e.read.bind.items.count        3 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       3 ==> " + e.read.valid.items.count);
 console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("new Item('ITEM4'),['bind', 'valid']);  // 중복 발생");
 e.read.add(new Item("ITEM4"),["bind", "valid"]);  // 지정 명칭에 등록 (중복)
 console.log("e.first.items.count            4 ==> " + e.first.items.count);
@@ -91,7 +91,7 @@ console.log("e.read.bind.items.count        3 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       3 ==> " + e.read.valid.items.count);
 console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("new Item('ITEM4'),['bbb', 'xxx']);     // 오류 발생");
 e.read.add(new Item("ITEM4"),["bbb", "xxx"]);  // 지정명칭 :: 오류발생
 console.log("e.first.items.count            4 ==> " + e.first.items.count);
@@ -99,7 +99,7 @@ console.log("e.read.bind.items.count        3 ==> " + e.read.bind.items.count);
 console.log("e.read.valid.items.count       3 ==> " + e.read.valid.items.count);
 console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("e.read.bind.items.add(new Item('ITEM5'));");
 e.read.bind.items.add(new Item("ITEM5"));  // 엔티티에 추가
 console.log("e.first.items.count            5 ==> " + e.first.items.count);
@@ -108,7 +108,7 @@ console.log("e.read.valid.items.count       3 ==> " + e.read.valid.items.count);
 console.log("e.read._output[0].items.count  2 ==> " + e.read._output[0].items.count);
 console.log("e.read.view.items.count        2 ==> " + e.read.view.items.count);
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("참조 추가 전");
 console.log("e.first.items.count            5 ==> " + e.first.items.count);
 console.log("e.read.bind.items.count        4 ==> " + e.read.bind.items.count);
@@ -133,7 +133,7 @@ console.log("e.read.bind._refEntity.length  2 ==> " + e.read.bind._refEntity.len
 
 // 중복의 경우 ?? 같은 흐름일단 확인 불필요...할듯..
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("이벤트");
 e.onExecute = function() {console.log("공통 이벤트 시작 ~~");}
 e.onExecuted = function() {console.log("공통 이벤트 종료 ~~");}
@@ -141,7 +141,7 @@ e.onExecuted = function() {console.log("공통 이벤트 종료 ~~");}
 e.read.onExecute = function() {console.log("raed 이벤트 시작 ~~");}
 e.read.onExecuted = function() {console.log("read 이벤트 종료 ~~");}
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 
 e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";
 // e.g_url = "./view.json";

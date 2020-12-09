@@ -42,12 +42,12 @@
         function IControlCollection() {
             _super.call(this);
 
-            /** @implements */
+            /** @implements IGroupControl 인터페이스 구현 */
+            /** @implements IAllControl 인터페이스 구현 */
             this._implements(IGroupControl, IAllControl);            
         }
         util.inherits(IControlCollection, _super);        
     
-        
         /**
          * 병합, 합침
          */

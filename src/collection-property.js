@@ -52,15 +52,15 @@
                 enumerable: true
             });
 
-            /** @interface IPropertyCollection 인터페이스 선언 */
+            /** @implements IPropertyCollection 인터페이스 구현 */
             this._implements(IPropertyCollection);            
         }
-        util.inherits(PropertyCollection, _super);     // 상속(대상, 부모)    
+        util.inherits(PropertyCollection, _super);
 
         /**
          * @method __remove 배열속성 삭제 (내부처리)
          * @param {*} p_name 속성명
-         * @returns {Number} 삭제한 인덱스
+         * @returns {number} 삭제한 인덱스
          */
         PropertyCollection.prototype._remove = function(p_idx) {
             
@@ -90,7 +90,7 @@
 
         /**
          * @method add 배열속성 설정 및 속성값 등록
-         * @param {String} p_name [필수] 속성명
+         * @param {string} p_name [필수] 속성명
          * @param {?any} p_value 속성값
          * @returns {any} 입력 속성 참조값 REVIEW:: 필요성 검토
          */
@@ -165,8 +165,8 @@
 
         /**
          * @method propertyOf 배열속성 이름 찾기
-         * @param {Number} p_idx 인덱스
-         * @returns {String}
+         * @param {number} p_idx 인덱스
+         * @returns {string}
          */
         PropertyCollection.prototype.propertyOf = function(p_idx) {
             return this.properties[p_idx];

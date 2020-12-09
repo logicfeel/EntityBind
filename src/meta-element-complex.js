@@ -17,8 +17,6 @@
     var IPropertyCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        require("./object-implement"); // _implements() : 폴리필
-
         util                    = require("./utils");
         MetaElement             = require("./meta-element");
         IPropertyCollection     = require("./i-collection-property");
@@ -62,9 +60,7 @@
                 enumerable: true
             });
 
-             /**
-             * @interface IProperyCollection 인터페이스 선언
-             */
+            /** @implements IPropertyCollection 인터페이스 선언 */
             this._implements(IPropertyCollection);                
         }
         util.inherits(ComplexElement, _super);

@@ -56,28 +56,6 @@
             return _super.prototype.add.call(this, p_name, p_value);
         };
         
-        /**
-         * EntityTable 타입만 들어가게 제약조건 추가
-         * @override
-         */
-        // PropertyObjectCollection.prototype._getPropDescriptor = function(p_idx) {
-        //     return {
-        //         get: function() { return this._element[p_idx]; },
-        //         set: function(newValue) { 
-        //             if (newValue instanceof Object) {
-        //                 this._element[p_idx] = newValue;
-        //             } else {
-        //                 throw new Error("Only [Object] type instances can be added");
-        //             }
-        //         },
-        //         enumerable: true,
-        //         configurable: true
-        //     };
-        // };
-
-
-        // TODO::
-        
         return PropertyObjectCollection;
     
     }(PropertyCollection));

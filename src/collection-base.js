@@ -16,8 +16,6 @@
     var Observer;    
 
     if (typeof module === "object" && typeof module.exports === "object") {
-        require("./object-implement"); // _implements() : 폴리필
-
         ICollection         = require("./i-collection");
         Observer            = require("./observer");
     } else {
@@ -72,7 +70,6 @@
                     return this._element;
                 }
             });
-
             /** @property */
             Object.defineProperty(this, "count", {
                 enumerable: true,
@@ -81,7 +78,6 @@
                     return this._element.length;
                 }
             });
-            
             /** @event */
             Object.defineProperty(this, "onAdd", {
                 enumerable: true,
@@ -90,7 +86,6 @@
                     this.__event.subscribe(p_fn, "add");
                 }
             });
-
             /** @event */
             Object.defineProperty(this, "onRemove", {
                 enumerable: true,
@@ -99,7 +94,6 @@
                     this.__event.subscribe(p_fn, "remove");
                 }
             });
-
             /** @event */
             Object.defineProperty(this, "onClear", {
                 enumerable: true,
@@ -108,7 +102,6 @@
                     this.__event.subscribe(p_fn, "clear");
                 }
             });
-
             /** @event */
             Object.defineProperty(this, "onChanging", {
                 enumerable: true,
@@ -117,7 +110,6 @@
                     this.__event.subscribe(p_fn, "changing");
                 }
             });
-
             /** @event */
             Object.defineProperty(this, "onChanged", {
                 enumerable: true,
@@ -127,16 +119,13 @@
                 }
             });
 
-            /**
-             * 인터페이스 선언
-             * @interface
-             */
-            this._implements(ICollection);
+            /** @implements ICollection 인터페이스 구현 */
+             this._implements(ICollection);
         }
     
         /**
          * @method private 프로퍼티 기술자 설정
-         * @param {Number} p_idx 인덱스
+         * @param {number} p_idx 인덱스
          */
         BaseCollection.prototype._getPropDescriptor = function(p_idx) {
             return {
@@ -146,7 +135,7 @@
                     var typeName;
 
                     if (this.elementType !== null && !(newValue instanceof this.elementType)) {
-                        // typeName = this.elementType.constructor.name;
+                        // typeName = this.elementType.constructor.name; // REVIEW::
                         typeName = this.elementType.name || this.elementType.constructor.name;
                         throw new Error("Only [" + typeName + "] type instances can be added");
                     }
@@ -200,7 +189,7 @@
         /**
          * @method remove 배열속성 삭제
          * @param {element} p_elem 속성명
-         * @returns {Number} 삭제한 인덱스
+         * @returns {number} 삭제한 인덱스
          */
         BaseCollection.prototype.remove = function(p_elem) {
             
@@ -237,8 +226,8 @@
 
         /**
          * @method contains 배열속성 여부 
-         * @param {Object} p_elem 속성 객체
-         * @returns {Boolean}
+         * @param {object} p_elem 속성 객체
+         * @returns {boolean}
          */
         BaseCollection.prototype.contains = function(p_elem) {
             return this._element.indexOf(p_elem) > -1;

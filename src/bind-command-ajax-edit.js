@@ -15,22 +15,13 @@
     // 2. 모듈 가져오기 (node | web)
     var util;
     var BindCommandAjax;
-    var EntityView;
-    var request;
-    var jquery;
-    var ajax;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BindCommandAjax     = require("./bind-command-ajax");
-        EntityView          = require("./entity-view").EntityView;
-        request             = require("request");
     } else {
         util                = global._W.Common.Util;
         BindCommandAjax     = global._W.Meta.Bind.BindCommandAjax;
-        EntityView          = global._W.Meta.Entity.EntityView;
-        jquery              = global.jQuery || global.$;     // jquery 로딩 REVIEW:: 로딩 확인
-        ajax                = jquery.ajax;
     }
 
     //==============================================================

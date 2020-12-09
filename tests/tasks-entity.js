@@ -28,7 +28,7 @@ var e_m = new EntityTable();
 //===============================================
 // 테스크 1
 // load 테스트
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("일반 load(option=1)");
 i_s.load(obj_i_s);
 console.log("i_s.itmes.count   1       ==> " + i_s.items.count);
@@ -50,7 +50,7 @@ console.log("e_s.itmes.count   3       ==> " + e_s.items.count);
 // e_m.load(obj_e_m);
 // console.log("   오류    ==> " + e_m.items.count);
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("일반 load(option=2)");
 i_s.load(obj_i_s, 2);
 console.log("i_s.itmes.count   1       ==> " + i_s.items.count);
@@ -69,7 +69,7 @@ console.log("r_m.rows.count    4       ==> " + r_m.rows.count);
 e_s.load(obj_e_s, 2);
 console.log("e_s.itmes.count   3       ==> " + e_s.items.count);
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("병합 load");
 console.log("전 .itmes.count   1      ==> " + i_s.items.count);
 i_s.load(obj_i_m);
@@ -77,7 +77,7 @@ console.log("후 .itmes.count   3      ==> " + i_s.items.count);
 console.log(i_s.items.list);
 
 
-console.log("-----------------------------------------------------------------");
+console.log("---------------------------------------------------------------------------");
 console.log("병합 load (option = 2) ");
 console.log("admid, passwd, create_dt");
 console.log("전");

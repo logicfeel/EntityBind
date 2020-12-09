@@ -23,14 +23,14 @@
         }
     
         /**
-         * 복제 : 전체
+         * 병합 : 그룹
          */
         IGroupControl.prototype.merge  = function() {
             throw new Error("[ merge() ] Abstract method definition, fail...");
         };
 
         /**
-         * 로드 : 전체
+         * 복사 : 그룹
          */
         IGroupControl.prototype.copy  = function() {
             throw new Error("[ copyTo() ] Abstract method definition, fail...");

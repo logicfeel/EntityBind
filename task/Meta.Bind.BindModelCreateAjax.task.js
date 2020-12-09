@@ -27,6 +27,7 @@
     var BindCommandEditAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {  
+        require("../src/object-implement"); // _implements() : 폴리필
         util                    = require("../src/utils");
         Row                     = require("../src/entity-row").Row;
         Item                    = require("../src/entity-item").Item;
@@ -101,7 +102,7 @@
         util.inherits(CreateDI, IBindModelCreate);
 
         if (isCallback) {
-            console.log("-----------------------------------------------------------------");
+            console.log("---------------------------------------------------------------------------");
             console.log("BaseBind.onExecute         :: 바인드 명령 실행[execute()] 실행 전 (공통처리의 관점) ");
             console.log("BaseBind.onExecuted        :: 바인드 명령 실행execute() 실행 후 (공통처리의 관점) ");
             console.log("BindModel.cbFail           :: 검사 실패 발생시 실행 ");
@@ -123,7 +124,7 @@
             };
             model.onExecuted = function() {
                 this.result.push("onExecuted");
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("onExecute, onExecuted  :: 콜백 ");
                 if (this.result[0] === "onExecute" && 
                     this.result[1] === "onExecuted" && 
@@ -139,7 +140,7 @@
         }
 
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.init() ");
         console.log("BindModel.cbRegister :: 등록 ");
         console.log("BindModel.cbValid :: 검사 ");
@@ -168,7 +169,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.cbFail           :: 실패 발생시 실행 (검사) ");
         var model = new BindModelCreateAjax();
         model.result = [];
@@ -191,7 +192,7 @@
         }
 
         if (isCallback) {
-            console.log("-----------------------------------------------------------------");
+            console.log("---------------------------------------------------------------------------");
             console.log("BindModel.cbError          :: 오류 발생시 실행 ");
             var model = new BindModelCreateAjax();
             model.result = [];
@@ -205,7 +206,7 @@
                 this.result.push("cbError");
             };
             model.onExecuted = function() {
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("BindModel.cbError      :: 콜백 ");
                 if (this.result[0] === "cbError" && 
                     this.result.length === 1 && 
@@ -225,7 +226,7 @@
             // model.create.execute();
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.add(item) :: 전체 cmd에 아이템 등록 (cmd 사용자 추가후) ");
         var model = new BindModelCreateAjax();
         model.create2 = new BindCommandEditAjax(model, model._baseEntity);
@@ -255,7 +256,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.add(item, cmd) :: cmd 전체에 아이템 등록 ");
         var model = new BindModelCreateAjax();
         model.create2 = new BindCommandEditAjax(model, model._baseEntity);
@@ -280,7 +281,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.add(item, cmds) :: cmd 전체에 아이템 등록 ");
         var model = new BindModelCreateAjax();
         model.create2 = new BindCommandEditAjax(model, model._baseEntity);
@@ -313,7 +314,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.addItem(name, value) :: 아이템 생성 및 [전체] cmd에 추가 ");
         var model = new BindModelCreateAjax();
         model.create2 = new BindCommandEditAjax(model, model._baseEntity);
@@ -342,7 +343,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.addItem(name, value, cmd) :: 아이템 생성 및 [특정] cmd에 추가 ");
         var model = new BindModelCreateAjax();
         model.create2 = new BindCommandEditAjax(model, model._baseEntity);
@@ -366,7 +367,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.addItem(name, value, cmds) :: 아이템 생성 및 [특정목록] cmd에 추가 ");
         var model = new BindModelCreateAjax();
         model.create2 = new BindCommandEditAjax(model, model._baseEntity);
@@ -398,7 +399,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.addEntity(name) :: 모델에 엔티티 등록 ");
         var model = new BindModelCreateAjax();
         model.addEntity("second");
@@ -424,7 +425,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.loadAttr() :: attr에 [모든] 속성을 first에 등록 ");
         var model = new BindModelCreateAjax();
         model.attr.add("i1", "V1");
@@ -448,7 +449,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.loadAttr(attrs) :: attr에 [특정] 속성을  [first] 엔티티에 등록 ");
         var model = new BindModelCreateAjax();
         model.attr.add("i1", "V1");
@@ -470,7 +471,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.loadAttr(attrs, entity) :: attr에 [특정] 속성을  [특정] 엔티티에 등록 ");
         var model = new BindModelCreateAjax();
         model.addEntity("second");
@@ -495,7 +496,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModelAjax.baseAjaxSetup :: 설명 ");
         console.log("BindModelAjax.baseUrl :: 설명 ");
         var model = new BindModelCreateAjax();
@@ -508,7 +509,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("new BindModelCreateAjax(di) :: DI 주입 생성 ");
         var model = new BindModelCreateAjax(new CreateDI());
         if (model.attr.count === 3 &&
@@ -524,7 +525,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("new BindModelCreateAjax(di, isLoadAttr) :: DI 주입 생성 + 자동 로딩 ");
         var model = new BindModelCreateAjax(new CreateDI(), true);
         if (model.attr.count === 3 &&
@@ -543,7 +544,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("new BindModelCreateAjax(di, isLoadAttr, itemType) :: DI 주입 생성 + 자동 로딩 + 아이템 타입 지정 ");
         var model = new BindModelCreateAjax(new CreateDI(), true, ItemDOM);
         if (model.attr.count === 3 &&
@@ -561,7 +562,7 @@
             errorCount++;
         }
     
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModelCreateAjax.getTypes() :: 타입 조회(상속) ");
         var creator = new BindModelCreateAjax();
         var types = creator.getTypes();

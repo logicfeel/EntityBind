@@ -20,8 +20,6 @@
     var BindCommandLookupAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
-        require("./object-implement"); // _implements() : 폴리필
-        
         util                    = require("./utils");
         IBindModelListDel       = require("./i-bind-model-list");
         BindModelAjax           = require("./bind-model-ajax");
@@ -63,7 +61,7 @@
                 this.loadAttr();
             }
 
-            /** @interface IBindModel 인터페이스 선언 */
+            /** @implements IBindModelListDel 인터페이스 구현 */
             this._implements(IBindModelListDel);
         }
         util.inherits(BindModelListDelAjax, _super);

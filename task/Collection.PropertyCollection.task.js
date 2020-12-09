@@ -19,6 +19,7 @@
     var PropertyCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
+        require("../src/object-implement"); // _implements() : 폴리필
         util                = require("../src/utils");
         PropertyCollection  = require("../src/collection-property");
     } else {
@@ -41,7 +42,7 @@
             this.items = new TestCollection(this);
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("PropertyCollection.add(name, ?value) :: 추가");
         var table = new TestTable();
         table.items.add("a1");
@@ -55,7 +56,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("PropertyCollection.remove(elem) :: 삭제");
         var table = new TestTable();
         table.items.add("a1", "A1");
@@ -68,7 +69,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("PropertyCollection.removeAt(idx) :: 삭제 (중간) ");
         var table = new TestTable();
         table.items.add("a1", "A1");
@@ -87,7 +88,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("PropertyCollection.removeAt(idx) :: 삭제 (처음) ");
         var table = new TestTable();
         table.items.add("a1", "A1"); // 삭제위치
@@ -103,7 +104,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("PropertyCollection.removeAt(idx) :: 삭제 (끝) ");
         var table = new TestTable();
         table.items.add("a1", "A1");
@@ -122,7 +123,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("PropertyCollection.clear() :: 전체삭제(초기화) ");
         var table = new TestTable();
         table.items.add("a1", "A1");
@@ -139,7 +140,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("PropertyCollection.contains(elem) :: 유무 검사 ");
         var table = new TestTable();
         table.items.add("a1", "A1");
@@ -154,7 +155,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("PropertyCollection.indexOf(elem) :: idx 조회 ");
         var table = new TestTable();
         table.items.add("a1", "A1");
@@ -169,7 +170,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("PropertyCollection.indexOfName(name) :: idx 조회 ");
         var table = new TestTable();
         table.items.add("a1", "A1");
@@ -184,7 +185,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("PropertyCollection.propertyOf(idx) :: prop 조회 ");
         var table = new TestTable();
         table.items.add("a1", "A1");
@@ -199,7 +200,7 @@
             errorCount++;
         }
         
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BaseCollection.elementType = function :: 값타입 설정 ");
         var table = new TestTable();
         table.items.elementType = String;  // 타입

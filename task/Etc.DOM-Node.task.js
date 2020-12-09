@@ -18,6 +18,7 @@
     var Observer;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
+        require("../src/object-implement"); // _implements() : 폴리필
         Observer                 = require("../src/observer");
     } else {
         Observer                 = global._W.Common.Observer;
@@ -69,7 +70,7 @@
         result = [];
         var e = new EventTest();
         e.onParam = function(p1, p2) { 
-            console.log("-----------------------------------------------------------------");
+            console.log("---------------------------------------------------------------------------");
             console.log("call onParam(p1='%s', p2='%s') ", p1, p2);
             result.push(p1);  // Result 등록
             result.push(p2);  // Result 등록

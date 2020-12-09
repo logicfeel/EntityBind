@@ -20,8 +20,6 @@
     var BindCommandEditAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {
-        require("./object-implement"); // _implements() : 폴리필
-
         util                    = require("./utils");
         IBindModelEdit          = require("./i-bind-model-edit");
         BindModelAjax           = require("./bind-model-ajax");
@@ -64,7 +62,7 @@
                 this.loadAttr();
             }
 
-            /** @interface IBindModel 인터페이스 선언 */
+            /** @implements IBindModelEdit 인터페이스 구현 */
             this._implements(IBindModelEdit);              
 
         }

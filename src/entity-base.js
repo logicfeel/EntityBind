@@ -23,8 +23,6 @@
     var ItemCollection;
     
     if (typeof module === "object" && typeof module.exports === "object") {     
-        require("./object-implement"); // _implements() : 폴리필
-        
         util                    = require("./utils");
         MetaElement             = require("./meta-element");
         IGroupControl           = require("./i-control-group");
@@ -89,9 +87,8 @@
                 enumerable: true
             });
 
-             /**
-             * @interface IProperyCollection 인터페이스 선언
-             */
+            /** @implements IGroupControlI 인터페이스 구현 */
+            /** @implements IAllControl 인터페이스 구현 */
             this._implements(IGroupControl, IAllControl);                
         }
         util.inherits(Entity, _super);
@@ -139,11 +136,11 @@
             if (typeof entity === "undefined") throw new Error("Only [p_object] type 'entity | table' can be added");
             
 
-            // itmes, rows 배열로 구조 변경
+            // 1.itmes, rows 배열로 구조 변경
             if (!Array.isArray(entity.items)) entity.items = [entity.items];
             if (!Array.isArray(entity.rows)) entity.rows = [entity.rows];
 
-            // 병합
+            // 2.병합
             if (p_option === 1) {
                 // Item 기준으로 아이템 가져오기
                 if (entity.items && entity.items[0]) {
@@ -167,7 +164,7 @@
                 }
             }
             
-            // Row 데이터 가져오기
+            // 3.Row 데이터 가져오기
             if (this.items.count > 0 && entity.rows && entity.rows[0]) {
                 for(var i = 0; entity.rows.length > i; i++) {
                     
@@ -181,7 +178,7 @@
                 }
             } 
             
-            // 빈 Row 채우기
+            // 4.빈 Row 채우기
             for (var i = 0 ; i < this.rows.count; i++) {
                 for (var ii = 0; ii < this.items.count; ii++) {
                     itemName = this.items[ii].name;
@@ -199,7 +196,7 @@
             var row;
             var itemName;
 
-            // 병합
+            // 1.병합
             if (p_option === 1) {
                 // Item 기준으로 아이템 가져오기
                 for(var i = 0; entity.items.count > i; i++) {
@@ -208,7 +205,7 @@
                 }
             }
             
-            // Row 데이터 가져오기
+            // 2.Row 데이터 가져오기
             for(var i = 0; entity.rows.count > i; i++) {
                 
                 row = this.newRow();
@@ -227,6 +224,7 @@
                 this.rows.add(row);
             }
 
+            // 4.빈 Row 채우기
             if (p_option === 1) this.__fillRow(entity);
         };
 
@@ -286,18 +284,30 @@
             var obj, f;
             var filterItem;
             
-
-            // 자신의 생성자로 생성
-            // REVIEW:: 이후에 복제로 변경 검토
+            // REVIEW:: 이후에 복제로 변경 검토, 자신의 생성자로 생성
             var entity = new this.constructor(this.name);   
             var idx;
 
-            // 제외 아이템 조회
+            /** @inner row 항목을 재구성하여 생성 (내부 함수) */
+            function __createRow(rowIdx, orgEntity) {
+
+                var row = entity.newRow();
+                var i_name;
+
+                for (var i = 0; entity.items.count > i ; i++) {
+                    i_name = entity.items[i].name;
+                    if (typeof row[i_name] !== "undefined" && typeof orgEntity.rows[rowIdx][i_name] !== "undefined") {
+                        row[i_name] = orgEntity.rows[rowIdx][i_name];
+                    }
+                }
+                return row;
+            }
+
+            // 1.제외 아이템 조회
             if (p_filter && p_filter[EXECEPT]) {
                 if (Array.isArray(p_filter[EXECEPT])) excepts = p_filter[EXECEPT];
                 else if (typeof p_filter[EXECEPT] === "string") excepts.push(p_filter[EXECEPT]);
             } 
-
             for (var i = 0; this.items.count > i; i++) {
                 if (excepts.indexOf(this.items[i].name) < 0)  {
                     
@@ -317,32 +327,15 @@
                 }
             }
 
+            // 2.정렬
             list.sort(function(a, b) { return a.order - b.order; });
 
-            // 리턴 Entity 의 Item 구성 : 참조형
+            // 3.리턴 Entity 의 Item 구성 : 참조형
             for(var i = 0; i < list.length; i++) {
                 entity.items.add(list[i]);
             }
             
-            /**
-             * row 항목을 재구성하여 생성 (내부 함수)
-             * @param {*} rowIdx 
-             */
-            function __createRow(rowIdx, orgEntity) {
-
-                var row = entity.newRow();
-                var i_name;
-
-                for (var i = 0; entity.items.count > i ; i++) {
-                    i_name = entity.items[i].name;
-                    if (typeof row[i_name] !== "undefined" && typeof orgEntity.rows[rowIdx][i_name] !== "undefined") {
-                        row[i_name] = orgEntity.rows[rowIdx][i_name];
-                    }
-                }
-                return row;
-            }
-
-            // 리턴 Entity 의 Row 구성 : 참조형
+            // 4.리턴 Entity 의 Row 구성 : 참조형
             if (typeof p_index === "number") {
                 for(var i = p_index; i < this.rows.count; i++) {
                     // entity.rows.add(this.rows[idx]);
@@ -368,7 +361,6 @@
             var entity = this.select(p_filter, p_index, p_end);
 
             return entity.clone();
-
         };
 
         /**
@@ -384,15 +376,13 @@
         Entity.prototype.merge  = function(p_target, p_option) {
             p_option = p_option || 1;    // 기본값
 
-            var cloneTarget;
             var row;
             var itemName;
-            // var rowMax;
 
-            // 유효성 검사
+            // 1.유효성 검사
             if (!(p_target instanceof Entity)) throw new Error("Only [p_target] type 'Entity' can be added");
 
-            // 병합 : Item 기준으로 아이템 가져오기
+            // 2.병합 : Item 기준으로 아이템 가져오기
             for(var i = 0; p_target.items.count > i; i++) {
                 itemName = p_target.items[i].name;
                 
@@ -406,12 +396,12 @@
                     this.items[itemName] = p_target.items[itemName];
                 }
             }
-
+            
+            // 3.Row 데이터 가져오기
             if (p_option !== 3) {
-                // Row 데이터 가져오기
                 for(var i = 0; p_target.rows.count > i; i++) {
-                    
-                    if (typeof this.rows[i] !== "undefined") {  // this.rows 있는 경우
+                    // this.rows 있는 경우
+                    if (typeof this.rows[i] !== "undefined") {  
                         row = this.rows[i];
                         for (var ii = 0; ii < p_target.items.count; ii++) {
                             itemName = p_target.items[ii].name;
@@ -421,30 +411,21 @@
                                 row[itemName] = p_target.rows[i][itemName];     
                             }
                         }
-                        
-                    } else {                                    // this.rows 없는 경우
+                    // this.rows 없는 경우
+                    } else {                                    
                         row = this.newRow();
                         for (var ii = 0; ii < p_target.items.count; ii++) {
                             itemName = p_target.items[ii].name;
-                            if (p_option === 2) {   // 덮어쓰기
-                                row[itemName] = p_target.rows[i][itemName];     
-                            }
+                            // 덮어쓰기
+                            if (p_option === 2) row[itemName] = p_target.rows[i][itemName];
                         }
                         this.rows.add(row);
                     }
                 }
             }
 
-            // 공백 채우기
+            // 4.공백 채우기
             this.__fillRow(p_target);
-            // for (var i = 0 ; i < this.rows.count; i++) {
-            //     for (var ii = 0; ii < p_target.items.count; ii++) {
-            //         itemName = p_target.items[ii].name;
-            //         if (typeof this.rows[i][itemName] === "undefined") {
-            //             this.rows[i].add(itemName, "");
-            //         }
-            //     }
-            // }
         };
         
         /**
@@ -457,7 +438,7 @@
          *          - 2: 존재하는 item 데이터만 가져오기
          */
         Entity.prototype.load  = function(p_object, p_option) {
-
+            
             if (p_object instanceof Entity) {
                 this.__loadEntity(p_object, p_option);
             } else {
@@ -467,6 +448,7 @@
         
         /** @method */
         Entity.prototype.clear  = function() {
+            
             this.items.clear();
             this.rows.clear();
         };

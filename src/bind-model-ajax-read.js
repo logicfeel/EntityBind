@@ -19,8 +19,6 @@
     var BindCommandLookupAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
-        require("./object-implement"); // _implements() : 폴리필
-         
         util                    = require("./utils");
         IBindModelRead          = require("./i-bind-model-read");
         BindModelAjax           = require("./bind-model-ajax");
@@ -39,7 +37,7 @@
     if (typeof BindModelAjax === "undefined") throw new Error("[BindModelAjax] module load fail...");
     if (typeof BindCommandLookupAjax === "undefined") throw new Error("[BindCommandLookupAjax] module load fail...");
 
-
+    
     //==============================================================
     // 4. 모듈 구현    
     var BindModelReadAjax  = (function (_super) {
@@ -59,7 +57,7 @@
                 this.loadAttr();
             }
 
-            /** @interface IBindModel 인터페이스 선언 */
+            /** @implements IBindModelRead 인터페이스 구현 */
             this._implements(IBindModelRead);              
         }
         util.inherits(BindModelReadAjax, _super);

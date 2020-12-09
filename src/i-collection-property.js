@@ -15,8 +15,6 @@
     var ICollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        require("./object-implement"); // _implements() : 폴리필
-
         util                = require("./utils");
         ICollection         = require("./i-collection");
     } else {
@@ -37,6 +35,9 @@
         }
         util.inherits(IPropertyCollection, _super);
 
+        /**
+         * 조회 : idx 로 이름 조회
+         */
         IPropertyCollection.prototype.propertyOf  = function() {
             throw new Error("[ propertyOf() ] Abstract method definition, fail...");
         };

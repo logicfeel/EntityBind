@@ -21,10 +21,11 @@ if ((typeof Object.prototype._implements === "undefined") ||
 
         //==============================================================
         // 4. 모듈 구현    
+
         /**
          * 인터페이스 객체 유무 검사
          * @function  
-         * @param {Function} p_imp 
+         * @param {function} p_imp 
          */
         var isImplementOf = function(p_imp) {
             for (var i = 0; i < this._interface.length; i++) {
@@ -38,9 +39,9 @@ if ((typeof Object.prototype._implements === "undefined") ||
          * 인터페이스(클래스) 등록
          * @protected
          * @function 
-         * @param {Function} arg 함수형 인터페이스 목록
+         * @param {function} args 함수형 인터페이스 목록
          */
-        var _implements = function _implements(arg) {
+        var _implements = function _implements(args) {
             this._interface = this._interface || [];
 
             var typeName;
@@ -122,10 +123,10 @@ if (typeof Array.isArray === "undefined") {
     }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 }
 /**
- * @namespace _W.Common.Util
- *      - inherits() : 상속
- *      - getArrayLevel() : 배열 깊이 얻기
- *      - createGUID() : GUID 생성
+ * @namespace _W.Common.Util.inherits : 상속
+ * @namespace _W.Common.Util.getArrayLevel : 배열 깊이 얻기
+ * @namespace _W.Common.Util.createGUID : GUID 생성
+ * @namespace _W.Common.Util.validSelector : 셀렉터의 유효성 검사
  */
 (function(global) {
 
@@ -139,15 +140,13 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {
-    } else {
-    }
 
     //==============================================================
     // 3. 의존성 검사
 
     //==============================================================
     // 4. 모듈 구현    
+
     /**
      * inherits(대상, 부모) : 상속
      */
@@ -201,7 +200,7 @@ if (typeof Array.isArray === "undefined") {
     };
     
     /**
-     * @function GUID 생성
+     * @function createGUID GUID 생성
      */
     var createGUID = function() {
         function _p8(s) {  
@@ -414,6 +413,7 @@ if (typeof Array.isArray === "undefined") {
         }
 
         return Observer;
+        
     }());
 
     //==============================================================
@@ -653,14 +653,14 @@ if (typeof Array.isArray === "undefined") {
         }
     
         /**
-         * 복제 : 전체
+         * 병합 : 그룹
          */
         IGroupControl.prototype.merge  = function() {
             throw new Error("[ merge() ] Abstract method definition, fail...");
         };
 
         /**
-         * 로드 : 전체
+         * 복사 : 그룹
          */
         IGroupControl.prototype.copy  = function() {
             throw new Error("[ copyTo() ] Abstract method definition, fail...");
@@ -703,7 +703,7 @@ if (typeof Array.isArray === "undefined") {
         }
     
         /**
-         * 출력 : 전체
+         * 입력 : 전체
          */
         IImportControl.prototype.read  = function() {
             throw new Error("[ read() ] Abstract method definition, fail...");
@@ -832,8 +832,6 @@ if (typeof Array.isArray === "undefined") {
     var ILookupControl;
     
     if (typeof module === "object" && typeof module.exports === "object") {     
-        require("./object-implement"); // _implements() : 폴리필
-
         IPartControl        = require("./i-control-part");
         ILookupControl      = require("./i-control-lookup");
     } else {
@@ -858,7 +856,8 @@ if (typeof Array.isArray === "undefined") {
              */
             this.list = [];
 
-            /** @implements */
+            /** @implements IPartControl 인터페이스 구현 */
+            /** @implements ILookupControl 인터페이스 구현 */
             this._implements(IPartControl, ILookupControl);            
         }
     
@@ -933,8 +932,6 @@ if (typeof Array.isArray === "undefined") {
     var ICollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        require("./object-implement"); // _implements() : 폴리필
-
         util                = require("./utils");
         ICollection         = require("./i-collection");
     } else {
@@ -955,6 +952,9 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(IPropertyCollection, _super);
 
+        /**
+         * 조회 : idx 로 이름 조회
+         */
         IPropertyCollection.prototype.propertyOf  = function() {
             throw new Error("[ propertyOf() ] Abstract method definition, fail...");
         };
@@ -1015,12 +1015,12 @@ if (typeof Array.isArray === "undefined") {
         function IControlCollection() {
             _super.call(this);
 
-            /** @implements */
+            /** @implements IGroupControl 인터페이스 구현 */
+            /** @implements IAllControl 인터페이스 구현 */
             this._implements(IGroupControl, IAllControl);            
         }
         util.inherits(IControlCollection, _super);        
     
-        
         /**
          * 병합, 합침
          */
@@ -1504,8 +1504,6 @@ if (typeof Array.isArray === "undefined") {
     var Observer;    
 
     if (typeof module === "object" && typeof module.exports === "object") {
-        require("./object-implement"); // _implements() : 폴리필
-
         ICollection         = require("./i-collection");
         Observer            = require("./observer");
     } else {
@@ -1560,7 +1558,6 @@ if (typeof Array.isArray === "undefined") {
                     return this._element;
                 }
             });
-
             /** @property */
             Object.defineProperty(this, "count", {
                 enumerable: true,
@@ -1569,7 +1566,6 @@ if (typeof Array.isArray === "undefined") {
                     return this._element.length;
                 }
             });
-            
             /** @event */
             Object.defineProperty(this, "onAdd", {
                 enumerable: true,
@@ -1578,7 +1574,6 @@ if (typeof Array.isArray === "undefined") {
                     this.__event.subscribe(p_fn, "add");
                 }
             });
-
             /** @event */
             Object.defineProperty(this, "onRemove", {
                 enumerable: true,
@@ -1587,7 +1582,6 @@ if (typeof Array.isArray === "undefined") {
                     this.__event.subscribe(p_fn, "remove");
                 }
             });
-
             /** @event */
             Object.defineProperty(this, "onClear", {
                 enumerable: true,
@@ -1596,7 +1590,6 @@ if (typeof Array.isArray === "undefined") {
                     this.__event.subscribe(p_fn, "clear");
                 }
             });
-
             /** @event */
             Object.defineProperty(this, "onChanging", {
                 enumerable: true,
@@ -1605,7 +1598,6 @@ if (typeof Array.isArray === "undefined") {
                     this.__event.subscribe(p_fn, "changing");
                 }
             });
-
             /** @event */
             Object.defineProperty(this, "onChanged", {
                 enumerable: true,
@@ -1615,16 +1607,13 @@ if (typeof Array.isArray === "undefined") {
                 }
             });
 
-            /**
-             * 인터페이스 선언
-             * @interface
-             */
-            this._implements(ICollection);
+            /** @implements ICollection 인터페이스 구현 */
+             this._implements(ICollection);
         }
     
         /**
          * @method private 프로퍼티 기술자 설정
-         * @param {Number} p_idx 인덱스
+         * @param {number} p_idx 인덱스
          */
         BaseCollection.prototype._getPropDescriptor = function(p_idx) {
             return {
@@ -1634,7 +1623,7 @@ if (typeof Array.isArray === "undefined") {
                     var typeName;
 
                     if (this.elementType !== null && !(newValue instanceof this.elementType)) {
-                        // typeName = this.elementType.constructor.name;
+                        // typeName = this.elementType.constructor.name; // REVIEW::
                         typeName = this.elementType.name || this.elementType.constructor.name;
                         throw new Error("Only [" + typeName + "] type instances can be added");
                     }
@@ -1688,7 +1677,7 @@ if (typeof Array.isArray === "undefined") {
         /**
          * @method remove 배열속성 삭제
          * @param {element} p_elem 속성명
-         * @returns {Number} 삭제한 인덱스
+         * @returns {number} 삭제한 인덱스
          */
         BaseCollection.prototype.remove = function(p_elem) {
             
@@ -1725,8 +1714,8 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * @method contains 배열속성 여부 
-         * @param {Object} p_elem 속성 객체
-         * @returns {Boolean}
+         * @param {object} p_elem 속성 객체
+         * @returns {boolean}
          */
         BaseCollection.prototype.contains = function(p_elem) {
             return this._element.indexOf(p_elem) > -1;
@@ -1793,15 +1782,15 @@ if (typeof Array.isArray === "undefined") {
         function ArrayCollection(p_onwer) {
             _super.call(this, p_onwer); 
         }
-        util.inherits(ArrayCollection, _super);     // 상속(대상, 부모)    
+        util.inherits(ArrayCollection, _super);
 
         /**
          * @method __remove 배열속성 삭제 (내부처리)
          * @param {*} p_idx 인덱스 번호
          */
         ArrayCollection.prototype._remove = function(p_idx) {
-            // [idx] 포인트 이동
-            var count = this._element.length - 1;
+            
+            var count = this._element.length - 1;   // [idx] 포인트 이동
             
             this._element.splice(p_idx, 1);
             
@@ -1855,8 +1844,6 @@ if (typeof Array.isArray === "undefined") {
             this._onChanging();                     // 이벤트 발생 : 변경전
 
             for (var i = 0; i < this._element.length; i++) {
-                // obj = this.indexOf(this[i]);
-                // if (typeof obj !== "undefined") this._remove(i);
                 delete this[i];
             }
 
@@ -1934,15 +1921,15 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @interface IPropertyCollection 인터페이스 선언 */
+            /** @implements IPropertyCollection 인터페이스 구현 */
             this._implements(IPropertyCollection);            
         }
-        util.inherits(PropertyCollection, _super);     // 상속(대상, 부모)    
+        util.inherits(PropertyCollection, _super);
 
         /**
          * @method __remove 배열속성 삭제 (내부처리)
          * @param {*} p_name 속성명
-         * @returns {Number} 삭제한 인덱스
+         * @returns {number} 삭제한 인덱스
          */
         PropertyCollection.prototype._remove = function(p_idx) {
             
@@ -1972,7 +1959,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * @method add 배열속성 설정 및 속성값 등록
-         * @param {String} p_name [필수] 속성명
+         * @param {string} p_name [필수] 속성명
          * @param {?any} p_value 속성값
          * @returns {any} 입력 속성 참조값 REVIEW:: 필요성 검토
          */
@@ -2047,8 +2034,8 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * @method propertyOf 배열속성 이름 찾기
-         * @param {Number} p_idx 인덱스
-         * @returns {String}
+         * @param {number} p_idx 인덱스
+         * @returns {string}
          */
         PropertyCollection.prototype.propertyOf = function(p_idx) {
             return this.properties[p_idx];
@@ -2126,28 +2113,6 @@ if (typeof Array.isArray === "undefined") {
             return _super.prototype.add.call(this, p_name, p_value);
         };
         
-        /**
-         * EntityTable 타입만 들어가게 제약조건 추가
-         * @override
-         */
-        // PropertyObjectCollection.prototype._getPropDescriptor = function(p_idx) {
-        //     return {
-        //         get: function() { return this._element[p_idx]; },
-        //         set: function(newValue) { 
-        //             if (newValue instanceof Object) {
-        //                 this._element[p_idx] = newValue;
-        //             } else {
-        //                 throw new Error("Only [Object] type instances can be added");
-        //             }
-        //         },
-        //         enumerable: true,
-        //         configurable: true
-        //     };
-        // };
-
-
-        // TODO::
-        
         return PropertyObjectCollection;
     
     }(PropertyCollection));
@@ -2220,28 +2185,6 @@ if (typeof Array.isArray === "undefined") {
             return _super.prototype.add.call(this, p_name, p_value);
         };
         
-        /**
-         * EntityTable 타입만 들어가게 제약조건 추가
-         * @override
-         */
-        // PropertyFunctionCollection.prototype._getPropDescriptor = function(p_idx) {
-        //     return {
-        //         get: function() { return this._element[p_idx]; },
-        //         set: function(newValue) { 
-        //             if (newValue instanceof Function) {
-        //                 this._element[p_idx] = newValue;
-        //             } else {
-        //                 throw new Error("Only [Function] type instances can be added");
-        //             }
-        //         },
-        //         enumerable: true,
-        //         configurable: true
-        //     };
-        // };
-
-
-        // TODO::
-        
         return PropertyFunctionCollection;
     
     }(PropertyCollection));
@@ -2292,7 +2235,7 @@ if (typeof Array.isArray === "undefined") {
          */
         function MetaObject() {
             
-            // 구현할 인터페이스 선언
+            /** @implements IObject 인터페이스 구현 */
             this._implements(IObject);
         }
         
@@ -2324,9 +2267,8 @@ if (typeof Array.isArray === "undefined") {
             return arr.indexOf(p_name) > -1;
         };
 
-
-
         return MetaObject;
+        
     }());
 
     //==============================================================
@@ -2358,8 +2300,6 @@ if (typeof Array.isArray === "undefined") {
     var IMarshal;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        require("./object-implement"); // _implements() : 폴리필
-
         util                = require("./utils");
         MetaObject          = require("./meta-object");
         IMarshal            = require("./i-marshal");
@@ -2394,9 +2334,7 @@ if (typeof Array.isArray === "undefined") {
 
             this.name = p_name;
             
-            /**
-             * @interface IMarshal 인터페이스 선언
-             */
+            /** @implements IMarshal 인터페이스 구현 */
             this._implements(IMarshal);            
         }
         util.inherits(MetaElement, _super);
@@ -2429,10 +2367,9 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * @method 객체 얻기 : 추상메소드
+         * @method 객체 얻기 : 추상메소드 : REVIEW:: 공통 요소? 확인필요
          */
         MetaElement.prototype.getObject  = function(p_context) {
-            // throw new Error("[ getObject() ] Abstract method definition, fail...");
 
             var obj     = {};
 
@@ -2479,8 +2416,6 @@ if (typeof Array.isArray === "undefined") {
     var IPropertyCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        require("./object-implement"); // _implements() : 폴리필
-
         util                    = require("./utils");
         MetaElement             = require("./meta-element");
         IPropertyCollection     = require("./i-collection-property");
@@ -2524,9 +2459,7 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-             /**
-             * @interface IProperyCollection 인터페이스 선언
-             */
+            /** @implements IPropertyCollection 인터페이스 선언 */
             this._implements(IPropertyCollection);                
         }
         util.inherits(ComplexElement, _super);
@@ -2624,14 +2557,16 @@ if (typeof Array.isArray === "undefined") {
             var __increase      = 100;      // order 의 자동 추가수
             var __getter        = function() { return this.__value; };
             var __setter        = function(val) { 
-                if(["number", "string", "boolean"].indexOf(typeof val) < 0) throw new Error("Only [value] type 'number, string, boolean' can be added");
+                if(["number", "string", "boolean"].indexOf(typeof val) < 0) {
+                    throw new Error("Only [value] type 'number, string, boolean' can be added");
+                }
                 this.__value = val;
             }
 
             this.__value         = null;
 
             // Entity 등록 & order(순서) 값 계산
-            if (p_entity && p_entity.instanceOf("Entity")) {
+            if (p_entity && p_entity instanceof MetaElement && p_entity.instanceOf("Entity")) {
                 __entity    = p_entity;
                 __order     = __entity.items.count === 0 ? __order : __entity.items[__entity.items.count - 1].order + __increase;
             }
@@ -2642,7 +2577,9 @@ if (typeof Array.isArray === "undefined") {
                 get: function() { return __entity; },
                 set: function(newValue) { 
                     // TODO:: 자료종류를 검사해야함
-                    if (newValue && !newValue.instanceOf("Entity")) throw new Error("Only [entity] type 'Entity' can be added");
+                    if (newValue && !(newValue instanceof MetaElement && newValue.instanceOf("Entity"))) {
+                        throw new Error("Only [entity] type 'Entity' can be added");
+                    }
                     __entity = newValue;
                 },
                 configurable: true,
@@ -2821,15 +2758,14 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-
+            //---------------------------------------------------
             // 아이템 옵션속성 추가
             if (typeof p_property === "object" ) {
                 for(var prop in p_property) {
                     if (p_property.hasOwnProperty(prop) &&
-                    [
-                        "entity", "type", "size", "default", "caption", 
+                    [   "entity", "type", "size", "default", "caption", 
                         "isNotNull", "callback", "constraints", 
-                        "codeType", "order", "increase", "value", "getter", "setter", 
+                        "codeType", "order", "increase", "value", "getter", "setter" 
                     ].indexOf(prop) > -1) {
                         this[prop] = p_property[prop];
                     }
@@ -2928,13 +2864,13 @@ if (typeof Array.isArray === "undefined") {
         
         /**
          * 
-         * @param {*} p_value 
-         * @param {*} r_result 
-         * @param {Number} p_option 1. isNotNull 참조 | 2: null검사 진행   |  3: null검사 무시
+         * @param {string} p_value 
+         * @param {object} r_result 
+         * @param {number} p_option 1. isNotNull 참조 | 2: null검사 진행   |  3: null검사 무시
          */
         Item.prototype.valid = function(p_value, r_result, p_option) {
-            // 기본값
             p_option = p_option || 1;   
+            r_result.value = p_value;
             r_result.msg = "";
             r_result.code = "";
             p_value = p_value || "";
@@ -2943,7 +2879,7 @@ if (typeof Array.isArray === "undefined") {
 
             if (!(typeof p_value === "string")) throw new Error("Only [p_value] type 'string' can be added");
             
-            // 우선순위 높음
+            // 1. 정규식 유효성 검사 (우선순위 높음)
             for(var i = 0; this.constraints.length > i; i++) {
 
                 result = p_value.match(this.constraints[i].regex);
@@ -2955,15 +2891,9 @@ if (typeof Array.isArray === "undefined") {
                     r_result.code  = this.constraints[i].code;
                     return false;
                 }
-
-                // if (result !== null) {
-                //     r_result.msg   = this.constraints[i].msg;
-                //     r_result.code  = this.constraints[i].code;
-                //     return false;
-                // }
             }
             
-            // Null 검사
+            // 2. Null 검사
             if ((p_option === 1 && this.isNotNull === true && p_value.trim().length <= 0) || 
                 (p_option === 2 && p_value.trim().length <= 0)) {
                 
@@ -3005,6 +2935,7 @@ if (typeof Array.isArray === "undefined") {
         util.inherits(ItemCollection, _super);
         
         ItemCollection.prototype.contains = function(p_elem) {
+
             if (p_elem instanceof Item) {
                 return this.indexOfName(p_elem.name) > -1;
             } else {
@@ -3018,7 +2949,9 @@ if (typeof Array.isArray === "undefined") {
             var property = {};
 
             if (typeof p_name !== "string") throw new Error("There is no required value [p_name].");
-            if(["number", "string", "boolean"].indexOf(typeof p_value) < 0) throw new Error("Only [value] type 'number, string, boolean' can be added");
+            if(["number", "string", "boolean"].indexOf(typeof p_value) < 0) {
+                throw new Error("Only [value] type 'number, string, boolean' can be added");
+            }
             
             property = { value: p_value}
 
@@ -3027,31 +2960,53 @@ if (typeof Array.isArray === "undefined") {
             return this.add(item);
         };
 
-        /**
-         * Item 타입만 들어가게 제약조건 추가
-         * @override
-         */
-        // ItemCollection.prototype._getPropDescriptor = function(p_idx) {
-        //     return {
-        //         get: function() { return this._element[p_idx]; },
-        //         set: function(newValue) { 
-        //             if (newValue instanceof Item) {
-        //                 this._element[p_idx] = newValue;
-        //             } else {
-        //                 throw new Error("Only [Item] type instances can be added");
-        //             }
-        //         },
-        //         enumerable: true,
-        //         configurable: true
-        //     };
-        // };
-
-
-        // TODO::
-        
         return ItemCollection;
     
     }(PropertyCollection));
+
+
+    //---------------------------------------
+    var ItemTableCollection  = (function (_super) {
+        /**
+         * @class
+         * @constructor
+         * @param {*} p_onwer 소유자
+         * @param {?ItemCollection} p_baseCollection 참조기본 컬렉션
+         */
+        function ItemTableCollection(p_onwer) {
+            _super.call(this, p_onwer);
+        }
+        util.inherits(ItemTableCollection, _super);
+
+        /**
+         * @param {string | Item} p_object 
+         * @returns {Item} 등록한 아이템
+         */
+        ItemTableCollection.prototype.add  = function(p_object) {
+
+            var i_value;
+            var i_name;
+
+            if (typeof p_object === "string") {      
+                i_name  = p_object;
+                i_value = new this.itemType(i_name, this._onwer);
+            } else if (p_object instanceof this.itemType) {
+                // EntityTable은 직접만 적용(참조형 아이템 소유 못함)
+                i_name  = p_object.name;
+                i_value = p_object.clone();
+                i_value.entity = this._onwer;
+            } else {
+                throw new Error("string | Item object [p_object].");
+            }
+
+            if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
+
+            return _super.prototype.add.call(this, i_name, i_value);
+        };
+
+        return ItemTableCollection;
+    
+    }(ItemCollection));
 
 
     //---------------------------------------
@@ -3065,14 +3020,11 @@ if (typeof Array.isArray === "undefined") {
         function ItemViewCollection(p_onwer, p_baseCollection) {
             _super.call(this, p_onwer);
 
-            // if (typeof p_baseCollection !== "undefined" && !(p_baseCollection instanceof ItemCollection)) {
             if (p_baseCollection && !(p_baseCollection instanceof ItemCollection)) {
                 throw new Error("Error!! ItemCollection object [p_baseCollection].");
             }
             
-            /**
-             * @protected @member
-             */
+            /** @protected */
             this._baseCollection = p_baseCollection;
         }
         util.inherits(ItemViewCollection, _super);
@@ -3082,23 +3034,21 @@ if (typeof Array.isArray === "undefined") {
          *  - base(N),      string | Itme               => this 에 생성후 자신에 등록
          *  - base(Y),      string | Item               => Base 에 생성후 자신에 등록
          * 
+         *   // string                       => 생성 및 자신에 등록
+         *   // string <base>                => 생성 및 소유처에 등록
+         *   // Item                         => 생성 및 자신에 등록
+         *   // Item <base>                  => 생성 및 소유처에 등록
+         *   // string, collection           => 참조만 등록
+         *   // string, collection <base>    => 참조만 등록
+         * 
          *  TODO:: filter 옵션 : 충돌방지에 이용
          *  TODO:: 객체 비교는 string 이 아니고 값과 타입을 비교해야함 (그래야 참조를 사용)
          * 
-         * @param {String, Item} p_object 
+         * @param {string, Item} p_object 
          * @param {?ItemCollection} p_baseCollection
          */
         ItemViewCollection.prototype.add  = function(p_object, p_baseCollection) {
             
-            
-            // string                       => 생성 및 자신에 등록
-            // string <base>                => 생성 및 소유처에 등록
-            // Item                         => 생성 및 자신에 등록
-            // Item <base>                  => 생성 및 소유처에 등록
-            // string, collection           => 참조만 등록
-            // string, collection <base>    => 참조만 등록
-            
-            var item;
             var collection;
             var i_name;
             var i_value;
@@ -3124,12 +3074,9 @@ if (typeof Array.isArray === "undefined") {
             
             // 기본참조 컬렉션 또는 전달참조 컬렉션인 경우
             if (collection) {
-                // if (collection.contains(i_name)) {
                 if (collection.contains(collection[i_name])) {
-                    // item = collection[i_name];                      // 참조 가져옴
                     i_value = collection[i_name];                      // 참조 가져옴
                 } else {
-                    // item = collection.add(p_object);                // 컬렉션에 등록
                     i_value = collection.add(p_object);                // 컬렉션에 등록
                 }
                 
@@ -3140,17 +3087,12 @@ if (typeof Array.isArray === "undefined") {
                 }
             }
             
-            // item = item || p_object;
-            
             return _super.prototype.add.call(this, i_name, i_value);
-            // return _super.prototype.add.call(this, item);           // 자신에 등록
         };
 
         ItemViewCollection.prototype.addEntity  = function(p_entity) {
-            if (typeof p_entity === "undefined" || 
-                typeof p_entity.instanceOf === "undefined" || 
-                !p_entity.instanceOf("Entity")) {
-                throw new Error("There is no required value [p_name].");
+            if (typeof p_entity === "undefined" && !(p_entity instanceof MetaElement && p_entity.instanceOf("Entity"))) {
+                throw new Error("Only [p_entity] type 'Entity' can be added");
             }
 
             for (var i = 0; p_entity.items.count > i; i++) {
@@ -3162,53 +3104,6 @@ if (typeof Array.isArray === "undefined") {
     
     }(ItemCollection));
 
-    //---------------------------------------
-    var ItemTableCollection  = (function (_super) {
-        /**
-         * @class
-         * @constructor
-         * @param {*} p_onwer 소유자
-         * @param {?ItemCollection} p_baseCollection 참조기본 컬렉션
-         */
-        function ItemTableCollection(p_onwer) {
-            _super.call(this, p_onwer);
-        }
-        util.inherits(ItemTableCollection, _super);
-
-        /**
-         * 
-         * @param {String | Item} p_object 
-         * @returns {Item} 등록한 아이템
-         */
-        ItemTableCollection.prototype.add  = function(p_object) {
-
-            var i_value;
-            var i_name;
-
-            if (typeof p_object === "string") {      
-                i_name  = p_object;
-                // i_value = new Item(i_name, this._onwer);
-                i_value = new this.itemType(i_name, this._onwer);
-            // } else if (p_object instanceof Item) {
-            } else if (p_object instanceof this.itemType) {
-                // i_name  = p_object.name;
-                // i_value = p_object;
-                // EntityTable은 직접만 적용(참조형 아이템 소유 못함)
-                i_name  = p_object.name;
-                i_value = p_object.clone();
-                i_value.entity = this._onwer;
-            } else {
-                throw new Error("string | Item object [p_object].");
-            }
-
-            if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
-
-            return _super.prototype.add.call(this, i_name, i_value);
-        };
-
-        return ItemTableCollection;
-    
-    }(ItemCollection));
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
@@ -3421,18 +3316,18 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    // var Entity;
+    var MetaObject;
     var PropertyCollection;
     var ArrayCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
-        // Entity              = require("./entity-base");
+        MetaObject          = require("./meta-object");
         PropertyCollection  = require("./collection-property");
         ArrayCollection     = require("./collection-array");
     } else {
         util                = global._W.Common.Util;
-        // Entity              = global._W.Meta.Entity;
+        MetaObject          = global._W.Meta.MetaObject;
         PropertyCollection  = global._W.Collection.PropertyCollection;
         ArrayCollection     = global._W.Collection.ArrayCollection;
     }
@@ -3440,7 +3335,7 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    // if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
+    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
     if (typeof ArrayCollection === "undefined") throw new Error("[ArrayCollection] module load fail...");
 
@@ -3457,7 +3352,7 @@ if (typeof Array.isArray === "undefined") {
             var itemName;
 
             // Entity 등록 & order(순서) 값 계산
-            if (p_entity && p_entity.instanceOf("Entity")) {
+            if (p_entity && p_entity instanceof MetaObject && p_entity.instanceOf("Entity")) {
                 __entity    = p_entity;
 
                 for (var i = 0; i < __entity.items.count; i++) {
@@ -3491,7 +3386,7 @@ if (typeof Array.isArray === "undefined") {
           
             var clone = new Row(this.entity);
             
-            if (this.value) clone["value"]               = this.value;
+            if (this.value) clone["value"] = this.value;
         };
         
         Row.prototype.clone  = function() {
@@ -3544,28 +3439,6 @@ if (typeof Array.isArray === "undefined") {
             return _super.prototype.add.call(this, i_value);
         };
 
-        /**
-         * Row 타입만 들어가게 제약조건 추가
-         * @override
-         */
-        // RowCollection.prototype._getPropDescriptor = function(p_idx) {
-        //     return {
-        //         get: function() { return this._element[p_idx]; },
-        //         set: function(newValue) { 
-        //             if (newValue instanceof Row) {
-        //                 this._element[p_idx] = newValue;
-        //             } else {
-        //                 throw new Error("Only [Row] type instances can be added");
-        //             }
-        //         },
-        //         enumerable: true,
-        //         configurable: true
-        //     };
-        // };
-
-
-        // TODO::
-        
         return RowCollection;
         
     }(ArrayCollection));
@@ -3606,8 +3479,6 @@ if (typeof Array.isArray === "undefined") {
     var ItemCollection;
     
     if (typeof module === "object" && typeof module.exports === "object") {     
-        require("./object-implement"); // _implements() : 폴리필
-        
         util                    = require("./utils");
         MetaElement             = require("./meta-element");
         IGroupControl           = require("./i-control-group");
@@ -3672,9 +3543,8 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-             /**
-             * @interface IProperyCollection 인터페이스 선언
-             */
+            /** @implements IGroupControlI 인터페이스 구현 */
+            /** @implements IAllControl 인터페이스 구현 */
             this._implements(IGroupControl, IAllControl);                
         }
         util.inherits(Entity, _super);
@@ -3722,11 +3592,11 @@ if (typeof Array.isArray === "undefined") {
             if (typeof entity === "undefined") throw new Error("Only [p_object] type 'entity | table' can be added");
             
 
-            // itmes, rows 배열로 구조 변경
+            // 1.itmes, rows 배열로 구조 변경
             if (!Array.isArray(entity.items)) entity.items = [entity.items];
             if (!Array.isArray(entity.rows)) entity.rows = [entity.rows];
 
-            // 병합
+            // 2.병합
             if (p_option === 1) {
                 // Item 기준으로 아이템 가져오기
                 if (entity.items && entity.items[0]) {
@@ -3750,7 +3620,7 @@ if (typeof Array.isArray === "undefined") {
                 }
             }
             
-            // Row 데이터 가져오기
+            // 3.Row 데이터 가져오기
             if (this.items.count > 0 && entity.rows && entity.rows[0]) {
                 for(var i = 0; entity.rows.length > i; i++) {
                     
@@ -3764,7 +3634,7 @@ if (typeof Array.isArray === "undefined") {
                 }
             } 
             
-            // 빈 Row 채우기
+            // 4.빈 Row 채우기
             for (var i = 0 ; i < this.rows.count; i++) {
                 for (var ii = 0; ii < this.items.count; ii++) {
                     itemName = this.items[ii].name;
@@ -3782,7 +3652,7 @@ if (typeof Array.isArray === "undefined") {
             var row;
             var itemName;
 
-            // 병합
+            // 1.병합
             if (p_option === 1) {
                 // Item 기준으로 아이템 가져오기
                 for(var i = 0; entity.items.count > i; i++) {
@@ -3791,7 +3661,7 @@ if (typeof Array.isArray === "undefined") {
                 }
             }
             
-            // Row 데이터 가져오기
+            // 2.Row 데이터 가져오기
             for(var i = 0; entity.rows.count > i; i++) {
                 
                 row = this.newRow();
@@ -3810,6 +3680,7 @@ if (typeof Array.isArray === "undefined") {
                 this.rows.add(row);
             }
 
+            // 4.빈 Row 채우기
             if (p_option === 1) this.__fillRow(entity);
         };
 
@@ -3869,18 +3740,30 @@ if (typeof Array.isArray === "undefined") {
             var obj, f;
             var filterItem;
             
-
-            // 자신의 생성자로 생성
-            // REVIEW:: 이후에 복제로 변경 검토
+            // REVIEW:: 이후에 복제로 변경 검토, 자신의 생성자로 생성
             var entity = new this.constructor(this.name);   
             var idx;
 
-            // 제외 아이템 조회
+            /** @inner row 항목을 재구성하여 생성 (내부 함수) */
+            function __createRow(rowIdx, orgEntity) {
+
+                var row = entity.newRow();
+                var i_name;
+
+                for (var i = 0; entity.items.count > i ; i++) {
+                    i_name = entity.items[i].name;
+                    if (typeof row[i_name] !== "undefined" && typeof orgEntity.rows[rowIdx][i_name] !== "undefined") {
+                        row[i_name] = orgEntity.rows[rowIdx][i_name];
+                    }
+                }
+                return row;
+            }
+
+            // 1.제외 아이템 조회
             if (p_filter && p_filter[EXECEPT]) {
                 if (Array.isArray(p_filter[EXECEPT])) excepts = p_filter[EXECEPT];
                 else if (typeof p_filter[EXECEPT] === "string") excepts.push(p_filter[EXECEPT]);
             } 
-
             for (var i = 0; this.items.count > i; i++) {
                 if (excepts.indexOf(this.items[i].name) < 0)  {
                     
@@ -3900,32 +3783,15 @@ if (typeof Array.isArray === "undefined") {
                 }
             }
 
+            // 2.정렬
             list.sort(function(a, b) { return a.order - b.order; });
 
-            // 리턴 Entity 의 Item 구성 : 참조형
+            // 3.리턴 Entity 의 Item 구성 : 참조형
             for(var i = 0; i < list.length; i++) {
                 entity.items.add(list[i]);
             }
             
-            /**
-             * row 항목을 재구성하여 생성 (내부 함수)
-             * @param {*} rowIdx 
-             */
-            function __createRow(rowIdx, orgEntity) {
-
-                var row = entity.newRow();
-                var i_name;
-
-                for (var i = 0; entity.items.count > i ; i++) {
-                    i_name = entity.items[i].name;
-                    if (typeof row[i_name] !== "undefined" && typeof orgEntity.rows[rowIdx][i_name] !== "undefined") {
-                        row[i_name] = orgEntity.rows[rowIdx][i_name];
-                    }
-                }
-                return row;
-            }
-
-            // 리턴 Entity 의 Row 구성 : 참조형
+            // 4.리턴 Entity 의 Row 구성 : 참조형
             if (typeof p_index === "number") {
                 for(var i = p_index; i < this.rows.count; i++) {
                     // entity.rows.add(this.rows[idx]);
@@ -3951,7 +3817,6 @@ if (typeof Array.isArray === "undefined") {
             var entity = this.select(p_filter, p_index, p_end);
 
             return entity.clone();
-
         };
 
         /**
@@ -3967,15 +3832,13 @@ if (typeof Array.isArray === "undefined") {
         Entity.prototype.merge  = function(p_target, p_option) {
             p_option = p_option || 1;    // 기본값
 
-            var cloneTarget;
             var row;
             var itemName;
-            // var rowMax;
 
-            // 유효성 검사
+            // 1.유효성 검사
             if (!(p_target instanceof Entity)) throw new Error("Only [p_target] type 'Entity' can be added");
 
-            // 병합 : Item 기준으로 아이템 가져오기
+            // 2.병합 : Item 기준으로 아이템 가져오기
             for(var i = 0; p_target.items.count > i; i++) {
                 itemName = p_target.items[i].name;
                 
@@ -3989,12 +3852,12 @@ if (typeof Array.isArray === "undefined") {
                     this.items[itemName] = p_target.items[itemName];
                 }
             }
-
+            
+            // 3.Row 데이터 가져오기
             if (p_option !== 3) {
-                // Row 데이터 가져오기
                 for(var i = 0; p_target.rows.count > i; i++) {
-                    
-                    if (typeof this.rows[i] !== "undefined") {  // this.rows 있는 경우
+                    // this.rows 있는 경우
+                    if (typeof this.rows[i] !== "undefined") {  
                         row = this.rows[i];
                         for (var ii = 0; ii < p_target.items.count; ii++) {
                             itemName = p_target.items[ii].name;
@@ -4004,30 +3867,21 @@ if (typeof Array.isArray === "undefined") {
                                 row[itemName] = p_target.rows[i][itemName];     
                             }
                         }
-                        
-                    } else {                                    // this.rows 없는 경우
+                    // this.rows 없는 경우
+                    } else {                                    
                         row = this.newRow();
                         for (var ii = 0; ii < p_target.items.count; ii++) {
                             itemName = p_target.items[ii].name;
-                            if (p_option === 2) {   // 덮어쓰기
-                                row[itemName] = p_target.rows[i][itemName];     
-                            }
+                            // 덮어쓰기
+                            if (p_option === 2) row[itemName] = p_target.rows[i][itemName];
                         }
                         this.rows.add(row);
                     }
                 }
             }
 
-            // 공백 채우기
+            // 4.공백 채우기
             this.__fillRow(p_target);
-            // for (var i = 0 ; i < this.rows.count; i++) {
-            //     for (var ii = 0; ii < p_target.items.count; ii++) {
-            //         itemName = p_target.items[ii].name;
-            //         if (typeof this.rows[i][itemName] === "undefined") {
-            //             this.rows[i].add(itemName, "");
-            //         }
-            //     }
-            // }
         };
         
         /**
@@ -4040,7 +3894,7 @@ if (typeof Array.isArray === "undefined") {
          *          - 2: 존재하는 item 데이터만 가져오기
          */
         Entity.prototype.load  = function(p_object, p_option) {
-
+            
             if (p_object instanceof Entity) {
                 this.__loadEntity(p_object, p_option);
             } else {
@@ -4050,6 +3904,7 @@ if (typeof Array.isArray === "undefined") {
         
         /** @method */
         Entity.prototype.clear  = function() {
+            
             this.items.clear();
             this.rows.clear();
         };
@@ -4092,26 +3947,17 @@ if (typeof Array.isArray === "undefined") {
     var util;
     var Entity;
     var PropertyCollection;
-    var IGroupControl;
-    var IAllControl;
-    var RowCollection;
     var ItemTableCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
         Entity              = require("./entity-base");
         PropertyCollection  = require("./collection-property");
-        IGroupControl       = require("./i-control-group");
-        IAllControl         = require("./i-control-all");
-        RowCollection       = require("./entity-row").RowCollection;
         ItemTableCollection      = require("./entity-item").ItemTableCollection;
     } else {
         util                = global._W.Common.Util;
         Entity              = global._W.Meta.Entity.Entity;
         PropertyCollection  = global._W.Collection.PropertyCollection;
-        IGroupControl       = global._W.Interface.IGroupControl;
-        IAllControl         = global._W.Interface.IAllControl;
-        RowCollection       = global._W.Meta.Entity.RowCollection;
         ItemTableCollection      = global._W.Meta.Entity.ItemTableCollection;
     }
 
@@ -4120,26 +3966,16 @@ if (typeof Array.isArray === "undefined") {
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
     if (typeof ItemTableCollection === "undefined") throw new Error("[ItemTableCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
     var EntityTable  = (function (_super) {
-        /**
-         * @abstract @class
-         */
+        /** @class */
         function EntityTable(p_name) {
             _super.call(this, p_name);
 
             this.items = new ItemTableCollection(this);
-
-            // /**
-            //  * @interface IProperyCollection 인터페이스 선언
-            //  */
-            // this._implements(IGroupControl, IAllControl);                
         }
         util.inherits(EntityTable, _super);
 
@@ -4218,28 +4054,6 @@ if (typeof Array.isArray === "undefined") {
             return this[i_name];
         };
         
-        /**
-         * EntityTable 타입만 들어가게 제약조건 추가
-         * @override
-         */
-        // EntityTableCollection.prototype._getPropDescriptor = function(p_idx) {
-        //     return {
-        //         get: function() { return this._element[p_idx]; },
-        //         set: function(newValue) { 
-        //             if (newValue instanceof EntityTable) {
-        //                 this._element[p_idx] = newValue;
-        //             } else {
-        //                 throw new Error("Only [EntityTable] type instances can be added");
-        //             }
-        //         },
-        //         enumerable: true,
-        //         configurable: true
-        //     };
-        // };
-
-
-        // TODO::
-        
         return EntityTableCollection;
     
     }(PropertyCollection));
@@ -4272,42 +4086,32 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
+    var MetaObject;
     var Entity;
     var ItemViewCollection;
     var PropertyCollection;
-    var RowCollection;
-    var IGroupControl;
-    var IAllControl;
-
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
+        MetaObject          = require("./meta-object");
         Entity              = require("./entity-base");
         ItemViewCollection   = require("./entity-item").ItemViewCollection;
         PropertyCollection  = require("./collection-property");
-        RowCollection       = require("./entity-row").RowCollection;
-        IGroupControl       = require("./i-control-group");
-        IAllControl         = require("./i-control-all");
-
     } else {
         util                = global._W.Common.Util;
+        MetaObject          = global._W.Meta.MetaObject;
         Entity              = global._W.Meta.Entity.Entity;
         ItemViewCollection   = global._W.Meta.Entity.ItemViewCollection;
         PropertyCollection  = global._W.Collection.PropertyCollection;
-        RowCollection       = global._W.Meta.Entity.RowCollection;
-        IGroupControl       = global._W.Interface.IGroupControl;
-        IAllControl         = global._W.Interface.IAllControl;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
+    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof ItemViewCollection === "undefined") throw new Error("[ItemViewCollection] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
-    if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
-    if (typeof IAllControl === "undefined") throw new Error("[IAllControl] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -4320,7 +4124,7 @@ if (typeof Array.isArray === "undefined") {
 
             var refCollection;
 
-            if (p_baseEntity && p_baseEntity.instanceOf("Entity")) {
+            if (p_baseEntity && p_baseEntity instanceof MetaObject && p_baseEntity.instanceOf("Entity")) {
                 refCollection = p_baseEntity.items;
             }
             
@@ -4358,7 +4162,7 @@ if (typeof Array.isArray === "undefined") {
             
             var clone = new EntityView(this.name);  // 뷰를 복제하면 참조타입 >> 엔티티타입으로 변경
 
-            // 참조 복제
+            // 참조 복제 REVIEW::  필요성 검토 필요
             // for(var i = 0; i < this._refEntities.length; i++) {
             //     clone._refEntities.push(this._refEntities[i]);
             // }
@@ -4397,8 +4201,8 @@ if (typeof Array.isArray === "undefined") {
          *  - entityView                :         entityView  이름으로 등록
          *  - entityView, collection    :         entityView  이름으로 등록 (collection보냄) => 오류발생
          * 
-         * @param {String | EntityView} p_object 
-         * @param {I?temCollection} p_baseEntity
+         * @param {string | EntityView} p_object 
+         * @param {?ItemCollection} p_baseEntity
          * @returns {EntityView} 등록한 아이템
          */
         EntityViewCollection.prototype.add  = function(p_object, p_baseEntity) {
@@ -4421,29 +4225,7 @@ if (typeof Array.isArray === "undefined") {
 
             return _super.prototype.add.call(this, i_name, i_value);
         };
-        
-        /**
-         * EntityView 타입만 들어가게 제약조건 추가
-         * @override
-         */
-        // EntityViewCollection.prototype._getPropDescriptor = function(p_idx) {
-        //     return {
-        //         get: function() { return this._element[p_idx]; },
-        //         set: function(newValue) { 
-        //             if (newValue instanceof EntityView) {
-        //                 this._element[p_idx] = newValue;
-        //             } else {
-        //                 throw new Error("Only [EntityView] type instances can be added");
-        //             }
-        //         },
-        //         enumerable: true,
-        //         configurable: true
-        //     };
-        // };
 
-
-        // TODO::
-        
         return EntityViewCollection;
     
     }(PropertyCollection));
@@ -4583,19 +4365,6 @@ if (typeof Array.isArray === "undefined") {
                     this.__event.subscribe(p_fn, "executed");
                 }
             });
-
-            // /** @property */
-            // Object.defineProperty(this, "eventPropagation", {
-            //     enumerable: true,
-            //     configurable: true,
-            //     set: function(p_bool) {
-            //         if (typeof p_bool !== "boolean") throw new Error("Only [p_bool] type 'Boolean' can be added");
-            //         // this.__event.propagation = p_bool;
-            //         __propagation = p_bool;
-            //     },
-            //     get: function() { return __propagation; }
-            //     // get: function() { return this.__event.propagation; }
-            // });
         }
         util.inherits(BaseBind, _super);
 
@@ -4608,24 +4377,18 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /** @event */
-        BaseBind.prototype._onExecute = function() {
-            this.__event.publish("execute"); 
+        BaseBind.prototype._onExecute = function(p_bindCommand) {
+            this.__event.publish("execute", p_bindCommand);
         };
 
         /** @event */
-        BaseBind.prototype._onExecuted = function() {
-            this.__event.publish("executed"); 
+        BaseBind.prototype._onExecuted = function(p_bindCommand) {
+            this.__event.publish("executed", p_bindCommand); 
         };
-
-        // /** @event */
-        // BaseBind.prototype._onFail = function(p_msg) {
-        //     this.__event.publish("fail", p_msg); 
-        // };        
 
         return BaseBind;
     
     }(MetaObject));
-    
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
@@ -4652,21 +4415,22 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
+    var MetaObject;
     var BaseCollection;
     var BaseBind;
-    var item;
     var Item;
     var Entity;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
+        MetaObject          = require("./meta-object");
         BaseCollection      = require("./collection-base");
         BaseBind            = require("./bind-base");
-        item                = require("./entity-item");
-        Item                = item.Item;
+        Item                = require("./entity-item").Item;
         Entity              = require("./entity-base");
     } else {
         util                = global._W.Common.Util;
+        MetaObject          = global._W.Meta.MetaObject;
         BaseCollection      = global._W.Collection.BaseCollection;
         BaseBind            = global._W.Meta.Bind.BaseBind;
         Entity              = global._W.Meta.Entity.Entity;
@@ -4676,6 +4440,7 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
+    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
     if (typeof BaseCollection === "undefined") throw new Error("[BaseCollection] module load fail...");
     if (typeof BaseBind === "undefined") throw new Error("[BaseBind] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
@@ -4693,8 +4458,12 @@ if (typeof Array.isArray === "undefined") {
             
             var __propagation   = true;
 
-            if (p_bindModel && !(p_bindModel.instanceOf("BindModel"))) throw new Error("Only [p_bindModel] type 'BindModel' can be added");
-            if (p_baseEntity && !(p_baseEntity.instanceOf("Entity"))) throw new Error("Only [p_baseEntity] type 'Entity' can be added");
+            if (p_bindModel && !(p_bindModel instanceof MetaObject && p_bindModel.instanceOf("BindModel"))) {
+                throw new Error("Only [p_bindModel] type 'BindModel' can be added");
+            }
+            if (p_baseEntity && !(p_bindModel instanceof MetaObject && p_baseEntity.instanceOf("Entity"))) {
+                throw new Error("Only [p_baseEntity] type 'Entity' can be added");
+            }
 
             /** @protected 소유자 */
             this._model = p_bindModel;
@@ -4707,11 +4476,9 @@ if (typeof Array.isArray === "undefined") {
                 configurable: true,
                 set: function(p_bool) {
                     if (typeof p_bool !== "boolean") throw new Error("Only [p_bool] type 'Boolean' can be added");
-                    // this.__event.propagation = p_bool;
                     __propagation = p_bool;
                 },
                 get: function() { return __propagation; }
-                // get: function() { return this.__event.propagation; }
             });            
         }
         util.inherits(BindCommand, _super);
@@ -4723,23 +4490,17 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /** @override */
-        BindCommand.prototype._onExecute = function() {
+        BindCommand.prototype._onExecute = function(p_bindCommand) {
             
-            _super.prototype._onExecute.call(this);                         // 자신에 이벤트 발생
-            if (this.eventPropagation) this._model._onExecute();    // 모델에 이벤트 추가 발생
+            _super.prototype._onExecute.call(this, p_bindCommand);               // 자신에 이벤트 발생
+            if (this.eventPropagation) this._model._onExecute(p_bindCommand);    // 모델에 이벤트 추가 발생
         };
 
         /** @override */
-        BindCommand.prototype._onExecuted = function() {
-            _super.prototype._onExecuted.call(this);
-            if (this.eventPropagation) this._model._onExecuted();
+        BindCommand.prototype._onExecuted = function(p_bindCommand) {
+            _super.prototype._onExecuted.call(this, p_bindCommand);
+            if (this.eventPropagation) this._model._onExecuted(p_bindCommand);
         };
-
-        // /** @override */
-        // BindCommand.prototype._onFail = function(p_msg) {
-        //     _super.prototype._onFail.call(this, p_msg);
-        //     if (this.eventPropagation) this._model._onFail(p_msg);
-        // };        
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommand.prototype.getTypes  = function() {
@@ -4752,7 +4513,7 @@ if (typeof Array.isArray === "undefined") {
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?Array<String> | String} p_entities <선택> 추가할 아이템 명령
+         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
          */
         BindCommand.prototype.add = function(p_item, p_entities) {
 
@@ -4760,7 +4521,7 @@ if (typeof Array.isArray === "undefined") {
             var property = [];      // 속성
             var collection;
 
-            // 유효성 검사
+            // 1.유효성 검사
             if (!(p_item instanceof Item)) {
                 throw new Error("Only [p_item] type 'Item' can be added");
             }
@@ -4768,18 +4529,16 @@ if (typeof Array.isArray === "undefined") {
                 throw new Error("Only [p_entities] type 'Array | string' can be added");
             } 
 
-            // 초기화 설정
+            // 2.초기화 설정
             if (Array.isArray(p_entities)) entities = p_entities;
             else if (typeof p_entities === "string") entities.push(p_entities);
             
             // baseEntity 에 아이템 없으면 등록
             if (!this._baseEntity.items.contains(p_item))  {
                 this._baseEntity.items.add(p_item);
-            } {
-
             }
 
-            // 설정 대상 가져오기
+            // 3.설정 대상 가져오기
             if (entities.length > 0) {
                 for (var i = 0; i < entities.length; i++) {
                     
@@ -4796,11 +4555,12 @@ if (typeof Array.isArray === "undefined") {
                 // 공개(public) Entity 프로퍼티 검사
                 for (var prop in this) {
                     if (this[prop] instanceof Entity && prop.substr(0, 1) !== "_") {
-                                property.push(prop.toString());
+                        property.push(prop.toString());
                     }
                 }
             }
-            // 설정
+
+            // 4.컬렉션 추가(등록)
             for (var i = 0; i < property.length; i++) {
                 if (this[property[i]] instanceof Entity ){
                     collection = this[property[i]].items;
@@ -4809,14 +4569,13 @@ if (typeof Array.isArray === "undefined") {
                 }
                 collection.add(p_item);
             }
-
         };
 
         /**
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
-         * @param {String} p_name
-         * @param {Object | String | Number | Boolean} p_value
-         * @param {?Array<String> | String} p_entities <선택> 추가할 아이템 명령
+         * @param {string} p_name
+         * @param {object | string | number | boolean} p_value
+         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
          */
         BindCommand.prototype.addItem = function(p_name, p_value, p_entities) {
 
@@ -4835,8 +4594,8 @@ if (typeof Array.isArray === "undefined") {
         /**
          * 예시>
          * e.read.setEntity(['idx', 'addr'], 'valid');
-         * @param {String | Array} p_names 
-         * @param {?String | Array<String>} p_entities 
+         * @param {string | array} p_names 
+         * @param {?string | array<string>} p_entities 
          */
         BindCommand.prototype.setItem = function(p_names, p_entities) {
 
@@ -4858,7 +4617,6 @@ if (typeof Array.isArray === "undefined") {
                 if (typeof item !== "undefined") {
                     this.add(item, p_entities);
                 } else {
-                    // throw new Error("baseEntity에 [" + itemName + "] 아이템이 없습니다.");
                     console.warn("baseEntity에 [" + itemName + "] 아이템이 없습니다.");
                 }
             }
@@ -4867,7 +4625,6 @@ if (typeof Array.isArray === "undefined") {
         return BindCommand;
     
     }(BaseBind));
-    
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
@@ -4905,8 +4662,6 @@ if (typeof Array.isArray === "undefined") {
     var MetaObject;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        require("./object-implement"); // _implements() : 폴리필
-
         util                        = require("./utils");
         BaseBind                    = require("./bind-base");
         ItemCollection              = require("./entity-item").ItemCollection;
@@ -4952,7 +4707,7 @@ if (typeof Array.isArray === "undefined") {
         function BindModel(p_objectDI)  {
             _super.call(this);
 
-            var __attr         = new PropertyCollection(this);
+            var __attr          = new PropertyCollection(this);
             var __mode          = new PropertyFunctionCollection(this);
             var __cbRegister    = function() {};
             var __cbValid       = function() {return true};
@@ -4962,7 +4717,6 @@ if (typeof Array.isArray === "undefined") {
             var __itemType      = Item;
 
             var propObject;
-
 
             /** @property {attr} */
             Object.defineProperty(this, "attr", 
@@ -4993,7 +4747,7 @@ if (typeof Array.isArray === "undefined") {
             {
                 get: function() { return __cbRegister; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbRegister] type 'Function' can be added");
+                    if (typeof newValue !== "function") throw new Error("Only [cbRegister] type 'Function' can be added");
                     __cbRegister = newValue;
                 },
                 configurable: true,
@@ -5005,7 +4759,7 @@ if (typeof Array.isArray === "undefined") {
             {
                 get: function() { return __cbValid; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbValid] type 'Function' can be added");
+                    if (typeof newValue !== "function") throw new Error("Only [cbValid] type 'Function' can be added");
                     __cbValid = newValue;
                 },
                 configurable: true,
@@ -5017,7 +4771,7 @@ if (typeof Array.isArray === "undefined") {
             {
                 get: function() { return __cbReady; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbReady] type 'Function' can be added");
+                    if (typeof newValue !== "function") throw new Error("Only [cbReady] type 'Function' can be added");
                     __cbReady = newValue;
                 },
                 configurable: true,
@@ -5029,7 +4783,7 @@ if (typeof Array.isArray === "undefined") {
             {
                 get: function() { return __cbFail; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbFail] type 'Function' can be added");
+                    if (typeof newValue !== "function") throw new Error("Only [cbFail] type 'Function' can be added");
                     __cbFail = newValue;
                 },
                 configurable: true,
@@ -5041,7 +4795,7 @@ if (typeof Array.isArray === "undefined") {
             {
                 get: function() { return __cbError; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbError] type 'Function' can be added");
+                    if (typeof newValue !== "function") throw new Error("Only [cbError] type 'Function' can be added");
                     __cbError = newValue;
                 },
                 configurable: true,
@@ -5104,10 +4858,8 @@ if (typeof Array.isArray === "undefined") {
                 }
             }
 
-            /**
-             * @interface IBindModel 인터페이스 선언
-             */
-            this._implements(IBindModel);            
+            /** @implements IBindModel 인터페이스 구현 */
+            this._implements(IBindModel);
         }
         util.inherits(BindModel, _super);
 
@@ -5146,14 +4898,14 @@ if (typeof Array.isArray === "undefined") {
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
+         * @param {?array<string>} p_cmds <선택> 추가할 아이템 명령
          */
         BindModel.prototype.add = function(p_item, p_cmds) {
 
             var cmds = [];
             var property = [];      // 속성
 
-            // 유효성 검사
+            // 1.유효성 검사
             if (!(p_item instanceof Item)) {
                 throw new Error("Only [Item] type 'Item' can be added");
             }
@@ -5161,11 +4913,11 @@ if (typeof Array.isArray === "undefined") {
                 throw new Error("Only [a_cmd] type 'Array | string' can be added");
             }
             
-            // 초기화 설정
+            // 2.초기화 설정
             if (Array.isArray(p_cmds)) cmds = p_cmds;
             else if (typeof p_cmds === "string") cmds.push(p_cmds);
             
-            // 설정 대상 가져오기
+            // 3.설정 대상 가져오기
             if (cmds.length > 0) {
                 for (var i = 0; i< cmds.length; i++) {
                     
@@ -5185,7 +4937,7 @@ if (typeof Array.isArray === "undefined") {
                     }
                 }
             }
-            // 설정
+            // 4.설정(등록)
             for (var i = 0; i < property.length; i++) {
                 this[property[i]].add(p_item);
             }
@@ -5193,8 +4945,8 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
-         * @param {String} p_name
-         * @param {Object | String | Number | Boolean} p_value 
+         * @param {string} p_name
+         * @param {object | String | number | boolean} p_value 
          */
         BindModel.prototype.addItem = function(p_name, p_value, p_cmds) {
 
@@ -5212,21 +4964,21 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
-         * @param {?String | ?Array<String>} p_attr 
-         * @param {?String} p_entity 
+         * @param {?string | ?array<string>} p_attr 
+         * @param {?string} p_entity 
          */
         BindModel.prototype.loadAttr = function(p_attr, p_entity) {
 
-            var __attr = [];
+            var attr = [];
             var entity;
             var propName;
 
-            // 최기화
-            if (Array.isArray(p_attr)) __attr = __attr.concat(p_attr);      // Array의 경우
-            else if (typeof p_attr === "string") __attr.push(p_attr);       // String의 경우
-            else __attr = this.attr.properties;                             // 없을 경우 (전체 가져옴)
+            // 1.초기화
+            if (Array.isArray(p_attr)) attr = attr.concat(p_attr);      // Array의 경우
+            else if (typeof p_attr === "string") attr.push(p_attr);       // String의 경우
+            else attr = this.attr.properties;                             // 없을 경우 (전체 가져옴)
 
-            // 유효성 검사
+            // 2.유효성 검사
             if (typeof p_attr !== "undefined" && (!Array.isArray(p_attr) || typeof p_attr === "string")) {
                 throw new Error("Only [p_entities] type 'Array | string' can be added");
             }
@@ -5239,9 +4991,9 @@ if (typeof Array.isArray === "undefined") {
 
             entity = this[p_entity] || this._baseEntity;
 
-            // 속성정보를 등록
-            for(var i = 0; __attr.length > i; i++) {
-                propName = __attr[i];
+            // 3.속성정보 등록
+            for(var i = 0; attr.length > i; i++) {
+                propName = attr[i];
                 if (typeof propName === "string" && typeof this.attr[propName] !== "undefined") {
                     if(["number", "string", "boolean"].indexOf(typeof this.attr[propName]) > -1) {
                         entity.items.addValue(propName, this.attr[propName]);
@@ -5251,8 +5003,6 @@ if (typeof Array.isArray === "undefined") {
                 }
             }
         };
-
-        
 
         return BindModel;
     
@@ -5325,6 +5075,7 @@ if (typeof Array.isArray === "undefined") {
                 type: "POST",       // 전송 방법 : GET, POST
                 dataType: "json",   //
                 async: true,        // [*]비동기(ture), 동기(false)
+                crossDomain: false, // 크로스 도메인
                 success: null,      // 성공 콜백
                 error: null,        // 실패 콜백
                 complete: null      // 완료 콜백
@@ -5386,7 +5137,7 @@ if (typeof Array.isArray === "undefined") {
             {
                 get: function() { return __cbValid; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbValid] type 'Function' can be added");
+                    if (typeof newValue !== "function") throw new Error("Only [cbValid] type 'Function' can be added");
                     __cbValid = newValue;
                 },
                 configurable: true,
@@ -5398,7 +5149,7 @@ if (typeof Array.isArray === "undefined") {
             {
                 get: function() { return __cbBind; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbBind] type 'Function' can be added");
+                    if (typeof newValue !== "function") throw new Error("Only [cbBind] type 'Function' can be added");
                     __cbBind = newValue;
                 },
                 configurable: true,
@@ -5410,7 +5161,7 @@ if (typeof Array.isArray === "undefined") {
             {
                 get: function() { return __cbEnd; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbEnd] type 'Function' can be added");
+                    if (typeof newValue !== "function") throw new Error("Only [cbEnd] type 'Function' can be added");
                     __cbEnd = newValue;
                 },
                 configurable: true,
@@ -5419,8 +5170,6 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindCommandAjax, _super);
 
-
-
         /** @virtual */
         BindCommandAjax.prototype._execValid = function() {
             
@@ -5428,9 +5177,9 @@ if (typeof Array.isArray === "undefined") {
             var value = null;
 
             // 콜백 검사
-            if (!this.cbValid()) {
+            if (!this.cbValid(this.valid)) {
                 this._model.cbFail("cbValid() => false 리턴 ");
-                this._onExecuted();     // "실행 종료" 이벤트 발생
+                this._onExecuted(this);     // "실행 종료" 이벤트 발생
                 return false;
             } else {
                 // 아이템 검사
@@ -5439,8 +5188,8 @@ if (typeof Array.isArray === "undefined") {
                     value = this.valid.items[i].value === null ? this.valid.items[i].default : this.valid.items[i].value;
                     // null 검사를 모두 수행 : option 2
                     if (!(this.valid.items[i].valid(value, result, 2))) {
-                        this._model.cbFail(result.msg, result.code);
-                        this._onExecuted();     // "실행 종료" 이벤트 발생
+                        this._model.cbFail(result.value, result.msg, result.code);
+                        this._onExecuted(this);     // "실행 종료" 이벤트 발생
                         return false;
                     }
                 }
@@ -5476,7 +5225,6 @@ if (typeof Array.isArray === "undefined") {
             }
             
             this.cbBind(ajaxSetup);
-
             this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
 
@@ -5489,9 +5237,9 @@ if (typeof Array.isArray === "undefined") {
             var result = typeof p_result === "object" ? p_result : JSON.parse(JSON.stringify(p_result));
             
             // 처리 종료 콜백 호출
-            if (typeof this.cbEnd === "function" ) this.cbEnd(result);
+            if (typeof this.cbEnd === "function" ) this.cbEnd(result, p_status, p_xhr);
             
-            this._onExecuted();  // "실행 종료" 이벤트 발생
+            this._onExecuted(this);  // "실행 종료" 이벤트 발생
         };
 
         /**
@@ -5506,7 +5254,7 @@ if (typeof Array.isArray === "undefined") {
             var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;
 
             this._model.cbError(msg, p_status);
-            this._onExecuted();     // "실행 종료" 이벤트 발생
+            this._onExecuted(this);     // "실행 종료" 이벤트 발생
         };
 
         /**
@@ -5518,9 +5266,6 @@ if (typeof Array.isArray === "undefined") {
             
             var option = {};
             var result;
-            
-            var msg;
-            var code;
 
             // request VS Jquery.ajax 와 콜백 어뎁터 연결 함수
             function callback(error, response, body) {
@@ -5544,18 +5289,15 @@ if (typeof Array.isArray === "undefined") {
             }
 
             if (ajax && typeof ajax === "function") {
-                // try {
-                //     ajax(p_ajaxSetup);
-                // } catch (e) {
-                //     p_ajaxSetup.error();
-                // }
+
+                // REVIEW:: Jquery.ajax 사용
                 ajax(p_ajaxSetup);
+
             } else {
+
                 option.uri = p_ajaxSetup.url;
-                // option.json = true // json 으로 JSON 으로 요청함
-                
-                // 동기화 처리
-                if (p_ajaxSetup.async === false) request = sync_request;
+
+                if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리
 
                 if (p_ajaxSetup.type === "GET") {
                     option.method = "POST";
@@ -5584,7 +5326,7 @@ if (typeof Array.isArray === "undefined") {
          * @method 
          */
         BindCommandAjax.prototype.execute = function() {
-            this._onExecute();  // "실행 시작" 이벤트 발생
+            this._onExecute(this);  // "실행 시작" 이벤트 발생
             if (this._execValid()) this._execBind();
         };
         
@@ -5620,22 +5362,13 @@ if (typeof Array.isArray === "undefined") {
     // 2. 모듈 가져오기 (node | web)
     var util;
     var BindCommandAjax;
-    var EntityView;
-    var request;
-    var jquery;
-    var ajax;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("./utils");
         BindCommandAjax     = require("./bind-command-ajax");
-        EntityView          = require("./entity-view").EntityView;
-        request             = require("request");
     } else {
         util                = global._W.Common.Util;
         BindCommandAjax     = global._W.Meta.Bind.BindCommandAjax;
-        EntityView          = global._W.Meta.Entity.EntityView;
-        jquery              = global.jQuery || global.$;     // jquery 로딩 REVIEW:: 로딩 확인
-        ajax                = jquery.ajax;
     }
 
     //==============================================================
@@ -5754,7 +5487,7 @@ if (typeof Array.isArray === "undefined") {
             {
                 get: function() { return __cbOutput; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbOutput] type 'Function' can be added");
+                    if (typeof newValue  !== "function") throw new Error("Only [cbOutput] type 'Function' can be added");
                     __cbOutput = newValue;
                 },
                 configurable: true,
@@ -5777,15 +5510,19 @@ if (typeof Array.isArray === "undefined") {
 
             var loadOption = this.outputOption === 3 ? 2  : this.outputOption;
 
+            // 결과 EntityView에 로딩
             if(typeof p_result["entity"] !== "undefined" || typeof p_result["table"] !== "undefined" ) {
+                
                 this._output[0].load(p_result, loadOption); // this["output"]
+            
             } else if (Array.isArray(p_result["entities"])) {
+
                 for(var i = 0; p_result["entities"].length > i && typeof this._output[i] !== "undefined"; i++) {
                     this._output[i].load(p_result["entities"][i], loadOption);
                 }
             }
 
-            // 존재하는 아이템 중에 지정된 값으로 설정한다.
+            // 존재하는 아이템 중에 지정된 값으로 설정
             if (this.outputOption === 3) {
                 for (var i = 0; this._output.count > i; i++) {
                     if (this._output[i].items.count > 0 && this._output[i].rows.count > 0)
@@ -5850,25 +5587,19 @@ if (typeof Array.isArray === "undefined") {
     // 2. 모듈 가져오기 (node | web)
     var util;
     var BindModel;
-    var EntityTable;
     
     if (typeof module === "object" && typeof module.exports === "object") {    
-        require("./object-implement"); // _implements() : 폴리필
-         
         util                    = require("./utils");
         BindModel               = require("./bind-model");
-        EntityTable             = require("./entity-table").EntityTable;
     } else {
         util                    = global._W.Common.Util;
         BindModel               = global._W.Meta.Bind.BindModel;
-        EntityTable             = global._W.Meta.Entity.EntityTable;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
-    if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -5926,7 +5657,6 @@ if (typeof Array.isArray === "undefined") {
     
     }(BindModel));
     
-
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
@@ -5957,8 +5687,6 @@ if (typeof Array.isArray === "undefined") {
     var BindCommandEditAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
-        require("./object-implement"); // _implements() : 폴리필
-         
         util                    = require("./utils");
         IBindModelCreate        = require("./i-bind-model-create");
         BindModelAjax           = require("./bind-model-ajax");
@@ -5997,7 +5725,7 @@ if (typeof Array.isArray === "undefined") {
                 this.loadAttr();
             }
 
-            /** @interface IBindModelCreate 인터페이스 선언 */
+            /** @implements IBindModelCreate 인터페이스 구현 */
             this._implements(IBindModelCreate);
         }
         util.inherits(BindModelCreateAjax, _super);
@@ -6045,8 +5773,6 @@ if (typeof Array.isArray === "undefined") {
     var BindCommandLookupAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
-        require("./object-implement"); // _implements() : 폴리필
-         
         util                    = require("./utils");
         IBindModelRead          = require("./i-bind-model-read");
         BindModelAjax           = require("./bind-model-ajax");
@@ -6065,7 +5791,7 @@ if (typeof Array.isArray === "undefined") {
     if (typeof BindModelAjax === "undefined") throw new Error("[BindModelAjax] module load fail...");
     if (typeof BindCommandLookupAjax === "undefined") throw new Error("[BindCommandLookupAjax] module load fail...");
 
-
+    
     //==============================================================
     // 4. 모듈 구현    
     var BindModelReadAjax  = (function (_super) {
@@ -6085,7 +5811,7 @@ if (typeof Array.isArray === "undefined") {
                 this.loadAttr();
             }
 
-            /** @interface IBindModel 인터페이스 선언 */
+            /** @implements IBindModelRead 인터페이스 구현 */
             this._implements(IBindModelRead);              
         }
         util.inherits(BindModelReadAjax, _super);
@@ -6134,8 +5860,6 @@ if (typeof Array.isArray === "undefined") {
     var BindCommandLookupAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
-        require("./object-implement"); // _implements() : 폴리필
-         
         util                    = require("./utils");
         IBindModelReadDel       = require("./i-bind-model-read-del");
         BindModelAjax           = require("./bind-model-ajax");
@@ -6179,7 +5903,7 @@ if (typeof Array.isArray === "undefined") {
                 this.loadAttr();
             }
 
-            /** @interface IBindModelReadDel 인터페이스 선언 */
+            /** @implements IBindModelReadDel 인터페이스 구현 */
             this._implements(IBindModelReadDel);                    
         }
         util.inherits(BindModelReadDelAjax, _super);
@@ -6227,8 +5951,6 @@ if (typeof Array.isArray === "undefined") {
     var BindCommandLookupAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
-        require("./object-implement"); // _implements() : 폴리필
-        
         util                    = require("./utils");
         IBindModelList          = require("./i-bind-model-list");
         BindModelAjax           = require("./bind-model-ajax");
@@ -6267,7 +5989,7 @@ if (typeof Array.isArray === "undefined") {
                 this.loadAttr();
             }
 
-            /** @interface IBindModel 인터페이스 선언 */
+            /** @implements IBindModelList 인터페이스 구현 */
             this._implements(IBindModelList);
         }
         util.inherits(BindModelListAjax, _super);
@@ -6316,8 +6038,6 @@ if (typeof Array.isArray === "undefined") {
     var BindCommandLookupAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
-        require("./object-implement"); // _implements() : 폴리필
-        
         util                    = require("./utils");
         IBindModelListDel       = require("./i-bind-model-list");
         BindModelAjax           = require("./bind-model-ajax");
@@ -6359,7 +6079,7 @@ if (typeof Array.isArray === "undefined") {
                 this.loadAttr();
             }
 
-            /** @interface IBindModel 인터페이스 선언 */
+            /** @implements IBindModelListDel 인터페이스 구현 */
             this._implements(IBindModelListDel);
         }
         util.inherits(BindModelListDelAjax, _super);
@@ -6408,8 +6128,6 @@ if (typeof Array.isArray === "undefined") {
     var BindCommandEditAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {
-        require("./object-implement"); // _implements() : 폴리필
-
         util                    = require("./utils");
         IBindModelEdit          = require("./i-bind-model-edit");
         BindModelAjax           = require("./bind-model-ajax");
@@ -6452,7 +6170,7 @@ if (typeof Array.isArray === "undefined") {
                 this.loadAttr();
             }
 
-            /** @interface IBindModel 인터페이스 선언 */
+            /** @implements IBindModelEdit 인터페이스 구현 */
             this._implements(IBindModelEdit);              
 
         }
@@ -6545,7 +6263,7 @@ if (typeof Array.isArray === "undefined") {
                 this.loadAttr();
             }
 
-            /** @interface IBindModel 인터페이스 선언 */
+            /** @implements IBindModelForm 인터페이스 구현 */
             this._implements(IBindModelForm);
         }
         util.inherits(BindModelFormAjax, _super);

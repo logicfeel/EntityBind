@@ -60,14 +60,16 @@
             var __increase      = 100;      // order 의 자동 추가수
             var __getter        = function() { return this.__value; };
             var __setter        = function(val) { 
-                if(["number", "string", "boolean"].indexOf(typeof val) < 0) throw new Error("Only [value] type 'number, string, boolean' can be added");
+                if(["number", "string", "boolean"].indexOf(typeof val) < 0) {
+                    throw new Error("Only [value] type 'number, string, boolean' can be added");
+                }
                 this.__value = val;
             }
 
             this.__value         = null;
 
             // Entity 등록 & order(순서) 값 계산
-            if (p_entity && p_entity.instanceOf("Entity")) {
+            if (p_entity && p_entity instanceof MetaElement && p_entity.instanceOf("Entity")) {
                 __entity    = p_entity;
                 __order     = __entity.items.count === 0 ? __order : __entity.items[__entity.items.count - 1].order + __increase;
             }
@@ -78,7 +80,9 @@
                 get: function() { return __entity; },
                 set: function(newValue) { 
                     // TODO:: 자료종류를 검사해야함
-                    if (newValue && !newValue.instanceOf("Entity")) throw new Error("Only [entity] type 'Entity' can be added");
+                    if (newValue && !(newValue instanceof MetaElement && newValue.instanceOf("Entity"))) {
+                        throw new Error("Only [entity] type 'Entity' can be added");
+                    }
                     __entity = newValue;
                 },
                 configurable: true,
@@ -257,15 +261,14 @@
                 enumerable: true
             });
 
-
+            //---------------------------------------------------
             // 아이템 옵션속성 추가
             if (typeof p_property === "object" ) {
                 for(var prop in p_property) {
                     if (p_property.hasOwnProperty(prop) &&
-                    [
-                        "entity", "type", "size", "default", "caption", 
+                    [   "entity", "type", "size", "default", "caption", 
                         "isNotNull", "callback", "constraints", 
-                        "codeType", "order", "increase", "value", "getter", "setter", 
+                        "codeType", "order", "increase", "value", "getter", "setter" 
                     ].indexOf(prop) > -1) {
                         this[prop] = p_property[prop];
                     }
@@ -364,13 +367,13 @@
         
         /**
          * 
-         * @param {*} p_value 
-         * @param {*} r_result 
-         * @param {Number} p_option 1. isNotNull 참조 | 2: null검사 진행   |  3: null검사 무시
+         * @param {string} p_value 
+         * @param {object} r_result 
+         * @param {number} p_option 1. isNotNull 참조 | 2: null검사 진행   |  3: null검사 무시
          */
         Item.prototype.valid = function(p_value, r_result, p_option) {
-            // 기본값
             p_option = p_option || 1;   
+            r_result.value = p_value;
             r_result.msg = "";
             r_result.code = "";
             p_value = p_value || "";
@@ -379,7 +382,7 @@
 
             if (!(typeof p_value === "string")) throw new Error("Only [p_value] type 'string' can be added");
             
-            // 우선순위 높음
+            // 1. 정규식 유효성 검사 (우선순위 높음)
             for(var i = 0; this.constraints.length > i; i++) {
 
                 result = p_value.match(this.constraints[i].regex);
@@ -391,15 +394,9 @@
                     r_result.code  = this.constraints[i].code;
                     return false;
                 }
-
-                // if (result !== null) {
-                //     r_result.msg   = this.constraints[i].msg;
-                //     r_result.code  = this.constraints[i].code;
-                //     return false;
-                // }
             }
             
-            // Null 검사
+            // 2. Null 검사
             if ((p_option === 1 && this.isNotNull === true && p_value.trim().length <= 0) || 
                 (p_option === 2 && p_value.trim().length <= 0)) {
                 
@@ -441,6 +438,7 @@
         util.inherits(ItemCollection, _super);
         
         ItemCollection.prototype.contains = function(p_elem) {
+
             if (p_elem instanceof Item) {
                 return this.indexOfName(p_elem.name) > -1;
             } else {
@@ -454,7 +452,9 @@
             var property = {};
 
             if (typeof p_name !== "string") throw new Error("There is no required value [p_name].");
-            if(["number", "string", "boolean"].indexOf(typeof p_value) < 0) throw new Error("Only [value] type 'number, string, boolean' can be added");
+            if(["number", "string", "boolean"].indexOf(typeof p_value) < 0) {
+                throw new Error("Only [value] type 'number, string, boolean' can be added");
+            }
             
             property = { value: p_value}
 
@@ -463,31 +463,53 @@
             return this.add(item);
         };
 
-        /**
-         * Item 타입만 들어가게 제약조건 추가
-         * @override
-         */
-        // ItemCollection.prototype._getPropDescriptor = function(p_idx) {
-        //     return {
-        //         get: function() { return this._element[p_idx]; },
-        //         set: function(newValue) { 
-        //             if (newValue instanceof Item) {
-        //                 this._element[p_idx] = newValue;
-        //             } else {
-        //                 throw new Error("Only [Item] type instances can be added");
-        //             }
-        //         },
-        //         enumerable: true,
-        //         configurable: true
-        //     };
-        // };
-
-
-        // TODO::
-        
         return ItemCollection;
     
     }(PropertyCollection));
+
+
+    //---------------------------------------
+    var ItemTableCollection  = (function (_super) {
+        /**
+         * @class
+         * @constructor
+         * @param {*} p_onwer 소유자
+         * @param {?ItemCollection} p_baseCollection 참조기본 컬렉션
+         */
+        function ItemTableCollection(p_onwer) {
+            _super.call(this, p_onwer);
+        }
+        util.inherits(ItemTableCollection, _super);
+
+        /**
+         * @param {string | Item} p_object 
+         * @returns {Item} 등록한 아이템
+         */
+        ItemTableCollection.prototype.add  = function(p_object) {
+
+            var i_value;
+            var i_name;
+
+            if (typeof p_object === "string") {      
+                i_name  = p_object;
+                i_value = new this.itemType(i_name, this._onwer);
+            } else if (p_object instanceof this.itemType) {
+                // EntityTable은 직접만 적용(참조형 아이템 소유 못함)
+                i_name  = p_object.name;
+                i_value = p_object.clone();
+                i_value.entity = this._onwer;
+            } else {
+                throw new Error("string | Item object [p_object].");
+            }
+
+            if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
+
+            return _super.prototype.add.call(this, i_name, i_value);
+        };
+
+        return ItemTableCollection;
+    
+    }(ItemCollection));
 
 
     //---------------------------------------
@@ -501,14 +523,11 @@
         function ItemViewCollection(p_onwer, p_baseCollection) {
             _super.call(this, p_onwer);
 
-            // if (typeof p_baseCollection !== "undefined" && !(p_baseCollection instanceof ItemCollection)) {
             if (p_baseCollection && !(p_baseCollection instanceof ItemCollection)) {
                 throw new Error("Error!! ItemCollection object [p_baseCollection].");
             }
             
-            /**
-             * @protected @member
-             */
+            /** @protected */
             this._baseCollection = p_baseCollection;
         }
         util.inherits(ItemViewCollection, _super);
@@ -518,23 +537,21 @@
          *  - base(N),      string | Itme               => this 에 생성후 자신에 등록
          *  - base(Y),      string | Item               => Base 에 생성후 자신에 등록
          * 
+         *   // string                       => 생성 및 자신에 등록
+         *   // string <base>                => 생성 및 소유처에 등록
+         *   // Item                         => 생성 및 자신에 등록
+         *   // Item <base>                  => 생성 및 소유처에 등록
+         *   // string, collection           => 참조만 등록
+         *   // string, collection <base>    => 참조만 등록
+         * 
          *  TODO:: filter 옵션 : 충돌방지에 이용
          *  TODO:: 객체 비교는 string 이 아니고 값과 타입을 비교해야함 (그래야 참조를 사용)
          * 
-         * @param {String, Item} p_object 
+         * @param {string, Item} p_object 
          * @param {?ItemCollection} p_baseCollection
          */
         ItemViewCollection.prototype.add  = function(p_object, p_baseCollection) {
             
-            
-            // string                       => 생성 및 자신에 등록
-            // string <base>                => 생성 및 소유처에 등록
-            // Item                         => 생성 및 자신에 등록
-            // Item <base>                  => 생성 및 소유처에 등록
-            // string, collection           => 참조만 등록
-            // string, collection <base>    => 참조만 등록
-            
-            var item;
             var collection;
             var i_name;
             var i_value;
@@ -560,12 +577,9 @@
             
             // 기본참조 컬렉션 또는 전달참조 컬렉션인 경우
             if (collection) {
-                // if (collection.contains(i_name)) {
                 if (collection.contains(collection[i_name])) {
-                    // item = collection[i_name];                      // 참조 가져옴
                     i_value = collection[i_name];                      // 참조 가져옴
                 } else {
-                    // item = collection.add(p_object);                // 컬렉션에 등록
                     i_value = collection.add(p_object);                // 컬렉션에 등록
                 }
                 
@@ -576,17 +590,12 @@
                 }
             }
             
-            // item = item || p_object;
-            
             return _super.prototype.add.call(this, i_name, i_value);
-            // return _super.prototype.add.call(this, item);           // 자신에 등록
         };
 
         ItemViewCollection.prototype.addEntity  = function(p_entity) {
-            if (typeof p_entity === "undefined" || 
-                typeof p_entity.instanceOf === "undefined" || 
-                !p_entity.instanceOf("Entity")) {
-                throw new Error("There is no required value [p_name].");
+            if (typeof p_entity === "undefined" && !(p_entity instanceof MetaElement && p_entity.instanceOf("Entity"))) {
+                throw new Error("Only [p_entity] type 'Entity' can be added");
             }
 
             for (var i = 0; p_entity.items.count > i; i++) {
@@ -598,53 +607,6 @@
     
     }(ItemCollection));
 
-    //---------------------------------------
-    var ItemTableCollection  = (function (_super) {
-        /**
-         * @class
-         * @constructor
-         * @param {*} p_onwer 소유자
-         * @param {?ItemCollection} p_baseCollection 참조기본 컬렉션
-         */
-        function ItemTableCollection(p_onwer) {
-            _super.call(this, p_onwer);
-        }
-        util.inherits(ItemTableCollection, _super);
-
-        /**
-         * 
-         * @param {String | Item} p_object 
-         * @returns {Item} 등록한 아이템
-         */
-        ItemTableCollection.prototype.add  = function(p_object) {
-
-            var i_value;
-            var i_name;
-
-            if (typeof p_object === "string") {      
-                i_name  = p_object;
-                // i_value = new Item(i_name, this._onwer);
-                i_value = new this.itemType(i_name, this._onwer);
-            // } else if (p_object instanceof Item) {
-            } else if (p_object instanceof this.itemType) {
-                // i_name  = p_object.name;
-                // i_value = p_object;
-                // EntityTable은 직접만 적용(참조형 아이템 소유 못함)
-                i_name  = p_object.name;
-                i_value = p_object.clone();
-                i_value.entity = this._onwer;
-            } else {
-                throw new Error("string | Item object [p_object].");
-            }
-
-            if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
-
-            return _super.prototype.add.call(this, i_name, i_value);
-        };
-
-        return ItemTableCollection;
-    
-    }(ItemCollection));
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)

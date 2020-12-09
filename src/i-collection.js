@@ -16,8 +16,6 @@
     var ILookupControl;
     
     if (typeof module === "object" && typeof module.exports === "object") {     
-        require("./object-implement"); // _implements() : 폴리필
-
         IPartControl        = require("./i-control-part");
         ILookupControl      = require("./i-control-lookup");
     } else {
@@ -42,7 +40,8 @@
              */
             this.list = [];
 
-            /** @implements */
+            /** @implements IPartControl 인터페이스 구현 */
+            /** @implements ILookupControl 인터페이스 구현 */
             this._implements(IPartControl, ILookupControl);            
         }
     

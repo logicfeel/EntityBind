@@ -16,17 +16,19 @@
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
 
-    // if (typeof module === "object" && typeof module.exports === "object") {     
-    //     // util                = require("../src/utils");
-    // } else {
-    //     // util                = global._W.Common.Util;
-    // }
+    
+    if (typeof module === "object" && typeof module.exports === "object") {     
+        require("../src/object-implement"); // _implements() : 폴리필
+        // util                = require("../src/utils");
+    } else {
+        // util                = global._W.Common.Util;
+    }
 
     //==============================================================
     // 3. 테스트 본문
     function run() {
     
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("MetaElement_Sub :: 설명 ");
         if (true) {
             console.log("Result = Success");

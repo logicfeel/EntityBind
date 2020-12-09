@@ -19,7 +19,6 @@
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         require("../src/object-implement"); // _implements() : 폴리필
-
         util                = require("../src/utils");
     } else {
         util                = global._W.Common.Util;
@@ -29,7 +28,7 @@
     // 3. 테스트 본문
     function run() {
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("this._implements(interface) :: 인터페이스 선언 ");
         var ISuper  = (function (_super) {
             function ISuper() {
@@ -47,7 +46,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("this._implements(interface) :: 다중 인터페이스 선언 <- 클래스 구현 ");
         var ISuper  = (function (_super) {
             function ISuper() {
@@ -84,7 +83,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("this._implements(interface) :: 인터페이스 선언 <- 클래스 구현 + 클래스 상속 ");
         var ISuper  = (function (_super) {
             function ISuper() {
@@ -123,7 +122,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("this._implements(interface) :: 인터페이스 선언 <- 인터페이스 선언 <- 클래스 구현 ");
         var ISuper  = (function (_super) {
             function ISuper() {
@@ -166,7 +165,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("this._implements(interface) :: 인터페이스 선언 <- 인터페이스 상속 <- 클래스 구현 ");
         var ISuper  = (function (_super) {
             function ISuper() {

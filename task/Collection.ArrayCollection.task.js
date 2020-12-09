@@ -19,6 +19,7 @@
     var ArrayCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
+        require("../src/object-implement"); // _implements() : 폴리필
         util                = require("../src/utils");
         ArrayCollection     = require("../src/collection-array");
     } else {
@@ -40,7 +41,7 @@
             this.items = new TestCollection(this);
         }
         
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("ArrayCollection.count, list :: 컬렉션, 속성 ");
         var table = new TestTable();
         table.items.add(100);
@@ -56,7 +57,7 @@
             errorCount++;
         }
                 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("ArrayCollection.add(value) :: 추가 ");
         var table = new TestTable();
         table.items.add("A1");
@@ -67,7 +68,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("ArrayCollection.remove(elem) :: 삭제 ");
         var table = new TestTable();
         var val = "VAL";
@@ -82,7 +83,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("ArrayCollection.removeAt(idx) :: idx 삭제 (중간) ");
         var table = new TestTable();
         table.items.add("A1");
@@ -99,7 +100,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("ArrayCollection.removeAt(idx) :: idx 삭제 (처음) ");
         var table = new TestTable();
         table.items.add("A1");
@@ -116,7 +117,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("ArrayCollection.removeAt(idx) :: idx 삭제 (끝) ");
         var table = new TestTable();
         table.items.add("A1");
@@ -133,7 +134,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("ArrayCollection.clear() :: 전체 삭제(초기화) ");
         var table = new TestTable();
         table.items.add("A1");
@@ -150,7 +151,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("ArrayCollection.contains(elem) :: 유무 검사 ");
         var table = new TestTable();
         table.items.add("A1");
@@ -165,7 +166,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("ArrayCollection.indexOf(elem) :: idx 조회 ");
         var table = new TestTable();
         table.items.add("A1");
@@ -183,7 +184,7 @@
             errorCount++;
         }
 
-        // console.log("-----------------------------------------------------------------");
+        // console.log("---------------------------------------------------------------------------");
         // console.log("BaseCollection.regProperty(name, getter, setter) :: 정적속성 등록 ");
         // var table = new TestTable();
         // table.items.add("A1");
@@ -197,7 +198,7 @@
         //     errorCount++;
         // }
 
-        // console.log("-----------------------------------------------------------------");
+        // console.log("---------------------------------------------------------------------------");
         // console.log("BaseCollection.delProperty(name) :: 정적속성 제거 ");
         // var table = new TestTable();
         // table.items.regProperty('cnt', function() {return this.count});
@@ -208,7 +209,7 @@
         //     console.warn("Result = Fail");
         //     errorCount++;
         // }
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BaseCollection.elementType = function :: 값타입 설정 ");
         var table = new TestTable();
         var Class1  = function(p_name) {
@@ -229,7 +230,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BaseCollection.onAdd :: 등록 이벤트 ");
         var table = new TestTable();
         result = [];
@@ -247,7 +248,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BaseCollection.onRemove :: 삭제 이벤트 ");
         var table = new TestTable();
         result = [];
@@ -264,7 +265,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BaseCollection.onClear :: 초기화(전체삭제) 이벤트 ");
         var table = new TestTable();
         result = [];
@@ -282,7 +283,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BaseCollection.onChanging :: 변경전(add/remove/removeAt/claer) 이벤트 ");
         console.log("BaseCollection.onChanged :: 변경후(add/remove/removeAt/claer) 이벤트 ");
         var table = new TestTable();

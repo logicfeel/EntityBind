@@ -30,6 +30,7 @@
     var BindCommandLookupAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {  
+        require("../src/object-implement"); // _implements() : 폴리필
         util                    = require("../src/utils");
         Row                     = require("../src/entity-row").Row;
         Item                    = require("../src/entity-item").Item;
@@ -160,7 +161,7 @@
 
         
         if (isCallback) {
-            console.log("-----------------------------------------------------------------");
+            console.log("---------------------------------------------------------------------------");
             console.log("new BindModelCreateAjax() :: DI 의존성 주입 ");
             var model = new BindModelCreateAjax(new CreateDI(), true);
             model.create.setItem(["i1", "i2", "i3"], "bind");
@@ -170,7 +171,7 @@
             model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
             model.result = [];
             model.create.cbBind = function(p_ajax) {
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("cbBind  :: 콜백 ");
                 if (p_ajax.data["i1"] === "V1" && 
                     p_ajax.data["i2"] === "V2" && 
@@ -183,7 +184,7 @@
                 }
             };
             model.create.cbEnd = function(p_result) {
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("result.entity.return === 0  :: 콜백 ");
                 if (p_result["entity"]["return"] === 0 && 
                     this._model.result.length === 0 &&
@@ -195,7 +196,7 @@
                 }
             };
             model.onExecuted = function() {
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("this.result.length === 0  :: 콜백 ");
                 if (
                     this.result.length === 0 &&
@@ -210,7 +211,7 @@
         }
 
         if (isCallback) {
-            console.log("-----------------------------------------------------------------");
+            console.log("---------------------------------------------------------------------------");
             console.log("new BindModelReadAjax() :: DI 의존성 주입 ");
             var model = new BindModelReadAjax(new ReadDI(), true);
             model.read.setItem(["i1", "i2", "i3"], "bind");
@@ -218,7 +219,7 @@
             model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
             model.result = [];
             model.read.cbBind = function(p_ajax) {
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("cbBind  :: 콜백 ");
                 if (p_ajax.data["i1"] === "V1" && 
                     p_ajax.data["i2"] === "V2" && 
@@ -231,7 +232,7 @@
                 }
             };
             model.read.cbEnd = function(p_result) {
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("result.entity.return === 0  :: 콜백 BindModelReadAjax ");
                 if (p_result["entity"]["return"] === 0 && 
                     this._model.result.length === 0 &&
@@ -243,7 +244,7 @@
                 }
             };
             model.onExecuted = function() {
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("this.result.length === 0  :: 콜백 BindModelReadAjax ");
                 if (
                     this.result.length === 0 &&
@@ -256,7 +257,7 @@
             };
             
             model.read.cbOutput = function(p_result) {
-                console.log("-----------------------------------------------------------------");
+                console.log("---------------------------------------------------------------------------");
                 console.log("BindCommandAjax.execute() :: 콜백 ");
                 if (this.output.items.count > 0 &&
                     this.output.rows.count > 0 &&

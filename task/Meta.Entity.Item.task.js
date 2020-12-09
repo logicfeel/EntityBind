@@ -21,7 +21,8 @@
     var EntityView;
     var EntityTable;
     
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === "object" && typeof module.exports === "object") {   
+        require("../src/object-implement"); // _implements() : 폴리필  
         Row                     = require("../src/entity-row").Row;
         Item                    = require("../src/entity-item").Item;
         EntityView              = require("../src/entity-view").EntityView;
@@ -37,7 +38,7 @@
     // 3. 테스트 본문
     function run() {
     
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("new Item(name, null, property)  :: 생성시 속성 설정 ");
         var item = new Item("i1", null, {
             type: "text",
@@ -69,7 +70,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.setConstraint(regex, msg, code, return) :: 제약조건 등록 ");
         var item = new Item("i1");
         item.setConstraint(/10/, "10 시작...", 100, true);
@@ -86,7 +87,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.defineValueProperty(getter) :: value getter만 설정 ");
         var item = new Item("i1");
         var item_value = 10;
@@ -100,7 +101,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.defineValueProperty( , setter) :: value setter만 설정 ");
         var item = new Item("i1");
         var item_value = 10;
@@ -116,7 +117,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.defineValueProperty(?getter, ?setter) :: value getter/setter ");
         var item = new Item("i1");
         var item_value = 10;
@@ -132,7 +133,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.getter = func :: getter 만 설정 ");
         var item = new Item("i1");
         var item_value = 10;
@@ -148,7 +149,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.getter = func :: setter 만 설정 ");
         var item = new Item("i1");
         var item_value = 10;
@@ -164,7 +165,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.getter = func :: getter/setter 설정 ");
         var item = new Item("i1");
         var item_value = 10;
@@ -181,7 +182,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.valid(value, r_result) :: 제약조건 검사 ");
         var item = new Item("i1");
         item.isNotNull = false;
@@ -201,7 +202,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.valid(value, r_result, 1) :: 제약조건 검사 (isNotNull 참조) ");
         var item = new Item("i1");
         item.isNotNull = false;
@@ -218,7 +219,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.valid(value, r_result, 2) :: 제약조건 검사 (null검사 진행 ) ");
         var item = new Item("i1");
         item.isNotNull = false;
@@ -235,7 +236,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.valid(value, r_result, 3) :: 제약조건 검사 (null검사 무시) ");
         var item = new Item("i1");
         item.isNotNull = false;
@@ -252,7 +253,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.clone()  :: 복제 ");
         var table = new EntityTable("T1");
         var item = new Item("i1", table, {
@@ -288,7 +289,7 @@
         }
 
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.getTypes() :: 타입 조회(상속) ");
         var item = new Item("i1");
         var types = item.getTypes();

@@ -81,19 +81,6 @@
                     this.__event.subscribe(p_fn, "executed");
                 }
             });
-
-            // /** @property */
-            // Object.defineProperty(this, "eventPropagation", {
-            //     enumerable: true,
-            //     configurable: true,
-            //     set: function(p_bool) {
-            //         if (typeof p_bool !== "boolean") throw new Error("Only [p_bool] type 'Boolean' can be added");
-            //         // this.__event.propagation = p_bool;
-            //         __propagation = p_bool;
-            //     },
-            //     get: function() { return __propagation; }
-            //     // get: function() { return this.__event.propagation; }
-            // });
         }
         util.inherits(BaseBind, _super);
 
@@ -106,24 +93,18 @@
         };
 
         /** @event */
-        BaseBind.prototype._onExecute = function() {
-            this.__event.publish("execute"); 
+        BaseBind.prototype._onExecute = function(p_bindCommand) {
+            this.__event.publish("execute", p_bindCommand);
         };
 
         /** @event */
-        BaseBind.prototype._onExecuted = function() {
-            this.__event.publish("executed"); 
+        BaseBind.prototype._onExecuted = function(p_bindCommand) {
+            this.__event.publish("executed", p_bindCommand); 
         };
-
-        // /** @event */
-        // BaseBind.prototype._onFail = function(p_msg) {
-        //     this.__event.publish("fail", p_msg); 
-        // };        
 
         return BaseBind;
     
     }(MetaObject));
-    
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)

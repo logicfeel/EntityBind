@@ -17,26 +17,17 @@
     var util;
     var Entity;
     var PropertyCollection;
-    var IGroupControl;
-    var IAllControl;
-    var RowCollection;
     var ItemTableCollection;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
         Entity              = require("./entity-base");
         PropertyCollection  = require("./collection-property");
-        IGroupControl       = require("./i-control-group");
-        IAllControl         = require("./i-control-all");
-        RowCollection       = require("./entity-row").RowCollection;
         ItemTableCollection      = require("./entity-item").ItemTableCollection;
     } else {
         util                = global._W.Common.Util;
         Entity              = global._W.Meta.Entity.Entity;
         PropertyCollection  = global._W.Collection.PropertyCollection;
-        IGroupControl       = global._W.Interface.IGroupControl;
-        IAllControl         = global._W.Interface.IAllControl;
-        RowCollection       = global._W.Meta.Entity.RowCollection;
         ItemTableCollection      = global._W.Meta.Entity.ItemTableCollection;
     }
 
@@ -45,26 +36,16 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
     if (typeof ItemTableCollection === "undefined") throw new Error("[ItemTableCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
     var EntityTable  = (function (_super) {
-        /**
-         * @abstract @class
-         */
+        /** @class */
         function EntityTable(p_name) {
             _super.call(this, p_name);
 
             this.items = new ItemTableCollection(this);
-
-            // /**
-            //  * @interface IProperyCollection 인터페이스 선언
-            //  */
-            // this._implements(IGroupControl, IAllControl);                
         }
         util.inherits(EntityTable, _super);
 
@@ -142,28 +123,6 @@
 
             return this[i_name];
         };
-        
-        /**
-         * EntityTable 타입만 들어가게 제약조건 추가
-         * @override
-         */
-        // EntityTableCollection.prototype._getPropDescriptor = function(p_idx) {
-        //     return {
-        //         get: function() { return this._element[p_idx]; },
-        //         set: function(newValue) { 
-        //             if (newValue instanceof EntityTable) {
-        //                 this._element[p_idx] = newValue;
-        //             } else {
-        //                 throw new Error("Only [EntityTable] type instances can be added");
-        //             }
-        //         },
-        //         enumerable: true,
-        //         configurable: true
-        //     };
-        // };
-
-
-        // TODO::
         
         return EntityTableCollection;
     

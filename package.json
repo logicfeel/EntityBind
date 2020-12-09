@@ -1,7 +1,7 @@
 {
   "name": "entitybind",
   "version": "1.4.0",
-  "description": "엔티티모듈 + 바인드모듈의 개발 위치",
+  "description": "Meta.Entity, Meta.Bind 개발 위치",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

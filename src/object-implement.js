@@ -21,10 +21,11 @@ if ((typeof Object.prototype._implements === "undefined") ||
 
         //==============================================================
         // 4. 모듈 구현    
+
         /**
          * 인터페이스 객체 유무 검사
          * @function  
-         * @param {Function} p_imp 
+         * @param {function} p_imp 
          */
         var isImplementOf = function(p_imp) {
             for (var i = 0; i < this._interface.length; i++) {
@@ -38,9 +39,9 @@ if ((typeof Object.prototype._implements === "undefined") ||
          * 인터페이스(클래스) 등록
          * @protected
          * @function 
-         * @param {Function} arg 함수형 인터페이스 목록
+         * @param {function} args 함수형 인터페이스 목록
          */
-        var _implements = function _implements(arg) {
+        var _implements = function _implements(args) {
             this._interface = this._interface || [];
 
             var typeName;

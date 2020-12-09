@@ -22,6 +22,7 @@
     var EntityTable;
     
     if (typeof module === "object" && typeof module.exports === "object") {     
+        require("../src/object-implement"); // _implements() : 폴리필
         Row                     = require("../src/entity-row").Row;
         ItemDOM                 = require("../src/entity-item-dom");
         EntityView              = require("../src/entity-view").EntityView;
@@ -37,7 +38,7 @@
     // 3. 테스트 본문
     function run() {
     
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("clone() :: 복제 ");
         var table = new EntityTable("T1");
         var item = new ItemDOM("i1", table, {
@@ -82,7 +83,7 @@
             errorCount++;
         }
         
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("getTypes() :: 타입 조회(상속) ");
         var item = new ItemDOM("i1");
         var types = item.getTypes();

@@ -27,6 +27,7 @@
     var BindCommandLookupAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {  
+        require("../src/object-implement"); // _implements() : 폴리필
         util                    = require("../src/utils");
         Row                     = require("../src/entity-row").Row;
         Item                    = require("../src/entity-item").Item;
@@ -100,7 +101,7 @@
         }
         util.inherits(ReadDI, IBindModelRead);
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.add(item) :: 전체 cmd에 아이템 등록 (cmd 사용자 추가후) ");
         var model = new BindModelReadAjax();
         model.read2 = new BindCommandLookupAjax(model, model._baseEntity);
@@ -137,7 +138,7 @@
         }
 
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("new BindModelReadAjax(di) :: DI 주입 생성 ");
         var model = new BindModelReadAjax(new ReadDI());
         if (model.attr.count === 3 &&
@@ -153,7 +154,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("new BindModelReadAjax(di, isLoadAttr) :: DI 주입 생성 + 자동 로딩 ");
         var model = new BindModelReadAjax(new ReadDI(), true);
         if (model.attr.count === 3 &&
@@ -172,7 +173,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("new BindModelReadAjax(di, isLoadAttr, itemType) :: DI 주입 생성 + 자동 로딩 + 아이템 타입 지정 ");
         var model = new BindModelReadAjax(new ReadDI(), true, ItemDOM);
         if (model.attr.count === 3 &&
@@ -191,7 +192,7 @@
         }
     
         
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModelReadAjax.getTypes() :: 타입 조회(상속) ");
         var model = new BindModelReadAjax();
         var types = model.getTypes();

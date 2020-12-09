@@ -21,7 +21,8 @@
     var EntityView;
     var EntityTable;
     
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === "object" && typeof module.exports === "object") {   
+        require("../src/object-implement"); // _implements() : 폴리필  
         Row                     = require("../src/entity-row").Row;
         Item                    = require("../src/entity-item").Item;
         EntityView              = require("../src/entity-view").EntityView;
@@ -37,7 +38,7 @@
     // 3. 테스트 본문
     function run() {
     
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("new Row() :: 생성  ");
         console.log("new Row(entity) :: 생성 ");
         var table = new EntityTable("T1");
@@ -58,7 +59,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("RowCollection.add(Row() :: 등록 ");
         var table = new EntityTable("T1");
         table.items.addValue("i1", "V1");
@@ -75,7 +76,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("RowCollection.add(Row(row) :: 등록 ");
         var table = new EntityTable("T1");
         table.items.addValue("i1", "V1");

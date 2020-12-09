@@ -72,7 +72,7 @@
             {
                 get: function() { return __cbOutput; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Function)) throw new Error("Only [cbOutput] type 'Function' can be added");
+                    if (typeof newValue  !== "function") throw new Error("Only [cbOutput] type 'Function' can be added");
                     __cbOutput = newValue;
                 },
                 configurable: true,
@@ -95,15 +95,19 @@
 
             var loadOption = this.outputOption === 3 ? 2  : this.outputOption;
 
+            // 결과 EntityView에 로딩
             if(typeof p_result["entity"] !== "undefined" || typeof p_result["table"] !== "undefined" ) {
+                
                 this._output[0].load(p_result, loadOption); // this["output"]
+            
             } else if (Array.isArray(p_result["entities"])) {
+
                 for(var i = 0; p_result["entities"].length > i && typeof this._output[i] !== "undefined"; i++) {
                     this._output[i].load(p_result["entities"][i], loadOption);
                 }
             }
 
-            // 존재하는 아이템 중에 지정된 값으로 설정한다.
+            // 존재하는 아이템 중에 지정된 값으로 설정
             if (this.outputOption === 3) {
                 for (var i = 0; this._output.count > i; i++) {
                     if (this._output[i].items.count > 0 && this._output[i].rows.count > 0)

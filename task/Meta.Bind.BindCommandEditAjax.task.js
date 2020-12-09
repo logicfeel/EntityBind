@@ -25,6 +25,7 @@
     var IBindModelCreate;
 
     if (typeof module === "object" && typeof module.exports === "object") {  
+        require("../src/object-implement"); // _implements() : 폴리필        
         util                    = require("../src/utils");
         Row                     = require("../src/entity-row").Row;
         Item                    = require("../src/entity-item").Item;
@@ -51,7 +52,7 @@
         };
         util.inherits(CreateDI, IBindModelCreate);
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindCommand.add(item) :: 전체 엔티티에 아이템 추가 ");
         var model = new BindModelCreateAjax();
         var i1 = new Item("i1");    // 참조 값으로 넘김
@@ -75,7 +76,7 @@
             errorCount++;
         }
         
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindCommand.add(item, entityName) :: [지정된] 엔티티에 아이템 추가 ");
         var model = new BindModelCreateAjax();
         var i1 = new Item("i1");
@@ -94,7 +95,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindCommand.add(item, entityNames) :: [지정된] 엔티티[들]에 아이템 추가 ");
         var model = new BindModelCreateAjax();
         var i1 = new Item("i1");
@@ -116,7 +117,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindCommand.addItem(name, value) :: 아이템 생성 및 [전체] 엔티티에 추가 ");
         var model = new BindModelCreateAjax();
         model.create.addItem("i1", "V1");
@@ -136,7 +137,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindCommand.addItem(name, value, entityName) :: 아이템 생성 및 [특정] 엔티티에 추가 ");
         var model = new BindModelCreateAjax();
         var i1 = new Item("i1");
@@ -154,7 +155,7 @@
             errorCount++;
         }
         
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindCommand.addItem(name, value, entityNames) :: 아이템 생성 및 [지정된] 엔티티[들]에 추가 ");
         var model = new BindModelCreateAjax();
         var i1 = new Item("i1");
@@ -174,7 +175,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindCommand.setItem(name | names) :: baseEntity의 [지정한] 아이템을 [전체] 엔티티에 추가 ");
         var model = new BindModelCreateAjax();
         model.first.items.add(new Item("i1"));
@@ -195,7 +196,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindCommand.setItem(names, entityName) :: baseEntity의 [지정한] 아이템을 [지정된] 엔티티에 추가 ");
         var model = new BindModelCreateAjax();
         model.first.items.add(new Item("i1"));
@@ -218,7 +219,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindCommand.setItem(names, entityNames) :: baseEntity의 [지정한] 아이템을 [지정된] 엔티티[들]에 추가 ");
         var model = new BindModelCreateAjax();
         model.first.items.add(new Item("i1"));
@@ -246,7 +247,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 ");
        
         var model = new BindModelCreateAjax();
@@ -279,7 +280,7 @@
             errorCount++;
         }
 
-        console.log("-----------------------------------------------------------------");
+        console.log("---------------------------------------------------------------------------");
         console.log("BindCommandEditAjax.getTypes() :: 타입 조회(상속) ");
         var model = new BindModelCreateAjax();
         var types = model.create.getTypes();

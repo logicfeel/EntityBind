@@ -18,8 +18,6 @@
     var IMarshal;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        require("./object-implement"); // _implements() : 폴리필
-
         util                = require("./utils");
         MetaObject          = require("./meta-object");
         IMarshal            = require("./i-marshal");
@@ -54,9 +52,7 @@
 
             this.name = p_name;
             
-            /**
-             * @interface IMarshal 인터페이스 선언
-             */
+            /** @implements IMarshal 인터페이스 구현 */
             this._implements(IMarshal);            
         }
         util.inherits(MetaElement, _super);
@@ -89,10 +85,9 @@
         };
 
         /**
-         * @method 객체 얻기 : 추상메소드
+         * @method 객체 얻기 : 추상메소드 : REVIEW:: 공통 요소? 확인필요
          */
         MetaElement.prototype.getObject  = function(p_context) {
-            // throw new Error("[ getObject() ] Abstract method definition, fail...");
 
             var obj     = {};
 

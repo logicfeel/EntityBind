@@ -34,7 +34,7 @@
          */
         function MetaObject() {
             
-            // 구현할 인터페이스 선언
+            /** @implements IObject 인터페이스 구현 */
             this._implements(IObject);
         }
         
@@ -66,9 +66,8 @@
             return arr.indexOf(p_name) > -1;
         };
 
-
-
         return MetaObject;
+        
     }());
 
     //==============================================================
