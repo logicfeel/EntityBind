@@ -25,7 +25,7 @@
             this.mode       = null;
 
             this.cbRegister = null;
-            this.cbValid    = null;
+            this.cbCheck    = null;
             this.cbReady    = null;
 
             this.onExecute  = null;

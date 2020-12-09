@@ -76,8 +76,8 @@
                return "cbRegister";
             };
         
-            this.cbValid = function() {
-                return "cbValid";
+            this.cbCheck = function() {
+                return "cbCheck";
             };
         
             this.cbReady = function(model) {
@@ -143,7 +143,7 @@
         var model = new BindModelReadAjax(new ReadDI());
         if (model.attr.count === 3 &&
             model.cbRegister() === "cbRegister" &&
-            model.cbValid() === "cbValid" &&
+            model.cbCheck() === "cbCheck" &&
             model.cbReady() === "cbReady" &&
             model.cbFail() === "cbFail" &&
             model.cbError() === "cbError" &&

@@ -76,8 +76,8 @@
                return "cbRegister";
             };
         
-            this.cbValid = function() {
-                return "cbValid";
+            this.cbCheck = function() {
+                return "cbCheck";
             };
         
             this.cbReady = function(model) {
@@ -143,15 +143,15 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.init() ");
         console.log("BindModel.cbRegister :: 등록 ");
-        console.log("BindModel.cbValid :: 검사 ");
+        console.log("BindModel.cbCheck :: 검사 ");
         console.log("BindModel.cbReady :: 준비 완료 ");
         var model = new BindModelCreateAjax();
         model.result = [];
         model.cbRegister = function() {
             this.result.push("cbRegister");
         };
-        model.cbValid = function() {
-            this.result.push("cbValid");
+        model.cbCheck = function() {
+            this.result.push("cbCheck");
             return true;
         };
         model.cbReady = function() {
@@ -159,7 +159,7 @@
         };
         model.init();
         if (model.result[0] === "cbRegister" && 
-            model.result[1] === "cbValid" && 
+            model.result[1] === "cbCheck" && 
             model.result[2] === "cbReady" && 
             model.result.length === 3 && 
         true) {
@@ -514,7 +514,7 @@
         var model = new BindModelCreateAjax(new CreateDI());
         if (model.attr.count === 3 &&
             model.cbRegister() === "cbRegister" &&
-            model.cbValid() === "cbValid" &&
+            model.cbCheck() === "cbCheck" &&
             model.cbReady() === "cbReady" &&
             model.cbFail() === "cbFail" &&
             model.cbError() === "cbError" &&

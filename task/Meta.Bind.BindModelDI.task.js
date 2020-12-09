@@ -85,7 +85,7 @@
                return "cbRegister";
             };
         
-            this.cbValid = function() {
+            this.cbCheck = function() {
                 return true;
             };
         
@@ -134,7 +134,7 @@
                return "cbRegister";
             };
         
-            this.cbValid = function() {
+            this.cbCheck = function() {
                 return true;
             };
         

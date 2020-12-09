@@ -103,8 +103,8 @@
                 _this.read.execute();
             });
         };
-        this.cbValid = function() {   // 2.검사
-            console.log("cbValid : 화면 유효성 검사 ");
+        this.cbCheck = function() {   // 2.검사
+            console.log("cbCheck : 화면 유효성 검사 ");
             if (this.attr.cmd === "") {
                 alert("에러! 잘못된 접근경로입니다.");
                 return false;

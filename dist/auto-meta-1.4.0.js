@@ -1095,7 +1095,7 @@ if (typeof Array.isArray === "undefined") {
             this.mode       = null;
 
             this.cbRegister = null;
-            this.cbValid    = null;
+            this.cbCheck    = null;
             this.cbReady    = null;
 
             this.onExecute  = null;
@@ -4710,7 +4710,7 @@ if (typeof Array.isArray === "undefined") {
             var __attr          = new PropertyCollection(this);
             var __mode          = new PropertyFunctionCollection(this);
             var __cbRegister    = function() {};
-            var __cbValid       = function() {return true};
+            var __cbCheck       = function() {return true};
             var __cbReady       = function() {};
             var __cbFail        = function() { console.warn("바인딩 실패하였습니다."); };
             var __cbError       = function() { console.error("바인딩 오류가 발생 하였습니다."); };
@@ -4754,13 +4754,13 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
             
-            /** @property {cbValid} */
-            Object.defineProperty(this, "cbValid", 
+            /** @property {cbCheck} */
+            Object.defineProperty(this, "cbCheck", 
             {
-                get: function() { return __cbValid; },
+                get: function() { return __cbCheck; },
                 set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbValid] type 'Function' can be added");
-                    __cbValid = newValue;
+                    if (typeof newValue !== "function") throw new Error("Only [cbCheck] type 'Function' can be added");
+                    __cbCheck = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -4837,8 +4837,8 @@ if (typeof Array.isArray === "undefined") {
                 if (typeof p_objectDI["cbRegister"] === "function") {
                     __cbRegister = p_objectDI["cbRegister"];
                 }
-                if (typeof p_objectDI["cbValid"] === "function") {
-                    __cbValid = p_objectDI["cbValid"];
+                if (typeof p_objectDI["cbCheck"] === "function") {
+                    __cbCheck = p_objectDI["cbCheck"];
                 }
                 if (typeof p_objectDI["cbReady"] === "function") {
                     __cbReady = p_objectDI["cbReady"];
@@ -4874,7 +4874,7 @@ if (typeof Array.isArray === "undefined") {
         /** @method */
         BindModel.prototype.init = function() {
             this.cbRegister.call(this);
-            if (this.cbValid.call(this)) {
+            if (this.cbCheck.call(this)) {
                 this.cbReady.call(this)
             }
         };
