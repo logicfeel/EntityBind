@@ -43,6 +43,7 @@
             var __isReadOnly    = false;
             var __isHide        = false;
             var __element       = null;
+            var __selector      = [];
 
             /** @property {domType} */
             Object.defineProperty(this, "domType", 
@@ -56,7 +57,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /** @property {isReadOnly} */
             Object.defineProperty(this, "isReadOnly", 
             {
@@ -68,7 +68,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /** @property {isHide} */
             Object.defineProperty(this, "isHide", 
             {
@@ -80,7 +79,6 @@
                 configurable: true,
                 enumerable: true
             });
-
             /** @property {element} */
             Object.defineProperty(this, "element", 
             {
@@ -92,15 +90,33 @@
                 configurable: true,
                 enumerable: true
             });
-
+            /** @property {selector} */
+            Object.defineProperty(this, "selector", 
+            {
+                get: function() { return __selector; },
+                set: function(newValue) { 
+                    var values = [];
+                    if (Array.isArray(newValue)) values = newValue;
+                    else values.push(newValue);
+                    for (var i = 0; values.length > i; i++) {
+                        if(typeof values[i] !== "string" ) {  // 검사 
+                            throw new Error("Only [selector] type 'string' can be added");
+                        }
+                    }
+                    __selector = __selector.concat(values);
+                },
+                configurable: true,
+                enumerable: true
+            });
+            
             if (typeof p_option === "object" ) {
                 for(var prop in p_option) {
                     if (p_option.hasOwnProperty(prop) && 
-                        ["domType", "isReadOnly", "isHide", "element"].indexOf(prop) > -1) {
+                        ["domType", "isReadOnly", "isHide", "element", "selector"].indexOf(prop) > -1) {
                         this[prop] = p_option[prop];
                     }
                 }
-            } 
+            }
         }
         util.inherits(ItemDOM, _super);
     
@@ -128,6 +144,7 @@
             if (this.isReadOnly) clone["isReadOnly"]    = this.isReadOnly;
             if (this.isHide) clone["isHide"]            = this.isHide;
             if (this.isHide) clone["element"]           = this.element;
+            if (this.isHide) clone["selector"]          = this.selector;
             
             return clone;
         };

@@ -112,9 +112,9 @@
             }
         }
 
-        if (typeof document === "object" && typeof document.querySelector === "object") {     
+        if (typeof document === "object" && typeof document.querySelector === "function") {     
             // 유효성 검사
-            for(var i = 0; selectors.length > 0; i++) {
+            for(var i = 0; selectors.length > i; i++) {
                 if (typeof selectors[i] !== "string") throw new Error("Only [selectors] type 'string' can be added");
 
                 if (document.querySelector(selectors[i]) === null) {

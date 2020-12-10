@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Test.ArrayCollection
+ * @namespace _W.Task.ArrayCollection
  */
 (function(global) {
 
@@ -8,7 +8,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -320,12 +320,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.ArrayCollection = {run: run};
+        global._W.Task.ArrayCollection = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.PropertyCollection
+ * @namespace _W.Task.PropertyCollection
  */
 (function(global) {
 
@@ -334,7 +334,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -558,12 +558,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.PropertyCollection = {run: run};
+        global._W.Task.PropertyCollection = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.Object_implement
+ * @namespace _W.Task.Object_implement
  */
 (function(global) {
 
@@ -572,7 +572,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -776,12 +776,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.Object_implement = {run: run};
+        global._W.Task.Object_implement = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.Observer
+ * @namespace _W.Task.Observer
  */
 (function(global) {
 
@@ -790,7 +790,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -1040,12 +1040,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.Observer = {run: run};
+        global._W.Task.Observer = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.Util
+ * @namespace _W.Task.Util
  */
 (function(global) {
 
@@ -1054,7 +1054,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -1170,12 +1170,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.Util = {run: run};
+        global._W.Task.Util = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.DOM_Node
+ * @namespace _W.Task.DOM_Node
  */
 (function(global) {
     
@@ -1184,7 +1184,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W               = global._W || {};
-    global._W.Test          = global._W.Test || {};
+    global._W.Task          = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -1275,12 +1275,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();;
     } else {
-        global._W.Test.DOM_Node = {run: run};
+        global._W.Task.DOM_Node = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.BindCommandEditAjax
+ * @namespace _W.Task.Main 메인 테스크 
  */
 (function(global) {
 
@@ -1289,7 +1289,107 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
+    
+    //==============================================================
+    // 2. 변수 선언
+    var errorCount = 0;
+    var tasks = [];  //{ns:..., file:.... }
+    var result, task;
+    var isCallback      = false;
+    var CLEAR           = false;
+    
+    /* 단순 로그 보기 */
+    // CLEAR = true;
+    // global.isCallback = isCallback;
+
+    if (typeof module === "object" && typeof module.exports === "object") {     
+        require("../src/object-implement"); // _implements() : 폴리필
+    }
+    
+    //==============================================================
+    // 3. 모듈 등록
+    tasks.push({ns: "_W.Task.Object_implement"      , file: "./Common.Object.implement.task.js"});
+    tasks.push({ns: "_W.Task.Observer"              , file: "./Common.Observer.task.js"});
+    tasks.push({ns: "_W.Task.Util"                  , file: "./Common.Util.task.js"});
+    tasks.push({ns: "_W.Task.ArrayCollection"       , file: "./Collection.ArrayCollection.task.js"});
+    tasks.push({ns: "_W.Task.PropertyCollection"    , file: "./Collection.PropertyCollection.task.js"});
+    tasks.push({ns: "_W.Task.MetaObject_Sub"        , file: "./Meta.MetaObject-Sub.task.js"});
+    tasks.push({ns: "_W.Task.MetaElement_Sub"       , file: "./Meta.MetaElement-Sub.task.js"});
+    tasks.push({ns: "_W.Task.ComplexElement_Sub"    , file: "./Meta.ComplexElement-Sub.task.js"});
+    tasks.push({ns: "_W.Task.EntityTable"           , file: "./Meta.Entity.EntityTable.task.js"});
+    tasks.push({ns: "_W.Task.EntityView"            , file: "./Meta.Entity.EntityView.task.js"});
+    tasks.push({ns: "_W.Task.ItemCollection"        , file: "./Meta.Entity.ItemCollection.task.js"});
+    tasks.push({ns: "_W.Task.Item"                  , file: "./Meta.Entity.Item.task.js"});
+    tasks.push({ns: "_W.Task.ItemDOM"               , file: "./Meta.Entity.ItemDOM.task.js"});
+    tasks.push({ns: "_W.Task.Row"                   , file: "./Meta.Entity.Row.task.js"});
+    tasks.push({ns: "_W.Task.BindCommandEditAjax"   , file: "./Meta.Bind.BindCommandEditAjax.task.js"});
+    tasks.push({ns: "_W.Task.BindCommandLookupAjax" , file: "./Meta.Bind.BindCommandLookupAjax.task.js"});
+    tasks.push({ns: "_W.Task.BindModelCreateAjax"   , file: "./Meta.Bind.BindModelCreateAjax.task.js"});
+    tasks.push({ns: "_W.Task.BindModelReadAjax"     , file: "./Meta.Bind.BindModelReadAjax.task.js"});
+    tasks.push({ns: "_W.Task.BindModelDI"           , file: "./Meta.Bind.BindModelDI.task.js"});
+    tasks.push({ns: "_W.Task.DOM_Node"              , file: "./Etc.DOM-Node.task.js"});
+
+    //==============================================================
+    // 4. 테스트 본문 :: run()
+    function run() {
+        
+
+        for (var i = 0; i < tasks.length; i++) {
+            task = typeof module === "object" ?  tasks[i].file : tasks[i].ns;
+            console.log("===========================================================================");
+            console.log("단위 테스트 %s : %s", i, task);
+            
+            if (typeof module === "object" && typeof module.exports === "object") {     
+                task = tasks[i].file;
+                tasks[i].result = require(tasks[i].file);
+            } else {
+                task = tasks[i].ns;
+                tasks[i].result = eval(tasks[i].ns + ".run()");
+            }
+        }
+        
+        if (CLEAR) console.clear();
+
+        console.log("***************************************************************************");
+        console.log("통합 테스트 결과");
+        console.log("***************************************************************************");
+        for (var i = 0; i < tasks.length; i++) {            
+
+            task = typeof module === "object" ?  tasks[i].file : tasks[i].ns;
+
+            if (tasks[i].result === 0) {
+                console.log("No: %s, Task: %s = Success", i, task);
+            } else {
+                console.warn("No: %s, Task : %s = Warning, ERR_COUNT = %s ", i, task, tasks[i].result);
+                errorCount++;
+            }
+            console.log("___________________________________________________________________________");
+        }
+
+        return errorCount;
+    }
+    
+    //==============================================================
+    // 5. 결과 : 에러 카운터 ('0'이면 정상)
+    if (typeof module === "object" && typeof module.exports === "object") {     
+        module.exports = run();
+    } else {
+        global._W.Task.Main = {run: run};
+    }
+
+}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+/**
+ * @namespace _W.Task.BindCommandEditAjax
+ */
+(function(global) {
+
+    "use strict";
+
+    //==============================================================
+    // 1. 모듈 네임스페이스 선언
+    global._W                = global._W || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -1532,7 +1632,7 @@
         console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 ");
        
         var model = new BindModelCreateAjax();
-        model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
+        model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
         model. result = [];  
         model.create.cbValid = function() {
             this._model.result.push("Valid"); 
@@ -1591,12 +1691,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.BindCommandEditAjax = {run: run};
+        global._W.Task.BindCommandEditAjax = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.BindCommandLookupAjax
+ * @namespace _W.Task.BindCommandLookupAjax
  */
 (function(global) {
 
@@ -1605,7 +1705,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -1653,7 +1753,7 @@
             var model = new BindModelReadAjax();
             model.result = [];
             model.read.addItem("i1", "V1");
-            model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
+            model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
             // model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
             // model.baseUrl = "sample_row_single.json";                    // 오류 2
             // model.baseAjaxSetup.async = false;                           // 동기화로 변경
@@ -1709,7 +1809,7 @@
             model.result = []; 
             model.read.addItem("i1", "V1");
             model.read.eventPropagation = false;
-            model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
+            model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
             model.read.onExecute = function() {
                 this._model.result.push("read.onExecute");
             };
@@ -1740,7 +1840,7 @@
             console.log("---------------------------------------------------------------------------");
             console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 (outoption = 1) row 기준으로 가져옴 ");
             var model = new BindModelReadAjax();
-            model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
+            model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
             model.read.cbOutput = function(p_result) {
                 console.log("---------------------------------------------------------------------------");
                 console.log("BindCommandAjax.execute() :: 콜백 ");
@@ -1759,7 +1859,7 @@
             console.log("---------------------------------------------------------------------------");
             console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 (outoption = 2) 존재하는 아이템만 가져옴 ");
             var model = new BindModelReadAjax();
-            model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
+            model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
             model.read.addItem("sto_id", "output");
             model.read.addItem("adm_id", "output");
             model.read.outputOption = 2;    // 존재하는 컬럼만 가져오기
@@ -1782,7 +1882,7 @@
             console.log("---------------------------------------------------------------------------");
             console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 (outoption = 3) 존재하는 아이템만 가져옴, + rows[0] value 설정 ");
             var model = new BindModelReadAjax();
-            model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
+            model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
             model.read.addItem("sto_id", "output");
             model.read.addItem("adm_id", "output");
             model.read.outputOption = 3;    // 존재하는 컬럼만 가져오기
@@ -1808,7 +1908,7 @@
             console.log("---------------------------------------------------------------------------");
             console.log("BindCommandLookupAjax.addOutput(name) :: 출력(뷰) 엔티티 추가 ");
             var model = new BindModelReadAjax();
-            model.baseUrl = "http://127.0.0.1:8080/json/sample_entity_multi.json";       // 복수 엔티티
+            model.baseUrl = "http://rtwgs4.cafe24.com/sample_entity_multi.asp";       // 복수 엔티티
             model.read.addOutput("output2");
             model.read.cbOutput = function(p_result) {
                 console.log("---------------------------------------------------------------------------");
@@ -1856,12 +1956,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.BindCommandLookupAjax = {run: run};
+        global._W.Task.BindCommandLookupAjax = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.BindModelCreateAjax
+ * @namespace _W.Task.BindModelCreateAjax
  */
 (function(global) {
 
@@ -1870,7 +1970,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -1972,16 +2072,14 @@
             var model = new BindModelCreateAjax();
             model.result = [];        
             model.create.addItem("i1", "V1");
-            model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
+            model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
             // model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
+            // model.baseUrl = "sample_row_single.json";                    // 오류 2
             model.cbFail = function(p_msg, p_code){
                 this.result.push("cbFail");
             };
             model.cbError = function(p_msg, p_status){
                 this.result.push("cbError");
-            };
-            model.create.cbBind = function(p_ajax){
-                console.log("call cbBind");
             };
             model.onExecute = function() {
                 this.result.push("onExecute");
@@ -2038,7 +2136,7 @@
         var model = new BindModelCreateAjax();
         model.result = [];
         model.create.addItem("i1", "");
-        model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
+        model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
         model.cbFail = function(p_msg, p_code){
             this.result.push("cbFail");
         };
@@ -2060,9 +2158,8 @@
             console.log("BindModel.cbError          :: 오류 발생시 실행 ");
             var model = new BindModelCreateAjax();
             model.result = [];
-            // model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
-            model.baseUrl = "http://127.0.0.1:8080/";                 // 오류 1 : 403
-            // model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
+            // model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
+            model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
             // model.baseUrl = "sample_row_single2.json";                // 오류 2
             model.cbFail = function(p_msg, p_code){
                 this.result.push("cbFail");
@@ -2455,12 +2552,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.BindModelCreateAjax = {run: run};
+        global._W.Task.BindModelCreateAjax = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.BindModelDI.task.js
+ * @namespace _W.Task.BindModelDI.task.js
  */
 (function(global) {
 
@@ -2469,7 +2566,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -2570,9 +2667,7 @@
             };
         }
         util.inherits(CreateDI, IBindModelCreate);
-        CreateDI.prototype.viewRead = function() {
-            console.log("viewRead....");
-        };
+
 
         function ReadDI() {
             IBindModelRead.call(this);
@@ -2631,7 +2726,7 @@
             model.create.setItem("i3", "valid");
             model.first.items["i3"].value = "12";
             // model.first.items["i3"].value = "V3";   // 강제 오류 발생
-            model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
+            model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
             model.result = [];
             model.create.cbBind = function(p_ajax) {
                 console.log("---------------------------------------------------------------------------");
@@ -2679,7 +2774,7 @@
             var model = new BindModelReadAjax(new ReadDI(), true);
             model.read.setItem(["i1", "i2", "i3"], "bind");
             model.read.addOutput("output2");
-            model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
+            model.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";       // 가져올 경로
             model.result = [];
             model.read.cbBind = function(p_ajax) {
                 console.log("---------------------------------------------------------------------------");
@@ -2748,12 +2843,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.BindModelDI = {run: run};
+        global._W.Task.BindModelDI = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.BindModelReadAjax
+ * @namespace _W.Task.BindModelReadAjax
  */
 (function(global) {
 
@@ -2762,7 +2857,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -2974,12 +3069,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.BindModelReadAjax = {run: run};
+        global._W.Task.BindModelReadAjax = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.ComplexElement_Sub
+ * @namespace _W.Task.ComplexElement_Sub
  */
 (function(global) {
 
@@ -2988,7 +3083,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -3028,13 +3123,13 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.ComplexElement_Sub = {run: run};
+        global._W.Task.ComplexElement_Sub = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 
 /**
- * @namespace _W.Test.EntityTable
+ * @namespace _W.Task.EntityTable
  */
 (function(global) {
 
@@ -3043,7 +3138,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -3816,12 +3911,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.EntityTable = {run: run};
+        global._W.Task.EntityTable = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.EntityView
+ * @namespace _W.Task.EntityView
  */
 (function(global) {
 
@@ -3830,7 +3925,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -3960,12 +4055,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.EntityView = {run: run};
+        global._W.Task.EntityView = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.Item
+ * @namespace _W.Task.Item
  */
 (function(global) {
 
@@ -3974,7 +4069,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -4282,12 +4377,12 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.Item = {run: run};
+        global._W.Task.Item = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Test.ItemCollection
+ * @namespace _W.Task.ItemCollection
  */
 (function(global) {
 
@@ -4296,7 +4391,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -4481,13 +4576,13 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.ItemCollection = {run: run};
+        global._W.Task.ItemCollection = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 
 /**
- * @namespace _W.Test.ItemDOM
+ * @namespace _W.Task.ItemDOM
  */
 (function(global) {
 
@@ -4496,7 +4591,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -4547,8 +4642,7 @@
             domType: { value: true },
             isReadOnly: true,
             isHide: true,
-            element: { value: true },
-            selector: "btn_"
+            element: { value: true }
         });
         var item2 = item.clone();
         if (item2.entity.name === "T1" &&
@@ -4565,54 +4659,6 @@
             item2.isReadOnly === true &&
             item2.isHide === true &&
             item2.element.value === true &&
-            item2.selector[0] === "btn_" &&
-            true) {
-            console.log("Result = Success");
-        } else {
-            console.warn("Result = Fail");
-            errorCount++;
-        }
-        console.log("---------------------------------------------------------------------------");
-        console.log("clone() :: 복제 (selector의 배열) ");
-        var table = new EntityTable("T1");
-        var item = new ItemDOM("i1", table, {
-            // Item 속성
-            type: "text",
-            size: 100,
-            default: "D1",
-            caption: "C1",
-            isNotNull: true,
-            constraints: [
-                { regex: /\D/, msg: "message", code: "C1", return: true },         // true : 충족조건
-                { regex: /[0-9]{5}/, msg: "message", code: "C2", return: false }   // false : 통과조건
-            ],   
-            order: 1000,
-            increase: 10,
-            value: "V1",
-            // ItemDOM 속성
-            domType: { value: true },
-            isReadOnly: true,
-            isHide: true,
-            element: { value: true },
-            selector: ["btn_1", "btn_2"]
-        });
-        var item2 = item.clone();
-        if (item2.entity.name === "T1" &&
-            item2.type === "text" &&
-            item2.size === 100 &&
-            item2.default === "D1" &&
-            item2.caption === "C1" &&
-            item2.isNotNull === true &&
-            item2.constraints.length === 2 &&
-            item2.order === 1000 &&
-            item2.increase === 10 &&
-            item2.value === "V1" &&
-            item2.domType.value === true &&
-            item2.isReadOnly === true &&
-            item2.isHide === true &&
-            item2.element.value === true &&
-            item2.selector[0] === "btn_1" &&
-            item2.selector[1] === "btn_2" &&
             true) {
             console.log("Result = Success");
         } else {
@@ -4648,13 +4694,13 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.ItemDOM = {run: run};
+        global._W.Task.ItemDOM = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 
 /**
- * @namespace _W.Test.Row
+ * @namespace _W.Task.Row
  */
 (function(global) {
 
@@ -4663,7 +4709,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -4763,13 +4809,13 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.Row = {run: run};
+        global._W.Task.Row = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 
 /**
- * @namespace _W.Test.MetaElement_Sub
+ * @namespace _W.Task.MetaElement_Sub
  */
 (function(global) {
 
@@ -4778,7 +4824,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -4819,13 +4865,13 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.MetaElement_Sub = {run: run};
+        global._W.Task.MetaElement_Sub = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 
 /**
- * @namespace _W.Test.MetaObject_Sub
+ * @namespace _W.Task.MetaObject_Sub
  */
 (function(global) {
 
@@ -4834,7 +4880,7 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
+    global._W.Task           = global._W.Task || {};
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
@@ -4874,108 +4920,7 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         module.exports = run();
     } else {
-        global._W.Test.MetaObject_Sub = {run: run};
-    }
-
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
-
-/**
- * @namespace _W.Test.Meta 메인 테스크 
- */
-(function(global) {
-
-    "use strict";
-
-    //==============================================================
-    // 1. 모듈 네임스페이스 선언
-    global._W                = global._W || {};
-    global._W.Test           = global._W.Test || {};
-    
-    //==============================================================
-    // 2. 변수 선언
-    var errorCount = 0;
-    var tasks = [];  //{ns:..., file:.... }
-    var result, task;
-    var isCallback      = false;
-    var CLEAR           = false;
-    
-    /* 단순 로그 보기 */
-    // CLEAR = true;
-    // global.isCallback = isCallback;
-
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        require("../src/object-implement"); // _implements() : 폴리필
-    }
-    
-    //==============================================================
-    // 3. 모듈 등록
-    tasks.push({ns: "_W.Test.Object_implement"      , file: "./Common.Object.implement.test.js"});
-    tasks.push({ns: "_W.Test.Observer"              , file: "./Common.Observer.test.js"});
-    tasks.push({ns: "_W.Test.Util"                  , file: "./Common.Util.test.js"});
-    tasks.push({ns: "_W.Test.ArrayCollection"       , file: "./Collection.ArrayCollection.test.js"});
-    tasks.push({ns: "_W.Test.PropertyCollection"    , file: "./Collection.PropertyCollection.test.js"});
-    tasks.push({ns: "_W.Test.MetaObject_Sub"        , file: "./Meta.MetaObject-Sub.test.js"});
-    tasks.push({ns: "_W.Test.MetaElement_Sub"       , file: "./Meta.MetaElement-Sub.test.js"});
-    tasks.push({ns: "_W.Test.ComplexElement_Sub"    , file: "./Meta.ComplexElement-Sub.test.js"});
-    tasks.push({ns: "_W.Test.EntityTable"           , file: "./Meta.Entity.EntityTable.test.js"});
-    tasks.push({ns: "_W.Test.EntityView"            , file: "./Meta.Entity.EntityView.test.js"});
-    tasks.push({ns: "_W.Test.ItemCollection"        , file: "./Meta.Entity.ItemCollection.test.js"});
-    tasks.push({ns: "_W.Test.Item"                  , file: "./Meta.Entity.Item.test.js"});
-    tasks.push({ns: "_W.Test.ItemDOM"               , file: "./Meta.Entity.ItemDOM.test.js"});
-    tasks.push({ns: "_W.Test.Row"                   , file: "./Meta.Entity.Row.test.js"});
-    tasks.push({ns: "_W.Test.BindCommandEditAjax"   , file: "./Meta.Bind.BindCommandEditAjax.test.js"});
-    tasks.push({ns: "_W.Test.BindCommandLookupAjax" , file: "./Meta.Bind.BindCommandLookupAjax.test.js"});
-    tasks.push({ns: "_W.Test.BindModelCreateAjax"   , file: "./Meta.Bind.BindModelCreateAjax.test.js"});
-    tasks.push({ns: "_W.Test.BindModelReadAjax"     , file: "./Meta.Bind.BindModelReadAjax.test.js"});
-    tasks.push({ns: "_W.Test.BindModelDI"           , file: "./Meta.Bind.BindModelDI.test.js"});
-    tasks.push({ns: "_W.Test.DOM_Node"              , file: "./Etc.DOM-Node.test.js"});
-
-    //==============================================================
-    // 4. 테스트 본문 :: run()
-    function run() {
-        
-
-        for (var i = 0; i < tasks.length; i++) {
-            task = typeof module === "object" ?  tasks[i].file : tasks[i].ns;
-            console.log("===========================================================================");
-            console.log("단위 테스트 %s : %s", i, task);
-            
-            if (typeof module === "object" && typeof module.exports === "object") {     
-                task = tasks[i].file;
-                tasks[i].result = require(tasks[i].file);
-            } else {
-                task = tasks[i].ns;
-                tasks[i].result = eval(tasks[i].ns + ".run()");
-            }
-        }
-        
-        if (CLEAR) console.clear();
-
-        console.log("***************************************************************************");
-        console.log("통합 테스트 결과");
-        console.log("***************************************************************************");
-        for (var i = 0; i < tasks.length; i++) {            
-
-            task = typeof module === "object" ?  tasks[i].file : tasks[i].ns;
-
-            if (tasks[i].result === 0) {
-                console.log("No: %s, Task: %s = Success", i, task);
-            } else {
-                console.warn("No: %s, Task : %s = Warning, ERR_COUNT = %s ", i, task, tasks[i].result);
-                errorCount++;
-            }
-            console.log("___________________________________________________________________________");
-        }
-
-        return errorCount;
-    }
-    
-    //==============================================================
-    // 5. 결과 : 에러 카운터 ('0'이면 정상)
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        module.exports = run();
-    } else {
-        global._W.Test.Meta = {run: run};
+        global._W.Task.MetaObject_Sub = {run: run};
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
