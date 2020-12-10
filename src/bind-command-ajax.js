@@ -51,11 +51,11 @@
             _super.call(this, p_bindModel, p_baseEntity);
 
             var __ajaxSetup = {
-                url: "",            // 요청 경로
-                type: "POST",       // 전송 방법 : GET, POST
-                dataType: "json",   //
-                async: true,        // [*]비동기(ture), 동기(false)
-                crossDomain: false, // 크로스 도메인
+                url: null,          // 요청 경로
+                type: null,         // 전송 방법 : GET, POST
+                dataType: null,     //
+                async: null,        // [*]비동기(ture), 동기(false)
+                crossDomain: null,  // 크로스 도메인
                 success: null,      // 성공 콜백
                 error: null,        // 실패 콜백
                 complete: null      // 완료 콜백
@@ -158,7 +158,7 @@
 
             // 콜백 검사
             if (!this.cbValid(this.valid)) {
-                this._model.cbFail("cbValid() => false 리턴 ");
+                // this._model.cbFail("cbValid() => false 리턴 ");
                 this._onExecuted(this);     // "실행 종료" 이벤트 발생
                 return false;
             } else {
@@ -189,10 +189,10 @@
             var complete = this.ajaxSetup.complete || this._model.baseAjaxSetup.complete || null;
             
             ajaxSetup.url           = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type;
-            ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType;
-            ajaxSetup.async         = this.ajaxSetup.async || this._model.baseAjaxSetup.async;
-            ajaxSetup.crossDomain   = this.ajaxSetup.crossDomain || this._model.baseAjaxSetup.crossDomain;
+            ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type || "GET";
+            ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType || "json";
+            ajaxSetup.async         = this.ajaxSetup.async || this._model.baseAjaxSetup.async || true;
+            ajaxSetup.crossDomain   = this.ajaxSetup.crossDomain || this._model.baseAjaxSetup.crossDomain || false;
             ajaxSetup.complete      = (typeof complete === "function") ? complete.bind(this) : null;
             ajaxSetup.success       = this._execSuccess.bind(this);
             ajaxSetup.error         = this._execError.bind(this);

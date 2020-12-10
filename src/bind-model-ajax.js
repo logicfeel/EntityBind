@@ -40,7 +40,7 @@
 
             var __baseAjaxSetup = {
                 url: "",
-                type: "POST"
+                type: "GET"
             };
 
             // Entity 추가 및 baseEntity 설정

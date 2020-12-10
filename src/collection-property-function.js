@@ -51,7 +51,7 @@
         PropertyFunctionCollection.prototype.add  = function(p_name, p_value) {
 
             if (typeof p_name === "undefined") throw new Error("p_name param request fail...");
-            if (!(p_value && typeof p_value !== "function")) throw new Error("p_name param request fail...");
+            if (typeof p_value !== "function") throw new Error("p_name param request fail...");
 
             return _super.prototype.add.call(this, p_name, p_value);
         };

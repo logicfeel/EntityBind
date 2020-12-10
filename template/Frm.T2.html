@@ -198,7 +198,7 @@
   
   var e = new BindModelReadAjax(new FromDI()); // 메타모델 생성
 
-  e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";
+  e.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";
   e.loadAttr();   // 전체속성 가져옴
 
   e.onFail = function(p_msg, p_code) {

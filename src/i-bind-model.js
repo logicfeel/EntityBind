@@ -21,23 +21,26 @@
     var IBindModel  = (function () {
         function IBindModel() {
 
-            this.attr      = null;
-            this.mode       = null;
+            this.attr      = {};
+            this.mode      = {};
 
-            this.cbRegister = null;
-            this.cbCheck    = null;
-            this.cbReady    = null;
+            // this.cbRegister = null;
+            // this.cbCheck    = null;
+            // this.cbReady    = null;
 
-            this.onExecute  = null;
-            this.onExecuted = null;
-
-            this.cbFail     = null;
-            this.cbError    = null;
+            // this.cbFail     = null;
+            // this.cbError    = null;
 
             this.onExecute  = null;
             this.onExecuted = null;
         }
-        
+        IBindModel.prototype.cbRegister = function() {};
+        IBindModel.prototype.cbCheck = function() {};
+        IBindModel.prototype.cbReady = function() {};
+
+        IBindModel.prototype.cbFail = function() {};
+        IBindModel.prototype.cbError = function() {};
+
         return IBindModel;
     }());
 

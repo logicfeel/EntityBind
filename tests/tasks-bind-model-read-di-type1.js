@@ -85,7 +85,7 @@ ReadDI.prototype.msg = function(a) {
 var e = new BindModelReadAjax(new ReadDI());
 
 // 속성 설정
-e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.asp";
+e.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";
 // e.baseUrl = "http://rtwgs4.cafe24.com/sample_row_single.as";    // 오류 1
 // e.baseUrl = "jsons/sample_row_single.json";                     // 오류 2
 
