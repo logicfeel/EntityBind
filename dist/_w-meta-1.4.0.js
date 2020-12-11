@@ -1094,13 +1094,6 @@ if (typeof Array.isArray === "undefined") {
             this.attr      = {};
             this.mode      = {};
 
-            // this.cbRegister = null;
-            // this.cbCheck    = null;
-            // this.cbReady    = null;
-
-            // this.cbFail     = null;
-            // this.cbError    = null;
-
             this.onExecute  = null;
             this.onExecuted = null;
         }
@@ -3269,8 +3262,8 @@ if (typeof Array.isArray === "undefined") {
             if (this.domType) clone["domType"]          = this.domType;     // 참조값
             if (this.isReadOnly) clone["isReadOnly"]    = this.isReadOnly;
             if (this.isHide) clone["isHide"]            = this.isHide;
-            if (this.isHide) clone["element"]           = this.element;
-            if (this.isHide) clone["selector"]          = this.selector;
+            if (this.element) clone["element"]          = this.element;
+            if (this.selector) clone["selector"]        = this.selector.concat([]);
             
             return clone;
         };
@@ -5208,7 +5201,7 @@ if (typeof Array.isArray === "undefined") {
                     value = this.valid.items[i].value === null ? this.valid.items[i].default : this.valid.items[i].value;
                     // null 검사를 모두 수행 : option 2
                     if (!(this.valid.items[i].valid(value, result, 2))) {
-                        this._model.cbFail(result.value, result.msg, result.code);
+                        this._model.cbFail(result, this.valid.items[i]);
                         this._onExecuted(this);     // "실행 종료" 이벤트 발생
                         return false;
                     }
@@ -5607,19 +5600,23 @@ if (typeof Array.isArray === "undefined") {
     // 2. 모듈 가져오기 (node | web)
     var util;
     var BindModel;
-    
+    var PropertyCollection;
+
     if (typeof module === "object" && typeof module.exports === "object") {    
         util                    = require("./utils");
         BindModel               = require("./bind-model");
+        PropertyCollection      = require("./collection-property");
     } else {
         util                    = global._W.Common.Util;
         BindModel               = global._W.Meta.Bind.BindModel;
+        PropertyCollection      = global._W.Collection.PropertyCollection;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
+    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -5671,6 +5668,28 @@ if (typeof Array.isArray === "undefined") {
             var type = ["BindModelAjax"];
             
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+        };
+
+        BindModelAjax.prototype.checkSelector  = function(p_collection) {
+            
+            var collection = p_collection || this.attr;
+            var failSelector;
+
+            // 유효성 검사
+            if (!(collection instanceof PropertyCollection)) throw new Error("Only [p_collection] type 'PropertyCollection' can be added");
+
+            // 검사
+            for (var i = 0; collection.count > i; i++) {
+                if (typeof collection[i].selector !== "undefined") {
+                    failSelector = util.validSelector(collection[i].selector);
+                    if (failSelector !== null) {
+                        console.warn("selector 검사 실패 : %s ", failSelector);
+                        return false;
+                    }
+                }
+            }
+            
+            return true;
         };
 
         return BindModelAjax;

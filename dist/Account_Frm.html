@@ -112,51 +112,56 @@ $(document).ajaxError(function (event, xhr, options, exc) {
 <script>
 // http://rtwgs4.cafe24.com/admin/pc/mod/sto/Account_Frm.asp?mode=EDIT&acc_idx=6
 // http://rtwgs4.cafe24.com/admin/pc/mod/sto/Account_Frm.asp?mode=CREATE
+
 // #######################################################################################################
 // 특정 기능을 수행하는 화면을 Frm, Edit 기능을 기준으로 
 var util                    = _W.Common.Util;
 var IBindModelForm          = _W.Interface.IBindModelForm;
 
-function FormDI() {
+function BaseFormDI() {
     IBindModelForm.call(this);
 
     var params = ParamGet2JSON(location.href);      //admin_common.js
 
-    this.attr["mode"] = params.mode;
-    
-    this.cbFail = function(p_value, p_msg, p_code) {
-        Msg("ALERT", "실패", p_msg);
-        console.log("실패 :: Value=\"%s\", Code=\"%s\", Message=\"%s\" ", p_value, p_code, p_msg);
+    this.attr["mode"]       = params.mode;
+    this.attr["listURL"]    = "";
+
+    this.cbFail = function(p_result, p_item) {
+        console.warn("실패 :: Value=\"%s\", Code=\"%s\", Message=\"%s\" ", p_result.value, p_result.code, p_result.msg);
+        Msg("ALERT", "실패", p_result.msg);
+        if (typeof p_item.selector[0] === "string") $(p_item.selector[0]).focus();
     };
     this.cbError = function(p_msg, p_status) {
+        console.warn("오류 :: Status=\"%s\" , Message=\"%s\" ", p_status, p_msg);
         Msg("ALERT", "오류", p_msg);
-        console.log("오류 :: Status=\"%s\" , Message=\"%s\" ", p_status, p_msg);
     };
-    // this.onExecute = function(p_bindCommand) {       // 실행시 이벤트 등록
-    //     console.log("onExecute 이벤트. ");
-    // };
-    // this.onExecuted = function(p_bindCommand) {      // 실행끝 이벤트 등록
-    //     console.log("onExecuted 이벤트.. ");
-    // };
+    this.onExecute = function(p_bindCommand) {       // 실행시 이벤트 등록
+        console.log("onExecute 이벤트. ");
+        $('.mLoading').show();
+    };
+    this.onExecuted = function(p_bindCommand) {      // 실행끝 이벤트 등록
+        console.log("onExecuted 이벤트.. ");
+        $('.mLoading').hide();
+    };
 }
-util.inherits(FormDI, IBindModelForm);
+util.inherits(BaseFormDI, IBindModelForm);
 // 정적 메소드
-FormDI.deleteValid = function() {
+BaseFormDI.deleteValid = function() {
         return confirm("삭제 하시겠습니까 ?");
 };
-FormDI.updateValid = function() {
+BaseFormDI.updateValid = function() {
         return confirm("수정 하시겠습니까 ?");
 };
-FormDI.createEnd = function() {
+BaseFormDI.createEnd = function() {
         return alert("정상 등록되었습니다.");
 };
-FormDI.createMode = function() {
+BaseFormDI.createMode = function() {
         $("#btn_Update").hide();
         $("#btn_Delete").hide();
         $("#btn_Insert").show();
         $("#btn_Reset").show();
 };
-FormDI.editMode = function() {
+BaseFormDI.editMode = function() {
         $("#adm_id").attr("readonly", "");
         $("#btn_Insert").hide();
         $("#btn_Update").show();
@@ -164,14 +169,14 @@ FormDI.editMode = function() {
         $("#btn_Reset").hide();
 };
 // 오버라이딩
-FormDI.prototype.cbRegister = function() {
-    console.log("cbRegister : 이벤트 등록 및  콜백 설정 ");
+BaseFormDI.prototype.cbRegister = function() {
+    console.log("cbRegister : 이벤트 및 설정 등록 ");
 
-    var _this = this;
+    var _this = this;   // jqeury 함수 내부에서 this 접근시 사용
 
-    this.delete.cbValid = FormDI.deleteValid;
-    this.update.cbValid = FormDI.updateValid;
-    this.create.cbEnd   = FormDI.createEnd;
+    this.delete.cbValid = BaseFormDI.deleteValid;
+    this.update.cbValid = BaseFormDI.updateValid;
+    this.create.cbEnd   = BaseFormDI.createEnd;
 
     $("#btn_Update").click(function () {
         _this.update.execute();
@@ -183,13 +188,16 @@ FormDI.prototype.cbRegister = function() {
         _this.delete.execute();
     });
     $("#btn_List").click(function () {
+        // location.href = _this.attr["listURL"];
         location.href = _this.first.items["listURL"].value;
     });
     $("#btn_Reset").click(function () {
-        Main.Form.reset();
+        $("form").each(function() {
+            this.reset();
+        });
     });
 };
-FormDI.prototype.cbCheck = function() {   // 2.검사
+BaseFormDI.prototype.cbCheck = function() {   // 2.검사
     console.log("cbCheck : 화면 유효성 검사 ");
 
     if (typeof this.attr.mode === "undefined" || this.attr.mode === "") {
@@ -202,124 +210,134 @@ FormDI.prototype.cbCheck = function() {   // 2.검사
     }
     return true;
 };
-FormDI.prototype.cbReady = function() {
+BaseFormDI.prototype.cbReady = function() {
     console.log("cbReady : 준비완료 ");
     
     if (this.attr.mode === "CREATE") {
-        FormDI.createMode();
+        BaseFormDI.createMode();
     } else if (this.attr.mode === "EDIT") {
-        FormDI.editMode();
+        BaseFormDI.editMode();
     }    
 };
 </script>
 <script>
 // #######################################################################################################
-// 특정 비즈니스 로직을 담당하는 기능 (Account_Frm)
+// 특정 비즈니스를 담당하는 기능 (Account_Frm)
 var util                    = _W.Common.Util;
-var FormDI                  = FormDI;
+var BaseFormDI              = BaseFormDI;
 
-function FormAccountDI() {
-    FormDI.call(this);
+function AccountFormDI() {
+    BaseFormDI.call(this);
 
-    this.attr["cmd"] = "";
-    this.attr["doctype"] =  "JSON";
-    this.attr["listURL"] = "Account_Lst.asp";
+    // this.attr["listURL"] = "Account_Lst.asp";
     
-    // 업무관점
+    // 업무 속성
     this.attr["acc_idx"] = {caption: "일련번호", value: ""};
     this.attr["sto_id"] = "S00001";
     this.attr["adm_id"] = {
         caption: "관리자ID",
+        selector: "#adm_id",
         getter: function() { return $("#adm_id").val(); },
         setter: function(val) { $("#adm_id").val(val); }
     };
     this.attr["passwd"] = {
-        caption: "비밀번호", 
+        caption: "비밀번호",
+        selector: "#passwd",
         getter: function() { return $("#passwd").val(); },
         setter: function(val) { $("#passwd").val(val); }
     };
     this.attr["admName"] = {
         caption: "관리자명", 
+        selector: "#admName",
         getter: function() { return $("#admName").val(); },
         setter: function(val) { $("#admName").val(val); }
     };
     this.attr["use_yn"] = {
         caption: "사용유무", 
-        getter: function() { return $("input[type='radio'][name=using_yn]:checked").val(); },
+        selector: ["input[name=using_yn]", "#using_Y", "#using_N"],
+        getter: function() { return $("input[name=using_yn]:checked").val(); },
         setter: function(val) { 
-            if (val === "Y" ) $("#using_Y").val(val); $("#using_Y").attr("checked", "checked");
-            if (val === "N" ) $("#using_Y").val(val); $("#using_N").attr("checked", "checked");
+            if (val === "Y" ) $("#using_Y").attr("checked", "checked");
+            if (val === "N" ) $("#using_N").attr("checked", "checked");
         }
     };
 }
-util.inherits(FormAccountDI, FormDI);
+util.inherits(AccountFormDI, BaseFormDI);
 // 데코레이션
-FormAccountDI.prototype.cbRegister = function() {
-    FormDI.prototype.cbRegister.call(this);
+AccountFormDI.prototype.cbRegister = function() {
+    BaseFormDI.prototype.cbRegister.call(this);
 };
-FormAccountDI.prototype.cbCheck = function() {
-    return FormDI.prototype.cbCheck.call(this);
+AccountFormDI.prototype.cbCheck = function() {
+    if (BaseFormDI.prototype.cbCheck.call(this)) {
+        if (this.checkSelector()) {
+            console.log("cbCheck : 선택자 검사 => 'Success' ");
+            return true;
+        }
+    }
+    return false;    
 };
-FormAccountDI.prototype.cbReady = function() {
-    FormDI.prototype.cbReady.call(this);
-
+AccountFormDI.prototype.cbReady = function() {
+    BaseFormDI.prototype.cbReady.call(this);
     if (this.attr.mode === "EDIT")  this.read.execute();
 };
 </script>
 <script>
 // #######################################################################################################
 // 모델(SP) 기능에 맞는  설정  (Account_SP_CRUDL)
-//--------------------------------------------------------------
 var BindModelFormAjax       = _W.Meta.Bind.BindModelFormAjax;
-/*
-    var di = new FormAccountDI(); 
-    var e = new BindModelFormAjax(di, true);
-*/
-var e = new BindModelFormAjax(new FormAccountDI(), true);
-e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";                      
-// e.baseAjaxSetup.type = "POST";
+var ItemDOM                 = _W.Meta.Entity.ItemDOM;
 
+var e = new BindModelFormAjax(new AccountFormDI(), true, ItemDOM);
+e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";                      
+e.first.items["listURL"].value = "Account_Lst.asp";
+e.baseAjaxSetup.type = "POST";
+
+// e.addItem("cmd", "");
+// e.addItem("doctype", "JSON");
+e.first.items.addValue("cmd", "");
+e.first.items.addValue("doctype", "JSON");
+// read
 e.read.setItem(["cmd", "doctype", "acc_idx"], ["valid", "bind"]);
 e.read.setItem(["adm_id", "admName", "use_yn", "passwd"], "output");
 e.read.outputOption = 3;
-e.read.onExecute = function() {
-    var params = ParamGet2JSON(location.href);      //admin_common.js
-    
-    e.first.items["acc_idx"].value = params.acc_idx;     // Biz
+e.read.onExecute = function(p_bindCommand) {
+    e.first.items["acc_idx"].value = ParamGet2JSON(location.href).acc_idx;
     e.first.items["cmd"].value = "READ";
 };
-
+// update
 e.update.setItem(["acc_idx", "adm_id" ], "valid");
 e.update.setItem(["cmd", "doctype", "acc_idx", "admName", "use_yn", "passwd"], "bind");
-e.update.onExecute = function() {
+e.update.onExecute = function(p_bindCommand) {
     e.first.items["cmd"].value = "UPDATE";
 };
-
-e.create.setItem(["cmd", "doctype", "sto_id", "adm_id", "admName", "use_yn", "passwd"], ["valid", "bind"]);
-e.create.onExecute = function() {
+// create
+e.create.setItem(["cmd", "doctype", "sto_id", "adm_id", "admName", "passwd", "use_yn"], ["valid", "bind"]);
+e.create.onExecute = function(p_bindCommand) {
     e.first.items["cmd"].value = "CREATE";
 };
-
-e.delete.setItem(["cmd", "doctype", "acc_idx"], ["valid", "bind"]);
-e.delete.onExecute = function() {
+// delete
+e.delete.setItem(["acc_idx"], ["valid", "bind"]);
+e.delete.onExecute = function(p_bindCommand) {
     e.first.items["cmd"].value = "DELETE";
 };
 
 //--------------------------------------------------------------
 // 디버깅 용도
-e.read.cbBind = function(setup) {
-    console.log("call cbBind");
+e.read.cbBind = function(p_ajaxSetup) {
+    console.log("call cbBind() ");
 };
-e.update.cbBind = function(setup) {
-    console.log("call cbBind");
+e.update.cbBind = function(p_ajaxSetup) {
+    console.log("call cbBind() ");
 };
-e.create.cbBind = function(setup) {
-    console.log("call cbBind");
+e.update.cbValid = function(p_entity) {
+    console.log("call cbBind() ");
 };
-
+e.create.cbBind = function(p_ajaxSetup) {
+    console.log("call cbBind() ");
+};
+//--------------------------------------------------------------
 $(document).ready(function () {
     e.init();
 });
-
 </script>
 </body>

@@ -143,8 +143,8 @@
             if (this.domType) clone["domType"]          = this.domType;     // 참조값
             if (this.isReadOnly) clone["isReadOnly"]    = this.isReadOnly;
             if (this.isHide) clone["isHide"]            = this.isHide;
-            if (this.isHide) clone["element"]           = this.element;
-            if (this.isHide) clone["selector"]          = this.selector;
+            if (this.element) clone["element"]          = this.element;
+            if (this.selector) clone["selector"]        = this.selector.concat([]);
             
             return clone;
         };

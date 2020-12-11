@@ -168,7 +168,7 @@
                     value = this.valid.items[i].value === null ? this.valid.items[i].default : this.valid.items[i].value;
                     // null 검사를 모두 수행 : option 2
                     if (!(this.valid.items[i].valid(value, result, 2))) {
-                        this._model.cbFail(result.value, result.msg, result.code);
+                        this._model.cbFail(result, this.valid.items[i]);
                         this._onExecuted(this);     // "실행 종료" 이벤트 발생
                         return false;
                     }

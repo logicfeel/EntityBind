@@ -24,13 +24,6 @@
             this.attr      = {};
             this.mode      = {};
 
-            // this.cbRegister = null;
-            // this.cbCheck    = null;
-            // this.cbReady    = null;
-
-            // this.cbFail     = null;
-            // this.cbError    = null;
-
             this.onExecute  = null;
             this.onExecuted = null;
         }
