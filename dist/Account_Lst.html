@@ -247,7 +247,8 @@ BaseListDI.prototype.cbRegister = function() {
         _this.list.execute();
     });
     $("#btn_Insert").click(function () {
-        var frmURL = _this.first.items["frmURL"].value;
+        // var frmURL = _this.first.items["frmURL"].value;
+        var frmURL = _this._baseEntity.items["frmURL"].value;
         location.href = frmURL + "?mode=CREATE";
     });    
 };
