@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<!DOCTYPE html>
+<html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -51,7 +51,7 @@
                         </td>
                         <th scope="row">사용유무</th>
                         <td>
-                            <input id="using_Y" type="radio" name="using_yn" value="Y" checked class="fChk" /> 사용</label> 
+                            <input id="using_Y" type="radio" name="using_yn" value="Y" class="fChk" /> 사용</label> 
                             <input id="using_N" type="radio" name="using_yn" value="N" class="fChk" /> 중지</label> 
                         </td>                        
                     </tr>                                        
@@ -104,15 +104,11 @@ $(document).ajaxError(function (event, xhr, options, exc) {
         Msg("ALERT", "ajaxError", msg, "");
     }
 });
-
 </script>
-<script src="/Common/js/_w-meta-1.4.0.js?aaaaa"></script>
+<script src="/Common/js/_w-meta-1.4.0.js?aaaaaaa"></script>
 <script src="/Common/js/_w-meta-1.4.0.test.js"></script>
 
 <script>
-// http://rtwgs4.cafe24.com/admin/pc/mod/sto/Account_Frm.asp?mode=EDIT&acc_idx=6
-// http://rtwgs4.cafe24.com/admin/pc/mod/sto/Account_Frm.asp?mode=CREATE
-
 // #######################################################################################################
 // 특정 기능을 수행하는 화면을 Frm, Edit 기능을 기준으로 
 var util                    = _W.Common.Util;
@@ -146,15 +142,6 @@ function BaseFormDI() {
 }
 util.inherits(BaseFormDI, IBindModelForm);
 // 정적 메소드
-BaseFormDI.deleteValid = function() {
-        return confirm("삭제 하시겠습니까 ?");
-};
-BaseFormDI.updateValid = function() {
-        return confirm("수정 하시겠습니까 ?");
-};
-BaseFormDI.createEnd = function() {
-        return alert("정상 등록되었습니다.");
-};
 BaseFormDI.createMode = function() {
         $("#btn_Update").hide();
         $("#btn_Delete").hide();
@@ -174,9 +161,15 @@ BaseFormDI.prototype.cbRegister = function() {
 
     var _this = this;   // jqeury 함수 내부에서 this 접근시 사용
 
-    this.delete.cbValid = BaseFormDI.deleteValid;
-    this.update.cbValid = BaseFormDI.updateValid;
-    this.create.cbEnd   = BaseFormDI.createEnd;
+    this.delete.cbValid = function() {
+        return confirm("삭제 하시겠습니까 ?");
+    };
+    this.update.cbValid = function() {
+        return confirm("수정 하시겠습니까 ?");
+    };
+    this.create.cbEnd   = function() {
+        return alert("정상 등록되었습니다.");
+    };
 
     $("#btn_Update").click(function () {
         _this.update.execute();
@@ -229,8 +222,6 @@ var BaseFormDI              = BaseFormDI;
 function AccountFormDI() {
     BaseFormDI.call(this);
 
-    // this.attr["listURL"] = "Account_Lst.asp";
-    
     // 업무 속성
     this.attr["acc_idx"] = {caption: "일련번호", value: ""};
     this.attr["sto_id"] = "S00001";
@@ -291,34 +282,32 @@ var e = new BindModelFormAjax(new AccountFormDI(), true, ItemDOM);
 e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";                      
 e.first.items["listURL"].value = "Account_Lst.asp";
 e.baseAjaxSetup.type = "POST";
-
-// e.addItem("cmd", "");
-// e.addItem("doctype", "JSON");
-e.first.items.addValue("cmd", "");
-e.first.items.addValue("doctype", "JSON");
+// 전역에 엔티티 설정
+e.addItem("cmd", "", [], "bind");
+e.addItem("doctype", "JSON", [], "bind");
 // read
-e.read.setItem(["cmd", "doctype", "acc_idx"], ["valid", "bind"]);
+e.read.setItem(["acc_idx"], ["valid", "bind"]);
 e.read.setItem(["adm_id", "admName", "use_yn", "passwd"], "output");
 e.read.outputOption = 3;
 e.read.onExecute = function(p_bindCommand) {
-    e.first.items["acc_idx"].value = ParamGet2JSON(location.href).acc_idx;
-    e.first.items["cmd"].value = "READ";
+    this.bind.items["acc_idx"].value = ParamGet2JSON(location.href).acc_idx;
+    this.bind.items["cmd"].value = "READ";
 };
 // update
 e.update.setItem(["acc_idx", "adm_id" ], "valid");
-e.update.setItem(["cmd", "doctype", "acc_idx", "admName", "use_yn", "passwd"], "bind");
+e.update.setItem(["acc_idx", "admName", "use_yn", "passwd"], "bind");
 e.update.onExecute = function(p_bindCommand) {
-    e.first.items["cmd"].value = "UPDATE";
+    this.bind.items["cmd"].value = "UPDATE";
 };
 // create
-e.create.setItem(["cmd", "doctype", "sto_id", "adm_id", "admName", "passwd", "use_yn"], ["valid", "bind"]);
+e.create.setItem(["sto_id", "adm_id", "admName", "passwd", "use_yn"], ["valid", "bind"]);
 e.create.onExecute = function(p_bindCommand) {
-    e.first.items["cmd"].value = "CREATE";
+    this.bind.items["cmd"].value = "CREATE";
 };
 // delete
 e.delete.setItem(["acc_idx"], ["valid", "bind"]);
 e.delete.onExecute = function(p_bindCommand) {
-    e.first.items["cmd"].value = "DELETE";
+    this.bind.items["cmd"].value = "DELETE";
 };
 
 //--------------------------------------------------------------
@@ -341,3 +330,4 @@ $(document).ready(function () {
 });
 </script>
 </body>
+</html>            

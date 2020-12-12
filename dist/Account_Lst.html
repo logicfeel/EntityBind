@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<!DOCTYPE html>
+<html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -60,7 +60,7 @@
 	            <p class="total">검색결과 <strong id="totalView">0</strong>건</p>
             </div>
 	        <div class="gRight">
-	            <select id="listCnt" name="listCnt" class="fSelect">
+	            <select id="pageSize" name="pageSize" class="fSelect">
 	                <option value="10" selected>10개씩보기</option>
 	                <option value="20">20개씩보기</option>
 	                <option value="30">30개씩보기</option>
@@ -190,20 +190,20 @@ $(document).ajaxError(function (event, xhr, options, exc) {
     }
 });
 </script>
-<script src="/A-Back/CMN/JS/Paging.js"></script>
+<script src="/Common/js/page-view.js?a=123"></script>
 <script src="/Common/js/_w-meta-1.4.0.js"></script>
 <script src="/Common/js/_w-meta-1.4.0.test.js"></script>
 <script>
 // #######################################################################################################
 var util                    = _W.Common.Util;
 var IBindModelList          = _W.Interface.IBindModelList;
+var page = new PageView();
+page.pageSize = 5;
 
 function BaseListDI() {
     IBindModelList.call(this);
 
-    this.attr["listCnt"]       = 5;    // 표시줄수
-    this.attr["selPage"]       = 1;     // 선택 페이지 
-    this.attr["frmURL"]        = "";     // 
+    this.attr["frmURL"]        = "";     // 수정화면 경로
 
     this.cbFail = function(p_result, p_item) {
         console.warn("실패 :: Value=\"%s\", Code=\"%s\", Message=\"%s\" ", p_result.value, p_result.code, p_result.msg);
@@ -224,7 +224,7 @@ function BaseListDI() {
     };
 }
 util.inherits(BaseListDI, IBindModelList);
-
+// 메소드
 BaseListDI.prototype.cbRegister = function() {
     console.log("cbRegister : 이벤트 및 설정 등록 ");
     
@@ -238,11 +238,10 @@ BaseListDI.prototype.cbRegister = function() {
             this.reset();
         });
     });
-    $("#listCnt").change(function () {
-        var listCnt = $("#listCnt").val();
-        Paging.Init(listCnt, 5, false, false);
-        _this.first.items["listCnt"].value = listCnt;
-        _this.first.items["selPage"].value = 1;
+    $("#pageSize").change(function () {
+        var pageSize = $("#pageSize").val();
+        page.pageSize = pageSize;
+        page.pageCount = 1;
         _this.list.execute();
     });
     $("#btn_Insert").click(function () {
@@ -267,22 +266,28 @@ var BaseListDI              = BaseListDI;
 function AccountListDI() {
     BaseListDI.call(this);
 
-    // 검색조건
+    // 검색/조회 조건
+    this.attr["page_size"] =  {
+        getter: function() { return page.pageSize; },
+        setter: function(val) { page.pageSize = val; }
+    };
+    this.attr["page_count"] = {
+        getter: function() { return page.pageCount; },
+        setter: function(val) { page.pageCount = val; }
+    };
     this.attr["keyword"] = {
         caption: "검색어",
         selector: "#name_corp_tel_hp",
         getter: function() { return $("#name_corp_tel_hp").val(); },
         setter: function(val) { $("#name_corp_tel_hp").val(val); }
     };
-    this.attr["page_size"]  = 5;
-    this.attr["page_count"] = 1;
     this.attr["sort_cd"] = "";
-    // 레코드
-    this.attr["acc_idx"] = {caption: "일련번호", value: ""};
-    this.attr["adm_id"] = {caption: "관리자ID", value: ""};
-    this.attr["admName"] = {caption: "관리자명", value: ""};
-    this.attr["use_yn"] = {caption: "사용유무", value: ""};
-    this.attr["create_dt"] = {caption: "등록일자", value: ""};
+    // // 레코드
+    this.attr["acc_idx"] = {caption: "일련번호"};
+    this.attr["adm_id"] = {caption: "관리자ID"};
+    this.attr["admName"] = {caption: "관리자명"};
+    this.attr["use_yn"] = {caption: "사용유무"};
+    this.attr["create_dt"] = {caption: "등록일자"};
 }
 util.inherits(AccountListDI, BaseListDI);
 
@@ -294,29 +299,25 @@ AccountListDI.use_yn = function(flag) {
     var tmp = "";
     if (flag === "Y") tmp = "<strong class='icoStatus positive'></strong>";
     else tmp = "<span class='icoMobile'>중지</span>";
-    return tmp;	
+    return tmp;
 };
 AccountListDI.listView = function(p_entity) {
-    var entity = this.output;
-    var frmURL = this._baseEntity.items["frmURL"].value;
-    var selPage = this._baseEntity.items["page_count"].value;
-    var listCnt = this._baseEntity.items["page_size"].value;
-    var row_total;
-    var numCnt;
-    var strHtml;
+
+    var entity      = this.output;
+    var frmURL      = this._baseEntity.items["frmURL"].value;        // REVIEW:: 변경 대상
+    var pageCount   = page.pageCount;
+    var pageSize    = page.pageSize;
+    var row_total   = p_entity.table["row_total"];
+    var numCnt      = row_total - ((pageCount - 1) * pageSize);     // 개시물 번호 = 전체 갯수 - ((현재페이지 -1) * 리스트수 )
+    var strHtml     = "";
 
     $("#CList").html("");
-    $("#totalView").text(entity.rows.count);
+    $("#totalView").text(row_total);
 
     if (entity.rows.count === 0) {
         $("#CList").append("<tr><td colspan='6' align='center'>자료가 없습니다.</td></tr>");
         return;
     }
-     
-    // 개시물 번호 = 전체 갯수 - ((현재페이지 -1) * 리스트수 )
-    row_total = entity.rows[0]["row_total"];
-    numCnt = row_total - ((selPage - 1) * listCnt);
-
     for (var i = 0, num = numCnt; i < entity.rows.count; i++, num--) {
         strHtml = "";
         strHtml = strHtml + "<tr>";
@@ -327,23 +328,15 @@ AccountListDI.listView = function(p_entity) {
         strHtml = strHtml + "<td>" + AccountListDI.use_yn(entity.rows[i].use_yn) + "</td>";
         strHtml = strHtml + "<td>" + entity.rows[i].create_dt.substring(0, 10) + "</td>";
         strHtml = strHtml + "</tr>";
-
         $("#CList").append(strHtml); 
     }
-    Paging.V_PageBind(row_total, selPage, this.execute);	// 페이지 바인딩
-
-    console.log("-------------------------------------------------------");
-    console.log("cbOutput  호출");
-    console.log("this._model.first.items.count  10 ==> " + this._model.first.items.count);
-    console.log("entity.items.count             10 ==> " + entity.items.count);
-    console.log("entity.rows.count              1  ==> " + entity.rows.count);
-    console.log("entity.rows[0]                 ,, ==> " + entity.rows[0]._element);
-    // $("#read_data").html(entity.rows[0]._element);      
+    $("#CPage").html(page.parser(row_total, pageCount, pageSize));
 };
 // 데코레이션
 AccountListDI.prototype.cbRegister = function() {
     BaseListDI.prototype.cbRegister.call(this);
     this.list.cbOutput = AccountListDI.listView;
+    page.callback = this.list.execute.bind(this.list);
 };
 AccountListDI.prototype.cbCheck = function() {
     if (BaseListDI.prototype.cbCheck.call(this)) {
@@ -371,10 +364,10 @@ e.first.items["frmURL"].value = "Account_Frm.asp";
 e.baseAjaxSetup.type = "POST";
 
 // callback 제어값 삽입
-e.first.items.addValue("cmd", "LIST");
-e.first.items.addValue("doctype", "JSON");
+e.addItem("cmd", "LIST", [], "bind");
+e.addItem("doctype", "JSON", [], "bind");
 // list
-e.list.setItem(["cmd", "doctype", "acc_idx", "page_size", "page_count", "sort_cd"], "bind");
+e.list.setItem(["keyword", "page_size", "page_count", "sort_cd"], "bind");
 e.list.setItem(["acc_idx", "adm_id", "use_yn", "create_dt"], "output");
 //--------------------------------------------------------------
 // 디버깅 용도
