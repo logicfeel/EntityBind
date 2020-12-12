@@ -5525,10 +5525,15 @@ if (typeof Array.isArray === "undefined") {
 
             var loadOption = this.outputOption === 3 ? 2  : this.outputOption;
 
+            // 초기화
+            for (var i = 0; this._output.count > i; i++) {
+                if (loadOption === 1) this._output[i].clear();  // 전체 초기화 (item, rows)
+                else this._output[i].rows.clear();              // Row 초기화
+            }
+
             // 결과 EntityView에 로딩
             if(typeof p_result["entity"] !== "undefined" || typeof p_result["table"] !== "undefined" ) {
-                
-                this._output[0].clear();
+
                 this._output[0].load(p_result, loadOption); // this["output"]
             
             } else if (Array.isArray(p_result["entities"])) {
