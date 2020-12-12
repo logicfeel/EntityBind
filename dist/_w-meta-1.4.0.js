@@ -5528,11 +5528,13 @@ if (typeof Array.isArray === "undefined") {
             // 결과 EntityView에 로딩
             if(typeof p_result["entity"] !== "undefined" || typeof p_result["table"] !== "undefined" ) {
                 
+                this._output[0].clear();
                 this._output[0].load(p_result, loadOption); // this["output"]
             
             } else if (Array.isArray(p_result["entities"])) {
 
                 for(var i = 0; p_result["entities"].length > i && typeof this._output[i] !== "undefined"; i++) {
+                    this._output[i].clear();
                     this._output[i].load(p_result["entities"][i], loadOption);
                 }
             }
