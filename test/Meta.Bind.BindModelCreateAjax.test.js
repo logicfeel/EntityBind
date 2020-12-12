@@ -193,7 +193,8 @@
             errorCount++;
         }
 
-        if (isCallback) {
+        // REVIEW:: URL 오류 메세지로 일단 막아둠
+        if (isCallback && false) {
             console.log("---------------------------------------------------------------------------");
             console.log("BindModel.cbError          :: 오류 발생시 실행 ");
             var model = new BindModelCreateAjax();
@@ -260,6 +261,35 @@
         }
 
         console.log("---------------------------------------------------------------------------");
+        console.log("BindModel.add(item, [], entity) :: 전체 cmd에 지정entity에 아이템 등록 ");
+        var model = new BindModelCreateAjax();
+        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        // model.add(new Item("i1"), [], "bind");           // 정상
+        // model.add(new Item("i1"), undefined, "bind");    // 정상
+        // model.add(new Item("i1"), null, "bind");
+        model.add(new Item("i1"), "", "bind");
+        model.first.items["i1"].value = "V1";
+        if (// create 
+            model.create.valid.items.count === 0 &&
+            model.create.bind.items.count === 1 &&
+            model.create.bind.items["i1"].value === "V1" &&
+            model.create.bind.items["i1"].entity.name === "first" &&
+            // create 2
+            model.create2.valid.items.count === 0 &&
+            model.create2.bind.items.count === 1 &&
+            model.create2.bind.items["i1"].value === "V1" &&
+            model.create2.bind.items["i1"].entity.name === "first" &&
+            // first
+            model.first.items.count === 1 &&
+            model.first.items["i1"].value === "V1" &&            
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.add(item, cmd) :: cmd 전체에 아이템 등록 ");
         var model = new BindModelCreateAjax();
         model.create2 = new BindCommandEditAjax(model, model._baseEntity);
@@ -267,6 +297,7 @@
         model.first.items["i1"].value = "V1";
         if (// create 
             model.create.valid.items.count === 0 &&
+            model.create.bind.items.count === 0 &&
             // create 2
             model.create2.valid.items.count === 1 &&
             model.create2.valid.items["i1"].value === "V1" &&
@@ -284,6 +315,30 @@
             errorCount++;
         }
 
+        console.log("---------------------------------------------------------------------------");
+        console.log("BindModel.add(item, cmd, entity) :: 지정 cmd의 지정entity에 아이템 등록 ");
+        var model = new BindModelCreateAjax();
+        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.add(new Item("i1"), "create2", "bind");
+        model.first.items["i1"].value = "V1";
+        if (// create 
+            model.create.valid.items.count === 0 &&
+            model.create.bind.items.count === 0 &&
+            // create 2
+            model.create2.valid.items.count === 0 &&
+            model.create2.bind.items.count === 1 &&
+            model.create2.bind.items["i1"].value === "V1" &&
+            model.create2.bind.items["i1"].entity.name === "first" &&
+            // first
+            model.first.items.count === 1 &&
+            model.first.items["i1"].value === "V1" &&            
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+        
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.add(item, cmds) :: cmd 전체에 아이템 등록 ");
         var model = new BindModelCreateAjax();
@@ -333,6 +388,31 @@
             model.create2.valid.items.count === 1 &&
             model.create2.valid.items["i1"].value === "V1" &&
             model.create2.valid.items["i1"].entity.name === "first" &&
+            model.create2.bind.items.count === 1 &&
+            model.create2.bind.items["i1"].value === "V1" &&
+            model.create2.bind.items["i1"].entity.name === "first" &&
+            // first
+            model.first.items.count === 1 &&
+            model.first.items["i1"].value === "V1" &&            
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------------------------------------------");
+        console.log("BindModel.addItem(name, value, [], entity) :: 아이템 생성 및 [전체] cmd의 지정 entity에 추가 ");
+        var model = new BindModelCreateAjax();
+        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.addItem("i1", "V1", [], "bind");
+        if (// create 
+            model.create.valid.items.count === 0 &&
+            model.create.bind.items.count === 1 &&
+            model.create.bind.items["i1"].value === "V1" &&
+            model.create.bind.items["i1"].entity.name === "first" &&
+            // create 2
+            model.create2.valid.items.count === 0 &&
             model.create2.bind.items.count === 1 &&
             model.create2.bind.items["i1"].value === "V1" &&
             model.create2.bind.items["i1"].entity.name === "first" &&

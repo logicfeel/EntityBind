@@ -4912,8 +4912,9 @@ if (typeof Array.isArray === "undefined") {
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
          * @param {?array<string>} p_cmds <선택> 추가할 아이템 명령
+         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
          */
-        BindModel.prototype.add = function(p_item, p_cmds) {
+        BindModel.prototype.add = function(p_item, p_cmds, p_entities) {
 
             var cmds = [];
             var property = [];      // 속성
@@ -4922,13 +4923,13 @@ if (typeof Array.isArray === "undefined") {
             if (!(p_item instanceof Item)) {
                 throw new Error("Only [Item] type 'Item' can be added");
             }
-            if (typeof p_cmds !== "undefined" && (!(Array.isArray(p_cmds) || typeof p_cmds === "string"))) {
+            if (typeof p_cmds !== "undefined" && p_cmds !== null && (!(Array.isArray(p_cmds) || typeof p_cmds === "string"))) {
                 throw new Error("Only [a_cmd] type 'Array | string' can be added");
             }
             
             // 2.초기화 설정
             if (Array.isArray(p_cmds)) cmds = p_cmds;
-            else if (typeof p_cmds === "string") cmds.push(p_cmds);
+            else if (typeof p_cmds === "string" && p_cmds.length > 0) cmds.push(p_cmds);
             
             // 3.설정 대상 가져오기
             if (cmds.length > 0) {
@@ -4952,7 +4953,7 @@ if (typeof Array.isArray === "undefined") {
             }
             // 4.설정(등록)
             for (var i = 0; i < property.length; i++) {
-                this[property[i]].add(p_item);
+                this[property[i]].add(p_item, p_entities);
             }
         };
 
@@ -4960,8 +4961,9 @@ if (typeof Array.isArray === "undefined") {
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
          * @param {string} p_name
          * @param {object | String | number | boolean} p_value 
+         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
          */
-        BindModel.prototype.addItem = function(p_name, p_value, p_cmds) {
+        BindModel.prototype.addItem = function(p_name, p_value, p_cmds, p_entities) {
 
             var item;
             
@@ -4972,7 +4974,7 @@ if (typeof Array.isArray === "undefined") {
 
             item = this._baseEntity.items.addValue(p_name, p_value);
 
-            this.add(item, p_cmds);
+            this.add(item, p_cmds, p_entities);
         };
 
         /**
