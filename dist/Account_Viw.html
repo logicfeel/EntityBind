@@ -102,9 +102,6 @@
     function BaseReadDI() {
         IBindModelRead.call(this);
 
-        var params = ParamGet2JSON(location.href);          // admin_common.js
-
-        this.attr["mode"]       = params.mode;
         this.attr["listURL"]    = "";
 
         this.cbFail = function(p_result, p_item) {          // 전역 실패 콜백
