@@ -183,10 +183,7 @@
     e.delete.cbEnd = function(p_result) { location.href = listURL; };    
     e.update.cbValid = function() { return confirm("수정 하시겠습니까 ?"); };
     e.update.cbEnd = function() { return confirm("정상 수정 되었습니다."); };
-    e.create.cbEnd = function() { 
-        alert("정상 등록되었습니다.");
-        location.href = listURL;
-    };
+    e.create.cbEnd = function() { location.href = listURL; };
     
     $("#btn_Update").click(function () { e.update.execute(); });
     $("#btn_Insert").click(function () { e.create.execute(); });
