@@ -1,4 +1,26 @@
-<!DOCTYPE html>
+<% @CODEPAGE="65001" language="VBScript" %>
+<%
+'******************************************************************************
+' FILENAME      : 
+'------------------------------------------------------------------------------
+' PROGRAM NAME  : 
+' AUTHOR        : 김영호
+' DESCRIPTION   : 
+' HISTORY       :
+'------------------------------------------------------------------------------
+' DATE        NAME        DESCRIPTION
+'------------------------------------------------------------------------------
+'
+'   확인
+'   http://rtwgs4.cafe24.com/Admin/pc/mod/sto/account_Frm.asp?cmd=INSERT
+'
+'******************************************************************************
+%>
+<!--#include virtual="/Admin/adm_cmn/include/Admin_Global_Define.I.asp"-->
+<%	
+
+
+%><!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -172,10 +194,7 @@
         this.attr["use_yn"] = {
             caption: "사용유무", 
             selector: ["#using_yn"],
-            setter: function(val) { 
-                if (val === "Y" ) $("#using_yn").text("정상");
-                if (val === "N" ) $("#using_yn").text("중지");
-            }
+            setter: function(val) { $("#using_yn").text( val === "Y" ? "정상" : "중지"); }
         };
     }
     util.inherits(AccountReadDI, BaseReadDI);
@@ -214,6 +233,9 @@
     e.read.setItem(["acc_idx"], ["valid", "bind"]);
     e.read.setItem(["adm_id", "admName", "use_yn", "passwd"], "output");
     e.read.outputOption = 3;
+    e.read.onExecute = function(p_bindCommand) {
+        this.bind.items["acc_idx"].value = ParamGet2JSON(location.href).acc_idx;
+    };
 
     //--------------------------------------------------------------
     // 디버깅 용도

@@ -194,31 +194,114 @@
         Msg("ALERT", "ajaxError", msg, "");
         }
     });
-</script>
+    </script>
 <script src="/Common/js/_w-meta-1.4.0.js?a=123"></script>
 <script src="/Common/js/page-view.js?a=123"></script>
 <script>
     // #######################################################################################################
-    // 모델(SP) 기능에 맞는  설정  (Account_SP_CRUDL)
-    var BindModelListAjax       = _W.Meta.Bind.BindModelListAjax;
-    var ItemDOM                 = _W.Meta.Entity.ItemDOM;
-    var e       = new BindModelListAjax();
-    var page    = new PageView("page", 5);
+    var util                    = _W.Common.Util;
+    var IBindModelList          = _W.Interface.IBindModelList;
 
-    e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";         // 생성 및 설정
-    page.callback = e.list.execute.bind(e.list);         // page 콜백 함수 설정
+    function BaseListDI() {
+        IBindModelList.call(this);
 
-    e.addItem("cmd", "LIST", [], "bind");                   // 전역 아이템 추가
-    e.addItem("doctype", "JSON", [], "bind");
-    e.list.add(new ItemDOM("keyword", null, { getter: function() { return $("#name_corp_tel_hp").val(); } }), "bind");
-    e.list.add(new ItemDOM("page_size", null, { getter: function() { return page.page_size; } }), "bind");
-    e.list.add(new ItemDOM("page_count", null, { getter: function() { return page.page_count; } }), "bind");
-    e.list.add(new ItemDOM("sort_cd", null, ""), "bind");
-    
-    var goForm = function (p_idx) {
-        location.href = "Account_Frm.min.asp?mode=EDIT&acc_idx=" + p_idx;
+        this.attr["regURL"]        = "";                    // 등록화면 경로
+
+        this.cbFail = function(p_result, p_item) {          // 전역 실패 콜백
+            console.warn("실패 :: Value=\"%s\", Code=\"%s\", Message=\"%s\" ", p_result.value, p_result.code, p_result.msg);
+            Msg("ALERT", "실패", p_result.msg);
+            if (typeof p_item.selector[0] === "string") $(p_item.selector[0]).focus();
+        };
+        this.cbError = function(p_msg, p_status) {          // 전역 오류 콜백
+            console.warn("오류 :: Status=\"%s\" , Message=\"%s\" ", p_status, p_msg);
+            Msg("ALERT", "오류", p_msg);
+        };
+        this.onExecute = function(p_bindCommand) {          // 실행시 이벤트 등록
+            console.log("onExecute 이벤트. ");
+            $('.mLoading').show();
+        };
+        this.onExecuted = function(p_bindCommand) {         // 실행끝 이벤트 등록
+            console.log("onExecuted 이벤트.. ");
+            $('.mLoading').hide();
+        };
+
+    }
+    util.inherits(BaseListDI, IBindModelList);
+    // 메소드
+    BaseListDI.prototype.cbRegister = function() {
+        console.log("cbRegister : 이벤트 및 설정 등록 ");
+        
+        var _this = this;   // jqeury 함수 내부에서 this 접근시 사용
+        
+        $("#btn_Search").click(function () {
+            _this.list.execute();
+        });
+        $("#btn_Reset").click(function () {
+            $("form").each(function() {
+                this.reset();
+            });
+        });
+        $("#btn_Insert").click(function () {
+            var regURL = _this.first.items["regURL"].value;
+            location.href = regURL + "?mode=CREATE";
+        });    
     };
-    e.list.cbOutput = function(p_entity) {
+    BaseListDI.prototype.cbCheck = function() {
+        console.log("cbCheck : 화면 유효성 검사 ");
+        return true;
+    };
+    BaseListDI.prototype.cbReady = function() {
+        console.log("cbReady : 준비완료 ");
+    };
+</script>
+<script>
+    // #######################################################################################################
+    // 특정 비즈니스를 담당하는 기능 (Account_Frm)
+    var util                    = _W.Common.Util;
+    var BaseListDI              = BaseListDI;
+    var accountFrmURL;          // 수정화면 경로(참조)
+    var page = new PageView("page", 5);
+
+    function AccountListDI() {
+        BaseListDI.call(this);
+
+        this.attr["frmURL"] = {
+            getter: function() { return accountFrmURL; },
+            setter: function(val) { accountFrmURL = val; }
+        };
+        this.attr["page_size"] =  {
+            getter: function() { return page.page_size; },
+            setter: function(val) { page.page_size = val; }
+        };
+        this.attr["page_count"] = {
+            getter: function() { return page.page_count; },
+            setter: function(val) { page.page_count = val; }
+        };
+        // 검색/조회 조건
+        this.attr["keyword"] = {
+            caption: "검색어",
+            selector: "#name_corp_tel_hp",
+            getter: function() { return $("#name_corp_tel_hp").val(); },
+            setter: function(val) { $("#name_corp_tel_hp").val(val); }
+        };
+        this.attr["sort_cd"] = "";
+        // // 레코드
+        this.attr["acc_idx"] = {caption: "일련번호"};
+        this.attr["adm_id"] = {caption: "관리자ID"};
+        this.attr["admName"] = {caption: "관리자명"};
+        this.attr["use_yn"] = {caption: "사용유무"};
+        this.attr["create_dt"] = {caption: "등록일자"};
+    }
+    util.inherits(AccountListDI, BaseListDI);
+    // 정적 메소드
+    AccountListDI.goForm = function (p_idx) {
+        location.href = accountFrmURL + "?mode=EDIT&acc_idx=" + p_idx;
+    };
+    AccountListDI.use_yn = function(flag) {
+        if (flag === "Y") return "<strong class='icoStatus positive'></strong>";
+        else return "<span class='icoMobile'>중지</span>";
+    };
+    AccountListDI.listView = function(p_entity) {
 
         var entity      = this.output;
         var row_total   = p_entity.table["row_total"];
@@ -235,7 +318,7 @@
                 strHtml = "";
                 strHtml = strHtml + "<tr>";
                 strHtml = strHtml + "<td>" + num + "</td>";
-                strHtml = strHtml + "<td><a href=\"javascript:goForm('" + entity.rows[i].acc_idx + "');\">" + entity.rows[i].adm_id + "</a></td>";
+                strHtml = strHtml + "<td><a href=\"javascript:AccountListDI.goForm('" + entity.rows[i].acc_idx + "');\">" + entity.rows[i].adm_id + "</a></td>";
                 strHtml = strHtml + "<td>" + entity.rows[i].admName + "</td>";
                 strHtml = strHtml + "<td>" + AccountListDI.use_yn(entity.rows[i].use_yn) + "</td>";
                 strHtml = strHtml + "<td>" + entity.rows[i].create_dt.substring(0, 10) + "</td>";
@@ -245,26 +328,62 @@
             $("#CPage").html(page.parser(row_total));   // 필수 항목만 받음
         }
     };
+    // 데코레이션 메소드
+    AccountListDI.prototype.cbRegister = function() {
+        BaseListDI.prototype.cbRegister.call(this);
+        
+        var _this = this;   // jqeury 함수 내부에서 this 접근시 사용
+        
+        this.list.cbOutput = AccountListDI.listView;        // 출력(output) 메소드 설정
+        page.callback = this.list.execute.bind(this.list);  // page 콜백 함수 설정
 
-    $("#btn_Search").click(function () {
-        e.list.execute();
-    });
-    $("#btn_Reset").click(function () {
-        $("form").each(function() {
-            this.reset();
+        $("#page_size").change(function () {
+            page.page_size = $("#page_size").val();
+            page.page_count = 1;
+            _this.list.execute();
         });
-    });
-    $("#btn_Insert").click(function () {
-       location.href = "Account_Reg.min.asp";
-    });
-    $("#page_size").change(function () {
-        page.page_size = $("#page_size").val();
-        page.page_count = 1;
-        e.list.execute();
-    });
-    $(document).ready(function () {
-        e.list.execute();
 
+    };
+    AccountListDI.prototype.cbCheck = function() {
+        if (BaseListDI.prototype.cbCheck.call(this)) {
+            if (this.checkSelector()) {                     // 선택자 검사
+                console.log("cbCheck : 선택자 검사 => 'Success' ");
+                return true;
+            }
+        }
+        return false;
+    };
+    AccountListDI.prototype.cbReady = function() {
+        BaseListDI.prototype.cbReady.call(this);
+        this.list.execute();                                // 준비완료 후 실행(execute)
+    };
+</script>
+<script>
+    // #######################################################################################################
+    // 모델(SP) 기능에 맞는  설정  (Account_SP_CRUDL)
+    var BindModelListAjax       = _W.Meta.Bind.BindModelListAjax;
+    var ItemDOM                 = _W.Meta.Entity.ItemDOM;
+    var e = new BindModelListAjax(new AccountListDI(), true, ItemDOM);
+
+    e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";         // 생성 및 설정
+    e.first.items["frmURL"].value = "Account_Frm.asp";
+    e.first.items["regURL"].value = "Account_Frm.asp";
+    e.baseAjaxSetup.type = "POST";
+
+    e.addItem("cmd", "LIST", [], "bind");                   // 전역 아이템 추가
+    e.addItem("doctype", "JSON", [], "bind");
+
+    e.list.setItem(["keyword", "page_size", "page_count", "sort_cd"], "bind");
+    e.list.setItem(["acc_idx", "adm_id", "use_yn", "create_dt"], "output");
+
+    //--------------------------------------------------------------
+    // 디버깅 용도
+    e.list.cbBind = function(p_ajaxSetup) {
+        console.log("call cbBind() ");
+    };
+    //--------------------------------------------------------------
+    $(document).ready(function () {
+        e.init();
     });
 </script>
 </body>
