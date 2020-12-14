@@ -375,12 +375,6 @@
 
     e.list.setItem(["keyword", "page_size", "page_count", "sort_cd"], "bind");
     e.list.setItem(["acc_idx", "adm_id", "use_yn", "create_dt"], "output");
-
-    //--------------------------------------------------------------
-    // 디버깅 용도
-    e.list.cbBind = function(p_ajaxSetup) {
-        console.log("call cbBind() ");
-    };
     //--------------------------------------------------------------
     $(document).ready(function () {
         e.init();

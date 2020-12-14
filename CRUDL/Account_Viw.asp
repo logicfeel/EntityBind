@@ -236,12 +236,6 @@
     e.read.onExecute = function(p_bindCommand) {
         this.bind.items["acc_idx"].value = ParamGet2JSON(location.href).acc_idx;
     };
-
-    //--------------------------------------------------------------
-    // 디버깅 용도
-    e.read.cbBind = function(p_ajaxSetup) {
-        console.log("call cbBind() ");
-    };
     //--------------------------------------------------------------
     $(document).ready(function () {
         e.init();
