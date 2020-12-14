@@ -324,19 +324,13 @@
 
     e.update.setItem(["acc_idx", "adm_id" ], "valid");
     e.update.setItem(["acc_idx", "admName", "use_yn", "passwd"], "bind");
-    e.update.onExecute = function(p_bindCommand) {
-        this.bind.items["cmd"].value = "UPDATE";
-    };
+    e.update.onExecute = function(p_bindCommand) { this.bind.items["cmd"].value = "UPDATE"; };
 
     e.create.setItem(["sto_id", "adm_id", "admName", "passwd", "use_yn"], ["valid", "bind"]);
-    e.create.onExecute = function(p_bindCommand) {
-        this.bind.items["cmd"].value = "CREATE";
-    };
+    e.create.onExecute = function(p_bindCommand) { this.bind.items["cmd"].value = "CREATE"; };
 
     e.delete.setItem(["acc_idx"], ["valid", "bind"]);
-    e.delete.onExecute = function(p_bindCommand) {
-        this.bind.items["cmd"].value = "DELETE";
-    };
+    e.delete.onExecute = function(p_bindCommand) { this.bind.items["cmd"].value = "DELETE"; };
 
     //--------------------------------------------------------------
     // 디버깅 용도
