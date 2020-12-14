@@ -128,7 +128,7 @@
     e.read.add(new ItemDOM("adm_id", null, { setter: function(val) { $("#adm_id").text(val); } }), "output");
     e.read.add(new ItemDOM("passwd", null, { setter: function(val) { $("#passwd").text(val); } }), "output");
     e.read.add(new ItemDOM("admName", null, { setter: function(val) { $("#admName").text(val); } }), "output");
-    e.read.add(new ItemDOM("using_yn", null, { setter: function(val) { $("#using_yn").text( val === "Y" ? "정상" : "중지"); } }), "output");
+    e.read.add(new ItemDOM("use_yn", null, { setter: function(val) { $("#using_yn").text( val === "Y" ? "정상" : "중지"); } }), "output");
     e.read.outputOption = 3;
 
     $("#btn_List").click(function () {
