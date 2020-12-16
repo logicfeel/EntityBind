@@ -94,12 +94,25 @@
             this.update.cbValid = function() {          // update
                 return confirm("수정 하시겠습니까 ?");
             };
-            this.update.cbEnd = function() {
-                return confirm("정상 수정 되었습니다.");
+            this.update.cbEnd = function(p_result, p_status, p_xhr) {
+                var entity = p_result["table"] ||  p_result["entity"];
+                var code = entity["return"];
+
+                if (code >= 0) { 
+                    alert("정상 수정되었습니다.");
+                } else {
+                    alert("수정 실패 하였습니다. Code : " + code);
+                }
             };
-            this.create.cbEnd   = function() {          // create
-                alert("정상 등록되었습니다.");
-                location.href = this._baseEntity.items["listURL"].value;
+            this.create.cbEnd   = function(p_result, p_status, p_xhr) {          // create
+                var entity = p_result["table"] ||  p_result["entity"];
+                var code = entity["return"];
+
+                if (code >= 0) { 
+                    alert("정상 수정되었습니다.");
+                } else {
+                    alert("수정 실패 하였습니다. Code : " + code);
+                }
             };
             
             $("#btn_Update").click(function () {

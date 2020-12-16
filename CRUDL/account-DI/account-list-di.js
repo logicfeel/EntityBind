@@ -79,69 +79,69 @@
         util.inherits(AccountListDI, _super);
     
         // 정적 메소드
-    AccountListDI.goForm = function (p_idx) {
-        location.href = accountFrmURL + "?mode=EDIT&acc_idx=" + p_idx;
-    };
-    AccountListDI.use_yn = function(flag) {
-        if (flag === "Y") return "<strong class='icoStatus positive'></strong>";
-        else return "<span class='icoMobile'>중지</span>";
-    };
-    AccountListDI.listView = function(p_entity) {
+        AccountListDI.goForm = function (p_idx) {
+            location.href = accountFrmURL + "?mode=EDIT&acc_idx=" + p_idx;
+        };
+        AccountListDI.use_yn = function(flag) {
+            if (flag === "Y") return "<strong class='icoStatus positive'></strong>";
+            else return "<span class='icoMobile'>중지</span>";
+        };
+        AccountListDI.listView = function(p_entity) {
 
-        var entity      = this.output;
-        var row_total   = p_entity.table["row_total"];
-        var numCount      = row_total - ((page.page_count - 1) * page.page_size);     // 개시물 번호 = 전체 갯수 - ((현재페이지 -1) * 리스트수 )
-        var strHtml;
+            var entity      = this.output;
+            var row_total   = p_entity.table["row_total"];
+            var numCount      = row_total - ((page.page_count - 1) * page.page_size);     // 개시물 번호 = 전체 갯수 - ((현재페이지 -1) * 리스트수 )
+            var strHtml;
 
-        $("#CList").html("");
-        $("#totalView").text(row_total);
+            $("#CList").html("");
+            $("#totalView").text(row_total);
 
-        if (entity.rows.count === 0) {
-            $("#CList").append("<tr><td colspan='5' align='center'>자료가 없습니다.</td></tr>");
-        } else {
-            for (var i = 0, num = numCount; i < entity.rows.count; i++, num--) {
-                strHtml = "";
-                strHtml = strHtml + "<tr>";
-                strHtml = strHtml + "<td>" + num + "</td>";
-                strHtml = strHtml + "<td><a href=\"javascript:AccountListDI.goForm('" + entity.rows[i].acc_idx + "');\">" + entity.rows[i].adm_id + "</a></td>";
-                strHtml = strHtml + "<td>" + entity.rows[i].admName + "</td>";
-                strHtml = strHtml + "<td>" + AccountListDI.use_yn(entity.rows[i].use_yn) + "</td>";
-                strHtml = strHtml + "<td>" + entity.rows[i].create_dt.substring(0, 10) + "</td>";
-                strHtml = strHtml + "</tr>";
-                $("#CList").append(strHtml); 
+            if (entity.rows.count === 0) {
+                $("#CList").append("<tr><td colspan='5' align='center'>자료가 없습니다.</td></tr>");
+            } else {
+                for (var i = 0, num = numCount; i < entity.rows.count; i++, num--) {
+                    strHtml = "";
+                    strHtml = strHtml + "<tr>";
+                    strHtml = strHtml + "<td>" + num + "</td>";
+                    strHtml = strHtml + "<td><a href=\"javascript:AccountListDI.goForm('" + entity.rows[i].acc_idx + "');\">" + entity.rows[i].adm_id + "</a></td>";
+                    strHtml = strHtml + "<td>" + entity.rows[i].admName + "</td>";
+                    strHtml = strHtml + "<td>" + AccountListDI.use_yn(entity.rows[i].use_yn) + "</td>";
+                    strHtml = strHtml + "<td>" + entity.rows[i].create_dt.substring(0, 10) + "</td>";
+                    strHtml = strHtml + "</tr>";
+                    $("#CList").append(strHtml); 
+                }
+                $("#CPage").html(page.parser(row_total));   // 필수 항목만 받음
             }
-            $("#CPage").html(page.parser(row_total));   // 필수 항목만 받음
-        }
-    };
-    // 데코레이션 메소드
-    AccountListDI.prototype.cbRegister = function() {
-        BaseListDI.prototype.cbRegister.call(this);
-        
-        var _this = this;   // jqeury 함수 내부에서 this 접근시 사용
-        
-        this.list.cbOutput = AccountListDI.listView;        // 출력(output) 메소드 설정
-        page.callback = this.list.execute.bind(this.list);  // page 콜백 함수 설정
+        };
+        // 데코레이션 메소드
+        AccountListDI.prototype.cbRegister = function() {
+            BaseListDI.prototype.cbRegister.call(this);
+            
+            var _this = this;   // jqeury 함수 내부에서 this 접근시 사용
+            
+            this.list.cbOutput = AccountListDI.listView;        // 출력(output) 메소드 설정
+            page.callback = this.list.execute.bind(this.list);  // page 콜백 함수 설정
 
-        $("#page_size").change(function () {
-            page.page_size = $("#page_size").val();
-            page.page_count = 1;
-            _this.list.execute();
-        });
+            $("#page_size").change(function () {
+                page.page_size = $("#page_size").val();
+                page.page_count = 1;
+                _this.list.execute();
+            });
 
-    };
-    AccountListDI.prototype.cbCheck = function() {
-        if (BaseListDI.prototype.cbCheck.call(this)) {
-            if (this.checkSelector()) {                     // 선택자 검사
-                console.log("cbCheck : 선택자 검사 => 'Success' ");
-                return true;
+        };
+        AccountListDI.prototype.cbCheck = function() {
+            if (BaseListDI.prototype.cbCheck.call(this)) {
+                if (this.checkSelector()) {                     // 선택자 검사
+                    console.log("cbCheck : 선택자 검사 => 'Success' ");
+                    return true;
+                }
             }
-        }
-        return false;
-    };
-    AccountListDI.prototype.cbReady = function() {
-        BaseListDI.prototype.cbReady.call(this);
-        this.list.execute();                                // 준비완료 후 실행(execute)
-    };
+            return false;
+        };
+        AccountListDI.prototype.cbReady = function() {
+            BaseListDI.prototype.cbReady.call(this);
+            this.list.execute();                                // 준비완료 후 실행(execute)
+        };
 
         return AccountListDI;
     

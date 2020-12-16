@@ -186,22 +186,6 @@
 	<div id="part_Overlay" class="w3-overlay w3-animate-opacity" style="cursor:pointer;z-index:90;"></div>
 
 </div>        
-<script>    
-    //************** ajax 에러 처리  ************************
-    $(document).ajaxError(function (event, xhr, options, exc) {
-        if (xhr.status != 200){
-        var msg = "";
-        msg = msg + "# options.data : " + options.data + " , ";
-        msg = msg + "# options.url : " + options.url + " , ";
-        msg = msg + "# options.contentType : " + options.contextType + " , ";
-        msg = msg + "# xhr.status : " + xhr.status + " , ";
-        msg = msg + "# xhr.statusText : " + xhr.statusText + " , ";
-        msg = msg + "# xhr.responseText : " + xhr.responseText + " , ";
-
-        Msg("ALERT", "ajaxError", msg, "");
-        }
-    });
-</script>
 <script src="/Common/js/page-view.js"></script>
 <script src="/Common/js/_w-meta-1.4.0.js"></script>
 <script src="/Admin/adm_cmn/DI/base-list-del-di.js"></script>
