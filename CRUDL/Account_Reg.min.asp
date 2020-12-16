@@ -132,16 +132,18 @@
     var ItemDOM                 = _W.Meta.Entity.ItemDOM;
     var e = new BindModelFormAjax();
     var listURL = "Account_Lst.min.asp";
+
     e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";                         // 설정
     e.baseAjaxSetup.type = "POST";
 
     e.addItem("cmd", "CREATE", [], "bind");                               // 전역 아이템 추가
     e.addItem("doctype", "JSON", [], "bind");
     e.addItem("sto_id", "S00001", [], ["valid", "bind"]);
+
     e.create.add(new ItemDOM("adm_id", null, { getter: function() { return $("#passwd").val(); } }), ["valid", "bind"]);
     e.create.add(new ItemDOM("passwd", null, { getter: function() { return $("#passwd").val(); } }), ["valid", "bind"]);
     e.create.add(new ItemDOM("admName", null, { getter: function() { return $("#admName").val(); } }), ["valid", "bind"]);
-    e.create.add(new ItemDOM("using_yn", null, { getter: function() { return $("input[name=using_yn]:checked").val(); } }), "bind");
+    e.create.add(new ItemDOM("use_yn", null, { getter: function() { return $("input[name=using_yn]:checked").val(); } }), "bind");
 
     $("#btn_List").click(function () {
        location.href = listURL;
@@ -154,7 +156,8 @@
     $("#btn_Insert").click(function () {
         e.create.execute();
     });
-    e.create.cbEnd   = function() {          // create
+
+    e.create.cbEnd   = function() {
         alert("정상 등록되었습니다.");
         location.href = listURL;
     };

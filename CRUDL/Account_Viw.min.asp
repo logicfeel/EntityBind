@@ -112,7 +112,6 @@
     });
 </script>
 <script src="/Common/js/_w-meta-1.4.0.js?aaaaaaa"></script>
-
 <script>
     // #######################################################################################################
     // 모델(SP) 기능에 맞는  설정  (Account_SP_CRUDL)
@@ -120,21 +119,24 @@
     var ItemDOM                 = _W.Meta.Entity.ItemDOM;
     var e = new BindModelReadAjax();
 
-    e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";                 // 설정
+    e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";
     
     e.addItem("cmd", "READ", [], "bind");
     e.addItem("doctype", "JSON", [], "bind");
+
     e.read.addItem("acc_idx", ParamGet2JSON(location.href).acc_idx, ["valid", "bind"]);
+    
     e.read.add(new ItemDOM("adm_id", null, { setter: function(val) { $("#adm_id").text(val); } }), "output");
     e.read.add(new ItemDOM("passwd", null, { setter: function(val) { $("#passwd").text(val); } }), "output");
     e.read.add(new ItemDOM("admName", null, { setter: function(val) { $("#admName").text(val); } }), "output");
     e.read.add(new ItemDOM("use_yn", null, { setter: function(val) { $("#using_yn").text( val === "Y" ? "정상" : "중지"); } }), "output");
+    
     e.read.outputOption = 3;
 
     $("#btn_List").click(function () {
        location.href = "Account_Lst.D.asp";;
     });
-    
+
     $(document).ready(function () {
         e.read.execute();
     });

@@ -255,12 +255,6 @@
     e.addItem("doctype", "JSON", [], "bind");
 
     e.create.setItem(["sto_id", "adm_id", "admName", "passwd", "use_yn"], ["valid", "bind"]);
-
-    //--------------------------------------------------------------
-    // 디버깅 용도
-    e.create.cbBind = function(p_ajaxSetup) {
-        console.log("call cbBind() ");
-    };
     //--------------------------------------------------------------
     $(document).ready(function () {
         e.init();

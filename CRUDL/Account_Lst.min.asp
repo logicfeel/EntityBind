@@ -208,11 +208,12 @@
         location.href = "Account_Frm.min.asp?mode=EDIT&acc_idx=" + p_idx;
     };
     
-    e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";         // 생성 및 설정
-    page.callback = e.list.execute.bind(e.list);         // page 콜백 함수 설정
+    e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";
+    page.callback = e.list.execute.bind(e.list);
 
-    e.addItem("cmd", "LIST", [], "bind");                   // 전역 아이템 추가
+    e.addItem("cmd", "LIST", [], "bind");
     e.addItem("doctype", "JSON", [], "bind");
+    
     e.list.add(new ItemDOM("keyword", null, { getter: function() { return $("#name_corp_tel_hp").val(); } }), "bind");
     e.list.add(new ItemDOM("page_size", null, { getter: function() { return page.page_size; } }), "bind");
     e.list.add(new ItemDOM("page_count", null, { getter: function() { return page.page_count; } }), "bind");
@@ -245,23 +246,15 @@
         }
     };
 
-    $("#btn_Search").click(function () {
-        e.list.execute();
-    });
-    $("#btn_Reset").click(function () {
-        $("form").each(function() {
-            this.reset();
-        });
-    });
-    $("#btn_Insert").click(function () {
-       location.href = "Account_Reg.min.asp";
-    });
-    $("#page_size").change(function () {
+    $("#btn_Search").click(function () { e.list.execute(); });
+    $("#btn_Reset").click(function () { $("form").each(function() { this.reset(); }); });
+    $("#btn_Insert").click(function () { location.href = "Account_Reg.min.asp"; });
+    $("#page_size").change(function () { 
         page.page_size = $("#page_size").val();
         page.page_count = 1;
         e.list.execute();
     });
-    
+
     $(document).ready(function () {
         e.list.execute();
 
