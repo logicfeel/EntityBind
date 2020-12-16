@@ -246,17 +246,6 @@
     $(document).ready(function () {
         e.init();
     });
-
-
-    var command = {
-        cmd: [ { read: "bind"} ],
-        doctype: { read: ["valid", "bind"] },
-        acc_idx: [ 
-            { read: ["valid", "bind", "output"] }, 
-            { create: "bind"} 
-        ]
-    };
-
 </script>
 </body>
 </html>            
