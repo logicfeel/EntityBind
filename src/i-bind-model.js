@@ -23,6 +23,7 @@
 
             this.attr      = {};
             this.mode      = {};
+            this.mapping   = {};
 
             this.onExecute  = null;
             this.onExecuted = null;

@@ -225,13 +225,13 @@
 
     e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";                 // 생성 및 설정
     e.first.items["listURL"].value = "Account_Lst.D.asp";
-    e.baseAjaxSetup.type = "POST";
+    // e.baseAjaxSetup.type = "POST";
 
     e.addItem("cmd", "READ", [], "bind");                               // 전역 아이템 추가
     e.addItem("doctype", "JSON", [], "bind");
 
-    e.read.setItem(["acc_idx"], ["valid", "bind"]);
-    e.read.setItem(["adm_id", "admName", "use_yn", "passwd"], "output");
+    // e.read.setItem(["acc_idx"], ["valid", "bind"]);
+    // e.read.setItem(["adm_id", "admName", "use_yn", "passwd"], "output");
     e.read.outputOption = 3;
     e.read.onExecute = function(p_bindCommand) {
         this.bind.items["acc_idx"].value = ParamGet2JSON(location.href).acc_idx;
@@ -240,6 +240,26 @@
     $(document).ready(function () {
         e.init();
     });
+
+    var itemBind;
+    
+    /*
+        아이템의 명령의 엔티티에 매핑하는 구조 표현
+    */
+    // var itemMapping = {
+    //     { [""], "read", "" }
+    // };
+    // bindCommand
+
+    var mapping = {
+        cmd: { read: "bind" },
+        doctype: { read: ["valid", "bind"] },
+        acc_idx: { 
+            { read: ["valid", "bind", "output"] },
+            { create: "bind"} 
+        }
+    };
+
 </script>
 </body>
 </html>            

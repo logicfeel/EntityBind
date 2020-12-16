@@ -2702,6 +2702,20 @@
         }
         util.inherits(ReadDI, IBindModelRead);
 
+        function ReadMappingDI() {
+            IBindModelRead.call(this);
+
+            this.attr = {
+                i1: "V1",
+                i2: "V2",
+                i3: {
+                    caption: "C3", 
+                    value: "V3"
+                }
+            };
+            this.mapping = { i1: { read: ["valid", "bind"] } }
+        }
+        util.inherits(ReadMappingDI, IBindModelRead);        
         
         if (isCallback) {
             console.log("---------------------------------------------------------------------------");
@@ -2815,6 +2829,26 @@
             };
             model.read.execute();        
         }
+
+        console.log("---------------------------------------------------------------------------");
+        console.log("new BindModelReadAjax() :: DI 의존성 주입 + mapping ");
+        var model = new BindModelReadAjax(new ReadMappingDI(), true);
+        model.result = [];
+        if (// read
+            model.read.valid.items.count === 1 &&
+            model.read.valid.items["i1"].value === "V1" &&
+            model.read.bind.items.count === 1 &&
+            model.read.bind.items["i1"].value === "V1" &&
+            model.read.output.items.count === 0 &&
+            // first
+            model.first.items.count === 3 &&
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
 
         //#################################################
         if (errorCount > 0) {

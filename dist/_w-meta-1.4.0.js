@@ -4722,6 +4722,8 @@ if (typeof Array.isArray === "undefined") {
 
             var __attr          = new PropertyCollection(this);
             var __mode          = new PropertyFunctionCollection(this);
+            var __mapping       = new PropertyCollection(this);
+
             var __cbRegister    = function() {};
             var __cbCheck       = function() {return true};
             var __cbReady       = function() {};
@@ -4750,6 +4752,18 @@ if (typeof Array.isArray === "undefined") {
                 set: function(newValue) { 
                     if (!(newValue instanceof PropertyFunctionCollection)) throw new Error("Only [mode] type 'PropertyFunctionCollection' can be added");
                     __mode = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {mapping} */
+            Object.defineProperty(this, "mapping", 
+            {
+                get: function() { return __mapping; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof PropertyCollection)) throw new Error("Only [mapping] type 'PropertyCollection' can be added");
+                    __mapping = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -4829,6 +4843,7 @@ if (typeof Array.isArray === "undefined") {
 
             // DI 의존성 주입 : 객체를 비교하여 삽입
             if (p_objectDI instanceof IBindModel) {     // 가능
+                
                 // attr 등록
                 if (typeof p_objectDI["attr"] !== "undefined" && p_objectDI["attr"] !== null) {
                     propObject = p_objectDI["attr"];
@@ -4844,6 +4859,14 @@ if (typeof Array.isArray === "undefined") {
                     for(var prop in propObject) {
                         if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
                             __mode.add(prop, propObject[prop]);
+                        }
+                    }
+                }
+                if (typeof p_objectDI["mapping"] !== "undefined" && p_objectDI["mapping"] !== null) {
+                    propObject = p_objectDI["mapping"];
+                    for(var prop in propObject) {
+                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+                            __mapping.add(prop, propObject[prop]);
                         }
                     }
                 }
@@ -5015,6 +5038,63 @@ if (typeof Array.isArray === "undefined") {
                     } else if (this.attr[propName]  !== null && typeof this.attr[propName] === "object"){
                         entity.items.add(new this.itemType(propName, entity, this.attr[propName]))
                     }
+                }
+            }
+
+            // 4.매핑
+            this.setMapping(this.mapping, p_entity);
+        };
+
+        /**
+         * 아이템을 매핑한다.
+         * @param {ProperyCollection | object} p_mapping Item 에 매핑할 객체 또는 컬렉션
+         * @param {?string} p_entity 대상 엔티티
+         */
+        BindModel.prototype.setMapping = function(p_mapping, p_entity) {
+            
+            var mappingCollection;
+            var entity;
+            var propName;
+            var item;
+            
+
+            // 1.유효성 검사
+            if (!(p_mapping instanceof PropertyCollection || typeof p_mapping === "object")) {
+                throw new Error("Only [p_mapping] type 'PropertyCollection | object' can be added");
+            }
+            if (typeof p_entity !== "undefined" && typeof p_entity !== "string") {
+                throw new Error("Only [p_entity] type 'string' can be added");
+            }
+            if (typeof p_entity !== "undefined" && typeof this[p_entity] === "undefined") {
+                throw new Error(" BindModel에 ["+ p_entity +"]의 Entity가 없습니다. ");
+            }
+
+            entity = this[p_entity] || this._baseEntity;
+
+            // 2. 임시 매핑 컬렉션에 등록
+            if (p_mapping instanceof PropertyCollection) {
+                mappingCollection = p_mapping;
+            } else if (typeof p_mapping === "object") {
+                mappingCollection = new PropertyCollection();
+                for(var prop in p_mapping) {
+                    if (p_mapping.hasOwnProperty(prop) && typeof p_mapping[prop] !== "undefined") {
+                        mappingCollection.add(prop, p_mapping[prop]);
+                    }
+                }
+            }
+
+            // 3. 아이템 매핑
+            for(var i = 0; mappingCollection.count > i; i++) {
+                propName = mappingCollection.propertyOf(i);
+                item = entity.items[propName];
+                if (typeof item !== "undefined") {
+                    for (var prop in mappingCollection[i]) {    // command 조회
+                        if (mappingCollection[i].hasOwnProperty(prop)) {
+                            this.add(item, prop, mappingCollection[i][prop]);
+                        }
+                    }
+                } else {
+                    console.warn("entity에 지정된 [%s] BindCommand 가 없습니다. ");
                 }
             }
         };
