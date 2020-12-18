@@ -68,9 +68,16 @@
 
             var _this = this;   // jqeury 함수 내부에서 this 접근시 사용
 
-            this.create.cbEnd   = function() {          // create
-                alert("정상 등록되었습니다.");
-                location.href = this._baseEntity.items["listURL"].value;
+            this.create.cbEnd   = function(p_result, p_status, p_xhr) {          // create
+                var entity = p_result["table"] ||  p_result["entity"];
+                var code = entity["return"];
+
+                if (code >= 0) { 
+                    alert("정상 등록되었습니다.");
+                    location.href = this._baseEntity.items["listURL"].value;
+                } else {
+                    alert("등록 실패 하였습니다. Code : " + code);
+                }
             };
             
             $("#btn_Insert").click(function () {

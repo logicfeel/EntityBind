@@ -38,7 +38,7 @@
 </head>
 <body>
 
-<div style="width:1020px">   
+<div style="width:950px">   
     <form id="frm_default" name="frm_default" method="post">
 	<input type="hidden" id="acc_idx" name="acc_idx" value="" /> 
     <!-- 폼 내용 -->

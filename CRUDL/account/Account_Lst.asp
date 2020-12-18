@@ -37,7 +37,7 @@
 </head>
 <body>
 
-<div style="width:1020px">   
+<div style="width:950px">   
 
     <form id="frm_default" name="frm_default" method="post">
                 

@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Bind.BaseCreateDI
+ * @namespace _W.Meta.Bind.AccountReadDelDI
  */
 (function(global) {
 
@@ -14,72 +14,74 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BaseCreateDI;
+    var BaseReadDelDI;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         // util                = require("./utils");
         // IBindModelCreate    = require("./i-marshal");
     } else {
-        util                = global._W.Common.Util;
-        BaseCreateDI    = global._W.Meta.Bind.BaseCreateDI;
+        util                    = global._W.Common.Util;
+        BaseReadDelDI           = global._W.Meta.Bind.BaseReadDelDI;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BaseCreateDI === "undefined") throw new Error("[BaseCreateDI] module load fail...");
+    if (typeof BaseReadDelDI === "undefined") throw new Error("[BaseReadDelDI] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
-    var AccountCreateDI  = (function (_super) {
+    var AccountReadDelDI  = (function (_super) {
         /**
          * IMarshal 인터페이스는 IObject를 상속함
          * @abstract 추상클래스
          * @class
          */
-        function AccountCreateDI() {
+        function AccountReadDelDI() {
             _super.call(this);
             
             // 업무 속성
-            this.attr["sto_id"] = "S00001";
+            this.attr["acc_idx"] = {caption: "일련번호", value: ""};
             this.attr["adm_id"] = {
                 caption: "관리자ID",
                 selector: "#adm_id",
-                getter: function() { return $("#adm_id").val(); }
+                setter: function(val) { $("#adm_id").text(val); }
             };
             this.attr["passwd"] = {
                 caption: "비밀번호",
                 selector: "#passwd",
-                getter: function() { return $("#passwd").val(); }
+                setter: function(val) { $("#passwd").text(val); }
             };
             this.attr["admName"] = {
                 caption: "관리자명", 
                 selector: "#admName",
-                getter: function() { return $("#admName").val(); }
+                setter: function(val) { $("#admName").text(val); }
             };
             this.attr["use_yn"] = {
                 caption: "사용유무", 
-                selector: ["input[name=using_yn]", "#using_Y", "#using_N"],
-                getter: function() { return $("input[name=using_yn]:checked").val(); }
+                selector: ["#using_yn"],
+                setter: function(val) { $("#using_yn").text( val === "Y" ? "정상" : "중지"); }
             };
 
             this.mapping = {
-                sto_id: { create: ["valid", "bind"] },
-                adm_id: { create: ["valid", "bind"] },
-                passwd: { create: ["valid", "bind"] },
-                admName: { create: ["valid", "bind"] },
-                // use_yn: { create: ["valid", "bind"] }
-                use_yn: { create: ["bind"] }
+                acc_idx: {
+                    read: ["valid", "bind"],
+                    delete: ["valid", "bind"]
+                },
+                adm_id: {read: "output" },
+                passwd: {read: "output" },
+                admName: {read: "output" },
+                use_yn: {read: "output" }
             };
         }
-        util.inherits(AccountCreateDI, _super);
+        util.inherits(AccountReadDelDI, _super);
     
         // 데코레이션 메소드
-        AccountCreateDI.prototype.cbRegister = function() {
-            BaseCreateDI.prototype.cbRegister.call(this);
+        AccountReadDelDI.prototype.cbRegister = function() {
+            BaseReadDelDI.prototype.cbRegister.call(this);
         };
-        AccountCreateDI.prototype.cbCheck = function() {
-            if (BaseCreateDI.prototype.cbCheck.call(this)) {
+        AccountReadDelDI.prototype.cbCheck = function() {
+            if (BaseReadDelDI.prototype.cbCheck.call(this)) {
                 if (this.checkSelector()) {                             // 선택자 검사
                     console.log("cbCheck : 선택자 검사 => 'Success' ");
                     return true;
@@ -87,21 +89,22 @@
             }
             return false;    
         };
-        AccountCreateDI.prototype.cbReady = function() {
-            BaseCreateDI.prototype.cbReady.call(this);
+        AccountReadDelDI.prototype.cbReady = function() {
+            BaseReadDelDI.prototype.cbReady.call(this);
+            this.read.execute();
         };
 
-        return AccountCreateDI;
+        return AccountReadDelDI;
     
-    }(BaseCreateDI));
+    }(BaseReadDelDI));
 
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
-        // module.exports = BaseCreateDI;
+        // module.exports = BaseReadDelDI;
     } else {
-        global._W.Meta.Bind.AccountCreateDI = AccountCreateDI;
+        global._W.Meta.Bind.AccountReadDelDI = AccountReadDelDI;
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));

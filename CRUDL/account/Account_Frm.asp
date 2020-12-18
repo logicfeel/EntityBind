@@ -37,7 +37,7 @@
 </head>
 <body>
 
-<div style="width:1020px">   
+<div style="width:950px">   
     <form id="frm_default" name="frm_default" method="post">
 	<input type="hidden" id="acc_idx" name="acc_idx" value="" /> 
     <!-- 폼 내용 -->
@@ -70,7 +70,7 @@
                         <td>
                             <input type="password" id="passwd" name="passwd" value="" class="fText" style="width:200px;" />
                         </td>
-                        <th scope="row">사용유무</th>
+                        <th scope="row">사용유무 </th>
                         <td>
                             <input id="using_Y" type="radio" name="using_yn" value="Y" class="fChk" /> 사용</label> 
                             <input id="using_N" type="radio" name="using_yn" value="N" class="fChk" /> 중지</label> 
@@ -123,7 +123,7 @@
     var e = new BindModelFormAjax(new AccountFormDI(), true, ItemDOM);
 
     e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";                 // 생성 및 설정
-    e.first.items["listURL"].value = "Account_Lst.D.asp";
+    e.first.items["listURL"].value = "Account_Lst.asp";
     e.baseAjaxSetup.type = "POST";
 
     e.addItem("cmd", "", [], "bind");                               // 전역 아이템 추가

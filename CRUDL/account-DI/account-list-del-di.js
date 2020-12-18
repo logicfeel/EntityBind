@@ -17,6 +17,7 @@
     var BaseListDelDI;
     var accountFrmURL;          // 수정화면 경로(참조)
     var accountViwURL;          // 세부보기
+    var accountViwDelURL;       // 세부보기(삭제)
 
 
     if (typeof module === "object" && typeof module.exports === "object") {     
@@ -51,6 +52,10 @@
             this.attr["viwURL"] = {
                 getter: function() { return accountViwURL; },
                 setter: function(val) { accountViwURL = val; }
+            };
+            this.attr["viwDelURL"] = {
+                getter: function() { return accountViwDelURL; },
+                setter: function(val) { accountViwDelURL = val; }
             };
             this.attr["page_size"] =  {
                 getter: function() { return page.page_size; },
@@ -91,8 +96,11 @@
         }
         util.inherits(AccountListDelDI, _super);
         // 정적 메소드
-        AccountListDelDI.goForm = function (p_idx) {
+        AccountListDelDI.goEdit = function (p_idx) {
             location.href = accountFrmURL + "?mode=EDIT&acc_idx=" + p_idx;
+        };
+        AccountListDelDI.goViewDel = function (p_idx) {
+            location.href = accountViwDelURL + "?acc_idx=" + p_idx;
         };
         AccountListDelDI.goView = function (p_idx) {
             location.href = accountViwURL + "?acc_idx=" + p_idx;
@@ -123,7 +131,10 @@
                     strHtml = strHtml + "<td>" + entity.rows[i].admName + "</td>";
                     strHtml = strHtml + "<td>" + AccountListDelDI.use_yn(entity.rows[i].use_yn) + "</td>";
                     strHtml = strHtml + "<td>" + entity.rows[i].create_dt.substring(0, 10) + "</td>";
-                    strHtml = strHtml + "<td><a href=\"javascript:AccountListDelDI.goForm('" + entity.rows[i].acc_idx + "');\"\" class='btnNormal'><span> 수정</span></a></td>";
+                    strHtml = strHtml + "<td>";
+                    strHtml = strHtml + "<a href=\"javascript:AccountListDelDI.goViewDel('" + entity.rows[i].acc_idx + "');\"\" class='btnNormal'><span> 조회</span></a>";
+                    strHtml = strHtml + " <a href=\"javascript:AccountListDelDI.goEdit('" + entity.rows[i].acc_idx + "');\"\" class='btnNormal'><span> 수정</span></a>";
+                    strHtml = strHtml + "</td>";
                     strHtml = strHtml + "</tr>";
                     $("#CList").append(strHtml); 
                 }
