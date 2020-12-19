@@ -19,7 +19,6 @@
 <!--#include virtual="/Admin/adm_cmn/include/Admin_Global_Define.I.asp"-->
 <%	
 
-
 %><!DOCTYPE html>
 <html>
 <head>
@@ -38,7 +37,7 @@
 </head>
 <body>
 
-<div style="width:1020px">   
+<div style="width:950px">   
 
     <form id="frm_default" name="frm_default" method="post">
                 
@@ -93,7 +92,6 @@
 	    </div>
 	    <div class="mCtrl typeHeader">
 	        <div class="gLeft">
-                <a href="#none" id="btn_Delete" class="btnNormal"><span><em class="icoDel"></em> 삭제</span></a>
                 <a href="#none" id="btn_Insert" class="btnNormal"><span> 등록</span></a>
 	        </div>
 	        <div class="gRight">
@@ -105,24 +103,20 @@
 		        <caption>목록</caption>
 		        <!--###############  제목 크기 Block ###############-->
 		        <colgroup>
-		            <col class="chk">
 		            <col class="date">
                     <col style="width:auto">
 		            <col style="width:auto">
 		            <col style="width:auto">
 		            <col style="width:auto">
-                    <col style="width:auto">
 		        </colgroup>
 		        <!--###############  검색 제목 Block ###############-->
 		        <thead>
 		            <tr>
-		                <th scope="col"><input id="btn_AllChk" type="checkbox" name="Allselect" class="allChk"></th>
 		                <th scope="col"><strong>구분</strong></th>
-		                <th scope="col"><strong>아이디</strong></th>
+		                <th scope="col"><strong>아이디</strong></th>           
                         <th scope="col"><strong>이름</strong></th>
                         <th scope="col"><strong>상태</strong></th>
 		                <th scope="col"><strong>등록일자</strong></th>
-                        <th scope="col"><strong>처리</strong></th>
 		            </tr>
 		        </thead>
 				
@@ -130,7 +124,6 @@
 				<tbody class="center" id="CList">
                     <template>
                     <tr class="">
-                        <td><input name="chk_idx" type="checkbox" class="rowChk _product_no" value="" is_display="F" is_selling="F"></td>
                         <td>2017-09-01</td>			            	
                         <td>기본상품</td>
                         <td>기본상품</td>
@@ -141,12 +134,8 @@
                     </template>
 					<tr><td colspan='6' align='center'>자료가 없습니다.</td></tr>
 				</tbody>
-			
 			</table>
 			<!--###############  검색 없음 Block ###############-->
-<!--
-	        <p class="empty" style="display:block;">검색된 자료가 없습니다.</p>
---> 
 	    </div>
 	    
 	    <!--###############  페이지 Block ###############-->
@@ -168,7 +157,7 @@
 	<!--###############  페이지 Block ###############-->
 	<!-- 도움말 영역 -->
 
-	<!-- //도움말 영역 -->
+	<!-- // 도움말 영역 -->
     </form>
     <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">-->
 <style>
@@ -186,33 +175,89 @@
 	<div id="part_Overlay" class="w3-overlay w3-animate-opacity" style="cursor:pointer;z-index:90;"></div>
 
 </div>        
-<script src="/Common/js/page-view.js"></script>
-<script src="/Common/js/_w-meta-1.4.0.js"></script>
-<script src="/Admin/adm_cmn/DI/base-list-del-di.js"></script>
-<script src="/Admin/adm_mod/STO/DI/account-list-del-di.js"></script>
+<script>    
+    //************** ajax 에러 처리  ************************
+    $(document).ajaxError(function (event, xhr, options, exc) {
+        if (xhr.status != 200){
+        var msg = "";
+        msg = msg + "# options.data : " + options.data + " , ";
+        msg = msg + "# options.url : " + options.url + " , ";
+        msg = msg + "# options.contentType : " + options.contextType + " , ";
+        msg = msg + "# xhr.status : " + xhr.status + " , ";
+        msg = msg + "# xhr.statusText : " + xhr.statusText + " , ";
+        msg = msg + "# xhr.responseText : " + xhr.responseText + " , ";
+
+        Msg("ALERT", "ajaxError", msg, "");
+        }
+    });
+</script>
+<script src="/Common/js/_w-meta-1.4.0.js?a=123"></script>
+<script src="/Common/js/page-view.js?a=123"></script>
 <script>
     // #######################################################################################################
     // 모델(SP) 기능에 맞는  설정  (Account_SP_CRUDL)
-    var page = new PageView("page", 5);                         // REVIEW:: 위치 검토 필요
-    var BindModelListDelAjax    = _W.Meta.Bind.BindModelListDelAjax;
-    var AccountListDelDI        = _W.Meta.Bind.AccountListDelDI;
+    var BindModelListAjax       = _W.Meta.Bind.BindModelListAjax;
     var ItemDOM                 = _W.Meta.Entity.ItemDOM;
-    var e = new BindModelListDelAjax(new AccountListDelDI(), true, ItemDOM);
+    var e       = new BindModelListAjax();
+    var page    = new PageView("page", 5);
+    var use_yn = function(flag) {
+        if (flag === "Y") return "<strong class='icoStatus positive'></strong>";
+        else return "<span class='icoMobile'>중지</span>";
+    };
+    var goForm = function (p_idx) {
+        location.href = "Account_Frm.min.asp?mode=EDIT&acc_idx=" + p_idx;
+    };
+    
+    e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";
+    page.callback = e.list.execute.bind(e.list);
 
-    e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";         // 생성 및 설정
-    e.first.items["frmURL"].value = "Account_Frm.asp";
-    e.first.items["regURL"].value = "Account_Reg.asp";
-    e.first.items["viwURL"].value = "Account_Viw.asp";
-    e.baseAjaxSetup.type = "POST";
-
-    e.addItem("cmd", "", [], "bind");                   // 전역 아이템 추가
+    e.addItem("cmd", "LIST", [], "bind");
     e.addItem("doctype", "JSON", [], "bind");
+    
+    e.list.add(new ItemDOM("keyword", null, { getter: function() { return $("#name_corp_tel_hp").val(); } }), "bind");
+    e.list.add(new ItemDOM("page_size", null, { getter: function() { return page.page_size; } }), "bind");
+    e.list.add(new ItemDOM("page_count", null, { getter: function() { return page.page_count; } }), "bind");
+    e.list.add(new ItemDOM("sort_cd", null, ""), "bind");
+    
+    e.list.cbOutput = function(p_entity) {
+        var entity      = this.output;
+        var row_total   = p_entity.table["row_total"];
+        var numCount      = row_total - ((page.page_count - 1) * page.page_size);     // 개시물 번호 = 전체 갯수 - ((현재페이지 -1) * 리스트수 )
+        var strHtml;
 
-    e.list.onExecute = function(p_bindCommand) { this.bind.items["cmd"].value = "LIST"; };
-    e.delete.onExecute = function(p_bindCommand) { this.bind.items["cmd"].value = "DELETE"; };
-    //--------------------------------------------------------------
+        $("#CList").html("");
+        $("#totalView").text(row_total);
+
+        if (entity.rows.count === 0) {
+            $("#CList").append("<tr><td colspan='5' align='center'>자료가 없습니다.</td></tr>");
+        } else {
+            for (var i = 0, num = numCount; i < entity.rows.count; i++, num--) {
+                strHtml = "";
+                strHtml = strHtml + "<tr>";
+                strHtml = strHtml + "<td>" + num + "</td>";
+                strHtml = strHtml + "<td><a href=\"javascript:goForm('" + entity.rows[i].acc_idx + "');\">" + entity.rows[i].adm_id + "</a></td>";
+                strHtml = strHtml + "<td>" + entity.rows[i].admName + "</td>";
+                strHtml = strHtml + "<td>" + use_yn(entity.rows[i].use_yn) + "</td>";
+                strHtml = strHtml + "<td>" + entity.rows[i].create_dt.substring(0, 10) + "</td>";
+                strHtml = strHtml + "</tr>";
+                $("#CList").append(strHtml); 
+            }
+            $("#CPage").html(page.parser(row_total));   // 필수 항목만 받음
+        }
+    };
+
+    $("#btn_Search").click(function () { e.list.execute(); });
+    $("#btn_Reset").click(function () { $("form").each(function() { this.reset(); }); });
+    $("#btn_Insert").click(function () { location.href = "Account_Reg.min.asp"; });
+    $("#page_size").change(function () { 
+        page.page_size = $("#page_size").val();
+        page.page_count = 1;
+        e.list.execute();
+    });
+
     $(document).ready(function () {
-        e.init();
+        e.list.execute();
+
     });
 </script>
 </body>

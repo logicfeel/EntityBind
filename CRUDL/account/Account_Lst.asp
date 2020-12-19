@@ -192,7 +192,7 @@
     var ItemDOM                 = _W.Meta.Entity.ItemDOM;
     var e = new BindModelListAjax(new AccountListDI(), true, ItemDOM);
 
-    e.baseUrl = "/Admin/adm_mod/STO/callback/Account.C.asp";             // 생성 및 설정
+    e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";             // 생성 및 설정
     e.first.items["frmURL"].value = "Account_Frm.asp";
     e.first.items["regURL"].value = "Account_Frm.asp";
 
