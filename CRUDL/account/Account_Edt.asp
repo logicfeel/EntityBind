@@ -12,7 +12,7 @@
 '------------------------------------------------------------------------------
 '
 '   확인
-'   http://rtwgs4.cafe24.com/Admin/pc/mod/sto/account_Reg.asp
+'   http://rtwgs4.cafe24.com/Admin/pc/mod/sto/account_Frm.asp?mode=CREATE
 '
 '******************************************************************************
 %>
@@ -37,7 +37,7 @@
 </head>
 <body>
 
-<div style="width:1020px">   
+<div style="width:950px">   
     <form id="frm_default" name="frm_default" method="post">
 	<input type="hidden" id="acc_idx" name="acc_idx" value="" /> 
     <!-- 폼 내용 -->
@@ -56,9 +56,9 @@
                 </colgroup>
                 <tbody>
                     <tr>
-                        <th scope="row">아이디 <strong class="icoRequired">필수</strong></th>
+                        <th scope="row">아이디 </th>
                         <td>
-                            <input type="text" id="adm_id" name="adm_id" value="" class="fText" style="width:200px;" />
+                            <p id="adm_id"></p>
                         </td>
                         <th scope="row">이름 <strong class="icoRequired">필수</strong></th>
                         <td>
@@ -70,7 +70,7 @@
                         <td>
                             <input type="password" id="passwd" name="passwd" value="" class="fText" style="width:200px;" />
                         </td>
-                        <th scope="row">사용유무</th>
+                        <th scope="row">사용유무 </th>
                         <td>
                             <input id="using_Y" type="radio" name="using_yn" value="Y" class="fChk" /> 사용</label> 
                             <input id="using_N" type="radio" name="using_yn" value="N" class="fChk" /> 중지</label> 
@@ -88,9 +88,9 @@
         </div>
 		<!-- 버튼 -->
 		<div class="mButton gCenter">
-		    <a id="btn_Insert" class="btnSubmit"><span>등록</span></a>
+		    <a id="btn_Update" class="btnSubmit"><span>수정</span></a>
+		    <a id="btn_Delete" class="btnSubmit"><span>삭제</span></a>
 		    <a id="btn_List" class="btnSearch reset"><span>목록</span></a>
-		    <a id="btn_Reset" class="btnSearch reset"><span>초기화</span></a>
 		</div>
         <!-- // 버튼 -->
     </div>
@@ -110,23 +110,29 @@
 </div>        
 
 <script src="/Common/js/_w-meta-1.4.0.js"></script>
-<script src="/Admin/adm_cmn/DI/base-create-di.js"></script>
-<script src="/Admin/adm_mod/STO/DI/account-create-di.js"></script>
+<script src="/Admin/adm_cmn/DI/base-edit-di.js"></script>
+<script src="/Admin/adm_mod/STO/DI/account-edit-di.js"></script>
 <script>
     // #######################################################################################################
     // 모델(SP) 기능에 맞는  설정  (Account_SP_CRUDL)
-    var BindModelCreateAjax         = _W.Meta.Bind.BindModelCreateAjax;
-    var AccountCreateDI             = _W.Meta.Bind.AccountCreateDI;
-    var ItemDOM                     = _W.Meta.Entity.ItemDOM;
+    var BindModelEditAjax       = _W.Meta.Bind.BindModelEditAjax;
+    var AccountEditDI           = _W.Meta.Bind.AccountEditDI;
+    var ItemDOM                 = _W.Meta.Entity.ItemDOM;
+    var e = new BindModelEditAjax(new AccountEditDI(), true, ItemDOM);
 
-    var e = new BindModelCreateAjax(new AccountCreateDI(), true, ItemDOM);
-
-    e.baseUrl = "/Admin/adm_mod/STO/callback/Account.C.asp";                 // 생성 및 설정
+    e.baseUrl = "/admin/adm_mod/STO/callback/Account.C.asp";                 // 생성 및 설정
     e.first.items["listURL"].value = "Account_Lst.D.asp";
     e.baseAjaxSetup.type = "POST";
 
-    e.addItem("cmd", "CREATE", [], "bind");                               // 전역 아이템 추가
+    e.addItem("cmd", "", [], "bind");                               // 전역 아이템 추가
     e.addItem("doctype", "JSON", [], "bind");
+
+    e.read.outputOption = 3;
+    e.read.bind.items["acc_idx"].value = ParamGet2JSON(location.href).acc_idx;
+
+    e.read.onExecute = function(p_bindCommand) { this.bind.items["cmd"].value = "READ"; };
+    e.update.onExecute = function(p_bindCommand) { this.bind.items["cmd"].value = "UPDATE"; };
+    e.delete.onExecute = function(p_bindCommand) { this.bind.items["cmd"].value = "DELETE"; };
     //--------------------------------------------------------------
     $(document).ready(function () {
         e.init();
