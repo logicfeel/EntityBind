@@ -111,21 +111,6 @@
     </form>
 </div>        
 
-<script>    
-    //************** ajax 에러 처리  ************************
-    $(document).ajaxError(function (event, xhr, options, exc) {
-        if (xhr.status != 200){
-            var msg = "";
-            msg = msg + "# options.data : " + options.data + " , ";
-            msg = msg + "# options.url : " + options.url + " , ";
-            msg = msg + "# options.contentType : " + options.contextType + " , ";
-            msg = msg + "# xhr.status : " + xhr.status + " , ";
-            msg = msg + "# xhr.statusText : " + xhr.statusText + " , ";
-            msg = msg + "# xhr.responseText : " + xhr.responseText + " , ";
-            Msg("ALERT", "ajaxError", msg, "");
-        }
-    });
-</script>
 <script src="/Common/js/_w-meta-1.4.0.js?aaaaaaa"></script>
 <script>
     // #######################################################################################################
@@ -136,7 +121,7 @@
     var params = ParamGet2JSON(location.href);
     var listURL = "Account_Lst.min.asp";
 
-    e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";
+    e.baseUrl = "/Admin/adm_mod/STO/callback/Account.C.asp";
     e.baseAjaxSetup.type = "POST";
 
     e.addItem("cmd", "", ["create", "read", "update", "delete"],  ["valid", "bind"]);

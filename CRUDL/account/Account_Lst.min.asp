@@ -175,22 +175,7 @@
 	<div id="part_Overlay" class="w3-overlay w3-animate-opacity" style="cursor:pointer;z-index:90;"></div>
 
 </div>        
-<script>    
-    //************** ajax 에러 처리  ************************
-    $(document).ajaxError(function (event, xhr, options, exc) {
-        if (xhr.status != 200){
-        var msg = "";
-        msg = msg + "# options.data : " + options.data + " , ";
-        msg = msg + "# options.url : " + options.url + " , ";
-        msg = msg + "# options.contentType : " + options.contextType + " , ";
-        msg = msg + "# xhr.status : " + xhr.status + " , ";
-        msg = msg + "# xhr.statusText : " + xhr.statusText + " , ";
-        msg = msg + "# xhr.responseText : " + xhr.responseText + " , ";
 
-        Msg("ALERT", "ajaxError", msg, "");
-        }
-    });
-</script>
 <script src="/Common/js/_w-meta-1.4.0.js?a=123"></script>
 <script src="/Common/js/page-view.js?a=123"></script>
 <script>
@@ -208,7 +193,7 @@
         location.href = "Account_Frm.min.asp?mode=EDIT&acc_idx=" + p_idx;
     };
     
-    e.baseUrl = "/admin/adm_mod/sto/Account.C.asp";
+    e.baseUrl = "/Admin/adm_mod/STO/callback/Account.C.asp";
     page.callback = e.list.execute.bind(e.list);
 
     e.addItem("cmd", "LIST", [], "bind");
