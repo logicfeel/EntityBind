@@ -130,7 +130,7 @@
             if (typeof p_row === "undefined") {      
                 i_value = new Row(this._onwer);
             } else if (p_row instanceof Row) {
-                i_value = p_row;``
+                i_value = p_row;
             } else {
                 throw new Error("Row | Row object [p_row].");
             }
