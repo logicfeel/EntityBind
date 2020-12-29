@@ -64,9 +64,12 @@
             var __valid     = new EntityView("valid", this._baseEntity);
             var __bind      = new EntityView("bind", this._baseEntity);
 
-            var __cbValid   = function() {return true;};
-            var __cbBind    = function() {};
-            var __cbEnd     = function() {};
+            // var __cbValid   = function() {return true;};
+            // var __cbBind    = function() {};
+            // var __cbEnd     = function() {};
+            var __cbValid   = null;
+            var __cbBind    = null;
+            var __cbEnd     = null;
 
             /** @property {ajaxSetup} */
             Object.defineProperty(this, "ajaxSetup", 
@@ -157,7 +160,7 @@
             var value = null;
 
             // 콜백 검사
-            if (!this.cbValid(this.valid)) {
+            if (typeof this.cbValid  === "function" && !this.cbValid(this.valid)) {
                 // this._model.cbFail("cbValid() => false 리턴 ");
                 this._onExecuted(this);     // "실행 종료" 이벤트 발생
                 return false;
@@ -204,7 +207,7 @@
                 ajaxSetup.data[item.name] = value;
             }
             
-            this.cbBind(ajaxSetup);
+            if (typeof this.cbBind === "function") this.cbBind(ajaxSetup);
             this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
 
