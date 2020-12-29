@@ -176,6 +176,7 @@
         var model = new BindModelCreateAjax();
         model.result = [];
         model.create.addItem("i1", "");
+        model.create.valid.items["i1"].isNotNull = true;
         model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
         model.cbFail = function(p_msg, p_code){
             this.result.push("cbFail");
@@ -183,6 +184,9 @@
         model.cbError = function(p_msg, p_status){
             this.result.push("cbError");
         };
+        model.create.cbValid = function() {
+            return "";
+        };   // 리턴을 하지 않아 실패함
         model.create.execute();
         if (model.result[0] === "cbFail" && 
             model.result.length === 1 && 

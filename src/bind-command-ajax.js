@@ -162,14 +162,21 @@
             // 콜백 검사
             if (typeof this.cbValid  === "function" && !this.cbValid(this.valid)) {
                 // this._model.cbFail("cbValid() => false 리턴 ");
+                // result.msg = "cbValid() 검사 실패";
+                // this._model.cbFail(result, this.valid.items);
                 this._onExecuted(this);     // "실행 종료" 이벤트 발생
                 return false;
-            } else {
-                // 아이템 검사
-                for(var i = 0; i < this.valid.items.count; i++) {
-                    
-                    value = this.valid.items[i].value === null ? this.valid.items[i].default : this.valid.items[i].value;
-                    // null 검사를 모두 수행 : option 2
+            } 
+
+            // 아이템 검사
+            for(var i = 0; i < this.valid.items.count; i++) {
+                
+                value = this.valid.items[i].value === null ? this.valid.items[i].default : this.valid.items[i].value;
+                // 공백 && isNotNull = false    => 검사 넘어감
+                // 공백 && isNotNull = true     => 오류 리턴
+                // 값존재시                     => 검사 수행
+                if (value.length > 0 || this.valid.items[i].isNotNull) {
+
                     if (!(this.valid.items[i].valid(value, result, 2))) {
                         this._model.cbFail(result, this.valid.items[i]);
                         this._onExecuted(this);     // "실행 종료" 이벤트 발생
@@ -177,6 +184,7 @@
                     }
                 }
             }
+
             return true;
         };
 
