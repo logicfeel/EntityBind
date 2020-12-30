@@ -41,31 +41,31 @@
             _super.call(this);
             
             // 업무 속성
-            this.attr["acc_idx"] = {caption: "일련번호", value: ""};
-            this.attr["adm_id"] = {
+            this.prop["acc_idx"] = {caption: "일련번호", value: ""};
+            this.prop["adm_id"] = {
                 caption: "관리자ID",
                 selector: "#adm_id",
                 setter: function(val) { $("#adm_id").text(val); }
             };
-            this.attr["passwd"] = {
+            this.prop["passwd"] = {
                 caption: "비밀번호",
                 selector: "#passwd",
                 getter: function() { return $("#passwd").val(); },
                 setter: function(val) { $("#passwd").val(val); }
             };
-            this.attr["admName"] = {
+            this.prop["admName"] = {
                 caption: "관리자명", 
                 selector: "#admName",
                 getter: function() { return $("#admName").val(); },
                 setter: function(val) { $("#admName").val(val); }
             };
-            this.attr["use_yn"] = {
+            this.prop["use_yn"] = {
                 caption: "사용유무", 
                 selector: ["input[name=using_yn]", "#using_Y", "#using_N"],
                 getter: function() { return $("input[name=using_yn]:checked").val(); },
                 setter: function(val) { 
-                    if (val === "Y" ) $("#using_Y").attr("checked", "checked");
-                    else $("#using_N").attr("checked", "checked");
+                    if (val === "Y" ) $("#using_Y").prop("checked", "checked");
+                    else $("#using_N").prop("checked", "checked");
                 }
             };
 
@@ -95,20 +95,20 @@
         util.inherits(AccountEditDI, _super);
     
         // 데코레이션 메소드
-        AccountEditDI.prototype.cbRegister = function() {
-            BaseEditDI.prototype.cbRegister.call(this);
+        AccountEditDI.prototype.preRegister = function() {
+            BaseEditDI.prototype.preRegister.call(this);
         };
-        AccountEditDI.prototype.cbCheck = function() {
-            if (BaseEditDI.prototype.cbCheck.call(this)) {
+        AccountEditDI.prototype.preCheck = function() {
+            if (BaseEditDI.prototype.preCheck.call(this)) {
                 if (this.checkSelector()) {                             // 선택자 검사
-                    console.log("cbCheck : 선택자 검사 => 'Success' ");
+                    console.log("preCheck : 선택자 검사 => 'Success' ");
                     return true;
                 }
             }
             return false;    
         };
-        AccountEditDI.prototype.cbReady = function() {
-            BaseEditDI.prototype.cbReady.call(this);
+        AccountEditDI.prototype.preReady = function() {
+            BaseEditDI.prototype.preReady.call(this);
             this.read.execute();
         };
 

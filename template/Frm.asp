@@ -244,7 +244,7 @@
     // 수정 모드
     Main.Mode_Update = function () {
         // admin_id 수정 금지 
-        $("#create_dt").attr("readonly", "")
+        $("#create_dt").prop("readonly", "")
         // 데이터 가져옴
         this.M_ViewBind(Main.Params.ntc_idx, Main.Params.sto_id);
     }
@@ -395,9 +395,9 @@
 	        $("#writer").val(Main.Model.db.row.writer);
 	        $("#content").val(Main.Model.db.row.content);
 	        if (Main.Model.db.row.noticeType_cd == "B")
-	            $("#noticeType_B").attr("checked", "checked");
+	            $("#noticeType_B").prop("checked", "checked");
 	        else if (Main.Model.db.row.noticeType_cd == "T")
-	            $("#noticeType_T").attr("checked", "checked");
+	            $("#noticeType_T").prop("checked", "checked");
 			
 	        $("#create_dt").val(Main.Model.db.row.create_dt);
         

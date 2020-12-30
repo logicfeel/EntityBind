@@ -140,8 +140,8 @@
 
         var params = ParamGet2JSON(location.href);          // admin_common.js
 
-        this.attr["mode"]       = params.mode;
-        this.attr["listURL"]    = "";
+        this.prop["mode"]       = params.mode;
+        this.prop["listURL"]    = "";
 
         this.cbFail = function(p_result, p_item) {          // 전역 실패 콜백
             console.warn("실패 :: Value=\"%s\", Code=\"%s\", Message=\"%s\" ", p_result.value, p_result.code, p_result.msg);
@@ -171,15 +171,15 @@
             $("#btn_Reset").show();
     };
     BaseFormDI.editMode = function() {
-            $("#adm_id").attr("readonly", "");
+            $("#adm_id").prop("readonly", "");
             $("#btn_Insert").hide();
             $("#btn_Update").show();
             $("#btn_Delete").show();
             $("#btn_Reset").hide();
     };
     // 가상 메소드
-    BaseFormDI.prototype.cbRegister = function() {
-        console.log("cbRegister : 이벤트 및 설정 등록 ");
+    BaseFormDI.prototype.preRegister = function() {
+        console.log("preRegister : 이벤트 및 설정 등록 ");
 
         var _this = this;   // jqeury 함수 내부에서 this 접근시 사용
 
@@ -218,25 +218,25 @@
             });
         });
     };
-    BaseFormDI.prototype.cbCheck = function() {   // 2.검사
-        console.log("cbCheck : 화면 유효성 검사 ");
+    BaseFormDI.prototype.preCheck = function() {   // 2.검사
+        console.log("preCheck : 화면 유효성 검사 ");
 
-        if (typeof this.attr.mode === "undefined" || this.attr.mode === "") {
+        if (typeof this.prop.mode === "undefined" || this.prop.mode === "") {
             Msg("ALERT", "접근경로", "잘못된 접근경로입니다.(cmd)", "A");
             return false;
         }
-        if (!(this.attr.mode === "CREATE" || this.attr.mode == "EDIT")) {
+        if (!(this.prop.mode === "CREATE" || this.prop.mode == "EDIT")) {
             Msg("ALERT", "접근경로", "잘못된 접근경로입니다.(INSERT/UPDATE)", "A");
             return false;
         }
         return true;
     };
-    BaseFormDI.prototype.cbReady = function() {
-        console.log("cbReady : 준비완료 ");
+    BaseFormDI.prototype.preReady = function() {
+        console.log("preReady : 준비완료 ");
         
-        if (this.attr.mode === "CREATE") {
+        if (this.prop.mode === "CREATE") {
             BaseFormDI.createMode();
-        } else if (this.attr.mode === "EDIT") {
+        } else if (this.prop.mode === "EDIT") {
             BaseFormDI.editMode();
         }    
     };
@@ -251,53 +251,53 @@
         BaseFormDI.call(this);
 
         // 업무 속성
-        this.attr["acc_idx"] = {caption: "일련번호", value: ""};
-        this.attr["sto_id"] = "S00001";
-        this.attr["adm_id"] = {
+        this.prop["acc_idx"] = {caption: "일련번호", value: ""};
+        this.prop["sto_id"] = "S00001";
+        this.prop["adm_id"] = {
             caption: "관리자ID",
             selector: "#adm_id",
             getter: function() { return $("#adm_id").val(); },
             setter: function(val) { $("#adm_id").val(val); }
         };
-        this.attr["passwd"] = {
+        this.prop["passwd"] = {
             caption: "비밀번호",
             selector: "#passwd",
             getter: function() { return $("#passwd").val(); },
             setter: function(val) { $("#passwd").val(val); }
         };
-        this.attr["admName"] = {
+        this.prop["admName"] = {
             caption: "관리자명", 
             selector: "#admName",
             getter: function() { return $("#admName").val(); },
             setter: function(val) { $("#admName").val(val); }
         };
-        this.attr["use_yn"] = {
+        this.prop["use_yn"] = {
             caption: "사용유무", 
             selector: ["input[name=using_yn]", "#using_Y", "#using_N"],
             getter: function() { return $("input[name=using_yn]:checked").val(); },
             setter: function(val) { 
-                if (val === "Y" ) $("#using_Y").attr("checked", "checked");
-                else $("#using_N").attr("checked", "checked");
+                if (val === "Y" ) $("#using_Y").prop("checked", "checked");
+                else $("#using_N").prop("checked", "checked");
             }
         };
     }
     util.inherits(AccountFormDI, BaseFormDI);
     // 데코레이션 메소드
-    AccountFormDI.prototype.cbRegister = function() {
-        BaseFormDI.prototype.cbRegister.call(this);
+    AccountFormDI.prototype.preRegister = function() {
+        BaseFormDI.prototype.preRegister.call(this);
     };
-    AccountFormDI.prototype.cbCheck = function() {
-        if (BaseFormDI.prototype.cbCheck.call(this)) {
+    AccountFormDI.prototype.preCheck = function() {
+        if (BaseFormDI.prototype.preCheck.call(this)) {
             if (this.checkSelector()) {                             // 선택자 검사
-                console.log("cbCheck : 선택자 검사 => 'Success' ");
+                console.log("preCheck : 선택자 검사 => 'Success' ");
                 return true;
             }
         }
         return false;    
     };
-    AccountFormDI.prototype.cbReady = function() {
-        BaseFormDI.prototype.cbReady.call(this);
-        if (this.attr.mode === "EDIT")  this.read.execute();        // 수정모드 시 실행(execute)
+    AccountFormDI.prototype.preReady = function() {
+        BaseFormDI.prototype.preReady.call(this);
+        if (this.prop.mode === "EDIT")  this.read.execute();        // 수정모드 시 실행(execute)
     };
 </script>
 <script>

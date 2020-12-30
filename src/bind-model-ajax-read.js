@@ -54,7 +54,7 @@
 
             // 속성 자동 로딩
             if (p_isLoadAttr) {
-                this.loadAttr();
+                this.loadProp();
             }
 
             /** @implements IBindModelRead 인터페이스 구현 */

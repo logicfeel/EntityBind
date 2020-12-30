@@ -205,7 +205,7 @@
     function BaseListDI() {
         IBindModelList.call(this);
 
-        this.attr["regURL"]        = "";                    // 등록화면 경로
+        this.prop["regURL"]        = "";                    // 등록화면 경로
 
         this.cbFail = function(p_result, p_item) {          // 전역 실패 콜백
             console.warn("실패 :: Value=\"%s\", Code=\"%s\", Message=\"%s\" ", p_result.value, p_result.code, p_result.msg);
@@ -228,8 +228,8 @@
     }
     util.inherits(BaseListDI, IBindModelList);
     // 메소드
-    BaseListDI.prototype.cbRegister = function() {
-        console.log("cbRegister : 이벤트 및 설정 등록 ");
+    BaseListDI.prototype.preRegister = function() {
+        console.log("preRegister : 이벤트 및 설정 등록 ");
         
         var _this = this;   // jqeury 함수 내부에서 this 접근시 사용
         
@@ -246,12 +246,12 @@
             location.href = regURL + "?mode=CREATE";
         });    
     };
-    BaseListDI.prototype.cbCheck = function() {
-        console.log("cbCheck : 화면 유효성 검사 ");
+    BaseListDI.prototype.preCheck = function() {
+        console.log("preCheck : 화면 유효성 검사 ");
         return true;
     };
-    BaseListDI.prototype.cbReady = function() {
-        console.log("cbReady : 준비완료 ");
+    BaseListDI.prototype.preReady = function() {
+        console.log("preReady : 준비완료 ");
     };
 </script>
 <script>
@@ -265,32 +265,32 @@
     function AccountListDI() {
         BaseListDI.call(this);
 
-        this.attr["frmURL"] = {
+        this.prop["frmURL"] = {
             getter: function() { return accountFrmURL; },
             setter: function(val) { accountFrmURL = val; }
         };
-        this.attr["page_size"] =  {
+        this.prop["page_size"] =  {
             getter: function() { return page.page_size; },
             setter: function(val) { page.page_size = val; }
         };
-        this.attr["page_count"] = {
+        this.prop["page_count"] = {
             getter: function() { return page.page_count; },
             setter: function(val) { page.page_count = val; }
         };
         // 검색/조회 조건
-        this.attr["keyword"] = {
+        this.prop["keyword"] = {
             caption: "검색어",
             selector: "#name_corp_tel_hp",
             getter: function() { return $("#name_corp_tel_hp").val(); },
             setter: function(val) { $("#name_corp_tel_hp").val(val); }
         };
-        this.attr["sort_cd"] = "";
+        this.prop["sort_cd"] = "";
         // // 레코드
-        this.attr["acc_idx"] = {caption: "일련번호"};
-        this.attr["adm_id"] = {caption: "관리자ID"};
-        this.attr["admName"] = {caption: "관리자명"};
-        this.attr["use_yn"] = {caption: "사용유무"};
-        this.attr["create_dt"] = {caption: "등록일자"};
+        this.prop["acc_idx"] = {caption: "일련번호"};
+        this.prop["adm_id"] = {caption: "관리자ID"};
+        this.prop["admName"] = {caption: "관리자명"};
+        this.prop["use_yn"] = {caption: "사용유무"};
+        this.prop["create_dt"] = {caption: "등록일자"};
     }
     util.inherits(AccountListDI, BaseListDI);
     // 정적 메소드
@@ -329,8 +329,8 @@
         }
     };
     // 데코레이션 메소드
-    AccountListDI.prototype.cbRegister = function() {
-        BaseListDI.prototype.cbRegister.call(this);
+    AccountListDI.prototype.preRegister = function() {
+        BaseListDI.prototype.preRegister.call(this);
         
         var _this = this;   // jqeury 함수 내부에서 this 접근시 사용
         
@@ -344,17 +344,17 @@
         });
 
     };
-    AccountListDI.prototype.cbCheck = function() {
-        if (BaseListDI.prototype.cbCheck.call(this)) {
+    AccountListDI.prototype.preCheck = function() {
+        if (BaseListDI.prototype.preCheck.call(this)) {
             if (this.checkSelector()) {                     // 선택자 검사
-                console.log("cbCheck : 선택자 검사 => 'Success' ");
+                console.log("preCheck : 선택자 검사 => 'Success' ");
                 return true;
             }
         }
         return false;
     };
-    AccountListDI.prototype.cbReady = function() {
-        BaseListDI.prototype.cbReady.call(this);
+    AccountListDI.prototype.preReady = function() {
+        BaseListDI.prototype.preReady.call(this);
         this.list.execute();                                // 준비완료 후 실행(execute)
     };
 </script>

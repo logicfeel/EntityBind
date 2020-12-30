@@ -16,7 +16,7 @@ function ReadDI() {
 
     var __this = this;          // 내부용 this : prototype 접근지시자
 
-    this.attr = {
+    this.prop = {
         cmd: "INSERT",
         idx: 130,
         listURL: "Notice_Lst.asp",
@@ -35,18 +35,18 @@ function ReadDI() {
         noticeType: {caption: "공지타입", value: "G"}
     };
 
-    this.cbRegister = function() {
+    this.preRegister = function() {
         console.log("cbREgister.#btn_List 이벤트 등록..");
         this.read.cbOutput = __this.readView;
         this.read.cbValid = __this.readValid;
     };
 
     this.cbValid = function() {   // 2.검사
-        if (this.attr.cmd === "") Msg("에러! 잘못된 접근경로입니다.");
+        if (this.prop.cmd === "") Msg("에러! 잘못된 접근경로입니다.");
         return true;
     };
 
-    this.cbReady = function(model) {
+    this.preReady = function(model) {
         this.read.execute();
     };
 
@@ -94,7 +94,7 @@ e.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";
 // e.baseUrl = "jsons/sample_row_single.json";                     // 오류 2
 
 // 추가 등록 ----------------------
-// e.loadAttr();
+// e.loadProp();
 
 // e._baseEntity.items["sto_id"].setConstraint(/\D/, "숫자만 입력해야함...", 100);
 // e._baseEntity.items["sto_id"].setConstraint(/[0-9]{5}/, "5자리 미만 숫자만...", 200);

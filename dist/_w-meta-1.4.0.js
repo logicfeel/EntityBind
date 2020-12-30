@@ -1091,19 +1091,22 @@ if (typeof Array.isArray === "undefined") {
     var IBindModel  = (function () {
         function IBindModel() {
 
-            this.attr      = {};
+            this.prop      = {};
             this.mode      = {};
             this.mapping   = {};
 
             this.onExecute  = null;
             this.onExecuted = null;
-        }
-        IBindModel.prototype.cbRegister = function() {};
-        IBindModel.prototype.cbCheck = function() {};
-        IBindModel.prototype.cbReady = function() {};
 
-        IBindModel.prototype.cbFail = function() {};
-        IBindModel.prototype.cbError = function() {};
+            this.cbFail = function() {};
+            this.cbError = function() {};
+        }
+        IBindModel.prototype.preRegister = function() {};
+        IBindModel.prototype.preCheck = function() { return true };
+        IBindModel.prototype.preReady = function() {};
+
+        // IBindModel.prototype.cbFail = function() {};
+        // IBindModel.prototype.cbError = function() {};
 
         return IBindModel;
     }());
@@ -4721,26 +4724,26 @@ if (typeof Array.isArray === "undefined") {
         function BindModel(p_objectDI)  {
             _super.call(this);
 
-            var __attr          = new PropertyCollection(this);
+            var __prop          = new PropertyCollection(this);
             var __mode          = new PropertyFunctionCollection(this);
             var __mapping       = new PropertyCollection(this);
 
-            var __cbRegister    = function() {};
-            var __cbCheck       = function() {return true};
-            var __cbReady       = function() {};
+            // var __preRegister    = function() {};
+            // var __preCheck       = function() {return true};
+            // var __preReady       = function() {};
             var __cbFail        = function() { console.warn("바인딩 실패하였습니다."); };
             var __cbError       = function() { console.error("바인딩 오류가 발생 하였습니다."); };
             var __itemType      = Item;
 
             var propObject;
 
-            /** @property {attr} */
-            Object.defineProperty(this, "attr", 
+            /** @property {prop} */
+            Object.defineProperty(this, "prop", 
             {
-                get: function() { return __attr; },
+                get: function() { return __prop; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof PropertyCollection)) throw new Error("Only [attr] type 'PropertyCollection' can be added");
-                    __attr = newValue;
+                    if (!(newValue instanceof PropertyCollection)) throw new Error("Only [prop] type 'PropertyCollection' can be added");
+                    __prop = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -4770,41 +4773,41 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {cbRegister} */
-            Object.defineProperty(this, "cbRegister", 
-            {
-                get: function() { return __cbRegister; },
-                set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbRegister] type 'Function' can be added");
-                    __cbRegister = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });
+            // /** @property {preRegister} */
+            // Object.defineProperty(this, "preRegister", 
+            // {
+            //     get: function() { return __preRegister; },
+            //     set: function(newValue) { 
+            //         if (typeof newValue !== "function") throw new Error("Only [preRegister] type 'Function' can be added");
+            //         __preRegister = newValue;
+            //     },
+            //     configurable: true,
+            //     enumerable: true
+            // });
             
-            /** @property {cbCheck} */
-            Object.defineProperty(this, "cbCheck", 
-            {
-                get: function() { return __cbCheck; },
-                set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbCheck] type 'Function' can be added");
-                    __cbCheck = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });
+            // /** @property {preCheck} */
+            // Object.defineProperty(this, "preCheck", 
+            // {
+            //     get: function() { return __preCheck; },
+            //     set: function(newValue) { 
+            //         if (typeof newValue !== "function") throw new Error("Only [preCheck] type 'Function' can be added");
+            //         __preCheck = newValue;
+            //     },
+            //     configurable: true,
+            //     enumerable: true
+            // });
 
-            /** @property {cbReady} */
-            Object.defineProperty(this, "cbReady", 
-            {
-                get: function() { return __cbReady; },
-                set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbReady] type 'Function' can be added");
-                    __cbReady = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });
+            // /** @property {preReady} */
+            // Object.defineProperty(this, "preReady", 
+            // {
+            //     get: function() { return __preReady; },
+            //     set: function(newValue) { 
+            //         if (typeof newValue !== "function") throw new Error("Only [preReady] type 'Function' can be added");
+            //         __preReady = newValue;
+            //     },
+            //     configurable: true,
+            //     enumerable: true
+            // });
 
             /** @property {cbFail} */
             Object.defineProperty(this, "cbFail", 
@@ -4845,12 +4848,12 @@ if (typeof Array.isArray === "undefined") {
             // DI 의존성 주입 : 객체를 비교하여 삽입
             if (p_objectDI instanceof IBindModel) {     // 가능
                 
-                // attr 등록
-                if (typeof p_objectDI["attr"] !== "undefined" && p_objectDI["attr"] !== null) {
-                    propObject = p_objectDI["attr"];
+                // prop 등록
+                if (typeof p_objectDI["prop"] !== "undefined" && p_objectDI["prop"] !== null) {
+                    propObject = p_objectDI["prop"];
                     for(var prop in propObject) {
                         if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-                            __attr.add(prop, propObject[prop]);
+                            __prop.add(prop, propObject[prop]);
                         }
                     }
                 }
@@ -4871,14 +4874,18 @@ if (typeof Array.isArray === "undefined") {
                         }
                     }
                 }
-                if (typeof p_objectDI["cbRegister"] === "function") {
-                    __cbRegister = p_objectDI["cbRegister"];
+                if (typeof p_objectDI["preRegister"] === "function") {
+                    // __preRegister = p_objectDI["preRegister"];
+                    this.preRegister = p_objectDI["preRegister"];
+
                 }
-                if (typeof p_objectDI["cbCheck"] === "function") {
-                    __cbCheck = p_objectDI["cbCheck"];
+                if (typeof p_objectDI["preCheck"] === "function") {
+                    // __preCheck = p_objectDI["preCheck"];
+                    this.preCheck = p_objectDI["preCheck"];
                 }
-                if (typeof p_objectDI["cbReady"] === "function") {
-                    __cbReady = p_objectDI["cbReady"];
+                if (typeof p_objectDI["preReady"] === "function") {
+                    // __preReady = p_objectDI["preReady"];
+                    this.preReady = p_objectDI["preReady"];
                 }
                 if (typeof p_objectDI["cbFail"] === "function") {
                     __cbFail = p_objectDI["cbFail"];
@@ -4910,10 +4917,19 @@ if (typeof Array.isArray === "undefined") {
 
         /** @method */
         BindModel.prototype.init = function() {
-            this.cbRegister.call(this);
-            if (this.cbCheck.call(this)) {
-                this.cbReady.call(this)
+            this.preRegister.call(this);
+            if (this.preCheck.call(this)) {
+                this.preReady.call(this)
             }
+        };
+
+        BindModel.prototype.preRegister = function(p_this) {
+        };
+
+        BindModel.prototype.preCheck = function(p_this) {
+            return true;
+        };
+        BindModel.prototype.preReady = function(p_this) {
         };
         
         BindModel.prototype.addEntity = function(p_name) {
@@ -5003,22 +5019,22 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
-         * @param {?string | ?array<string>} p_attr 
+         * @param {?string | ?array<string>} p_prop 
          * @param {?string} p_entity 
          */
-        BindModel.prototype.loadAttr = function(p_attr, p_entity) {
+        BindModel.prototype.loadProp = function(p_prop, p_entity) {
 
-            var attr = [];
+            var prop = [];
             var entity;
             var propName;
 
             // 1.초기화
-            if (Array.isArray(p_attr)) attr = attr.concat(p_attr);      // Array의 경우
-            else if (typeof p_attr === "string") attr.push(p_attr);       // String의 경우
-            else attr = this.attr.properties;                             // 없을 경우 (전체 가져옴)
+            if (Array.isArray(p_prop)) prop = prop.concat(p_prop);      // Array의 경우
+            else if (typeof p_prop === "string") prop.push(p_prop);       // String의 경우
+            else prop = this.prop.properties;                             // 없을 경우 (전체 가져옴)
 
             // 2.유효성 검사
-            if (typeof p_attr !== "undefined" && (!Array.isArray(p_attr) || typeof p_attr === "string")) {
+            if (typeof p_prop !== "undefined" && (!Array.isArray(p_prop) || typeof p_prop === "string")) {
                 throw new Error("Only [p_entities] type 'Array | string' can be added");
             }
             if (typeof p_entity !== "undefined" && typeof p_entity !== "string") {
@@ -5031,13 +5047,13 @@ if (typeof Array.isArray === "undefined") {
             entity = this[p_entity] || this._baseEntity;
 
             // 3.속성정보 등록
-            for(var i = 0; attr.length > i; i++) {
-                propName = attr[i];
-                if (typeof propName === "string" && typeof this.attr[propName] !== "undefined") {
-                    if(["number", "string", "boolean"].indexOf(typeof this.attr[propName]) > -1) {
-                        entity.items.addValue(propName, this.attr[propName]);
-                    } else if (this.attr[propName]  !== null && typeof this.attr[propName] === "object"){
-                        entity.items.add(new this.itemType(propName, entity, this.attr[propName]))
+            for(var i = 0; prop.length > i; i++) {
+                propName = prop[i];
+                if (typeof propName === "string" && typeof this.prop[propName] !== "undefined") {
+                    if(["number", "string", "boolean"].indexOf(typeof this.prop[propName]) > -1) {
+                        entity.items.addValue(propName, this.prop[propName]);
+                    } else if (this.prop[propName]  !== null && typeof this.prop[propName] === "object"){
+                        entity.items.add(new this.itemType(propName, entity, this.prop[propName]))
                     }
                 }
             }
@@ -5773,7 +5789,7 @@ if (typeof Array.isArray === "undefined") {
 
         BindModelAjax.prototype.checkSelector  = function(p_collection) {
             
-            var collection = p_collection || this.attr;
+            var collection = p_collection || this.prop;
             var failSelector;
 
             // 유효성 검사
@@ -5862,7 +5878,7 @@ if (typeof Array.isArray === "undefined") {
 
             // 속성 자동 로딩
             if (p_isLoadAttr) {
-                this.loadAttr();
+                this.loadProp();
             }
 
             /** @implements IBindModelCreate 인터페이스 구현 */
@@ -5948,7 +5964,7 @@ if (typeof Array.isArray === "undefined") {
 
             // 속성 자동 로딩
             if (p_isLoadAttr) {
-                this.loadAttr();
+                this.loadProp();
             }
 
             /** @implements IBindModelRead 인터페이스 구현 */
@@ -6040,7 +6056,7 @@ if (typeof Array.isArray === "undefined") {
 
             // 속성 자동 로딩
             if (p_isLoadAttr) {
-                this.loadAttr();
+                this.loadProp();
             }
 
             /** @implements IBindModelReadDel 인터페이스 구현 */
@@ -6126,7 +6142,7 @@ if (typeof Array.isArray === "undefined") {
             
             // 속성 자동 로딩
             if (p_isLoadAttr) {
-                this.loadAttr();
+                this.loadProp();
             }
 
             /** @implements IBindModelList 인터페이스 구현 */
@@ -6216,7 +6232,7 @@ if (typeof Array.isArray === "undefined") {
             
             // 속성 자동 로딩
             if (p_isLoadAttr) {
-                this.loadAttr();
+                this.loadProp();
             }
 
             /** @implements IBindModelListDel 인터페이스 구현 */
@@ -6307,7 +6323,7 @@ if (typeof Array.isArray === "undefined") {
 
             // 속성 자동 로딩
             if (p_isLoadAttr) {
-                this.loadAttr();
+                this.loadProp();
             }
 
             /** @implements IBindModelEdit 인터페이스 구현 */
@@ -6400,7 +6416,7 @@ if (typeof Array.isArray === "undefined") {
 
             // 속성 자동 로딩
             if (p_isLoadAttr) {
-                this.loadAttr();
+                this.loadProp();
             }
 
             /** @implements IBindModelForm 인터페이스 구현 */

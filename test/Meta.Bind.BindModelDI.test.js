@@ -67,7 +67,7 @@
 
             var __this = this;          // 내부용 this : prototype 접근지시자
 
-            this.attr = {
+            this.prop = {
                 i1: "V1",
                 i2: "V2",
                 i3: {
@@ -81,16 +81,16 @@
                 }
             };
 
-            this.cbRegister = function() {
-               return "cbRegister";
+            this.preRegister = function() {
+               return "preRegister";
             };
         
-            this.cbCheck = function() {
+            this.preCheck = function() {
                 return true;
             };
         
-            this.cbReady = function(model) {
-                return "cbReady";
+            this.preReady = function(model) {
+                return "preReady";
             };
         
             this.cbFail = function(p_msg, p_code) {
@@ -118,7 +118,7 @@
 
             var __this = this;          // 내부용 this : prototype 접근지시자
 
-            this.attr = {
+            this.prop = {
                 i1: "V1",
                 i2: "V2",
                 i3: {
@@ -132,16 +132,16 @@
                 }
             };
 
-            this.cbRegister = function() {
-               return "cbRegister";
+            this.preRegister = function() {
+               return "preRegister";
             };
         
-            this.cbCheck = function() {
+            this.preCheck = function() {
                 return true;
             };
         
-            this.cbReady = function(model) {
-                return "cbReady";
+            this.preReady = function(model) {
+                return "preReady";
             };
         
             this.cbFail = function(p_msg, p_code) {
@@ -164,7 +164,7 @@
         function ReadMappingDI() {
             IBindModelRead.call(this);
 
-            this.attr = {
+            this.prop = {
                 i1: "V1",
                 i2: "V2",
                 i3: {

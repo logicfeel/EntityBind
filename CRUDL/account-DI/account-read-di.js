@@ -41,23 +41,23 @@
             _super.call(this);
             
             // 업무 속성
-            this.attr["acc_idx"] = {caption: "일련번호", value: ""};
-            this.attr["adm_id"] = {
+            this.prop["acc_idx"] = {caption: "일련번호", value: ""};
+            this.prop["adm_id"] = {
                 caption: "관리자ID",
                 selector: "#adm_id",
                 setter: function(val) { $("#adm_id").text(val); }
             };
-            this.attr["passwd"] = {
+            this.prop["passwd"] = {
                 caption: "비밀번호",
                 selector: "#passwd",
                 setter: function(val) { $("#passwd").text(val); }
             };
-            this.attr["admName"] = {
+            this.prop["admName"] = {
                 caption: "관리자명", 
                 selector: "#admName",
                 setter: function(val) { $("#admName").text(val); }
             };
-            this.attr["use_yn"] = {
+            this.prop["use_yn"] = {
                 caption: "사용유무", 
                 selector: ["#using_yn"],
                 setter: function(val) { $("#using_yn").text( val === "Y" ? "정상" : "중지"); }
@@ -74,20 +74,20 @@
         util.inherits(AccountReadDI, _super);
     
         // 데코레이션 메소드
-        AccountReadDI.prototype.cbRegister = function() {
-            BaseReadDI.prototype.cbRegister.call(this);
+        AccountReadDI.prototype.preRegister = function() {
+            BaseReadDI.prototype.preRegister.call(this);
         };
-        AccountReadDI.prototype.cbCheck = function() {
-            if (BaseReadDI.prototype.cbCheck.call(this)) {
+        AccountReadDI.prototype.preCheck = function() {
+            if (BaseReadDI.prototype.preCheck.call(this)) {
                 if (this.checkSelector()) {                             // 선택자 검사
-                    console.log("cbCheck : 선택자 검사 => 'Success' ");
+                    console.log("preCheck : 선택자 검사 => 'Success' ");
                     return true;
                 }
             }
             return false;    
         };
-        AccountReadDI.prototype.cbReady = function() {
-            BaseReadDI.prototype.cbReady.call(this);
+        AccountReadDI.prototype.preReady = function() {
+            BaseReadDI.prototype.preReady.call(this);
             this.read.execute();
         };
 

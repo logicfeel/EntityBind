@@ -45,40 +45,40 @@
             _super.call(this);
             
             // 업무 속성
-            this.attr["frmURL"] = {
+            this.prop["frmURL"] = {
                 getter: function() { return accountFrmURL; },
                 setter: function(val) { accountFrmURL = val; }
             };
-            this.attr["viwURL"] = {
+            this.prop["viwURL"] = {
                 getter: function() { return accountViwURL; },
                 setter: function(val) { accountViwURL = val; }
             };
-            this.attr["viwDelURL"] = {
+            this.prop["viwDelURL"] = {
                 getter: function() { return accountViwDelURL; },
                 setter: function(val) { accountViwDelURL = val; }
             };
-            this.attr["page_size"] =  {
+            this.prop["page_size"] =  {
                 getter: function() { return page.page_size; },
                 setter: function(val) { page.page_size = val; }
             };
-            this.attr["page_count"] = {
+            this.prop["page_count"] = {
                 getter: function() { return page.page_count; },
                 setter: function(val) { page.page_count = val; }
             };
             // 검색/조회 조건
-            this.attr["keyword"] = {
+            this.prop["keyword"] = {
                 caption: "검색어",
                 selector: "#name_corp_tel_hp",
                 getter: function() { return $("#name_corp_tel_hp").val(); },
                 setter: function(val) { $("#name_corp_tel_hp").val(val); }
             };
-            this.attr["sort_cd"] = "";
+            this.prop["sort_cd"] = "";
             // // 레코드
-            this.attr["acc_idx"] = {caption: "일련번호"};
-            this.attr["adm_id"] = {caption: "관리자ID"};
-            this.attr["admName"] = {caption: "관리자명"};
-            this.attr["use_yn"] = {caption: "사용유무"};
-            this.attr["create_dt"] = {caption: "등록일자"};
+            this.prop["acc_idx"] = {caption: "일련번호"};
+            this.prop["adm_id"] = {caption: "관리자ID"};
+            this.prop["admName"] = {caption: "관리자명"};
+            this.prop["use_yn"] = {caption: "사용유무"};
+            this.prop["create_dt"] = {caption: "등록일자"};
     
             this.mapping = {
                 keyword: { list: "bind"},
@@ -142,8 +142,8 @@
             }
         };
         // 데코레이션 메소드
-        AccountListDelDI.prototype.cbRegister = function() {
-            BaseListDelDI.prototype.cbRegister.call(this);
+        AccountListDelDI.prototype.preRegister = function() {
+            BaseListDelDI.prototype.preRegister.call(this);
             
             var _this = this;
 
@@ -178,17 +178,17 @@
                 }
             });
         };
-        AccountListDelDI.prototype.cbCheck = function() {
-            if (BaseListDelDI.prototype.cbCheck.call(this)) {
+        AccountListDelDI.prototype.preCheck = function() {
+            if (BaseListDelDI.prototype.preCheck.call(this)) {
                 if (this.checkSelector()) {                     // 선택자 검사
-                    console.log("cbCheck : 선택자 검사 => 'Success' ");
+                    console.log("preCheck : 선택자 검사 => 'Success' ");
                     return true;
                 }
             }
             return false;
         };
-        AccountListDelDI.prototype.cbReady = function() {
-            BaseListDelDI.prototype.cbReady.call(this);
+        AccountListDelDI.prototype.preReady = function() {
+            BaseListDelDI.prototype.preReady.call(this);
             this.list.execute();                                // 준비완료 후 실행(execute)
         };
 

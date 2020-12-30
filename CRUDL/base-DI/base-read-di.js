@@ -40,7 +40,7 @@
         function BaseReadDI() {
             _super.call(this);
             
-            this.attr["listURL"]    = "";
+            this.prop["listURL"]    = "";
 
             this.cbFail = function(p_result, p_item) {          // 전역 실패 콜백
                 console.warn("실패 :: Value=\"%s\", Code=\"%s\", Message=\"%s\" ", p_result.value, p_result.code, p_result.msg);
@@ -62,8 +62,8 @@
         }
         util.inherits(BaseReadDI, _super);
         
-        BaseReadDI.prototype.cbRegister = function() {
-            console.log("cbRegister : 이벤트 및 설정 등록 ");
+        BaseReadDI.prototype.preRegister = function() {
+            console.log("preRegister : 이벤트 및 설정 등록 ");
     
             var _this = this;   // jqeury 함수 내부에서 this 접근시 사용
     
@@ -71,12 +71,12 @@
                 location.href = _this.first.items["listURL"].value;
             });
         };
-        BaseReadDI.prototype.cbCheck = function() {   // 2.검사
-            console.log("cbCheck : 화면 유효성 검사 ");
+        BaseReadDI.prototype.preCheck = function() {   // 2.검사
+            console.log("preCheck : 화면 유효성 검사 ");
             return true;
         };
-        BaseReadDI.prototype.cbReady = function() {
-            console.log("cbReady : 준비완료 ");
+        BaseReadDI.prototype.preReady = function() {
+            console.log("preReady : 준비완료 ");
         };
 
         return BaseReadDI;

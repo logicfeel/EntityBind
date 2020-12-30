@@ -59,7 +59,7 @@
 
             // 속성 자동 로딩
             if (p_isLoadAttr) {
-                this.loadAttr();
+                this.loadProp();
             }
 
             /** @implements IBindModelEdit 인터페이스 구현 */

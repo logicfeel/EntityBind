@@ -150,8 +150,8 @@
             selector: ["input[name=using_yn]", "#using_Y", "#using_N"],
             getter: function() { return $("input[name=using_yn]:checked").val(); },
             setter: function(val) { 
-                if (val === "Y" ) $("#using_Y").attr("checked", "checked");
-                else $("#using_N").attr("checked", "checked");
+                if (val === "Y" ) $("#using_Y").prop("checked", "checked");
+                else $("#using_N").prop("checked", "checked");
             }
         }), ["create", "update"], ["valid", "bind"]
     );
@@ -182,7 +182,7 @@
             $("#btn_Insert").show();
             $("#btn_Reset").show();
     } else if (params.mode === "EDIT") {
-            $("#adm_id").attr("readonly", "");
+            $("#adm_id").prop("readonly", "");
             $("#btn_Insert").hide();
             $("#btn_Update").show();
             $("#btn_Delete").show();

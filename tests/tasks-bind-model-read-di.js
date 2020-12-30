@@ -18,19 +18,19 @@ function readDI() {
 
     this.read = null;       // 가상으로 지정함
     
-    this.attr = {
+    this.prop = {
         cmd: "INSERT",
         idx: 130
     };
     
 
     this.mode = {};
-    this.cbRegister = function() {
+    this.preRegister = function() {
         this.read.cbOutput = readView;
     };
     this.cbValid = null;
-    // this.cbReady = null;
-    this.cbReady = function(model) {
+    // this.preReady = null;
+    this.preReady = function(model) {
         this.read.execute();
     };
 

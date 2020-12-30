@@ -124,7 +124,7 @@
     function BaseReadDI() {
         IBindModelRead.call(this);
 
-        this.attr["listURL"]    = "";
+        this.prop["listURL"]    = "";
 
         this.cbFail = function(p_result, p_item) {          // 전역 실패 콜백
             console.warn("실패 :: Value=\"%s\", Code=\"%s\", Message=\"%s\" ", p_result.value, p_result.code, p_result.msg);
@@ -147,8 +147,8 @@
     }
     util.inherits(BaseReadDI, IBindModelRead);
     // 가상 메소드
-    BaseReadDI.prototype.cbRegister = function() {
-        console.log("cbRegister : 이벤트 및 설정 등록 ");
+    BaseReadDI.prototype.preRegister = function() {
+        console.log("preRegister : 이벤트 및 설정 등록 ");
 
         var _this = this;   // jqeury 함수 내부에서 this 접근시 사용
 
@@ -156,12 +156,12 @@
             location.href = _this.first.items["listURL"].value;
         });
     };
-    BaseReadDI.prototype.cbCheck = function() {   // 2.검사
-        console.log("cbCheck : 화면 유효성 검사 ");
+    BaseReadDI.prototype.preCheck = function() {   // 2.검사
+        console.log("preCheck : 화면 유효성 검사 ");
         return true;
     };
-    BaseReadDI.prototype.cbReady = function() {
-        console.log("cbReady : 준비완료 ");
+    BaseReadDI.prototype.preReady = function() {
+        console.log("preReady : 준비완료 ");
     };
 </script>
 <script>
@@ -174,24 +174,24 @@
         BaseReadDI.call(this);
 
         // 업무 속성
-        this.attr["acc_idx"] = {caption: "일련번호", value: ""};
-        this.attr["sto_id"] = "S00001";
-        this.attr["adm_id"] = {
+        this.prop["acc_idx"] = {caption: "일련번호", value: ""};
+        this.prop["sto_id"] = "S00001";
+        this.prop["adm_id"] = {
             caption: "관리자ID",
             selector: "#adm_id",
             setter: function(val) { $("#adm_id").text(val); }
         };
-        this.attr["passwd"] = {
+        this.prop["passwd"] = {
             caption: "비밀번호",
             selector: "#passwd",
             setter: function(val) { $("#passwd").text(val); }
         };
-        this.attr["admName"] = {
+        this.prop["admName"] = {
             caption: "관리자명", 
             selector: "#admName",
             setter: function(val) { $("#admName").text(val); }
         };
-        this.attr["use_yn"] = {
+        this.prop["use_yn"] = {
             caption: "사용유무", 
             selector: ["#using_yn"],
             setter: function(val) { $("#using_yn").text( val === "Y" ? "정상" : "중지"); }
@@ -199,20 +199,20 @@
     }
     util.inherits(AccountReadDI, BaseReadDI);
     // 데코레이션 메소드
-    AccountReadDI.prototype.cbRegister = function() {
-        BaseReadDI.prototype.cbRegister.call(this);
+    AccountReadDI.prototype.preRegister = function() {
+        BaseReadDI.prototype.preRegister.call(this);
     };
-    AccountReadDI.prototype.cbCheck = function() {
-        if (BaseReadDI.prototype.cbCheck.call(this)) {
+    AccountReadDI.prototype.preCheck = function() {
+        if (BaseReadDI.prototype.preCheck.call(this)) {
             if (this.checkSelector()) {                             // 선택자 검사
-                console.log("cbCheck : 선택자 검사 => 'Success' ");
+                console.log("preCheck : 선택자 검사 => 'Success' ");
                 return true;
             }
         }
         return false;    
     };
-    AccountReadDI.prototype.cbReady = function() {
-        BaseReadDI.prototype.cbReady.call(this);
+    AccountReadDI.prototype.preReady = function() {
+        BaseReadDI.prototype.preReady.call(this);
         this.read.execute();
     };
 </script>

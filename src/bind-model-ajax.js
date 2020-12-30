@@ -87,7 +87,7 @@
 
         BindModelAjax.prototype.checkSelector  = function(p_collection) {
             
-            var collection = p_collection || this.attr;
+            var collection = p_collection || this.prop;
             var failSelector;
 
             // 유효성 검사

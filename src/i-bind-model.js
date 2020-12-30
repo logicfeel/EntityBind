@@ -21,19 +21,22 @@
     var IBindModel  = (function () {
         function IBindModel() {
 
-            this.attr      = {};
+            this.prop      = {};
             this.mode      = {};
             this.mapping   = {};
 
             this.onExecute  = null;
             this.onExecuted = null;
-        }
-        IBindModel.prototype.cbRegister = function() {};
-        IBindModel.prototype.cbCheck = function() {};
-        IBindModel.prototype.cbReady = function() {};
 
-        IBindModel.prototype.cbFail = function() {};
-        IBindModel.prototype.cbError = function() {};
+            this.cbFail = function() {};
+            this.cbError = function() {};
+        }
+        IBindModel.prototype.preRegister = function() {};
+        IBindModel.prototype.preCheck = function() { return true };
+        IBindModel.prototype.preReady = function() {};
+
+        // IBindModel.prototype.cbFail = function() {};
+        // IBindModel.prototype.cbError = function() {};
 
         return IBindModel;
     }());

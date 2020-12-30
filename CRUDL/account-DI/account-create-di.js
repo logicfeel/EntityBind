@@ -41,23 +41,23 @@
             _super.call(this);
             
             // 업무 속성
-            this.attr["sto_id"] = "S00001";
-            this.attr["adm_id"] = {
+            this.prop["sto_id"] = "S00001";
+            this.prop["adm_id"] = {
                 caption: "관리자ID",
                 selector: "#adm_id",
                 getter: function() { return $("#adm_id").val(); }
             };
-            this.attr["passwd"] = {
+            this.prop["passwd"] = {
                 caption: "비밀번호",
                 selector: "#passwd",
                 getter: function() { return $("#passwd").val(); }
             };
-            this.attr["admName"] = {
+            this.prop["admName"] = {
                 caption: "관리자명", 
                 selector: "#admName",
                 getter: function() { return $("#admName").val(); }
             };
-            this.attr["use_yn"] = {
+            this.prop["use_yn"] = {
                 caption: "사용유무", 
                 selector: ["input[name=using_yn]", "#using_Y", "#using_N"],
                 getter: function() { return $("input[name=using_yn]:checked").val(); }
@@ -75,20 +75,20 @@
         util.inherits(AccountCreateDI, _super);
     
         // 데코레이션 메소드
-        AccountCreateDI.prototype.cbRegister = function() {
-            BaseCreateDI.prototype.cbRegister.call(this);
+        AccountCreateDI.prototype.preRegister = function() {
+            BaseCreateDI.prototype.preRegister.call(this);
         };
-        AccountCreateDI.prototype.cbCheck = function() {
-            if (BaseCreateDI.prototype.cbCheck.call(this)) {
+        AccountCreateDI.prototype.preCheck = function() {
+            if (BaseCreateDI.prototype.preCheck.call(this)) {
                 if (this.checkSelector()) {                             // 선택자 검사
-                    console.log("cbCheck : 선택자 검사 => 'Success' ");
+                    console.log("preCheck : 선택자 검사 => 'Success' ");
                     return true;
                 }
             }
             return false;    
         };
-        AccountCreateDI.prototype.cbReady = function() {
-            BaseCreateDI.prototype.cbReady.call(this);
+        AccountCreateDI.prototype.preReady = function() {
+            BaseCreateDI.prototype.preReady.call(this);
         };
 
         return AccountCreateDI;

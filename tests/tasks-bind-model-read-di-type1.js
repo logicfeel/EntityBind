@@ -16,17 +16,17 @@ function ReadDI() {
 
     __this = this;          // 내부용 this
 
-    this.attr = {
+    this.prop = {
         cmd: "INSERT",
         idx: 130,
         cnt: {caption: "카운터"}
     };
 
     // 등록 방법 
-    // 1) 함수로 선언하여 위치를 자유롭게 선언 후 cbRegister에 등록
-    // 2) cbRegister 에 즉시 선언
-    // 3) this.XXX 선언후 등록 (this.cbRegister 보다 우선 선언해야 함)
-    this.cbRegister = function() {
+    // 1) 함수로 선언하여 위치를 자유롭게 선언 후 preRegister에 등록
+    // 2) preRegister 에 즉시 선언
+    // 3) this.XXX 선언후 등록 (this.preRegister 보다 우선 선언해야 함)
+    this.preRegister = function() {
         this.read.cbOutput = function(entity) {      // 함수로 선언하여 위치를 자유롭게 두던지, 
             console.log("cbOutput  호출");    
             console.log("this._model.first.items.count  10 ==> " + this._model.first.items.count);   
@@ -69,7 +69,7 @@ function ReadDI() {
         };
     };
 
-    this.cbReady = function(model) {
+    this.preReady = function(model) {
         this.read.execute();
     };
 
@@ -101,22 +101,22 @@ e.onExecuted = function() {      // 실행끝
     console.log("onExecuted 이벤트 ");
 };
 
-// 1) 'attr'의 단일 Items을 등록
-// 1-1) attr(단일객체)를 >> entity에 개별 등록
-// e.read.valid.items.add(new Item("cnt", e.read.valid, e.attr["cnt"])); // 1번 방법(비추)
-// e.read.valid.items.addValue("cnt", e.attr["cnt"]);              // 2번 방법 (추천)
+// 1) 'prop'의 단일 Items을 등록
+// 1-1) prop(단일객체)를 >> entity에 개별 등록
+// e.read.valid.items.add(new Item("cnt", e.read.valid, e.prop["cnt"])); // 1번 방법(비추)
+// e.read.valid.items.addValue("cnt", e.prop["cnt"]);              // 2번 방법 (추천)
 // addValue
-// 1-2) attr(단일객체)를 >> entity목록(배열)에 등록
+// 1-2) prop(단일객체)를 >> entity목록(배열)에 등록
 // addValue
-// 1-3) attr(단일객체)를 >> cmd목록(배열)에 속한 모든 entity에 등록
+// 1-3) prop(단일객체)를 >> cmd목록(배열)에 속한 모든 entity에 등록
 // addValue
-// 2) 'attr'의 여러 Item을  등록
-// loadAttr(['cmd', 'addr']);
-// 2-1-1) 전체 attr을 기본(baseEntity) 엔티티에 로딩
-// e.loadAttr();
-// 2-1-2) 지정 attr을 지정 엔티티에 로딩
+// 2) 'prop'의 여러 Item을  등록
+// loadProp(['cmd', 'addr']);
+// 2-1-1) 전체 prop을 기본(baseEntity) 엔티티에 로딩
+// e.loadProp();
+// 2-1-2) 지정 prop을 지정 엔티티에 로딩
 // e.second = new EntityTable('second');
-// e.loadAttr(['cmd', 'addr'], 'second');
+// e.loadProp(['cmd', 'addr'], 'second');
 // 2-2-1) 여러 아이템을 지정한 entity에 등록
 // e.read.setEntity(['cmd', 'addr'], 'bind');
 // 2-2-2) 여러 아이템을 cmd의 모든 entity에 등록

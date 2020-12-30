@@ -2020,7 +2020,7 @@
 
             var __this = this;          // 내부용 this : prototype 접근지시자
 
-            this.attr = {
+            this.prop = {
                 i1: "V1",
                 i2: "V2",
                 i3: {
@@ -2034,16 +2034,16 @@
                 }
             };
 
-            this.cbRegister = function() {
-               return "cbRegister";
+            this.preRegister = function() {
+               return "preRegister";
             };
         
-            this.cbCheck = function() {
-                return "cbCheck";
+            this.preCheck = function() {
+                return "preCheck";
             };
         
-            this.cbReady = function(model) {
-                return "cbReady";
+            this.preReady = function(model) {
+                return "preReady";
             };
         
             this.cbFail = function(p_msg, p_code) {
@@ -2104,25 +2104,25 @@
 
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.init() ");
-        console.log("BindModel.cbRegister :: 등록 ");
-        console.log("BindModel.cbCheck :: 검사 ");
-        console.log("BindModel.cbReady :: 준비 완료 ");
+        console.log("BindModel.preRegister :: 등록 ");
+        console.log("BindModel.preCheck :: 검사 ");
+        console.log("BindModel.preReady :: 준비 완료 ");
         var model = new BindModelCreateAjax();
         model.result = [];
-        model.cbRegister = function() {
-            this.result.push("cbRegister");
+        model.preRegister = function() {
+            this.result.push("preRegister");
         };
-        model.cbCheck = function() {
-            this.result.push("cbCheck");
+        model.preCheck = function() {
+            this.result.push("preCheck");
             return true;
         };
-        model.cbReady = function() {
-            this.result.push("cbReady");
+        model.preReady = function() {
+            this.result.push("preReady");
         };
         model.init();
-        if (model.result[0] === "cbRegister" && 
-            model.result[1] === "cbCheck" && 
-            model.result[2] === "cbReady" && 
+        if (model.result[0] === "preRegister" && 
+            model.result[1] === "preCheck" && 
+            model.result[2] === "preReady" && 
             model.result.length === 3 && 
         true) {
         console.log("Result = Success");
@@ -2388,12 +2388,12 @@
         }
 
         console.log("---------------------------------------------------------------------------");
-        console.log("BindModel.loadAttr() :: attr에 [모든] 속성을 first에 등록 ");
+        console.log("BindModel.loadProp() :: prop에 [모든] 속성을 first에 등록 ");
         var model = new BindModelCreateAjax();
-        model.attr.add("i1", "V1");
-        model.attr.add("i2", "V2");
-        model.attr.add("i3", {caption: "C3"});    
-        model.loadAttr();
+        model.prop.add("i1", "V1");
+        model.prop.add("i2", "V2");
+        model.prop.add("i3", {caption: "C3"});    
+        model.loadProp();
         if (// create 
             model.create.valid.items.count === 0 &&
             // first
@@ -2412,12 +2412,12 @@
         }
 
         console.log("---------------------------------------------------------------------------");
-        console.log("BindModel.loadAttr(attrs) :: attr에 [특정] 속성을  [first] 엔티티에 등록 ");
+        console.log("BindModel.loadProp(props) :: prop에 [특정] 속성을  [first] 엔티티에 등록 ");
         var model = new BindModelCreateAjax();
-        model.attr.add("i1", "V1");
-        model.attr.add("i2", "V2");
-        model.attr.add("i3", {caption: "C3"});    
-        model.loadAttr(["i2", "i3"]);
+        model.prop.add("i1", "V1");
+        model.prop.add("i2", "V2");
+        model.prop.add("i3", {caption: "C3"});    
+        model.loadProp(["i2", "i3"]);
         if (// create 
             model.create.valid.items.count === 0 &&
             // first
@@ -2434,13 +2434,13 @@
         }
 
         console.log("---------------------------------------------------------------------------");
-        console.log("BindModel.loadAttr(attrs, entity) :: attr에 [특정] 속성을  [특정] 엔티티에 등록 ");
+        console.log("BindModel.loadProp(props, entity) :: prop에 [특정] 속성을  [특정] 엔티티에 등록 ");
         var model = new BindModelCreateAjax();
         model.addEntity("second");
-        model.attr.add("i1", "V1");
-        model.attr.add("i2", "V2");
-        model.attr.add("i3", {caption: "C3"});    
-        model.loadAttr(["i2", "i3"], "second");
+        model.prop.add("i1", "V1");
+        model.prop.add("i2", "V2");
+        model.prop.add("i3", {caption: "C3"});    
+        model.loadProp(["i2", "i3"], "second");
         if (// create 
             model.create.valid.items.count === 0 &&
             // first
@@ -2474,10 +2474,10 @@
         console.log("---------------------------------------------------------------------------");
         console.log("new BindModelCreateAjax(di) :: DI 주입 생성 ");
         var model = new BindModelCreateAjax(new CreateDI());
-        if (model.attr.count === 3 &&
-            model.cbRegister() === "cbRegister" &&
-            model.cbCheck() === "cbCheck" &&
-            model.cbReady() === "cbReady" &&
+        if (model.prop.count === 3 &&
+            model.preRegister() === "preRegister" &&
+            model.preCheck() === "preCheck" &&
+            model.preReady() === "preReady" &&
             model.cbFail() === "cbFail" &&
             model.cbError() === "cbError" &&
             true) {
@@ -2490,7 +2490,7 @@
         console.log("---------------------------------------------------------------------------");
         console.log("new BindModelCreateAjax(di, isLoadAttr) :: DI 주입 생성 + 자동 로딩 ");
         var model = new BindModelCreateAjax(new CreateDI(), true);
-        if (model.attr.count === 3 &&
+        if (model.prop.count === 3 &&
             // first
             model.first.items.count === 3 &&
             model.first.items["i1"].value === "V1" &&
@@ -2509,7 +2509,7 @@
         console.log("---------------------------------------------------------------------------");
         console.log("new BindModelCreateAjax(di, isLoadAttr, itemType) :: DI 주입 생성 + 자동 로딩 + 아이템 타입 지정 ");
         var model = new BindModelCreateAjax(new CreateDI(), true, ItemDOM);
-        if (model.attr.count === 3 &&
+        if (model.prop.count === 3 &&
             model.first.items.count === 3 &&
             model.first.items["i1"].getTypes()[0] === "ItemDOM" &&
             model.first.items["i1"] instanceof  ItemDOM &&
@@ -2625,7 +2625,7 @@
 
             var __this = this;          // 내부용 this : prototype 접근지시자
 
-            this.attr = {
+            this.prop = {
                 i1: "V1",
                 i2: "V2",
                 i3: {
@@ -2639,16 +2639,16 @@
                 }
             };
 
-            this.cbRegister = function() {
-               return "cbRegister";
+            this.preRegister = function() {
+               return "preRegister";
             };
         
-            this.cbCheck = function() {
+            this.preCheck = function() {
                 return true;
             };
         
-            this.cbReady = function(model) {
-                return "cbReady";
+            this.preReady = function(model) {
+                return "preReady";
             };
         
             this.cbFail = function(p_msg, p_code) {
@@ -2674,7 +2674,7 @@
 
             var __this = this;          // 내부용 this : prototype 접근지시자
 
-            this.attr = {
+            this.prop = {
                 i1: "V1",
                 i2: "V2",
                 i3: {
@@ -2688,16 +2688,16 @@
                 }
             };
 
-            this.cbRegister = function() {
-               return "cbRegister";
+            this.preRegister = function() {
+               return "preRegister";
             };
         
-            this.cbCheck = function() {
+            this.preCheck = function() {
                 return true;
             };
         
-            this.cbReady = function(model) {
-                return "cbReady";
+            this.preReady = function(model) {
+                return "preReady";
             };
         
             this.cbFail = function(p_msg, p_code) {
@@ -2907,7 +2907,7 @@
 
             var __this = this;          // 내부용 this : prototype 접근지시자
 
-            this.attr = {
+            this.prop = {
                 i1: "V1",
                 i2: "V2",
                 i3: {
@@ -2921,16 +2921,16 @@
                 }
             };
 
-            this.cbRegister = function() {
-               return "cbRegister";
+            this.preRegister = function() {
+               return "preRegister";
             };
         
-            this.cbCheck = function() {
-                return "cbCheck";
+            this.preCheck = function() {
+                return "preCheck";
             };
         
-            this.cbReady = function(model) {
-                return "cbReady";
+            this.preReady = function(model) {
+                return "preReady";
             };
         
             this.cbFail = function(p_msg, p_code) {
@@ -2990,10 +2990,10 @@
         console.log("---------------------------------------------------------------------------");
         console.log("new BindModelReadAjax(di) :: DI 주입 생성 ");
         var model = new BindModelReadAjax(new ReadDI());
-        if (model.attr.count === 3 &&
-            model.cbRegister() === "cbRegister" &&
-            model.cbCheck() === "cbCheck" &&
-            model.cbReady() === "cbReady" &&
+        if (model.prop.count === 3 &&
+            model.preRegister() === "preRegister" &&
+            model.preCheck() === "preCheck" &&
+            model.preReady() === "preReady" &&
             model.cbFail() === "cbFail" &&
             model.cbError() === "cbError" &&
             true) {
@@ -3006,7 +3006,7 @@
         console.log("---------------------------------------------------------------------------");
         console.log("new BindModelReadAjax(di, isLoadAttr) :: DI 주입 생성 + 자동 로딩 ");
         var model = new BindModelReadAjax(new ReadDI(), true);
-        if (model.attr.count === 3 &&
+        if (model.prop.count === 3 &&
             // first
             model.first.items.count === 3 &&
             model.first.items["i1"].value === "V1" &&
@@ -3025,7 +3025,7 @@
         console.log("---------------------------------------------------------------------------");
         console.log("new BindModelReadAjax(di, isLoadAttr, itemType) :: DI 주입 생성 + 자동 로딩 + 아이템 타입 지정 ");
         var model = new BindModelReadAjax(new ReadDI(), true, ItemDOM);
-        if (model.attr.count === 3 &&
+        if (model.prop.count === 3 &&
             model.first.items.count === 3 &&
             model.first.items["i1"].getTypes()[0] === "ItemDOM" &&
             model.first.items["i1"] instanceof  ItemDOM &&

@@ -58,7 +58,7 @@
 
             var __this = this;          // 내부용 this : prototype 접근지시자
 
-            this.attr = {
+            this.prop = {
                 i1: "V1",
                 i2: "V2",
                 i3: {
@@ -72,16 +72,16 @@
                 }
             };
 
-            this.cbRegister = function() {
-               return "cbRegister";
+            this.preRegister = function() {
+               return "preRegister";
             };
         
-            this.cbCheck = function() {
-                return "cbCheck";
+            this.preCheck = function() {
+                return "preCheck";
             };
         
-            this.cbReady = function(model) {
-                return "cbReady";
+            this.preReady = function(model) {
+                return "preReady";
             };
         
             this.cbFail = function(p_msg, p_code) {
@@ -141,10 +141,10 @@
         console.log("---------------------------------------------------------------------------");
         console.log("new BindModelReadAjax(di) :: DI 주입 생성 ");
         var model = new BindModelReadAjax(new ReadDI());
-        if (model.attr.count === 3 &&
-            model.cbRegister() === "cbRegister" &&
-            model.cbCheck() === "cbCheck" &&
-            model.cbReady() === "cbReady" &&
+        if (model.prop.count === 3 &&
+            model.preRegister() === "preRegister" &&
+            model.preCheck() === "preCheck" &&
+            model.preReady() === "preReady" &&
             model.cbFail() === "cbFail" &&
             model.cbError() === "cbError" &&
             true) {
@@ -157,7 +157,7 @@
         console.log("---------------------------------------------------------------------------");
         console.log("new BindModelReadAjax(di, isLoadAttr) :: DI 주입 생성 + 자동 로딩 ");
         var model = new BindModelReadAjax(new ReadDI(), true);
-        if (model.attr.count === 3 &&
+        if (model.prop.count === 3 &&
             // first
             model.first.items.count === 3 &&
             model.first.items["i1"].value === "V1" &&
@@ -176,7 +176,7 @@
         console.log("---------------------------------------------------------------------------");
         console.log("new BindModelReadAjax(di, isLoadAttr, itemType) :: DI 주입 생성 + 자동 로딩 + 아이템 타입 지정 ");
         var model = new BindModelReadAjax(new ReadDI(), true, ItemDOM);
-        if (model.attr.count === 3 &&
+        if (model.prop.count === 3 &&
             model.first.items.count === 3 &&
             model.first.items["i1"].getTypes()[0] === "ItemDOM" &&
             model.first.items["i1"] instanceof  ItemDOM &&

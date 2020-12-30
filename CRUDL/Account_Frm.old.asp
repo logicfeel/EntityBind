@@ -244,9 +244,9 @@
     // 수정 모드
     Main.Mode_Update = function () {
         // admin_id 수정 금지 
-        $("#account_id").attr("readonly", "")
-        $("#account_id").attr("readonly", "")
-        $("#account_id").attr("readonly", "")
+        $("#account_id").prop("readonly", "")
+        $("#account_id").prop("readonly", "")
+        $("#account_id").prop("readonly", "")
         // 데이터 가져옴
         this.M_ViewBind(Main.Params.account_idx);
     }
@@ -383,9 +383,9 @@
 	        $("#admName").val(Main.Model.db.row.admName);
    	        $("#passwd").val(Main.Model.db.row.passwd);
 	        if (Main.Model.db.row.using_yn == "Y")
-	            $("#using_Y").attr("checked", "checked");
+	            $("#using_Y").prop("checked", "checked");
 	        else if (Main.Model.db.row.dealType_cd == "N")
-	            $("#using_N").attr("checked", "checked");
+	            $("#using_N").prop("checked", "checked");
 			$("#memo").val(Main.Model.db.row.memo);
         	
         } catch (e) {JsErrorMessage(e); }        

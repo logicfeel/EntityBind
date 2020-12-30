@@ -109,9 +109,9 @@
     
     __this = this;  // 내부 this
     
-    this.attr = getURLToJSON(location.href);
+    this.prop = getURLToJSON(location.href);
     
-    this.attr = {   // attr 에는 문자값과 객체값 두가지를 형식을 가진다.
+    this.prop = {   // prop 에는 문자값과 객체값 두가지를 형식을 가진다.
         cmd: null,
         listURL: "Notice_Lst.asp",
         sto_id: {
@@ -142,21 +142,21 @@
 
     this.mode = {
         create: function() {
-            this.attr.cmd = "CREATE";
+            this.prop.cmd = "CREATE";
             $("#sto_id").val(this.cmd.sto_id);
             $("#create_dt_area").hide();
         },
         update: function() {
-            $("#create_dt").attr("readonly", "")
-            this.attr.cmd = "UPDATE";
+            $("#create_dt").prop("readonly", "")
+            this.prop.cmd = "UPDATE";
             this.read.execute();      // 데이터 가져옴
         }
     };
     
-    this.cbRegister = function() {    // 1.등록
+    this.preRegister = function() {    // 1.등록
       // 이벤트 등록
       $("#btn_List").click(function () {
-          location.href = __this.attr.listURL;
+          location.href = __this.prop.listURL;
       });
       $("#btn_Insert").click(function () {
           this.create.execute();
@@ -173,11 +173,11 @@
     };
     
     this.cbValid = function() {   // 2.검사
-        if (__this.attr.cmd.value === "") Msg("에러! 잘못된 접근경로입니다.");
+        if (__this.prop.cmd.value === "") Msg("에러! 잘못된 접근경로입니다.");
 
     };
     
-    this.cbReady = function() {   // 3.준비
+    this.preReady = function() {   // 3.준비
         if (__this.cmd.value === "CREATE") {
             this.mode['create']();
         } else if (__this.cmd.value === "UPDATE") {
@@ -199,7 +199,7 @@
   var e = new BindModelReadAjax(new FromDI()); // 메타모델 생성
 
   e.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";
-  e.loadAttr();   // 전체속성 가져옴
+  e.loadProp();   // 전체속성 가져옴
 
   e.onFail = function(p_msg, p_code) {
       Msg(p_msg);
