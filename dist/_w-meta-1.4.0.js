@@ -4399,8 +4399,8 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /** @event */
-        BaseBind.prototype._onExecuted = function(p_bindCommand) {
-            this.__event.publish("executed", p_bindCommand); 
+        BaseBind.prototype._onExecuted = function(p_bindCommand, p_result) {
+            this.__event.publish("executed", p_bindCommand, p_result); 
         };
 
         return BaseBind;
@@ -4514,9 +4514,9 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /** @override */
-        BindCommand.prototype._onExecuted = function(p_bindCommand) {
-            _super.prototype._onExecuted.call(this, p_bindCommand);
-            if (this.eventPropagation) this._model._onExecuted(p_bindCommand);
+        BindCommand.prototype._onExecuted = function(p_bindCommand, p_result) {
+            _super.prototype._onExecuted.call(this, p_bindCommand, p_result);
+            if (this.eventPropagation) this._model._onExecuted(p_bindCommand, p_result);
         };
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
@@ -5369,7 +5369,7 @@ if (typeof Array.isArray === "undefined") {
             // 처리 종료 콜백 호출
             if (typeof this.cbEnd === "function" ) this.cbEnd(result, p_status, p_xhr);
             
-            this._onExecuted(this);  // "실행 종료" 이벤트 발생
+            this._onExecuted(this, result);  // "실행 종료" 이벤트 발생
         };
 
         /**
