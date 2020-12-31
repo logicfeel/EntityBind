@@ -1934,18 +1934,6 @@
                 }
             };
 
-            this.preRegister = function() {
-               return "preRegister";
-            };
-        
-            this.preCheck = function() {
-                return "preCheck";
-            };
-        
-            this.preReady = function(model) {
-                return "preReady";
-            };
-        
             this.cbFail = function(p_msg, p_code) {
                 return "cbFail";
             };
@@ -1962,6 +1950,20 @@
             };
         }
         util.inherits(CreateDI, IBindModelCreate);
+
+        CreateDI.prototype.preRegister = function() {
+            return "preRegister";
+        };
+        CreateDI.prototype.preCheck = function() {
+            return "preCheck";
+        };
+        CreateDI.prototype.preReady = function() {
+            return "preReady";
+        };
+
+        
+
+        var cc  = new CreateDI();
 
         if (isCallback) {
             console.log("---------------------------------------------------------------------------");

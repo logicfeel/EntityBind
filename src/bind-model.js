@@ -74,9 +74,10 @@
             var __mode          = new PropertyFunctionCollection(this);
             var __mapping       = new PropertyCollection(this);
 
-            // var __preRegister    = function() {};
-            // var __preCheck       = function() {return true};
-            // var __preReady       = function() {};
+            this.__preRegister    = function() {};
+            this.__preCheck       = function() {return true};
+            this.__preReady       = function() {};
+
             var __cbFail        = function() { console.warn("바인딩 실패하였습니다."); };
             var __cbError       = function() { console.error("바인딩 오류가 발생 하였습니다."); };
             var __itemType      = Item;
@@ -222,16 +223,15 @@
                 }
                 if (typeof p_objectDI["preRegister"] === "function") {
                     // __preRegister = p_objectDI["preRegister"];
-                    this.preRegister = p_objectDI["preRegister"];
-
+                    this.__preRegister = p_objectDI["preRegister"];
                 }
                 if (typeof p_objectDI["preCheck"] === "function") {
                     // __preCheck = p_objectDI["preCheck"];
-                    this.preCheck = p_objectDI["preCheck"];
+                    this.__preCheck = p_objectDI["preCheck"];
                 }
                 if (typeof p_objectDI["preReady"] === "function") {
                     // __preReady = p_objectDI["preReady"];
-                    this.preReady = p_objectDI["preReady"];
+                    this.__preReady = p_objectDI["preReady"];
                 }
                 if (typeof p_objectDI["cbFail"] === "function") {
                     __cbFail = p_objectDI["cbFail"];
@@ -263,19 +263,21 @@
 
         /** @method */
         BindModel.prototype.init = function() {
-            this.preRegister.call(this);
-            if (this.preCheck.call(this)) {
-                this.preReady.call(this)
+            this.preRegister.call(this, this);
+            if (this.preCheck.call(this, this)) {
+                this.preReady.call(this, this)
             }
         };
 
         BindModel.prototype.preRegister = function(p_this) {
+            return this.__preRegister.call(this, p_this);
         };
 
         BindModel.prototype.preCheck = function(p_this) {
-            return true;
+            return this.__preCheck.call(this, p_this);
         };
         BindModel.prototype.preReady = function(p_this) {
+            return this.__preReady.call(this, p_this);
         };
         
         BindModel.prototype.addEntity = function(p_name) {
