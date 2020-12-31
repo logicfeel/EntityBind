@@ -230,7 +230,7 @@
             // 처리 종료 콜백 호출
             if (typeof this.cbEnd === "function" ) this.cbEnd(result, p_status, p_xhr);
             
-            this._onExecuted(this);  // "실행 종료" 이벤트 발생
+            this._onExecuted(this, result);  // "실행 종료" 이벤트 발생
         };
 
         /**

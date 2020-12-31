@@ -96,9 +96,9 @@
         };
 
         /** @override */
-        BindCommand.prototype._onExecuted = function(p_bindCommand) {
-            _super.prototype._onExecuted.call(this, p_bindCommand);
-            if (this.eventPropagation) this._model._onExecuted(p_bindCommand);
+        BindCommand.prototype._onExecuted = function(p_bindCommand, p_result) {
+            _super.prototype._onExecuted.call(this, p_bindCommand, p_result);
+            if (this.eventPropagation) this._model._onExecuted(p_bindCommand, p_result);
         };
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/

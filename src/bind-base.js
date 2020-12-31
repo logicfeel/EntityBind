@@ -98,8 +98,8 @@
         };
 
         /** @event */
-        BaseBind.prototype._onExecuted = function(p_bindCommand) {
-            this.__event.publish("executed", p_bindCommand); 
+        BaseBind.prototype._onExecuted = function(p_bindCommand, p_result) {
+            this.__event.publish("executed", p_bindCommand, p_result); 
         };
 
         return BaseBind;

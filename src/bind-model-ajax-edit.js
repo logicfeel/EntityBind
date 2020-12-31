@@ -49,9 +49,9 @@
             _super.call(this, p_objectDI, p_itemType);
             
             // DI 인터페이스 구현 검사
-            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelEdit))  {
-                throw new Error("Only [p_objectDI] type 'IBindModelEdit' can be added");
-            }
+            // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelEdit))  {
+            //     throw new Error("Only [p_objectDI] type 'IBindModelEdit' can be added");
+            // }
             
             this.read   = new BindCommandLookupAjax(this, this._baseEntity);
             this.update = new BindCommandEditAjax(this, this._baseEntity);

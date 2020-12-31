@@ -73,17 +73,22 @@
             var __prop          = new PropertyCollection(this);
             var __mode          = new PropertyFunctionCollection(this);
             var __mapping       = new PropertyCollection(this);
-
-            this.__preRegister    = function() {};
-            this.__preCheck       = function() {return true};
-            this.__preReady       = function() {};
-
+            
             var __cbFail        = function() { console.warn("바인딩 실패하였습니다."); };
             var __cbError       = function() { console.error("바인딩 오류가 발생 하였습니다."); };
             var __itemType      = Item;
 
             var propObject;
 
+            this.__preRegister    = function() {};
+            this.__preCheck       = function() {return true};
+            this.__preReady       = function() {};
+
+            // DI 인터페이스 구현 검사
+            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModel))  {
+                throw new Error("Only [p_objectDI] type 'IBindModel' can be added");
+            }
+            
             /** @property {prop} */
             Object.defineProperty(this, "prop", 
             {

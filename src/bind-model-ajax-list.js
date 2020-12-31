@@ -46,9 +46,9 @@
             _super.call(this, p_objectDI, p_itemType);
 
             // DI 인터페이스 구현 검사
-            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelList))  {
-                throw new Error("Only [p_objectDI] type 'IBindModelList' can be added");
-            }
+            // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelList))  {
+            //     throw new Error("Only [p_objectDI] type 'IBindModelList' can be added");
+            // }
 
             this.list = new BindCommandLookupAjax(this, this._baseEntity);
             

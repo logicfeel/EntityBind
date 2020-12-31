@@ -4727,17 +4727,22 @@ if (typeof Array.isArray === "undefined") {
             var __prop          = new PropertyCollection(this);
             var __mode          = new PropertyFunctionCollection(this);
             var __mapping       = new PropertyCollection(this);
-
-            this.__preRegister    = function() {};
-            this.__preCheck       = function() {return true};
-            this.__preReady       = function() {};
-
+            
             var __cbFail        = function() { console.warn("바인딩 실패하였습니다."); };
             var __cbError       = function() { console.error("바인딩 오류가 발생 하였습니다."); };
             var __itemType      = Item;
 
             var propObject;
 
+            this.__preRegister    = function() {};
+            this.__preCheck       = function() {return true};
+            this.__preReady       = function() {};
+
+            // DI 인터페이스 구현 검사
+            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModel))  {
+                throw new Error("Only [p_objectDI] type 'IBindModel' can be added");
+            }
+            
             /** @property {prop} */
             Object.defineProperty(this, "prop", 
             {
@@ -5872,9 +5877,9 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this, p_objectDI, p_itemType);
             
             // DI 인터페이스 구현 검사
-            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelCreate))  {
-                throw new Error("Only [p_objectDI] type 'IBindModelCreate' can be added");
-            }
+            // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelCreate))  {
+            //     throw new Error("Only [p_objectDI] type 'IBindModelCreate' can be added");
+            // }
             
             this.create = new BindCommandEditAjax(this, this._baseEntity);
 
@@ -5958,9 +5963,9 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this, p_objectDI, p_itemType);
 
             // DI 인터페이스 구현 검사
-            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelRead))  {
-                throw new Error("Only [p_objectDI] type 'IBindModelCreate' can be added");
-            }
+            // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelRead))  {
+            //     throw new Error("Only [p_objectDI] type 'IBindModelCreate' can be added");
+            // }
             
             this.read = new BindCommandLookupAjax(this, this._baseEntity);
 
@@ -6048,9 +6053,9 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this, p_objectDI, p_itemType);
             
             // DI 인터페이스 구현 검사
-            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelReadDel))  {
-                throw new Error("Only [p_objectDI] type 'IBindModelReadDel' can be added");
-            }
+            // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelReadDel))  {
+            //     throw new Error("Only [p_objectDI] type 'IBindModelReadDel' can be added");
+            // }
             
             this.read   = new BindCommandLookupAjax(this, this._baseEntity);
             this.delete = new BindCommandEditAjax(this, this._baseEntity);
@@ -6136,9 +6141,9 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this, p_objectDI, p_itemType);
 
             // DI 인터페이스 구현 검사
-            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelList))  {
-                throw new Error("Only [p_objectDI] type 'IBindModelList' can be added");
-            }
+            // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelList))  {
+            //     throw new Error("Only [p_objectDI] type 'IBindModelList' can be added");
+            // }
 
             this.list = new BindCommandLookupAjax(this, this._baseEntity);
             
@@ -6225,9 +6230,9 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this, p_objectDI, p_itemType);
 
             // DI 인터페이스 구현 검사
-            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelListDel))  {
-                throw new Error("Only [p_objectDI] type 'IBindModelListDel' can be added");
-            }
+            // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelListDel))  {
+            //     throw new Error("Only [p_objectDI] type 'IBindModelListDel' can be added");
+            // }
 
             this.list   = new BindCommandLookupAjax(this, this._baseEntity);
             this.delete = new BindCommandEditAjax(this, this._baseEntity);
@@ -6315,9 +6320,9 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this, p_objectDI, p_itemType);
             
             // DI 인터페이스 구현 검사
-            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelEdit))  {
-                throw new Error("Only [p_objectDI] type 'IBindModelEdit' can be added");
-            }
+            // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelEdit))  {
+            //     throw new Error("Only [p_objectDI] type 'IBindModelEdit' can be added");
+            // }
             
             this.read   = new BindCommandLookupAjax(this, this._baseEntity);
             this.update = new BindCommandEditAjax(this, this._baseEntity);
@@ -6408,9 +6413,10 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this, p_objectDI, p_itemType);
             
             // DI 인터페이스 구현 검사
-            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelForm))  {
-                throw new Error("Only [p_objectDI] type 'IBindModelForm' can be added");
-            }
+            // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelForm))  {
+            //     throw new Error("Only [p_objectDI] type 'IBindModelForm' can be added");
+            // }
+            
             this.read   = new BindCommandLookupAjax(this, this._baseEntity);
             this.update = new BindCommandEditAjax(this, this._baseEntity);
             this.delete = new BindCommandEditAjax(this, this._baseEntity);

@@ -50,9 +50,10 @@
             _super.call(this, p_objectDI, p_itemType);
             
             // DI 인터페이스 구현 검사
-            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelForm))  {
-                throw new Error("Only [p_objectDI] type 'IBindModelForm' can be added");
-            }
+            // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelForm))  {
+            //     throw new Error("Only [p_objectDI] type 'IBindModelForm' can be added");
+            // }
+            
             this.read   = new BindCommandLookupAjax(this, this._baseEntity);
             this.update = new BindCommandEditAjax(this, this._baseEntity);
             this.delete = new BindCommandEditAjax(this, this._baseEntity);
