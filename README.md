@@ -24,3 +24,6 @@ https://velog.io/@takeknowledge/%EB%A1%9C%EC%BB%AC%EC%97%90%EC%84%9C-CORS-policy
 npm install http-server -g      : 전역 설치
 npx http-server                 : 서버 실행  (npx http-server -p 원하는 포트번호)  
 http://127.0.0.1:8080           : 확인
+
+
+https://www.colorion.co/        : 색 콤비네이션  (어울리는 색깔)
