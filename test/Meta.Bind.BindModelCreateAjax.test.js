@@ -130,10 +130,10 @@
                 this.result.push("onExecuted");
                 console.log("---------------------------------------------------------------------------");
                 console.log("onExecute, onExecuted  :: 콜백 ");
-                if (this.result[0] === "onExecute" && 
-                    this.result[1] === "onExecuted" && 
-                    this.result.length === 2 && 
-                    true) {
+                if (true 
+                    && this.result[0] === "onExecute"                           // 처음
+                    && this.result[this.result.length - 1] === "onExecuted"     // 마지막
+                    ) {
                     console.log("Result = Success");
                 } else {
                     console.warn("Result = Fail");
@@ -520,6 +520,31 @@
         model.prop.add("i1", "V1");
         model.prop.add("i2", "V2");
         model.prop.add("i3", {caption: "C3"});    
+        model.loadProp();
+        if (// create 
+            model.create.valid.items.count === 0 &&
+            // first
+            model.first.items.count === 3 &&
+            model.first.items["i1"].value === "V1" &&
+            model.first.items["i1"].entity.name === "first" &&
+            model.first.items["i2"].value === "V2" &&
+            model.first.items["i2"].entity.name === "first" &&
+            model.first.items["i3"].caption === "C3" &&
+            model.first.items["i3"].entity.name === "first" &&
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------------------------------------------");
+        console.log("BindModel.loadProp() :: prop에 [모든] 속성을 __시작이름 제외후 등록");
+        var model = new BindModelCreateAjax();
+        model.prop.add("i1", "V1");
+        model.prop.add("i2", "V2");
+        model.prop.add("i3", {caption: "C3"});    
+        model.prop.add("__i4", "V4");
         model.loadProp();
         if (// create 
             model.create.valid.items.count === 0 &&

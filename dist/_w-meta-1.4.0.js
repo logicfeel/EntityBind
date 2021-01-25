@@ -5060,7 +5060,8 @@ if (typeof Array.isArray === "undefined") {
             // 3.속성정보 등록
             for(var i = 0; prop.length > i; i++) {
                 propName = prop[i];
-                if (typeof propName === "string" && typeof this.prop[propName] !== "undefined") {
+                if (typeof propName === "string" && typeof this.prop[propName] !== "undefined"
+                    && propName.indexOf("__") < 0 ) {  // __이름으로 제외 조건 추가
                     if(["number", "string", "boolean"].indexOf(typeof this.prop[propName]) > -1) {
                         entity.items.addValue(propName, this.prop[propName]);
                     } else if (this.prop[propName]  !== null && typeof this.prop[propName] === "object"){
