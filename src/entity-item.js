@@ -141,7 +141,11 @@
             /** @property {isNotNull} */
             Object.defineProperty(this, "isNotNull", 
             {
-                get: function() { return __isNotNull; },
+                get: function() { 
+                    var isReturn;
+                    isReturn = __constraints.length > 0 ? true : __isNotNull;
+                    return isReturn; 
+                },
                 set: function(newValue) { 
                     if(typeof newValue !== "boolean") throw new Error("Only [isNotNull] type 'boolean' can be added");
                     __isNotNull = newValue; 
