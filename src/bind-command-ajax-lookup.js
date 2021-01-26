@@ -49,8 +49,8 @@
         function BindCommandLookupAjax(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            var __cbOutput;
-            var __outputOption = 1;     // 1: View 오버로딩 , 2: 있는자료만            
+            var __cbOutput      = null;
+            var __outputOption  = 1;     // 1: View 오버로딩 , 2: 있는자료만            
             
             this._output = new EntityViewCollection(this, this._baseEntity);
             

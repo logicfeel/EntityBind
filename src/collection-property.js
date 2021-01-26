@@ -94,7 +94,7 @@
          * @param {?any} p_value 속성값
          * @returns {any} 입력 속성 참조값 REVIEW:: 필요성 검토
          */
-        PropertyCollection.prototype.add = function(p_name, p_value) {
+        PropertyCollection.prototype.add = function(p_name, p_value, p_desc) {
             p_value = p_value || "";
             
             var typeName;
@@ -117,8 +117,14 @@
             this.properties.push(p_name);
 
             index = (this._element.length === 1) ? 0 : this._element.length  - 1;
-            Object.defineProperty(this, [index], this._getPropDescriptor(index));
-            Object.defineProperty(this, p_name, this._getPropDescriptor(index));
+
+            if (typeof p_desc === "object" && (typeof p_desc.get === "function" || typeof p_desc.set === "function")) {
+                Object.defineProperty(this, [index], p_desc);
+                Object.defineProperty(this, p_name, p_desc);
+            } else {
+                Object.defineProperty(this, [index], this._getPropDescriptor(index));
+                Object.defineProperty(this, p_name, this._getPropDescriptor(index));
+            }
 
             this._onAdd(index, p_value);            // 이벤트 발생 : 등록
             this._onChanged();                      // 이벤트 발생 : 변경후

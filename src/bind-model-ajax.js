@@ -85,10 +85,33 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
+        // BindModelAjax.prototype.checkSelector  = function(p_collection) {
+            
+        //     var collection = p_collection || this.prop;
+        //     var failSelector;
+
+        //     // 유효성 검사
+        //     if (!(collection instanceof PropertyCollection)) throw new Error("Only [p_collection] type 'PropertyCollection' can be added");
+
+        //     // 검사
+        //     for (var i = 0; collection.count > i; i++) {
+        //         if (typeof collection[i].selector !== "undefined") {
+        //             failSelector = util.validSelector(collection[i].selector);
+        //             if (failSelector !== null) {
+        //                 console.warn("selector 검사 실패 : %s ", failSelector);
+        //                 return false;
+        //             }
+        //         }
+        //     }
+            
+        //     return true;
+        // };
         BindModelAjax.prototype.checkSelector  = function(p_collection) {
             
             var collection = p_collection || this.prop;
-            var failSelector;
+            var failSelector = null;
+            var selectors = [];
+            var selector = "";
 
             // 유효성 검사
             if (!(collection instanceof PropertyCollection)) throw new Error("Only [p_collection] type 'PropertyCollection' can be added");
@@ -96,16 +119,28 @@
             // 검사
             for (var i = 0; collection.count > i; i++) {
                 if (typeof collection[i].selector !== "undefined") {
-                    failSelector = util.validSelector(collection[i].selector);
-                    if (failSelector !== null) {
-                        console.warn("selector 검사 실패 : %s ", failSelector);
-                        return false;
+
+                    if (Array.isArray(collection[i].selector)) 
+                        selectors = collection[i].selector;
+                    else   
+                        selectors.push(collection[i].selector)
+                    
+                    for (var ii = 0; ii < selectors.length; ii++) {
+                        selector  = typeof selectors[ii] === "function" ? selectors[ii].call(this) : selectors[ii];
+
+                        if (typeof selector === "string" && selector.length > 0) failSelector = util.validSelector(selector);
+                        
+                        if (failSelector !== null) {
+                            console.warn("selector 검사 실패 : %s ", failSelector);
+                            return false;
+                        }
                     }
                 }
             }
             
             return true;
         };
+
 
         return BindModelAjax;
     

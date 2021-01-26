@@ -43,7 +43,9 @@
             var __isReadOnly    = false;
             var __isHide        = false;
             var __element       = null;
-            var __selector      = [];
+            
+            //var __selector      = [];
+            this.__selector      = [];
 
             /** @property {domType} */
             Object.defineProperty(this, "domType", 
@@ -90,24 +92,55 @@
                 configurable: true,
                 enumerable: true
             });
+
+            // /** @property {selector} */
+            // Object.defineProperty(this, "selector", 
+            // {
+            //     get: function() { return __selector; },
+            //     set: function(newValue) { 
+            //         var values = [];
+            //         if (Array.isArray(newValue)) values = newValue;
+            //         else values.push(newValue);
+            //         for (var i = 0; values.length > i; i++) {
+            //             if(typeof values[i] !== "string" ) {  // 검사 
+            //                 throw new Error("Only [selector] type 'string' can be added");
+            //             }
+            //         }
+            //         __selector = __selector.concat(values);
+            //     },
+            //     configurable: true,
+            //     enumerable: true
+            // });
             /** @property {selector} */
             Object.defineProperty(this, "selector", 
             {
-                get: function() { return __selector; },
+                get: function() { 
+                    var _sel = [];
+                    var _str = "";
+                    for (var i = 0; this.__selector.length > i; i++) {
+                        _str  = typeof this.__selector[i] === "function" ? this.__selector[i].call(this) : this.__selector[i];
+                        _sel.push(_str);
+                    }
+                    return _sel; 
+                },
                 set: function(newValue) { 
                     var values = [];
-                    if (Array.isArray(newValue)) values = newValue;
+                    var temp = "";
+                    if (Array.isArray(newValue)) values = newValue; // 배열로 넣으면 기존내용이 초기화됨
                     else values.push(newValue);
                     for (var i = 0; values.length > i; i++) {
-                        if(typeof values[i] !== "string" ) {  // 검사 
+                        temp  = typeof values[i] === "function" ? values[i].call(this) : values[i];
+                        if(typeof temp !== "string" ) {  // 검사 
+                        // if(typeof values[i] !== "string" ) {  // 검사 
                             throw new Error("Only [selector] type 'string' can be added");
                         }
                     }
-                    __selector = __selector.concat(values);
+                    this.__selector = this.__selector.concat(values);
                 },
                 configurable: true,
                 enumerable: true
             });
+
             
             if (typeof p_option === "object" ) {
                 for(var prop in p_option) {
@@ -144,7 +177,9 @@
             if (this.isReadOnly) clone["isReadOnly"]    = this.isReadOnly;
             if (this.isHide) clone["isHide"]            = this.isHide;
             if (this.element) clone["element"]          = this.element;
-            if (this.selector) clone["selector"]        = this.selector.concat([]);
+            
+            // if (this.selector) clone["selector"]        = this.selector.concat([]);
+            if (this.selector) clone.__selector        = this.__selector.concat([]);
             
             return clone;
         };

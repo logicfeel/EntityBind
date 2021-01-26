@@ -205,7 +205,15 @@
                     propObject = p_objectDI["prop"];
                     for(var prop in propObject) {
                         if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-                            __prop.add(prop, propObject[prop]);
+
+                            //__prop.add(prop, propObject[prop]);
+                            // get/sett 형식의 기능 추가
+                            if (typeof propObject[prop] === "object" 
+                                && (typeof propObject[prop].get === "function" || typeof propObject[prop].set === "function")) {
+                                __prop.add(prop,"", propObject[prop]);    
+                            } else {
+                                __prop.add(prop, propObject[prop]);
+                            }
                         }
                     }
                 }
