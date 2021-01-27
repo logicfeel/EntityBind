@@ -50,6 +50,9 @@
             // Entity 추가 및 baseEntity 설정
             this._baseEntity = this.addEntity('first');
 
+            // 참조 추가
+            this.items = this._baseEntity.items; 
+
             if (typeof p_itemType === "function") {
                 this.itemType = p_itemType;
                 this._baseEntity.items.itemType = this.itemType;
@@ -119,7 +122,7 @@
             // 검사
             for (var i = 0; collection.count > i; i++) {
                 if (typeof collection[i].selector !== "undefined") {
-
+                    selectors = [];
                     if (Array.isArray(collection[i].selector)) 
                         selectors = collection[i].selector;
                     else   
