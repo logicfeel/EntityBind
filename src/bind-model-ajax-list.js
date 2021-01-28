@@ -42,8 +42,8 @@
     // 4. 모듈 구현    
     var BindModelListAjax  = (function (_super) {
         /** @class */
-        function BindModelListAjax(p_objectDI, p_isLoadAttr, p_itemType) {
-            _super.call(this, p_objectDI, p_itemType);
+        function BindModelListAjax(p_objectDI, p_isLoadProp, p_itemType) {
+            _super.call(this, p_objectDI, false, p_itemType);
 
             // DI 인터페이스 구현 검사
             // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelList))  {
@@ -53,7 +53,7 @@
             this.list = new BindCommandLookupAjax(this, this._baseEntity);
             
             // 속성 자동 로딩
-            if (p_isLoadAttr) {
+            if (p_isLoadProp) {
                 this.loadProp();
             }
 

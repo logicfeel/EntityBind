@@ -16,15 +16,24 @@
     var util;
     var BindModel;
     var PropertyCollection;
+    var IBindModel;
+    var BindCommandLookupAjax;
+    var BindCommandEditAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
         util                    = require("./utils");
         BindModel               = require("./bind-model");
         PropertyCollection      = require("./collection-property");
+        IBindModel              = require("./i-bind-model");        
+        BindCommandLookupAjax   = require("./bind-command-ajax-lookup");
+        BindCommandEditAjax     = require("./bind-command-ajax-edit");        
     } else {
         util                    = global._W.Common.Util;
         BindModel               = global._W.Meta.Bind.BindModel;
         PropertyCollection      = global._W.Collection.PropertyCollection;
+        IBindModel              = global._W.Interface.IBindModel;        
+        BindCommandLookupAjax   = global._W.Meta.Bind.BindCommandLookupAjax;
+        BindCommandEditAjax     = global._W.Meta.Bind.BindCommandEditAjax;
     }
 
     //==============================================================
@@ -32,6 +41,9 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
+    if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
+    if (typeof BindCommandLookupAjax === "undefined") throw new Error("[BindCommandLookupAjax] module load fail...");
+    if (typeof BindCommandEditAjax === "undefined") throw new Error("[BindCommandEditAjax] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -39,7 +51,7 @@
         /**
          * @class
          */
-        function BindModelAjax(p_objectDI, p_itemType) {
+        function BindModelAjax(p_objectDI, p_isLoadProp, p_itemType) {
             _super.call(this, p_objectDI);
 
             var __baseAjaxSetup = {
@@ -77,6 +89,25 @@
                 configurable: true,
                 enumerable: true
             });
+
+            if (p_objectDI instanceof IBindModel) {     // 가능
+                // command 등록
+                for (var prop in p_objectDI) {
+                    if (p_objectDI.hasOwnProperty(prop)) {
+                        if (typeof p_objectDI[prop] === "function" && p_objectDI[prop].name ==="BindCommandEditAjax") {
+                            this[prop] = new BindCommandEditAjax(this, this._baseEntity);
+                        }
+                        if (typeof p_objectDI[prop] === "function" && p_objectDI[prop].name ==="BindCommandLookupAjax") {
+                            this[prop] = new BindCommandLookupAjax(this, this._baseEntity);
+                        }
+                    }
+                }            
+            }
+            // 속성 자동 로딩
+            if (p_isLoadProp === true) {
+                this.loadProp();
+            }            
+
         }
         util.inherits(BindModelAjax, _super);
     

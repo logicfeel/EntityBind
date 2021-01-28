@@ -1963,7 +1963,7 @@ if (typeof Array.isArray === "undefined") {
          * @param {?any} p_value 속성값
          * @returns {any} 입력 속성 참조값 REVIEW:: 필요성 검토
          */
-        PropertyCollection.prototype.add = function(p_name, p_value) {
+        PropertyCollection.prototype.add = function(p_name, p_value, p_desc) {
             p_value = p_value || "";
             
             var typeName;
@@ -1986,8 +1986,14 @@ if (typeof Array.isArray === "undefined") {
             this.properties.push(p_name);
 
             index = (this._element.length === 1) ? 0 : this._element.length  - 1;
-            Object.defineProperty(this, [index], this._getPropDescriptor(index));
-            Object.defineProperty(this, p_name, this._getPropDescriptor(index));
+
+            if (typeof p_desc === "object" && (typeof p_desc.get === "function" || typeof p_desc.set === "function")) {
+                Object.defineProperty(this, [index], p_desc);
+                Object.defineProperty(this, p_name, p_desc);
+            } else {
+                Object.defineProperty(this, [index], this._getPropDescriptor(index));
+                Object.defineProperty(this, p_name, this._getPropDescriptor(index));
+            }
 
             this._onAdd(index, p_value);            // 이벤트 발생 : 등록
             this._onChanged();                      // 이벤트 발생 : 변경후
@@ -3170,7 +3176,9 @@ if (typeof Array.isArray === "undefined") {
             var __isReadOnly    = false;
             var __isHide        = false;
             var __element       = null;
-            var __selector      = [];
+            
+            //var __selector      = [];
+            this.__selector      = [];
 
             /** @property {domType} */
             Object.defineProperty(this, "domType", 
@@ -3217,24 +3225,55 @@ if (typeof Array.isArray === "undefined") {
                 configurable: true,
                 enumerable: true
             });
+
+            // /** @property {selector} */
+            // Object.defineProperty(this, "selector", 
+            // {
+            //     get: function() { return __selector; },
+            //     set: function(newValue) { 
+            //         var values = [];
+            //         if (Array.isArray(newValue)) values = newValue;
+            //         else values.push(newValue);
+            //         for (var i = 0; values.length > i; i++) {
+            //             if(typeof values[i] !== "string" ) {  // 검사 
+            //                 throw new Error("Only [selector] type 'string' can be added");
+            //             }
+            //         }
+            //         __selector = __selector.concat(values);
+            //     },
+            //     configurable: true,
+            //     enumerable: true
+            // });
             /** @property {selector} */
             Object.defineProperty(this, "selector", 
             {
-                get: function() { return __selector; },
+                get: function() { 
+                    var _sel = [];
+                    var _str = "";
+                    for (var i = 0; this.__selector.length > i; i++) {
+                        _str  = typeof this.__selector[i] === "function" ? this.__selector[i].call(this) : this.__selector[i];
+                        _sel.push(_str);
+                    }
+                    return _sel; 
+                },
                 set: function(newValue) { 
                     var values = [];
-                    if (Array.isArray(newValue)) values = newValue;
+                    var temp = "";
+                    if (Array.isArray(newValue)) values = newValue; // 배열로 넣으면 기존내용이 초기화됨
                     else values.push(newValue);
                     for (var i = 0; values.length > i; i++) {
-                        if(typeof values[i] !== "string" ) {  // 검사 
+                        temp  = typeof values[i] === "function" ? values[i].call(this) : values[i];
+                        if(typeof temp !== "string" ) {  // 검사 
+                        // if(typeof values[i] !== "string" ) {  // 검사 
                             throw new Error("Only [selector] type 'string' can be added");
                         }
                     }
-                    __selector = __selector.concat(values);
+                    this.__selector = this.__selector.concat(values);
                 },
                 configurable: true,
                 enumerable: true
             });
+
             
             if (typeof p_option === "object" ) {
                 for(var prop in p_option) {
@@ -3271,7 +3310,9 @@ if (typeof Array.isArray === "undefined") {
             if (this.isReadOnly) clone["isReadOnly"]    = this.isReadOnly;
             if (this.isHide) clone["isHide"]            = this.isHide;
             if (this.element) clone["element"]          = this.element;
-            if (this.selector) clone["selector"]        = this.selector.concat([]);
+            
+            // if (this.selector) clone["selector"]        = this.selector.concat([]);
+            if (this.selector) clone.__selector        = this.__selector.concat([]);
             
             return clone;
         };
@@ -4863,7 +4904,15 @@ if (typeof Array.isArray === "undefined") {
                     propObject = p_objectDI["prop"];
                     for(var prop in propObject) {
                         if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-                            __prop.add(prop, propObject[prop]);
+
+                            //__prop.add(prop, propObject[prop]);
+                            // get/sett 형식의 기능 추가
+                            if (typeof propObject[prop] === "object" 
+                                && (typeof propObject[prop].get === "function" || typeof propObject[prop].set === "function")) {
+                                __prop.add(prop,"", propObject[prop]);    
+                            } else {
+                                __prop.add(prop, propObject[prop]);
+                            }
                         }
                     }
                 }
@@ -5599,8 +5648,8 @@ if (typeof Array.isArray === "undefined") {
         function BindCommandLookupAjax(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
-            var __cbOutput;
-            var __outputOption = 1;     // 1: View 오버로딩 , 2: 있는자료만            
+            var __cbOutput      = null;
+            var __outputOption  = 1;     // 1: View 오버로딩 , 2: 있는자료만            
             
             this._output = new EntityViewCollection(this, this._baseEntity);
             
@@ -5730,15 +5779,24 @@ if (typeof Array.isArray === "undefined") {
     var util;
     var BindModel;
     var PropertyCollection;
+    var IBindModel;
+    var BindCommandLookupAjax;
+    var BindCommandEditAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
         util                    = require("./utils");
         BindModel               = require("./bind-model");
         PropertyCollection      = require("./collection-property");
+        IBindModel              = require("./i-bind-model");        
+        BindCommandLookupAjax   = require("./bind-command-ajax-lookup");
+        BindCommandEditAjax     = require("./bind-command-ajax-edit");        
     } else {
         util                    = global._W.Common.Util;
         BindModel               = global._W.Meta.Bind.BindModel;
         PropertyCollection      = global._W.Collection.PropertyCollection;
+        IBindModel              = global._W.Interface.IBindModel;        
+        BindCommandLookupAjax   = global._W.Meta.Bind.BindCommandLookupAjax;
+        BindCommandEditAjax     = global._W.Meta.Bind.BindCommandEditAjax;
     }
 
     //==============================================================
@@ -5746,6 +5804,9 @@ if (typeof Array.isArray === "undefined") {
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
+    if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
+    if (typeof BindCommandLookupAjax === "undefined") throw new Error("[BindCommandLookupAjax] module load fail...");
+    if (typeof BindCommandEditAjax === "undefined") throw new Error("[BindCommandEditAjax] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -5753,7 +5814,7 @@ if (typeof Array.isArray === "undefined") {
         /**
          * @class
          */
-        function BindModelAjax(p_objectDI, p_itemType) {
+        function BindModelAjax(p_objectDI, p_isLoadProp, p_itemType) {
             _super.call(this, p_objectDI);
 
             var __baseAjaxSetup = {
@@ -5763,6 +5824,9 @@ if (typeof Array.isArray === "undefined") {
 
             // Entity 추가 및 baseEntity 설정
             this._baseEntity = this.addEntity('first');
+
+            // 참조 추가
+            this.items = this._baseEntity.items; 
 
             if (typeof p_itemType === "function") {
                 this.itemType = p_itemType;
@@ -5788,6 +5852,25 @@ if (typeof Array.isArray === "undefined") {
                 configurable: true,
                 enumerable: true
             });
+
+            if (p_objectDI instanceof IBindModel) {     // 가능
+                // command 등록
+                for (var prop in p_objectDI) {
+                    if (p_objectDI.hasOwnProperty(prop)) {
+                        if (typeof p_objectDI[prop] === "function" && p_objectDI[prop].name ==="BindCommandEditAjax") {
+                            this[prop] = new BindCommandEditAjax(this, this._baseEntity);
+                        }
+                        if (typeof p_objectDI[prop] === "function" && p_objectDI[prop].name ==="BindCommandLookupAjax") {
+                            this[prop] = new BindCommandLookupAjax(this, this._baseEntity);
+                        }
+                    }
+                }            
+            }
+            // 속성 자동 로딩
+            if (p_isLoadProp === true) {
+                this.loadProp();
+            }            
+
         }
         util.inherits(BindModelAjax, _super);
     
@@ -5799,10 +5882,33 @@ if (typeof Array.isArray === "undefined") {
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
+        // BindModelAjax.prototype.checkSelector  = function(p_collection) {
+            
+        //     var collection = p_collection || this.prop;
+        //     var failSelector;
+
+        //     // 유효성 검사
+        //     if (!(collection instanceof PropertyCollection)) throw new Error("Only [p_collection] type 'PropertyCollection' can be added");
+
+        //     // 검사
+        //     for (var i = 0; collection.count > i; i++) {
+        //         if (typeof collection[i].selector !== "undefined") {
+        //             failSelector = util.validSelector(collection[i].selector);
+        //             if (failSelector !== null) {
+        //                 console.warn("selector 검사 실패 : %s ", failSelector);
+        //                 return false;
+        //             }
+        //         }
+        //     }
+            
+        //     return true;
+        // };
         BindModelAjax.prototype.checkSelector  = function(p_collection) {
             
             var collection = p_collection || this.prop;
-            var failSelector;
+            var failSelector = null;
+            var selectors = [];
+            var selector = "";
 
             // 유효성 검사
             if (!(collection instanceof PropertyCollection)) throw new Error("Only [p_collection] type 'PropertyCollection' can be added");
@@ -5810,16 +5916,28 @@ if (typeof Array.isArray === "undefined") {
             // 검사
             for (var i = 0; collection.count > i; i++) {
                 if (typeof collection[i].selector !== "undefined") {
-                    failSelector = util.validSelector(collection[i].selector);
-                    if (failSelector !== null) {
-                        console.warn("selector 검사 실패 : %s ", failSelector);
-                        return false;
+                    selectors = [];
+                    if (Array.isArray(collection[i].selector)) 
+                        selectors = collection[i].selector;
+                    else   
+                        selectors.push(collection[i].selector)
+                    
+                    for (var ii = 0; ii < selectors.length; ii++) {
+                        selector  = typeof selectors[ii] === "function" ? selectors[ii].call(this) : selectors[ii];
+
+                        if (typeof selector === "string" && selector.length > 0) failSelector = util.validSelector(selector);
+                        
+                        if (failSelector !== null) {
+                            console.warn("selector 검사 실패 : %s ", failSelector);
+                            return false;
+                        }
                     }
                 }
             }
             
             return true;
         };
+
 
         return BindModelAjax;
     
@@ -5878,8 +5996,8 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var BindModelCreateAjax  = (function (_super) {
         /** @class */
-        function BindModelCreateAjax(p_objectDI, p_isLoadAttr, p_itemType) {
-            _super.call(this, p_objectDI, p_itemType);
+        function BindModelCreateAjax(p_objectDI, p_isLoadProp, p_itemType) {
+            _super.call(this, p_objectDI, false, p_itemType);
             
             // DI 인터페이스 구현 검사
             // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelCreate))  {
@@ -5889,7 +6007,7 @@ if (typeof Array.isArray === "undefined") {
             this.create = new BindCommandEditAjax(this, this._baseEntity);
 
             // 속성 자동 로딩
-            if (p_isLoadAttr) {
+            if (p_isLoadProp) {
                 this.loadProp();
             }
 
@@ -5964,8 +6082,8 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var BindModelReadAjax  = (function (_super) {
         /** @class */
-        function BindModelReadAjax(p_objectDI, p_isLoadAttr, p_itemType) {
-            _super.call(this, p_objectDI, p_itemType);
+        function BindModelReadAjax(p_objectDI, p_isLoadProp, p_itemType) {
+            _super.call(this, p_objectDI, false, p_itemType);
 
             // DI 인터페이스 구현 검사
             // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelRead))  {
@@ -5975,7 +6093,7 @@ if (typeof Array.isArray === "undefined") {
             this.read = new BindCommandLookupAjax(this, this._baseEntity);
 
             // 속성 자동 로딩
-            if (p_isLoadAttr) {
+            if (p_isLoadProp) {
                 this.loadProp();
             }
 
@@ -6054,8 +6172,8 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var BindModelReadDelAjax  = (function (_super) {
         /** @class */
-        function BindModelReadDelAjax(p_objectDI, p_isLoadAttr, p_itemType) {
-            _super.call(this, p_objectDI, p_itemType);
+        function BindModelReadDelAjax(p_objectDI, p_isLoadProp, p_itemType) {
+            _super.call(this, p_objectDI, false, p_itemType);
             
             // DI 인터페이스 구현 검사
             // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelReadDel))  {
@@ -6067,7 +6185,7 @@ if (typeof Array.isArray === "undefined") {
 
 
             // 속성 자동 로딩
-            if (p_isLoadAttr) {
+            if (p_isLoadProp) {
                 this.loadProp();
             }
 
@@ -6142,8 +6260,8 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var BindModelListAjax  = (function (_super) {
         /** @class */
-        function BindModelListAjax(p_objectDI, p_isLoadAttr, p_itemType) {
-            _super.call(this, p_objectDI, p_itemType);
+        function BindModelListAjax(p_objectDI, p_isLoadProp, p_itemType) {
+            _super.call(this, p_objectDI, false, p_itemType);
 
             // DI 인터페이스 구현 검사
             // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelList))  {
@@ -6153,7 +6271,7 @@ if (typeof Array.isArray === "undefined") {
             this.list = new BindCommandLookupAjax(this, this._baseEntity);
             
             // 속성 자동 로딩
-            if (p_isLoadAttr) {
+            if (p_isLoadProp) {
                 this.loadProp();
             }
 
@@ -6231,8 +6349,8 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var BindModelListDelAjax  = (function (_super) {
         /** @class */
-        function BindModelListDelAjax(p_objectDI, p_isLoadAttr, p_itemType) {
-            _super.call(this, p_objectDI, p_itemType);
+        function BindModelListDelAjax(p_objectDI, p_isLoadProp, p_itemType) {
+            _super.call(this, p_objectDI, false, p_itemType);
 
             // DI 인터페이스 구현 검사
             // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelListDel))  {
@@ -6243,7 +6361,7 @@ if (typeof Array.isArray === "undefined") {
             this.delete = new BindCommandEditAjax(this, this._baseEntity);
             
             // 속성 자동 로딩
-            if (p_isLoadAttr) {
+            if (p_isLoadProp) {
                 this.loadProp();
             }
 
@@ -6321,8 +6439,8 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var BindModelEditAjax  = (function (_super) {
         /** @class */
-        function BindModelEditAjax(p_objectDI, p_isLoadAttr, p_itemType) {
-            _super.call(this, p_objectDI, p_itemType);
+        function BindModelEditAjax(p_objectDI, p_isLoadProp, p_itemType) {
+            _super.call(this, p_objectDI, false, p_itemType);
             
             // DI 인터페이스 구현 검사
             // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelEdit))  {
@@ -6334,7 +6452,7 @@ if (typeof Array.isArray === "undefined") {
             this.delete = new BindCommandEditAjax(this, this._baseEntity);
 
             // 속성 자동 로딩
-            if (p_isLoadAttr) {
+            if (p_isLoadProp) {
                 this.loadProp();
             }
 
@@ -6414,8 +6532,8 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var BindModelFormAjax  = (function (_super) {
         /** @class */
-        function BindModelFormAjax(p_objectDI, p_isLoadAttr, p_itemType) {
-            _super.call(this, p_objectDI, p_itemType);
+        function BindModelFormAjax(p_objectDI, p_isLoadProp, p_itemType) {
+            _super.call(this, p_objectDI, false, p_itemType);
             
             // DI 인터페이스 구현 검사
             // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModelForm))  {
@@ -6428,7 +6546,7 @@ if (typeof Array.isArray === "undefined") {
             this.create = new BindCommandEditAjax(this, this._baseEntity);
 
             // 속성 자동 로딩
-            if (p_isLoadAttr) {
+            if (p_isLoadProp) {
                 this.loadProp();
             }
 
