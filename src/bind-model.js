@@ -67,7 +67,7 @@
          * @abstract 추상클래스
          * @class
          */
-        function BindModel(p_objectDI)  {
+        function BindModel()  {
             _super.call(this);
 
             var __prop          = new PropertyCollection(this);
@@ -78,16 +78,14 @@
             var __cbError       = function() { console.error("바인딩 오류가 발생 하였습니다."); };
             var __itemType      = Item;
 
-            var propObject;
-
             this.__preRegister    = function() {};
             this.__preCheck       = function() {return true};
             this.__preReady       = function() {};
 
             // DI 인터페이스 구현 검사
-            if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModel))  {
-                throw new Error("Only [p_objectDI] type 'IBindModel' can be added");
-            }
+            // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModel))  {
+            //     throw new Error("Only [p_objectDI] type 'IBindModel' can be added");
+            // }
             
             /** @property {prop} */
             Object.defineProperty(this, "prop", 
@@ -125,42 +123,6 @@
                 enumerable: true
             });
 
-            // /** @property {preRegister} */
-            // Object.defineProperty(this, "preRegister", 
-            // {
-            //     get: function() { return __preRegister; },
-            //     set: function(newValue) { 
-            //         if (typeof newValue !== "function") throw new Error("Only [preRegister] type 'Function' can be added");
-            //         __preRegister = newValue;
-            //     },
-            //     configurable: true,
-            //     enumerable: true
-            // });
-            
-            // /** @property {preCheck} */
-            // Object.defineProperty(this, "preCheck", 
-            // {
-            //     get: function() { return __preCheck; },
-            //     set: function(newValue) { 
-            //         if (typeof newValue !== "function") throw new Error("Only [preCheck] type 'Function' can be added");
-            //         __preCheck = newValue;
-            //     },
-            //     configurable: true,
-            //     enumerable: true
-            // });
-
-            // /** @property {preReady} */
-            // Object.defineProperty(this, "preReady", 
-            // {
-            //     get: function() { return __preReady; },
-            //     set: function(newValue) { 
-            //         if (typeof newValue !== "function") throw new Error("Only [preReady] type 'Function' can be added");
-            //         __preReady = newValue;
-            //     },
-            //     configurable: true,
-            //     enumerable: true
-            // });
-
             /** @property {cbFail} */
             Object.defineProperty(this, "cbFail", 
             {
@@ -197,69 +159,7 @@
                 enumerable: true
             });
 
-            // DI 의존성 주입 : 객체를 비교하여 삽입
-            if (p_objectDI instanceof IBindModel) {     // 가능
-                
-                // prop 등록
-                if (typeof p_objectDI["prop"] !== "undefined" && p_objectDI["prop"] !== null) {
-                    propObject = p_objectDI["prop"];
-                    for(var prop in propObject) {
-                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
 
-                            //__prop.add(prop, propObject[prop]);
-                            // get/sett 형식의 기능 추가
-                            if (typeof propObject[prop] === "object" 
-                                && (typeof propObject[prop].get === "function" || typeof propObject[prop].set === "function")) {
-                                __prop.add(prop,"", propObject[prop]);    
-                            } else {
-                                __prop.add(prop, propObject[prop]);
-                            }
-                        }
-                    }
-                }
-                // mode 등록
-                if (typeof p_objectDI["mode"] !== "undefined" && p_objectDI["mode"] !== null) {
-                    propObject = p_objectDI["mode"];
-                    for(var prop in propObject) {
-                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-                            __mode.add(prop, propObject[prop]);
-                        }
-                    }
-                }
-                if (typeof p_objectDI["mapping"] !== "undefined" && p_objectDI["mapping"] !== null) {
-                    propObject = p_objectDI["mapping"];
-                    for(var prop in propObject) {
-                        if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-                            __mapping.add(prop, propObject[prop]);
-                        }
-                    }
-                }
-                if (typeof p_objectDI["preRegister"] === "function") {
-                    // __preRegister = p_objectDI["preRegister"];
-                    this.__preRegister = p_objectDI["preRegister"];
-                }
-                if (typeof p_objectDI["preCheck"] === "function") {
-                    // __preCheck = p_objectDI["preCheck"];
-                    this.__preCheck = p_objectDI["preCheck"];
-                }
-                if (typeof p_objectDI["preReady"] === "function") {
-                    // __preReady = p_objectDI["preReady"];
-                    this.__preReady = p_objectDI["preReady"];
-                }
-                if (typeof p_objectDI["cbFail"] === "function") {
-                    __cbFail = p_objectDI["cbFail"];
-                }
-                if (typeof p_objectDI["cbError"] === "function") {
-                    __cbError = p_objectDI["cbError"];
-                }
-
-                if (typeof p_objectDI["onExecute"] === "function") {
-                    this.onExecute = p_objectDI["onExecute"];
-                }
-                if (typeof p_objectDI["onExecuted"] === "function") {
-                    this.onExecuted = p_objectDI["onExecuted"];
-                }
-            }
 
             /** @implements IBindModel 인터페이스 구현 */
             this._implements(IBindModel);

@@ -23,10 +23,9 @@
     var EntityView;
     var EntityTable;
     var BindModelCreateAjax;
-    var IBindModelCreate;
+    var IBindModel;
     var BindCommandEditAjax;
-    var BindModelReadAjax;
-    var IBindModelRead;
+    var BindModelAjax;
     var BindCommandLookupAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {  
@@ -39,10 +38,9 @@
         EntityTable             = require("../src/entity-table").EntityTable;
         BindModelCreateAjax     = require("../src/bind-model-ajax-create");
         BindCommandEditAjax     = require("../src/bind-command-ajax-edit");
-        IBindModelCreate        = require("../src/i-bind-model-create");
-        BindModelReadAjax       = require("../src/bind-model-ajax-read");
+        IBindModel              = require("../src/i-bind-model");
+        BindModelAjax           = require("../src/bind-model-ajax");
         BindCommandLookupAjax   = require("../src/bind-command-ajax-lookup");
-        IBindModelRead          = require("../src/i-bind-model-read");
     } else {
         util                    = global._W.Common.Util;
         Row                     = global._W.Meta.Entity.Row;
@@ -52,10 +50,9 @@
         EntityTable             = global._W.Meta.Entity.EntityTable;
         BindModelCreateAjax     = global._W.Meta.Bind.BindModelCreateAjax;
         BindCommandEditAjax     = global._W.Meta.Bind.BindCommandEditAjax;
-        IBindModelCreate        = global._W.Interface.IBindModelCreate;
-        BindModelReadAjax       = global._W.Meta.Bind.BindModelReadAjax;
+        IBindModel              = global._W.Interface.IBindModel;
+        BindModelAjax           = global._W.Meta.Bind.BindModelAjax;
         BindCommandLookupAjax   = global._W.Meta.Bind.BindCommandLookupAjax;
-        IBindModelRead          = global._W.Interface.IBindModelRead;        
     }
 
     //==============================================================
@@ -63,7 +60,7 @@
     function run() {
 
         function CreateDI() {
-            IBindModelCreate.call(this);
+            IBindModel.call(this);
 
             var __this = this;          // 내부용 this : prototype 접근지시자
 
@@ -108,13 +105,13 @@
                 return "onExecuted";
             };
         }
-        util.inherits(CreateDI, IBindModelCreate);
+        util.inherits(CreateDI, IBindModel);
         CreateDI.prototype.viewRead = function() {
             console.log("viewRead....");
         };
 
         function ReadDI() {
-            IBindModelRead.call(this);
+            IBindModel.call(this);
 
             var __this = this;          // 내부용 this : prototype 접근지시자
 
@@ -159,10 +156,10 @@
                 return "onExecuted";
             };
         }
-        util.inherits(ReadDI, IBindModelRead);
+        util.inherits(ReadDI, IBindModel);
 
         function ReadMappingDI() {
-            IBindModelRead.call(this);
+            IBindModel.call(this);
 
             this.prop = {
                 i1: "V1",
@@ -174,12 +171,15 @@
             };
             this.mapping = { i1: { read: ["valid", "bind"] } }
         }
-        util.inherits(ReadMappingDI, IBindModelRead);        
+        util.inherits(ReadMappingDI, IBindModel);        
         
         if (isCallback) {
             console.log("---------------------------------------------------------------------------");
-            console.log("new BindModelCreateAjax() :: DI 의존성 주입 ");
-            var model = new BindModelCreateAjax(new CreateDI(), true);
+            console.log("new BindModelAjax() :: CreateDI 의존성 주입 ");
+            var model = new BindModelAjax();
+            var cc  = new CreateDI(model);
+            model.setService(cc, true);
+            model.create = new BindCommandEditAjax(model, model._baseEntity);            
             model.create.setItem(["i1", "i2", "i3"], "bind");
             model.create.setItem("i3", "valid");
             model.first.items["i3"].value = "12";
@@ -228,8 +228,11 @@
 
         if (isCallback) {
             console.log("---------------------------------------------------------------------------");
-            console.log("new BindModelReadAjax() :: DI 의존성 주입 ");
-            var model = new BindModelReadAjax(new ReadDI(), true);
+            console.log("new BindModelAjax() :: ReadDI 의존성 주입 ");
+            var model = new BindModelAjax();
+            var cc  = new ReadDI(model);
+            model.setService(cc, true);
+            model.read = new BindCommandLookupAjax(model, model._baseEntity);            
             model.read.setItem(["i1", "i2", "i3"], "bind");
             model.read.addOutput("output2");
             model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
@@ -249,7 +252,7 @@
             };
             model.read.cbEnd = function(p_result) {
                 console.log("---------------------------------------------------------------------------");
-                console.log("result.entity.return === 0  :: 콜백 BindModelReadAjax ");
+                console.log("result.entity.return === 0  :: 콜백 IBindModelAjax ");
                 if (p_result["entity"]["return"] === 0 && 
                     this._model.result.length === 0 &&
                     true) {
@@ -261,7 +264,7 @@
             };
             model.onExecuted = function() {
                 console.log("---------------------------------------------------------------------------");
-                console.log("this.result.length === 0  :: 콜백 BindModelReadAjax ");
+                console.log("this.result.length === 0  :: 콜백 IBindModelAjax ");
                 if (
                     this.result.length === 0 &&
                     true) {
@@ -290,8 +293,11 @@
         }
 
         console.log("---------------------------------------------------------------------------");
-        console.log("new BindModelReadAjax() :: DI 의존성 주입 + mapping ");
-        var model = new BindModelReadAjax(new ReadMappingDI(), true);
+        console.log("new IBindModelAjax() :: ReadMappingDI 의존성 주입 + mapping ");
+        var model = new BindModelAjax();
+        var cc  = new ReadMappingDI(model);
+        model.read = new BindCommandLookupAjax(model, model._baseEntity);            
+        model.setService(cc, true);
         model.result = [];
         if (// read
             model.read.valid.items.count === 1 &&

@@ -35,10 +35,10 @@ var paths = {
         'src/bind-base.js', 'src/bind-command.js', 'src/bind-model.js', 'src/bind-command-ajax.js', 
         'src/bind-command-ajax-edit.js', 'src/bind-command-ajax-lookup.js', 
         'src/bind-model-ajax.js', 
-        'src/bind-model-ajax-create.js', 
-        'src/bind-model-ajax-read.js', 'src/bind-model-ajax-read-del.js', 
-        'src/bind-model-ajax-list.js', 'src/bind-model-ajax-list-del.js', 
-        'src/bind-model-ajax-edit.js', 'src/bind-model-ajax-form.js'
+        // 'src/bind-model-ajax-create.js', 
+        // 'src/bind-model-ajax-read.js', 'src/bind-model-ajax-read-del.js', 
+        // 'src/bind-model-ajax-list.js', 'src/bind-model-ajax-list-del.js', 
+        // 'src/bind-model-ajax-edit.js', 'src/bind-model-ajax-form.js'
     ],
     test: 'test/*.test.js',
     // task: ['task/Collection.ArrayCollection.task.js', 'task/Main.task.js'],     // 임시 테스트

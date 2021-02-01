@@ -51,8 +51,8 @@
         /**
          * @class
          */
-        function BindModelAjax(p_objectDI, p_isLoadProp, p_itemType) {
-            _super.call(this, p_objectDI);
+        function BindModelAjax(p_itemType) {
+            _super.call(this);
 
             var __baseAjaxSetup = {
                 url: "",
@@ -89,25 +89,6 @@
                 configurable: true,
                 enumerable: true
             });
-
-            if (p_objectDI instanceof IBindModel) {     // 가능
-                // command 등록
-                for (var prop in p_objectDI) {
-                    if (p_objectDI.hasOwnProperty(prop)) {
-                        if (typeof p_objectDI[prop] === "function" && p_objectDI[prop].name ==="BindCommandEditAjax") {
-                            this[prop] = new BindCommandEditAjax(this, this._baseEntity);
-                        }
-                        if (typeof p_objectDI[prop] === "function" && p_objectDI[prop].name ==="BindCommandLookupAjax") {
-                            this[prop] = new BindCommandLookupAjax(this, this._baseEntity);
-                        }
-                    }
-                }            
-            }
-            // 속성 자동 로딩
-            if (p_isLoadProp === true) {
-                this.loadProp();
-            }            
-
         }
         util.inherits(BindModelAjax, _super);
     
@@ -119,27 +100,6 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        // BindModelAjax.prototype.checkSelector  = function(p_collection) {
-            
-        //     var collection = p_collection || this.prop;
-        //     var failSelector;
-
-        //     // 유효성 검사
-        //     if (!(collection instanceof PropertyCollection)) throw new Error("Only [p_collection] type 'PropertyCollection' can be added");
-
-        //     // 검사
-        //     for (var i = 0; collection.count > i; i++) {
-        //         if (typeof collection[i].selector !== "undefined") {
-        //             failSelector = util.validSelector(collection[i].selector);
-        //             if (failSelector !== null) {
-        //                 console.warn("selector 검사 실패 : %s ", failSelector);
-        //                 return false;
-        //             }
-        //         }
-        //     }
-            
-        //     return true;
-        // };
         BindModelAjax.prototype.checkSelector  = function(p_collection) {
             
             var collection = p_collection || this.prop;
@@ -175,6 +135,92 @@
             return true;
         };
 
+        BindModelAjax.prototype.setService  = function(p_service, p_isLoadProp) {
+
+            var propObject;
+
+            // 유효성 검사
+            if (!(p_service instanceof IBindModel)) throw new Error("Only [p_service] type 'IBindModel' can be added");
+
+            // command 등록
+            for (var prop in p_service) {
+                if (p_service.hasOwnProperty(prop)) {
+                    if (typeof p_service[prop] === "function" && p_service[prop].name ==="BindCommandEditAjax") {
+                        this[prop] = new BindCommandEditAjax(this, this._baseEntity);
+                    }
+                    if (typeof p_service[prop] === "function" && p_service[prop].name ==="BindCommandLookupAjax") {
+                        this[prop] = new BindCommandLookupAjax(this, this._baseEntity);
+                    }
+                }
+            }            
+            
+            // prop 등록
+            if (typeof p_service["prop"] !== "undefined" && p_service["prop"] !== null) {
+                propObject = p_service["prop"];
+                for(var prop in propObject) {
+                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+
+                        //__prop.add(prop, propObject[prop]);
+                        // get/sett 형식의 기능 추가
+                        if (typeof propObject[prop] === "object" 
+                            && (typeof propObject[prop].get === "function" || typeof propObject[prop].set === "function")) {
+                            this.prop.add(prop, "", propObject[prop]);    
+                        } else {
+                            this.prop.add(prop, propObject[prop]);
+                        }
+                    }
+                }
+            }
+            
+            // mode 등록
+            if (typeof p_service["mode"] !== "undefined" && p_service["mode"] !== null) {
+                propObject = p_service["mode"];
+                for(var prop in propObject) {
+                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+                        this.mode.add(prop, propObject[prop]);
+                    }
+                }
+            }
+            if (typeof p_service["mapping"] !== "undefined" && p_service["mapping"] !== null) {
+                propObject = p_service["mapping"];
+                for(var prop in propObject) {
+                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+                        this.mapping.add(prop, propObject[prop]);
+                    }
+                }
+            }
+            if (typeof p_service["preRegister"] === "function") {
+                // __preRegister = p_service["preRegister"];
+                this.preRegister = p_service["preRegister"];
+            }
+            if (typeof p_service["preCheck"] === "function") {
+                // __preCheck = p_service["preCheck"];
+                this.preCheck = p_service["preCheck"];
+            }
+            if (typeof p_service["preReady"] === "function") {
+                // __preReady = p_service["preReady"];
+                this.preReady = p_service["preReady"];
+            }
+            if (typeof p_service["cbFail"] === "function") {
+                this.cbFail = p_service["cbFail"];
+            }
+            if (typeof p_service["cbError"] === "function") {
+                this.cbError = p_service["cbError"];
+            }
+
+            if (typeof p_service["onExecute"] === "function") {
+                this.onExecute = p_service["onExecute"];
+            }
+            if (typeof p_service["onExecuted"] === "function") {
+                this.onExecuted = p_service["onExecuted"];
+            }
+            
+            
+            // 속성(prop)을 아이템으로 로딩 ("__"시작이름 제외)
+            if (p_isLoadProp === true) {
+                this.loadProp();
+            }  
+        };
 
         return BindModelAjax;
     

@@ -44,8 +44,8 @@
     tasks.push({ns: "_W.Test.Row"                   , file: "./Meta.Entity.Row.test.js"});
     tasks.push({ns: "_W.Test.BindCommandEditAjax"   , file: "./Meta.Bind.BindCommandEditAjax.test.js"});
     tasks.push({ns: "_W.Test.BindCommandLookupAjax" , file: "./Meta.Bind.BindCommandLookupAjax.test.js"});
-    tasks.push({ns: "_W.Test.BindModelCreateAjax"   , file: "./Meta.Bind.BindModelCreateAjax.test.js"});
-    tasks.push({ns: "_W.Test.BindModelReadAjax"     , file: "./Meta.Bind.BindModelReadAjax.test.js"});
+    tasks.push({ns: "_W.Test.BindModelAjax"         , file: "./Meta.Bind.BindModelAjax.test.js"});
+    // tasks.push({ns: "_W.Test.BindModelReadAjax"     , file: "./Meta.Bind.BindModelReadAjax.test.js"});
     tasks.push({ns: "_W.Test.BindModelDI"           , file: "./Meta.Bind.BindModelDI.test.js"});
     tasks.push({ns: "_W.Test.DOM_Node"              , file: "./Etc.DOM-Node.test.js"});
 
