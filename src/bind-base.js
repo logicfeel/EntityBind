@@ -52,6 +52,9 @@
             /** @private */
             this.__event    = new Observer(this, this);
 
+            // Protected
+            this._symbol        = [];
+
             /** @property */
             Object.defineProperty(this, "_baseEntity", 
             {
@@ -81,8 +84,14 @@
                     this.__event.subscribe(p_fn, "executed");
                 }
             });
+
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["__event", "_symbol", "_baseEntity"]);
+            this._symbol = this._symbol.concat(["onExecute", "onExecuted"]);
+            this._symbol = this._symbol.concat(["getTypes", "_onExecute", "_onExecuted"]);
         }
         util.inherits(BaseBind, _super);
+
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BaseBind.prototype.getTypes  = function() {

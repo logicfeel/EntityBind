@@ -37,14 +37,15 @@
          */
         function BaseCollection(p_onwer) {
     
-            var __elementType = null;
+            var __elementType   = null;
 
             // Private
-            this.__event     = new Observer(this, this);
+            this.__event        = new Observer(this, this);
 
             // Protected
             this._onwer         = p_onwer;
             this._element       = [];
+            this._symbol        = [];
 
             /** @property */
             Object.defineProperty(this, "elementType", {
@@ -118,6 +119,12 @@
                     this.__event.subscribe(p_fn, "changed");
                 }
             });
+
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["__event", "_onwer", "_element", "_symbol", "elementType", "list", "count"]);
+            this._symbol = this._symbol.concat(["onAddr", "onRemove", "onClear", "onChanging", "onChanged"]);
+            this._symbol = this._symbol.concat(["_getPropDescriptor", "_onAdd", "_onRemove", "_onClear", "_onChanging", "_onChanged"]);
+            this._symbol = this._symbol.concat(["_remove", "add", "clear", "remove", "removeAt", "indexOf"]);
 
             /** @implements ICollection 인터페이스 구현 */
              this._implements(ICollection);

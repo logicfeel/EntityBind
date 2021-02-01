@@ -56,6 +56,7 @@
             errorCount++;
         }
 
+
         console.log("---------------------------------------------------------------------------");
         console.log("PropertyCollection.remove(elem) :: 삭제");
         var table = new TestTable();

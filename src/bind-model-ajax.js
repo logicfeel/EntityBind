@@ -89,6 +89,10 @@
                 configurable: true,
                 enumerable: true
             });
+
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["items", "baseAjaxSetup", "baseUrl"]);
+            this._symbol = this._symbol.concat(["getTypes", "checkSelector", "setService"]);
         }
         util.inherits(BindModelAjax, _super);
     

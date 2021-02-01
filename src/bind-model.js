@@ -159,8 +159,13 @@
                 enumerable: true
             });
 
-
-
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["__preRegister", "__preCheck", "__preReady"]);
+            this._symbol = this._symbol.concat(["prop", "mode", "mapping"]);
+            this._symbol = this._symbol.concat(["cbFail", "cbError", "itemType"]);
+            this._symbol = this._symbol.concat(["getTypes", "init", "preRegister", "preCheck", "preReady", "addEntity"]);
+            this._symbol = this._symbol.concat(["add", "addItem", "loadProp", "setMapping", "preReady", "addEntity"]);
+            
             /** @implements IBindModel 인터페이스 구현 */
             this._implements(IBindModel);
         }
@@ -199,6 +204,13 @@
 
             // 유효성 검사
             if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
+            
+            // 예약어 검사
+            if (this._symbol.indexOf(p_name) > -1) {
+                throw new Error(" [" + p_name + "] is a Symbol word");   
+            }            
+
+            // 이름 중복 검사
             if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
 
             entity = new EntityTable(p_name);

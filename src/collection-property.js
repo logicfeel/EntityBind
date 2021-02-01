@@ -52,6 +52,9 @@
                 enumerable: true
             });
 
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["properties", "indexOfName", "propertyOf"]);
+
             /** @implements IPropertyCollection 인터페이스 구현 */
             this._implements(IPropertyCollection);            
         }
@@ -107,7 +110,12 @@
                 typeName = this.elementType.constructor.name;
                 throw new Error("Only [" + typeName + "] type instances can be added");
             }
-            
+
+            // 예약어 검사
+            if (this._symbol.indexOf(p_name) > -1) {
+                throw new Error(" [" + p_name + "] is a Symbol word");   
+            }
+
             if (this.indexOfName(p_name) > -1) {
                 console.warn("Warning:: 프로퍼티 이름 중복 !!");
                 return this[p_name];     // 중복 등록 방지

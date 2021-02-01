@@ -38,6 +38,9 @@
          */
         function BindCommandEditAjax(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
+        
+            // 예약어 등록
+            this._symbol = this._symbol.concat([]);
         }
         util.inherits(BindCommandEditAjax, _super);
     

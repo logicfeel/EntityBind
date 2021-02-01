@@ -150,6 +150,11 @@
                 configurable: true,
                 enumerable: true
             });            
+
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["valid", "bind", "ajaxSetup", "url", "valid", "bind"]);
+            this._symbol = this._symbol.concat(["cbValid", "cbBind", "cbEnd"]);
+            this._symbol = this._symbol.concat(["_execValid", "_execBind", "_execSuccess", "_execError", "_ajaxAdapter"]);
         }
         util.inherits(BindCommandAjax, _super);
 

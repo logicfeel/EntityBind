@@ -79,6 +79,11 @@
                 },
                 get: function() { return __propagation; }
             });            
+
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["_model", "eventPropagation"]);
+            this._symbol = this._symbol.concat(["execute", "_onExecute", "_onExecuted", "getTypes", "add", "addItem", "setItem"]);
+
         }
         util.inherits(BindCommand, _super);
     

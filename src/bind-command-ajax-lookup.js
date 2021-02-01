@@ -81,6 +81,10 @@
 
             // 속성 생성 및 참조 등록
             this.addOutput("output");
+
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["_output", "outputOption", "cbOutput", "output"]);
+            this._symbol = this._symbol.concat(["addOutput"]);
         }
         util.inherits(BindCommandLookupAjax, _super);
 
@@ -141,6 +145,13 @@
 
             // 유효성 검사
             if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
+            
+            // 예약어 검사
+            if (this._symbol.indexOf(p_name) > -1) {
+                throw new Error(" [" + p_name + "] is a Symbol word");   
+            }            
+
+            // 이름 중복 검사
             if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
 
             // this._output.add("default", this._baseEntity);            // 등록방법 2

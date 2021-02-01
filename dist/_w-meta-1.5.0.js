@@ -1525,14 +1525,15 @@ if (typeof Array.isArray === "undefined") {
          */
         function BaseCollection(p_onwer) {
     
-            var __elementType = null;
+            var __elementType   = null;
 
             // Private
-            this.__event     = new Observer(this, this);
+            this.__event        = new Observer(this, this);
 
             // Protected
             this._onwer         = p_onwer;
             this._element       = [];
+            this._symbol        = [];
 
             /** @property */
             Object.defineProperty(this, "elementType", {
@@ -1606,6 +1607,12 @@ if (typeof Array.isArray === "undefined") {
                     this.__event.subscribe(p_fn, "changed");
                 }
             });
+
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["__event", "_onwer", "_element", "_symbol", "elementType", "list", "count"]);
+            this._symbol = this._symbol.concat(["onAddr", "onRemove", "onClear", "onChanging", "onChanged"]);
+            this._symbol = this._symbol.concat(["_getPropDescriptor", "_onAdd", "_onRemove", "_onClear", "_onChanging", "_onChanged"]);
+            this._symbol = this._symbol.concat(["_remove", "add", "clear", "remove", "removeAt", "indexOf"]);
 
             /** @implements ICollection 인터페이스 구현 */
              this._implements(ICollection);
@@ -1921,6 +1928,9 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["properties", "indexOfName", "propertyOf"]);
+
             /** @implements IPropertyCollection 인터페이스 구현 */
             this._implements(IPropertyCollection);            
         }
@@ -1976,7 +1986,12 @@ if (typeof Array.isArray === "undefined") {
                 typeName = this.elementType.constructor.name;
                 throw new Error("Only [" + typeName + "] type instances can be added");
             }
-            
+
+            // 예약어 검사
+            if (this._symbol.indexOf(p_name) > -1) {
+                throw new Error(" [" + p_name + "] is a Symbol word");   
+            }
+
             if (this.indexOfName(p_name) > -1) {
                 console.warn("Warning:: 프로퍼티 이름 중복 !!");
                 return this[p_name];     // 중복 등록 방지
@@ -4398,6 +4413,9 @@ if (typeof Array.isArray === "undefined") {
             /** @private */
             this.__event    = new Observer(this, this);
 
+            // Protected
+            this._symbol        = [];
+
             /** @property */
             Object.defineProperty(this, "_baseEntity", 
             {
@@ -4427,8 +4445,14 @@ if (typeof Array.isArray === "undefined") {
                     this.__event.subscribe(p_fn, "executed");
                 }
             });
+
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["__event", "_symbol", "_baseEntity"]);
+            this._symbol = this._symbol.concat(["onExecute", "onExecuted"]);
+            this._symbol = this._symbol.concat(["getTypes", "_onExecute", "_onExecuted"]);
         }
         util.inherits(BaseBind, _super);
+
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BaseBind.prototype.getTypes  = function() {
@@ -4542,6 +4566,11 @@ if (typeof Array.isArray === "undefined") {
                 },
                 get: function() { return __propagation; }
             });            
+
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["_model", "eventPropagation"]);
+            this._symbol = this._symbol.concat(["execute", "_onExecute", "_onExecuted", "getTypes", "add", "addItem", "setItem"]);
+
         }
         util.inherits(BindCommand, _super);
     
@@ -4858,8 +4887,13 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-
-
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["__preRegister", "__preCheck", "__preReady"]);
+            this._symbol = this._symbol.concat(["prop", "mode", "mapping"]);
+            this._symbol = this._symbol.concat(["cbFail", "cbError", "itemType"]);
+            this._symbol = this._symbol.concat(["getTypes", "init", "preRegister", "preCheck", "preReady", "addEntity"]);
+            this._symbol = this._symbol.concat(["add", "addItem", "loadProp", "setMapping", "preReady", "addEntity"]);
+            
             /** @implements IBindModel 인터페이스 구현 */
             this._implements(IBindModel);
         }
@@ -4898,6 +4932,13 @@ if (typeof Array.isArray === "undefined") {
 
             // 유효성 검사
             if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
+            
+            // 예약어 검사
+            if (this._symbol.indexOf(p_name) > -1) {
+                throw new Error(" [" + p_name + "] is a Symbol word");   
+            }            
+
+            // 이름 중복 검사
             if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
 
             entity = new EntityTable(p_name);
@@ -5243,6 +5284,11 @@ if (typeof Array.isArray === "undefined") {
                 configurable: true,
                 enumerable: true
             });            
+
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["valid", "bind", "ajaxSetup", "url", "valid", "bind"]);
+            this._symbol = this._symbol.concat(["cbValid", "cbBind", "cbEnd"]);
+            this._symbol = this._symbol.concat(["_execValid", "_execBind", "_execSuccess", "_execError", "_ajaxAdapter"]);
         }
         util.inherits(BindCommandAjax, _super);
 
@@ -5469,6 +5515,9 @@ if (typeof Array.isArray === "undefined") {
          */
         function BindCommandEditAjax(p_bindModel, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
+        
+            // 예약어 등록
+            this._symbol = this._symbol.concat([]);
         }
         util.inherits(BindCommandEditAjax, _super);
     
@@ -5580,6 +5629,10 @@ if (typeof Array.isArray === "undefined") {
 
             // 속성 생성 및 참조 등록
             this.addOutput("output");
+
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["_output", "outputOption", "cbOutput", "output"]);
+            this._symbol = this._symbol.concat(["addOutput"]);
         }
         util.inherits(BindCommandLookupAjax, _super);
 
@@ -5640,6 +5693,13 @@ if (typeof Array.isArray === "undefined") {
 
             // 유효성 검사
             if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
+            
+            // 예약어 검사
+            if (this._symbol.indexOf(p_name) > -1) {
+                throw new Error(" [" + p_name + "] is a Symbol word");   
+            }            
+
+            // 이름 중복 검사
             if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
 
             // this._output.add("default", this._baseEntity);            // 등록방법 2
@@ -5752,6 +5812,10 @@ if (typeof Array.isArray === "undefined") {
                 configurable: true,
                 enumerable: true
             });
+
+            // 예약어 등록
+            this._symbol = this._symbol.concat(["items", "baseAjaxSetup", "baseUrl"]);
+            this._symbol = this._symbol.concat(["getTypes", "checkSelector", "setService"]);
         }
         util.inherits(BindModelAjax, _super);
     

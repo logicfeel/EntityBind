@@ -1,5 +1,8 @@
 /**
  * @namespace _W.Test.Meta 메인 테스크 
+ * 
+ * 서버 실행
+ *  - npx http-server                 : 서버 실행  (npx http-server -p 원하는 포트번호)  
  */
 (function(global) {
 
