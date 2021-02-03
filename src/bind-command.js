@@ -226,6 +226,73 @@
             }
         };
 
+        /**
+         * 예시>
+         * e.read.release(['idx', 'addr'], 'valid');
+         * @param {string | array} p_names 
+         * @param {?string | array<string>} p_entities 
+         */
+        BindCommand.prototype.release = function(p_names, p_entities) {
+
+            var names = [];         // 파라메터 변수
+            var entities = [];      // 파라메터 변수
+            var property = [];      // 속성
+            var itemName;
+            var item;
+
+
+            // 초기화
+            if (Array.isArray(p_names)) names = p_names;
+            else if (typeof p_names === "string") names.push(p_names);
+
+            // 1. 유효성 검사
+            if (names.length === 0) throw new Error("Only [p_names] type 'Array | string' can be added");
+            if (typeof p_entities !== "undefined" && (!(Array.isArray(p_entities) || typeof p_entities === "string"))) {
+                throw new Error("Only [p_entities] type 'Array | string' can be added");
+            } 
+
+            // 2.초기화 설정
+            if (Array.isArray(p_entities)) entities = p_entities;
+            else if (typeof p_entities === "string") entities.push(p_entities);
+            
+            // 3.설정 대상 가져오기
+            if (entities.length > 0) {
+                for (var i = 0; i < entities.length; i++) {
+                    
+                    if (typeof entities[i] !== "string") throw new Error("Only [String] type instances can be added");
+                   
+                    // 속성 유무 검사
+                    if (this[entities[i]]) {
+                        property.push(entities[i]);
+                    } else {
+                        console.warn("Warning!! Param p_entities 에 [" + entities[i] + "]가 없습니다. ");
+                    }
+                }
+            } else {
+                // 공개(public) Entity 프로퍼티 검사
+                for (var prop in this) {
+                    if (this[prop] instanceof Entity && prop.substr(0, 1) !== "_") {
+                        property.push(prop.toString());
+                    }
+                }
+            }
+
+            // 아이템 검사 및 아이템 해제
+            for(var i = 0; names.length > i; i++) {
+                itemName = names[i]; 
+                item = this._model._baseEntity.items[itemName];
+
+                if (typeof item !== "undefined") {
+                    for (var ii = 0; property.length > ii; ii++) {
+                        this[property[ii]].items.remove(item);
+                    }
+
+                } else {
+                    console.warn("baseEntity에 [" + itemName + "] 아이템이 없습니다.");
+                }
+            }
+        };
+
         return BindCommand;
     
     }(BaseBind));

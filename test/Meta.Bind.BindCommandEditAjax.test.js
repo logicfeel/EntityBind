@@ -220,6 +220,53 @@
         }
 
         console.log("---------------------------------------------------------------------------");
+        console.log("BindCommand.release(names, entityName) :: baseEntity의 [지정한] 아이템을 [지정된] 엔티티에 해제 ");
+        var model = new BindModelCreateAjax();
+        model.items.add(new Item("i1"));
+        model.items.add(new Item("i2"));
+        model.items["i1"].value = "V1";
+        model.items["i2"].value = "V2";
+        model.create.setItem(["i1", "i2"], ["valid", "bind"]);
+        model.create.release("i2", "bind");
+        if (model.create.valid.items.count === 2 &&
+            model.create.valid.items["i1"].value === "V1" &&
+            model.create.valid.items["i2"].value === "V2" &&
+            model.create.valid.items["i1"].entity.name === "first" &&
+            model.create.bind.items.count === 1 &&
+            model.items.count === 2 &&
+            model.items["i1"].value === "V1" &&
+            model.items["i2"].value === "V2" &&
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------------------------------------------");
+        console.log("BindCommand.release(names, entityName) :: baseEntity의 [지정한] 아이템을 [전체] 엔티티에 해제 ");
+        var model = new BindModelCreateAjax();
+        model.items.add(new Item("i1"));
+        model.items.add(new Item("i2"));
+        model.items["i1"].value = "V1";
+        model.items["i2"].value = "V2";
+        model.create.setItem(["i1", "i2"], ["valid", "bind"]);
+        model.create.release("i2");
+        if (model.create.valid.items.count === 1 &&
+            model.create.valid.items["i1"].value === "V1" &&
+            model.create.valid.items["i1"].entity.name === "first" &&
+            model.create.bind.items.count === 1 &&
+            model.items.count === 2 &&
+            model.items["i1"].value === "V1" &&
+            model.items["i2"].value === "V2" &&
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------------------------------------------");
         console.log("BindCommand.setItem(names, entityNames) :: baseEntity의 [지정한] 아이템을 [지정된] 엔티티[들]에 추가 ");
         var model = new BindModelCreateAjax();
         model.first.items.add(new Item("i1"));
