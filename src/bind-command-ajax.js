@@ -176,7 +176,9 @@
             // 아이템 검사
             for(var i = 0; i < this.valid.items.count; i++) {
                 
-                value = this.valid.items[i].value === null ? this.valid.items[i].default : this.valid.items[i].value;
+                // value = this.valid.items[i].value === null ? this.valid.items[i].default : this.valid.items[i].value;
+                value = this.valid.items[i].value === null || typeof this.valid.items[i].value === "undefined" ? this.valid.items[i].default : this.valid.items[i].value;
+                
                 // 공백 && isNotNull = false    => 검사 넘어감
                 // 공백 && isNotNull = true     => 오류 리턴
                 // 값존재시                     => 검사 수행
