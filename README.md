@@ -27,3 +27,15 @@ http://127.0.0.1:8080           : 확인
 
 
 https://www.colorion.co/        : 색 콤비네이션  (어울리는 색깔)
+
+
+## 테마
+    - icon : Material Icon Theme  (메뉴 아이콘)
+    - auto rename
+    - html css supputer
+    - CSS peek (작상한 클래스 찾기)
+    - Bracket Pair Colorizer  (괄호색)
+    - Bracket Pair Colorizer (탭색)
+    - Bookmarks
+
+
