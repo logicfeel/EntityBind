@@ -503,6 +503,79 @@
         }
 
         console.log("---------------------------------------------------------------------------");
+        console.log("BindModel.setMapping(mapping: json) :: 메핑으로 부분 등록 ");
+        var model = new BindModelAjax();
+        model.create = new BindCommandEditAjax(model, model._baseEntity);
+        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.items.addValue("i1", "V1");
+        model.items.addValue("i2", "V1");
+        var mapping = {
+            i1: {
+                create: ["valid", "bind"],
+                create2: ["valid", "bind"]
+            },
+        };
+
+        model.setMapping(mapping);
+        if (true
+            // create 
+            && model.create.valid.items.count === 1
+            && model.create.valid.items["i1"].value === "V1"
+            && model.create.valid.items["i1"].entity.name === "first"
+            && model.create.bind.items.count === 1
+            && model.create.bind.items["i1"].value === "V1"
+            && model.create.bind.items["i1"].entity.name === "first" &&
+            // create 2
+            model.create2.valid.items.count === 1 &&
+            model.create2.valid.items["i1"].value === "V1" &&
+            model.create2.valid.items["i1"].entity.name === "first" &&
+            model.create2.bind.items.count === 1 &&
+            model.create2.bind.items["i1"].value === "V1" &&
+            model.create2.bind.items["i1"].entity.name === "first" &&
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+
+        console.log("---------------------------------------------------------------------------");
+        console.log("BindModel.setMapping(mapping: json) :: 메핑으로 전체 등록 ");
+        var model = new BindModelAjax();
+        model.create = new BindCommandEditAjax(model, model._baseEntity);
+        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.items.addValue("i1", "V1");
+        model.items.addValue("i2", "V1");
+        var mapping = {
+            i1: {
+                Array: [],      
+            },
+        };
+        model.setMapping(mapping);
+        if (true
+            // create 
+            && model.create.valid.items.count === 1
+            && model.create.valid.items["i1"].value === "V1"
+            && model.create.valid.items["i1"].entity.name === "first"
+            && model.create.bind.items.count === 1
+            && model.create.bind.items["i1"].value === "V1"
+            && model.create.bind.items["i1"].entity.name === "first" &&
+            // create 2
+            model.create2.valid.items.count === 1 &&
+            model.create2.valid.items["i1"].value === "V1" &&
+            model.create2.valid.items["i1"].entity.name === "first" &&
+            model.create2.bind.items.count === 1 &&
+            model.create2.bind.items["i1"].value === "V1" &&
+            model.create2.bind.items["i1"].entity.name === "first" &&
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.addEntity(name) :: 모델에 엔티티 등록 ");
         var model = new BindModelAjax();
         model.create = new BindCommandEditAjax(model, model._baseEntity);

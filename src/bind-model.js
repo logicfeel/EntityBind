@@ -380,7 +380,9 @@
                 item = entity.items[propName];
                 if (typeof item !== "undefined") {
                     for (var prop in mappingCollection[i]) {    // command 조회
-                        if (mappingCollection[i].hasOwnProperty(prop)) {
+                        if (prop === "Array") {          // 'Array' 전체 등록 속성 추가
+                            this.add(item, [], mappingCollection[i][prop]);
+                        } else if (mappingCollection[i].hasOwnProperty(prop)) {
                             this.add(item, prop, mappingCollection[i][prop]);
                         }
                     }

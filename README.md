@@ -35,7 +35,7 @@ https://www.colorion.co/        : 색 콤비네이션  (어울리는 색깔)
     - html css supputer
     - CSS peek (작상한 클래스 찾기)
     - Bracket Pair Colorizer  (괄호색)
-    - Bracket Pair Colorizer (탭색)
+    -  (탭색)
     - Bookmarks
 
 
