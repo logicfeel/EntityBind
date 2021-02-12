@@ -39,3 +39,6 @@ https://www.colorion.co/        : 색 콤비네이션  (어울리는 색깔)
     - Bookmarks
 
 
+
+# gulp 오류시
+ Set-ExecutionPolicy RempteSigned  실행권한 변경(Windows PowerShell <- 관리자권한 실행>)

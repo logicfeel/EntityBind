@@ -264,9 +264,13 @@
                     }
                 }
             }
-            // 4.설정(등록)
-            for (var i = 0; i < property.length; i++) {
-                this[property[i]].add(p_item, p_entities);
+            // 4.설정(등록) OR item 등록
+            if (typeof p_cmds === "undefined") {
+                this._baseEntity.items.add(p_item); // 기본(_baseEntity)엔티티만 등록
+            } else {
+                for (var i = 0; i < property.length; i++) {
+                    this[property[i]].add(p_item, p_entities);
+                }
             }
         };
 
