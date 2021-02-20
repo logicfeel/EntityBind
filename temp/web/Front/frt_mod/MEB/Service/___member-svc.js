@@ -47,7 +47,7 @@
         function MemberCreateService(p_this) {
             _super.call(this);
 
-            var _this = this;
+            var _this = this;       // REVIEW:: 필요성 검토
             
             // command 생성
             p_this.over         = new BindCommandLookupAjax(p_this, p_this._baseEntity);    // 중복 검사
@@ -95,9 +95,9 @@
                     selector:       { key: "#email", val: "value" },
                     constraints:    { regex: /^\d{3}\d{3,4}\d{4}$/, msg: "휴대폰 번호를 정확히 입력해주세요.", code: 150, return: true }
                 },
-                zipcode: { selector: { key: "#zipcode", val: "value" } },
-                addr1: { selector: { key: "#addr1", val: "value" } },
-                addr2:  { selector: { key: "#addr2", val: "value" } }
+                zipcode:        { selector: { key: "#zipcode", val: "value" } },
+                addr1:          { selector: { key: "#addr1", val: "value" } },
+                addr2:          { selector: { key: "#addr2", val: "value" } }
             };
             // mapping
             this.mapping = {
@@ -146,13 +146,13 @@
             BaseService.prototype.preRegister.call(this, p_this);
             //--------------------------------------------------------------    
             // 5. 이벤트 등록
-            $("#btn_create").click(function () {
+            $("#btn_create").click(function () {            // 기존 (정적 이벤트 바인딩)
                 p_this.create.execute();
             });
-            $("#btn_ID_Check").click(function () {
+            $("#btn_ID_Check").on("click", function () {    // 개선 (동적 이벤트 바인딩)
                 p_this.over.execute();
             });
-            $("#btn_update").click(function () {
+            $("#btn_update").on("click", function () {
                 p_this.update.execute();
             });
         };
