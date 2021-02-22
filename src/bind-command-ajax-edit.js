@@ -44,6 +44,14 @@
         }
         util.inherits(BindCommandEditAjax, _super);
     
+        BindCommandEditAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
+
+            // 콜백 검사 (result)
+            if (typeof this._model.cbResult === "function" ) p_result = this._model.cbResult(p_result);
+
+            // 상위 호출 : 데코레이션 패턴
+            _super.prototype._execSuccess.call(this, p_result, p_status, p_xhr);
+        };
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandEditAjax.prototype.getTypes  = function() {
@@ -66,6 +74,7 @@
         module.exports = BindCommandEditAjax;
     } else {
         global._W.Meta.Bind.BindCommandEditAjax = BindCommandEditAjax;
+        global.BindCommandEditAjax = BindCommandEditAjax;
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));

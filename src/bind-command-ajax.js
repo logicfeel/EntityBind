@@ -164,7 +164,13 @@
             var result = {};     // 오류 참조 변수
             var value = null;
 
-            // 콜백 검사
+            // 콜백 검사 (base)
+            if (typeof this._model.cbBaseValid  === "function" && !this._model.cbBaseValid(this.valid)) {
+                this._onExecuted(this);     // "실행 종료" 이벤트 발생
+                return false;
+            }
+            
+            // 콜백 검사 (command)
             if (typeof this.cbValid  === "function" && !this.cbValid(this.valid)) {
                 // this._model.cbFail("cbValid() => false 리턴 ");
                 // result.msg = "cbValid() 검사 실패";
@@ -177,19 +183,19 @@
             for(var i = 0; i < this.valid.items.count; i++) {
                 
                 // value = this.valid.items[i].value === null ? this.valid.items[i].default : this.valid.items[i].value;
-                value = this.valid.items[i].value === null || typeof this.valid.items[i].value === "undefined" ? this.valid.items[i].default : this.valid.items[i].value;
+                value = this.valid.items[i].value;
                 
                 // 공백 && isNotNull = false    => 검사 넘어감
                 // 공백 && isNotNull = true     => 오류 리턴
                 // 값존재시                     => 검사 수행
-                if (value.length > 0 || this.valid.items[i].isNotNull) {
-
+                // if (value.length > 0 || this.valid.items[i].isNotNull) {
+                // if (value.length > 0 || this.valid.items[i].isNotNull) {
                     if (!(this.valid.items[i].valid(value, result, 2))) {
                         this._model.cbFail(result, this.valid.items[i]);
                         this._onExecuted(this);     // "실행 종료" 이벤트 발생
                         return false;
                     }
-                }
+                // }
             }
 
             return true;
@@ -222,7 +228,12 @@
                 ajaxSetup.data[item.name] = value;
             }
             
+            // 콜백 검사 (base)
+            if (typeof this._model.cbBaseBind === "function") this._model.cbBaseBind(ajaxSetup);
+
+            // 콜백 검사 (command)
             if (typeof this.cbBind === "function") this.cbBind(ajaxSetup);
+            
             this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
 
@@ -234,7 +245,10 @@
             
             var result = typeof p_result === "object" ? p_result : JSON.parse(JSON.stringify(p_result));
             
-            // 처리 종료 콜백 호출
+            // 콜백 검사 (base)
+            if (typeof this._model.cbBaseEnd === "function") this._model.cbBaseEnd(result, p_status, p_xhr);
+
+            // 콜백 검사 (command)
             if (typeof this.cbEnd === "function" ) this.cbEnd(result, p_status, p_xhr);
             
             this._onExecuted(this, result);  // "실행 종료" 이벤트 발생

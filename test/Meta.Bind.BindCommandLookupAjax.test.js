@@ -107,6 +107,65 @@
         }
         if (isCallback) {
             console.log("---------------------------------------------------------------------------");
+            console.log("cbBaseValid        :: 검사시 실행 ");
+            console.log("cbBaseBind         :: 바인딩시 실행 ");
+            console.log("cbBaseOutput       :: 뷰 출력시 실행 [View 하위만] ");
+            console.log("cbBaseEnd          :: 실행 완료시 실행 (명령간 연결의 용도 + 서버측 결과) ");
+            console.log("onResult           :: 명령 엔티티 실행[execute()] 실행 전 ");
+            result = []; 
+            var model = new BindModelReadAjax();
+            model.result = [];
+            model.read.addItem("i1", "V1");
+            model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
+            // model.baseUrl = "http://rtwgs4.cafe24.com/";                 // 오류 1 : 403
+            // model.baseUrl = "sample_row_single.json";                    // 오류 2
+            // model.baseAjaxSetup.async = false;                           // 동기화로 변경
+            model.cbResult = function(p_result) {
+                p_result["cbResult"] = 10;
+                return p_result;
+            };
+            model.cbBaseValid = function() {
+                this.result.push("cbBaseValid");
+                return true;
+            };
+            model.cbBaseBind = function(p_ajaxSetup) {
+                this.result.push("cbBaseBind");
+            };
+            model.cbBaseOutput = function() {
+                this.result.push("cbBaseOutput");
+            };
+            model.cbBaseEnd = function(p_result) {
+                this.result.push("cbBaseEnd");
+            };
+            model.read.cbEnd = function(p_result) {
+                this._model.result.push("cbEnd");
+                this._model.result.push(p_result["cbResult"]);  // 10
+            };
+            model.onExecuted = function() {
+                this.result.push("onExecuted");
+                console.log("---------------------------------------------------------------------------");
+                console.log("cbBaseOutput, cbBaseEnd... :: 콜백 ");
+                // 콜백에서 검사
+                if (true 
+                    && this.result[0] === "cbBaseValid"
+                    && this.result[1] === "cbBaseBind"
+                    && this.result[2] === "cbBaseOutput"
+                    && this.result[3] === "cbBaseEnd"
+                    && this.result[4] === "cbEnd"
+                    && this.result[5] === 10
+                    ) {
+                    console.log("Result = Success");
+                } else {
+                    console.warn("Result = Fail");
+                    errorCount++;
+                }
+                result = [];    // 콜백 초기화
+            };
+            model.read.execute();
+        }
+
+        if (isCallback) {
+            console.log("---------------------------------------------------------------------------");
             console.log("BaseBind.eventPropagation = false        :: 이벤트 전파 금지 ");
             var model = new BindModelReadAjax();
             model.result = []; 

@@ -49,6 +49,8 @@
 
             var _this = this;       // REVIEW:: 필요성 검토
             
+            var bm              = new BindModelAjax(ItemDOM);
+            
             // command 생성
             p_this.over         = new BindCommandLookupAjax(p_this, p_this._baseEntity);    // 중복 검사
             p_this.create       = new BindCommandEditAjax(p_this, p_this._baseEntity);      // 회원 등록
@@ -69,7 +71,7 @@
                 sto_id:         "S00001",
                 meb_idx:        { isNotNull: true },
                 meb_id:         { 
-                    selector: { key: "#meb_id", val: "value" },
+                    selector:       { key: "#meb_id", val: "value" },
                     constraints: [
                         { regex: /......+/, msg: "아이디를 6자리 이상 입력해주세요.", code: 150, return: true},
                         { regex: /^[a-z]+[a-z0-9]{5,19}$/g, msg: "영문자와 숫자로만 입력해주세요.", code: 150, return: true }
@@ -89,7 +91,8 @@
                 },
                 email:          {
                     selector:       { key: "#email", val: "value" },
-                    constraints:    { regex: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i, msg: "이메일 형식을 맞지 않습니다.", code: 150, return: true}
+                    constraints:    { regex: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i, msg: "이메일 형식을 맞지 않습니다.", code: 150, return: true},
+                    isNullPass:     true
                 },
                 hp:             {
                     selector:       { key: "#email", val: "value" },
@@ -101,19 +104,18 @@
             };
             // mapping
             this.mapping = {
-                cmd:            { Array: ["bind"] },
-                check_Meb_id:   { create: ["valid", "bind"] },
-                sto_id:         { create: ["valid", "bind"] },
-                meb_idx:        { read:   ["valid", "bind"], update: ["valid", "bind"]  },
-                meb_id:         { create: ["valid", "bind"], over:   ["valid", "bind"], read: ["output"]  },
-                passwd:         { create: ["valid", "bind"]},
-                newPasswd:      { update: ["valid", "bind"]},
-                mebName:        { create: ["valid", "bind"], update: ["valid", "bind"], read: ["output"]  },
-                email:          { create: ["valid", "bind"], update: ["valid", "bind"], read: ["output"]  },
-                hp:             { create: ["valid", "bind"], update: ["valid", "bind"], read: ["output"]  },
-                zipcode:        { create: ["valid", "bind"], update: ["valid", "bind"], read: ["output"]  },
-                addr1:          { create: ["valid", "bind"], update: ["valid", "bind"], read: ["output"]  },
-                addr2:          { create: ["valid", "bind"], update: ["valid", "bind"], read: ["output"]  },
+                cmd:            { Array:    ["bind"] },
+                sto_id:         { create:   ["bind"] },
+                meb_idx:        { read:     ["bind"],           update: ["valid", "bind"]  },
+                meb_id:         { create:   ["valid", "bind"],  over:   ["valid", "bind"],  read: ["output"]  },
+                passwd:         { create:   ["valid", "bind"]},
+                newPasswd:      { update:   ["valid", "bind"]},
+                mebName:        { create:   ["valid", "bind"],  update: ["valid", "bind"],  read: ["output"]  },
+                email:          { create:   ["valid", "bind"],  update: ["valid", "bind"],  read: ["output"]  },
+                hp:             { create:   ["valid", "bind"],  update: ["valid", "bind"],  read: ["output"]  },
+                zipcode:        { create:   ["bind"],           update: ["bind"],           read: ["output"]  },
+                addr1:          { create:   ["bind"],           update: ["bind"],           read: ["output"]  },
+                addr2:          { create:   ["bind"],           update: ["bind"],           read: ["output"]  },
             };
             //--------------------------------------------------------------    
             // 4. 콜백 함수 구현

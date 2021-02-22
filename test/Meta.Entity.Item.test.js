@@ -210,9 +210,10 @@
         item2.isNotNull = true;     // 공백허용 안함
         var result = {};
         var result2 = {};
-        if (item.valid("", result, 1) === true &&        // 성공 : 공백 허용
-            item2.valid("", result2, 1) === false &&      // 실패 : 공백 불가
-            true) {
+        if (false
+            || item.valid("", result) === true         // 성공 : 공백 허용
+            || item2.valid("", result2) === false      // 실패 : 공백 불가
+            ) {
             console.log("Result = Success");
         } else {
             console.warn("Result = Fail");
@@ -221,31 +222,17 @@
 
         console.log("---------------------------------------------------------------------------");
         console.log("Item.valid(value, r_result, 2) :: 제약조건 검사 (null검사 진행 ) ");
+        console.log("Item.valid(value, r_result) :: 제약조건 검사 (isNullPass=true) ");
         var item = new Item("i1");
-        item.isNotNull = false;
+        item.isNotNull      = false;
+        item.isNullPass     = true;
         var item2 = new Item("i2");
-        item2.isNotNull = true;     // 공백허용 안함
+        item2.isNotNull     = true;     // 공백 불가
+        item2.isNullPass    = true;     
         var result = {};
         var result2 = {};
-        if (item.valid("", result, 2) === false &&        // 실패 : 공백 불가
-            item2.valid("", result2, 2) === false &&      // 실패 : 공백 불가
-            true) {
-            console.log("Result = Success");
-        } else {
-            console.warn("Result = Fail");
-            errorCount++;
-        }
-
-        console.log("---------------------------------------------------------------------------");
-        console.log("Item.valid(value, r_result, 3) :: 제약조건 검사 (null검사 무시) ");
-        var item = new Item("i1");
-        item.isNotNull = false;
-        var item2 = new Item("i2");
-        item2.isNotNull = true;     // 공백허용 안함
-        var result = {};
-        var result2 = {};
-        if (item.valid("", result, 3) === true &&        // 실패 : 공백 무시
-            item2.valid("", result2, 3) === true &&      // 실패 : 공백 무시
+        if (item.valid("", result) === true &&
+            item2.valid("", result2) === false &&
             true) {
             console.log("Result = Success");
         } else {

@@ -225,6 +225,7 @@
         module.exports = ItemDOM;
     } else {
         global._W.Meta.Entity.ItemDOM = ItemDOM;
+        global.ItemDOM = ItemDOM;
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));

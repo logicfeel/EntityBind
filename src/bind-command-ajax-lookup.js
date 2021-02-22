@@ -126,7 +126,13 @@
                 }
             }
 
-            // 뷰 콜백 호출  : EntitView를 전달함
+            // 콜백 검사 (result)
+            if (typeof this._model.cbResult === "function" ) p_result = this._model.cbResult(p_result);
+
+            // 콜백 검사 (base)
+            if (typeof this._model.cbBaseOutput === "function" ) this._model.cbBaseOutput(p_result);
+
+            // 콜백 검사 (command)
             if (typeof this.cbOutput === "function" ) this.cbOutput(p_result);
 
             // 상위 호출 : 데코레이션 패턴
@@ -170,6 +176,7 @@
         module.exports = BindCommandLookupAjax;
     } else {
         global._W.Meta.Bind.BindCommandLookupAjax = BindCommandLookupAjax;
+        global.BindCommandLookupAjax = BindCommandLookupAjax;        // 힌트
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));

@@ -53,6 +53,7 @@
             var __default       = "";
             var __caption       = "";
             var __isNotNull     = false;
+            var __isNullPass    = false;
             var __callback      = null;
             var __constraints   = [];
             var __codeType      = null;
@@ -155,6 +156,18 @@
                 enumerable: true
             });
 
+            /** @property {isNotPass} */
+            Object.defineProperty(this, "isNotPass", 
+            {
+                get: function() { return __isNullPass },
+                set: function(newValue) { 
+                    if(typeof newValue !== "boolean") throw new Error("Only [isNotPass] type 'boolean' can be added");
+                    __isNullPass = newValue; 
+                },
+                configurable: true,
+                enumerable: true
+            });
+            
             /** @property {callback} */
             Object.defineProperty(this, "callback", 
             {
@@ -373,42 +386,62 @@
         /**
          * 
          * @param {string} p_value 
-         * @param {object} r_result 
+         * @param {object} r_result 메세지는 참조(객체)형 으로 전달
          * @param {number} p_option 1. isNotNull 참조 | 2: null검사 진행   |  3: null검사 무시
          */
-        Item.prototype.valid = function(p_value, r_result, p_option) {
-            p_option = p_option || 1;   
+        // Item.prototype.valid = function(p_value, r_result, p_option) {
+        Item.prototype.valid = function(p_value, r_result) {
+            // p_option = p_option || 1;   
             r_result.value = p_value;
             r_result.msg = "";
             r_result.code = "";
             p_value = p_value || "";
             
             var result;
+            var value = null;
 
             if (!(typeof p_value === "string")) throw new Error("Only [p_value] type 'string' can be added");
-            
-            // 1. 정규식 유효성 검사 (우선순위 높음)
+
+            // 1. 기본값 얻기
+            value = p_value === null || typeof p_value === "undefined" ? this.default : p_value;
+            value = value.trim();
+
+            // 2-1. 통과조건 검사
+            if (false
+                || (this.isNotNull === false && this.constraints.length === 0 ) 
+                || (this.isNotNull === false && this.isNullPass === true && value.length === 0)
+                || (this.isNotNull === true && this.constraints.length === 0 && value.length > 0)
+            ){
+                return true;
+            }
+            // 2-2. 실패조건 검사
+            if (this.isNotNull === true && this.constraints.length === 0 && value.length === 0) {
+                r_result.msg   = this.caption+"("+this.name+")은  공백을 입력할 수 없습니다.";
+                r_result.code  = 0;
+                return false;
+            }
+
+            // 2-3. 제약조건 검사
             for(var i = 0; this.constraints.length > i; i++) {
 
                 result = p_value.match(this.constraints[i].regex);
 
-                if ((this.constraints[i].return !== true && result !== null) ||
-                    (this.constraints[i].return === true && result === null)) {
+                if ((this.constraints[i].return === false && result !== null) ||    // 실패 조건
+                    (this.constraints[i].return === true && result === null)) {     // 성공 조건
 
                     r_result.msg   = this.constraints[i].msg;
                     r_result.code  = this.constraints[i].code;
                     return false;
                 }
             }
-            
-            // 2. Null 검사
-            if ((p_option === 1 && this.isNotNull === true && p_value.trim().length <= 0) || 
-                (p_option === 2 && p_value.trim().length <= 0)) {
+            // // 3. 결과(Null) 검사
+            // if ((p_option === 1 && this.isNotNull === true && p_value.trim().length <= 0) || 
+            //     (p_option === 2 && p_value.trim().length <= 0)) {
                 
-                r_result.msg   = this.caption+"("+this.name+")은  공백을 입력할 수 없습니다.";
-                r_result.code  = 0;
-                return false;
-            }
+            //     r_result.msg   = this.caption+"("+this.name+")은  공백을 입력할 수 없습니다.";
+            //     r_result.code  = 0;
+            //     return false;
+            // }
             return true;
         };
 

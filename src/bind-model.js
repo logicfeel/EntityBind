@@ -76,6 +76,12 @@
             
             var __cbFail        = function() { console.warn("바인딩 실패하였습니다."); };
             var __cbError       = function() { console.error("바인딩 오류가 발생 하였습니다."); };
+            var __cbResult      = null;
+            var __cbBaseValid   = null;
+            var __cbBaseBind    = null;
+            var __cbBaseOutput  = null;
+            var __cbBaseEnd     = null;
+
             var __itemType      = Item;
 
             this.__preRegister    = function() {};
@@ -142,6 +148,66 @@
                 set: function(newValue) { 
                     if (typeof newValue !== "function") throw new Error("Only [cbError] type 'Function' can be added");
                     __cbError = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {cbResult} */
+            Object.defineProperty(this, "cbResult", 
+            {
+                get: function() { return __cbResult; },
+                set: function(newValue) { 
+                    if (typeof newValue !== "function") throw new Error("Only [cbResult] type 'Function' can be added");
+                    __cbResult = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {cbBaseValid} */
+            Object.defineProperty(this, "cbBaseValid", 
+            {
+                get: function() { return __cbBaseValid; },
+                set: function(newValue) { 
+                    if (typeof newValue !== "function") throw new Error("Only [cbBaseValid] type 'Function' can be added");
+                    __cbBaseValid = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {cbBaseBind} */
+            Object.defineProperty(this, "cbBaseBind", 
+            {
+                get: function() { return __cbBaseBind; },
+                set: function(newValue) { 
+                    if (typeof newValue !== "function") throw new Error("Only [cbBaseBind] type 'Function' can be added");
+                    __cbBaseBind = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {cbBaseOutput} */
+            Object.defineProperty(this, "cbBaseOutput", 
+            {
+                get: function() { return __cbBaseOutput; },
+                set: function(newValue) { 
+                    if (typeof newValue !== "function") throw new Error("Only [cbBaseOutput] type 'Function' can be added");
+                    __cbBaseOutput = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {cbBaseEnd} */
+            Object.defineProperty(this, "cbBaseEnd", 
+            {
+                get: function() { return __cbBaseEnd; },
+                set: function(newValue) { 
+                    if (typeof newValue !== "function") throw new Error("Only [cbBaseEnd] type 'Function' can be added");
+                    __cbBaseEnd = newValue;
                 },
                 configurable: true,
                 enumerable: true
