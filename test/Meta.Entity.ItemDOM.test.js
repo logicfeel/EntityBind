@@ -77,54 +77,7 @@
             item2.isReadOnly === true &&
             item2.isHide === true &&
             item2.element.value === true &&
-            item2.selector[0] === "btn_" &&
-            true) {
-            console.log("Result = Success");
-        } else {
-            console.warn("Result = Fail");
-            errorCount++;
-        }
-        console.log("---------------------------------------------------------------------------");
-        console.log("clone() :: 복제 (selector의 배열) ");
-        var table = new EntityTable("T1");
-        var item = new ItemDOM("i1", table, {
-            // Item 속성
-            type: "text",
-            size: 100,
-            default: "D1",
-            caption: "C1",
-            isNotNull: true,
-            constraints: [
-                { regex: /\D/, msg: "message", code: "C1", return: true },         // true : 충족조건
-                { regex: /[0-9]{5}/, msg: "message", code: "C2", return: false }   // false : 통과조건
-            ],   
-            order: 1000,
-            increase: 10,
-            value: "V1",
-            // ItemDOM 속성
-            domType: { value: true },
-            isReadOnly: true,
-            isHide: true,
-            element: { value: true },
-            selector: ["btn_1", "btn_2"]
-        });
-        var item2 = item.clone();
-        if (item2.entity.name === "T1" &&
-            item2.type === "text" &&
-            item2.size === 100 &&
-            item2.default === "D1" &&
-            item2.caption === "C1" &&
-            item2.isNotNull === true &&
-            item2.constraints.length === 2 &&
-            item2.order === 1000 &&
-            item2.increase === 10 &&
-            item2.value === "V1" &&
-            item2.domType.value === true &&
-            item2.isReadOnly === true &&
-            item2.isHide === true &&
-            item2.element.value === true &&
-            item2.selector[0] === "btn_1" &&
-            item2.selector[1] === "btn_2" &&
+            item2.selector.key === "btn_" &&
             true) {
             console.log("Result = Success");
         } else {

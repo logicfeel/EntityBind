@@ -95,7 +95,7 @@
                     isNullPass:     true
                 },
                 hp:             {
-                    selector:       { key: "#email", val: "value" },
+                    selector:       { key: "#email", type: "value" },
                     constraints:    { regex: /^\d{3}\d{3,4}\d{4}$/, msg: "휴대폰 번호를 정확히 입력해주세요.", code: 150, return: true }
                 },
                 zipcode:        { selector: { key: "#zipcode", val: "value" } },

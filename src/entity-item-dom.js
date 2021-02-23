@@ -15,20 +15,23 @@
     // 2. 모듈 가져오기 (node | web)
     var util;
     var Item;
+    var jquery;
+    var ajax;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        Item                = require("./entity-item").Item;
+        util                    = require("./utils");
+        Item                    = require("./entity-item").Item;
     } else {
-        util                = global._W.Common.Util;
-        Item                = global._W.Meta.Entity.Item;
+        util                    = global._W.Common.Util;
+        Item                    = global._W.Meta.Entity.Item;
+        jquery                  = global.jQuery || global.$;     // jquery 로딩 REVIEW:: 로딩 확인
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
-
+    if (typeof jquery === "undefined" && typeof module !== "object") throw new Error("[jquery] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -45,7 +48,7 @@
             var __element       = null;
             
             //var __selector      = [];
-            this.__selector      = [];
+            var __selector      = { key: "", type: "value" };
 
             /** @property {domType} */
             Object.defineProperty(this, "domType", 
@@ -114,28 +117,100 @@
             /** @property {selector} */
             Object.defineProperty(this, "selector", 
             {
-                get: function() { 
-                    var _sel = [];
-                    var _str = "";
-                    for (var i = 0; this.__selector.length > i; i++) {
-                        _str  = typeof this.__selector[i] === "function" ? this.__selector[i].call(this) : this.__selector[i];
-                        _sel.push(_str);
-                    }
-                    return _sel; 
-                },
+                // get: function() { 
+                //     var _sel = [];
+                //     var _str = "";
+                //     for (var i = 0; this.__selector.length > i; i++) {
+                //         _str  = typeof this.__selector[i] === "function" ? this.__selector[i].call(this) : this.__selector[i];
+                //         _sel.push(_str);
+                //     }
+                //     return _sel; 
+                // },
+                // set: function(newValue) { 
+                //     var values = [];
+                //     var temp = "";
+                //     if (Array.isArray(newValue)) values = newValue; // 배열로 넣으면 기존내용이 초기화됨
+                //     else values.push(newValue);
+                //     for (var i = 0; values.length > i; i++) {
+                //         temp  = typeof values[i] === "function" ? values[i].call(this) : values[i];
+                        
+                //         if(typeof temp !== "string" ) {  // 검사 
+                //             throw new Error("Only [selector] type 'string' can be added");
+                //         }
+                //     }
+                //     this.__selector = this.__selector.concat(values);    // 기존에 추가됨
+                // },
+                /**
+                 * type
+                 *  - text          : 요소의 텍스트값
+                 *  - html          : 요소의 html값
+                 *  - val | value   : 요소의 value 속성값
+                 *  - css.속성명    : css 의 속성값 (객체)
+                 *  - prop.속성명   : 요소의 속성명값 (초기상태기준)
+                 *  - attr.속성명   : 요소의 속성명값 (현재상태)
+                 */
+                get: function() { return __selector; },
                 set: function(newValue) { 
-                    var values = [];
-                    var temp = "";
-                    if (Array.isArray(newValue)) values = newValue; // 배열로 넣으면 기존내용이 초기화됨
-                    else values.push(newValue);
-                    for (var i = 0; values.length > i; i++) {
-                        temp  = typeof values[i] === "function" ? values[i].call(this) : values[i];
-                        if(typeof temp !== "string" ) {  // 검사 
-                        // if(typeof values[i] !== "string" ) {  // 검사 
-                            throw new Error("Only [selector] type 'string' can be added");
-                        }
+                    var selector = { key: "", type: "value" };
+
+                    if (typeof newValue === "string") {
+                        selector.key = newValue;
+                    } else if (typeof newValue === "object" && typeof newValue.key !== "undefined") {
+                        selector = newValue;
+                    } else {
+                        throw new Error("Only [selector] type 'string | object.key' can be added");
                     }
-                    this.__selector = this.__selector.concat(values);
+                    __selector = selector;
+
+                    // node 에서는 종료함
+                    if (typeof module === "object") return;
+                    
+                    // value 값 설정
+                    if (typeof selector.key === "string" && selector.key.length > 0) {
+                        this.defineValueProperty(
+                            function() {    // value getter
+                                var key = this.selector.key;
+                                var type = this.selector.type;
+                                var option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
+                                var value = "";
+
+                                if (type === "value" || type === "val") {
+                                    value = jQuery(key).val();
+                                } else if (type === "text") {
+                                    value = jQuery(key).html();
+                                } else if (type.indexOf("prop") > -1) {
+                                    value = jQuery(key).prop(option);
+                                } else if (type.indexOf("attr") > -1) {
+                                    value = jQuery(key).attr(option);
+                                } else if (type.indexOf("css") > -1) {
+                                    value = jQuery(key).css(option);
+                                } else {
+                                    console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
+                                }
+                                return value;
+                            }, 
+                            function(val) { // value setter
+                                var key = this.selector.key;
+                                var type = this.selector.type;
+                                var option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
+                                var value = "";
+
+                                if (type === "value" || type === "val") {
+                                    jQuery(key).val(val);
+                                } else if (type === "text") {
+                                    jQuery(key).html(val);
+                                } else if (type.indexOf("prop") > -1) {
+                                    jQuery(key).prop(option, val);
+                                } else if (type.indexOf("attr") > -1) {
+                                    jQuery(key).attr(option, val);
+                                } else if (type.indexOf("css") > -1) {
+                                    jQuery(key).css(option, val);
+                                } else {
+                                    console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
+                                }
+                            }
+                        );
+                    }
                 },
                 configurable: true,
                 enumerable: true
@@ -178,8 +253,8 @@
             if (this.isHide) clone["isHide"]            = this.isHide;
             if (this.element) clone["element"]          = this.element;
             
-            // if (this.selector) clone["selector"]        = this.selector.concat([]);
-            if (this.selector) clone.__selector        = this.__selector.concat([]);
+            if (this.selector) clone["selector"]        = this.selector;
+            // if (this.selector) clone.__selector        = this.__selector.concat([]); // 배열 + 함수형
             
             return clone;
         };
