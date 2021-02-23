@@ -142,9 +142,9 @@
                 // },
                 /**
                  * type
+                 *  - val | value   : 요소의 value 속성값
                  *  - text          : 요소의 텍스트값
                  *  - html          : 요소의 html값
-                 *  - val | value   : 요소의 value 속성값
                  *  - css.속성명    : css 의 속성값 (객체)
                  *  - prop.속성명   : 요소의 속성명값 (초기상태기준)
                  *  - attr.속성명   : 요소의 속성명값 (현재상태)
@@ -177,6 +177,8 @@
                                 if (type === "value" || type === "val") {
                                     value = jQuery(key).val();
                                 } else if (type === "text") {
+                                    value = jQuery(key).text();
+                                } else if (type === "html") {
                                     value = jQuery(key).html();
                                 } else if (type.indexOf("prop") > -1) {
                                     value = jQuery(key).prop(option);
@@ -198,6 +200,8 @@
                                 if (type === "value" || type === "val") {
                                     jQuery(key).val(val);
                                 } else if (type === "text") {
+                                    jQuery(key).text(val);
+                                } else if (type === "html") {
                                     jQuery(key).html(val);
                                 } else if (type.indexOf("prop") > -1) {
                                     jQuery(key).prop(option, val);
