@@ -71,26 +71,26 @@
                 sto_id:         "S00001",
                 meb_idx:        { isNotNull: true },
                 meb_id:         { 
-                    selector:       { key: "#meb_id", val: "value" },
+                    selector:       { key: "#meb_id", type: "value" },
                     constraints: [
                         { regex: /......+/, msg: "아이디를 6자리 이상 입력해주세요.", code: 150, return: true},
                         { regex: /^[a-z]+[a-z0-9]{5,19}$/g, msg: "영문자와 숫자로만 입력해주세요.", code: 150, return: true }
                     ]
                 },
                 passwd:         {
-                    selector:       { key: "#passwd", val: "value" },
+                    selector:       { key: "#passwd", type: "value" },
                     constraints:    { regex: /......+/, msg: "비밀번호를 6자리 이상 입력해주세요.", code: 150, return: true }
                 },
                 newPasswd:      {
-                    selector:       { key: "#newPasswd", val: "value" },
+                    selector:       { key: "#newPasswd", type: "value" },
                     constraints:    { regex: /......+/, msg: "비밀번호를 6자리 이상 입력해주세요.", code: 150, return: true }
                 },
                 mebName:        {
-                    selector:       { key: "#mebName", val: "value" },
+                    selector:       { key: "#mebName", type: "value" },
                     constraints:    { regex: /..+/, msg: "2자 이상 이름을 정확하게 입력해주세요.", code: 150, return: true }
                 },
                 email:          {
-                    selector:       { key: "#email", val: "value" },
+                    selector:       { key: "#email", type: "value" },
                     constraints:    { regex: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i, msg: "이메일 형식을 맞지 않습니다.", code: 150, return: true},
                     isNullPass:     true
                 },
@@ -98,9 +98,9 @@
                     selector:       { key: "#email", type: "value" },
                     constraints:    { regex: /^\d{3}\d{3,4}\d{4}$/, msg: "휴대폰 번호를 정확히 입력해주세요.", code: 150, return: true }
                 },
-                zipcode:        { selector: { key: "#zipcode", val: "value" } },
-                addr1:          { selector: { key: "#addr1", val: "value" } },
-                addr2:          { selector: { key: "#addr2", val: "value" } }
+                zipcode:        { selector: { key: "#zipcode", type: "value" } },
+                addr1:          { selector: { key: "#addr1", type: "value" } },
+                addr2:          { selector: { key: "#addr2", type: "value" } }
             };
             // mapping
             this.mapping = {
