@@ -211,6 +211,22 @@
             if (typeof p_service["cbError"] === "function") {
                 this.cbError = p_service["cbError"];
             }
+            
+            if (typeof p_service["cbResult"] === "function") {
+                this.cbResult = p_service["cbResult"];
+            }
+            if (typeof p_service["cbBaseValid"] === "function") {
+                this.cbBaseValid = p_service["cbBaseValid"];
+            }
+            if (typeof p_service["cbBaseBind"] === "function") {
+                this.cbBaseBind = p_service["cbBaseBind"];
+            }
+            if (typeof p_service["cbBaseOutput"] === "function") {
+                this.cbBaseOutput = p_service["cbBaseOutput"];
+            }
+            if (typeof p_service["cbBaseEnd"] === "function") {
+                this.cbBaseEnd = p_service["cbBaseEnd"];
+            }
 
             if (typeof p_service["onExecute"] === "function") {
                 this.onExecute = p_service["onExecute"];
