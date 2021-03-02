@@ -6123,16 +6123,29 @@ if (typeof Array.isArray === "undefined") {
             if (!(collection instanceof PropertyCollection)) throw new Error("Only [p_collection] type 'PropertyCollection' can be added");
 
             // 검사
+            // for (var i = 0; collection.count > i; i++) {
+            //     if (typeof collection[i].selector !== "undefined") {
+            //         selectors = [];
+            //         if (Array.isArray(collection[i].selector)) 
+            //             selectors = collection[i].selector;
+            //         else   
+            //             selectors.push(collection[i].selector)
+                    
+            //         for (var ii = 0; ii < selectors.length; ii++) {
+            //             selector  = typeof selectors[ii] === "function" ? selectors[ii].call(this) : selectors[ii];
+
+            //             if (typeof selector === "string" && selector.length > 0) failSelector = util.validSelector(selector);
+                        
+            //             if (failSelector !== null) {
+            //                 console.warn("selector 검사 실패 : %s ", failSelector);
+            //                 return false;
+            //             }
+            //         }
+            //     }
+            // }            
             for (var i = 0; collection.count > i; i++) {
                 if (typeof collection[i].selector !== "undefined") {
-                    selectors = [];
-                    if (Array.isArray(collection[i].selector)) 
-                        selectors = collection[i].selector;
-                    else   
-                        selectors.push(collection[i].selector)
-                    
-                    for (var ii = 0; ii < selectors.length; ii++) {
-                        selector  = typeof selectors[ii] === "function" ? selectors[ii].call(this) : selectors[ii];
+                        selector = collection[i].selector.key;
 
                         if (typeof selector === "string" && selector.length > 0) failSelector = util.validSelector(selector);
                         
@@ -6140,7 +6153,6 @@ if (typeof Array.isArray === "undefined") {
                             console.warn("selector 검사 실패 : %s ", failSelector);
                             return false;
                         }
-                    }
                 }
             }
             
