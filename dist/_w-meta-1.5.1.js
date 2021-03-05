@@ -6159,6 +6159,46 @@ if (typeof Array.isArray === "undefined") {
             return true;
         };
 
+        BindModelAjax.prototype.listSelector  = function(p_isLog) {
+            
+            var collection = this.items;
+            var obj;
+            var selector;
+            var selectors = [];
+
+            for (var i = 0; collection.count > i; i++) {
+                selector = collection[i].selector;
+                if (typeof selector !== "undefined" && typeof selector.key === "string" && selector.key.length > 0) {
+                        obj = { 
+                            item: collection[1].name, 
+                            key: collection[i].selector.key, 
+                            type: collection[i].selector.type,
+                            check: util.validSelector(selector) === null ? true : false
+                        };
+                        selectors.push(obj);
+                }
+            }
+            // 정렬
+            selectors.sort(function(a, b) {
+                if (a.check > b.check) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            });
+            if (p_isLog === true) {
+                for (var i = 0; i < selectors.length > 0; i++ ) {
+                    if (selectors[i].check === true) {
+                        console.log("item: %s, key: %s, type: %s ", selectors[i].item, selectors[i].key, selectors[i].type);
+                    } else {
+                        console.warn("item: %s, key: %s, type: %s [Fail]", selectors[i].item, selectors[i].key, selectors[i].type);
+                    }
+                }
+            }
+            
+            return selectors;
+        };
+
         BindModelAjax.prototype.setService  = function(p_service, p_isLoadProp) {
 
             var propObject;
