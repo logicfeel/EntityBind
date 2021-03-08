@@ -156,12 +156,12 @@
                 enumerable: true
             });
 
-            /** @property {isNotPass} */
-            Object.defineProperty(this, "isNotPass", 
+            /** @property {isNullPass} */
+            Object.defineProperty(this, "isNullPass", 
             {
                 get: function() { return __isNullPass },
                 set: function(newValue) { 
-                    if(typeof newValue !== "boolean") throw new Error("Only [isNotPass] type 'boolean' can be added");
+                    if(typeof newValue !== "boolean") throw new Error("Only [isNullPass] type 'boolean' can be added");
                     __isNullPass = newValue; 
                 },
                 configurable: true,
