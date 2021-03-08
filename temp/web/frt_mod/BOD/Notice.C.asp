@@ -17,7 +17,7 @@
 '******************************************************************************
 %>
 <!--#include virtual="/Front/frt_cmn/include/Front_Global_Define.I.asp"-->
-<!--#include virtual="/Module/ORD/ORD_User.Cls.asp"-->
+<!--#include virtual="/Module/BOD/BOD_Notice.Cls.asp"-->
 <%
     'On Error Resume Next 
     '-------------------------------------------------
@@ -25,10 +25,14 @@
     Dim cmd             : cmd           = UCase(Request("cmd"))
     Dim doctype         : doctype       = UCase(Request("doctype"))
 
-    Dim meb_idx         : meb_idx       = Request("meb_idx")
-    Dim ord_id          : ord_id        = Request("ord_id")
-    Dim orderTel        : orderTel      = Request("orderTel")
-    Dim orderName       : orderName     = Request("orderName")
+    Dim title           : title         = Request("title")
+    Dim state_cd        : state_cd      = Request("state_cd")
+    Dim top_yn          : top_yn        = Request("top_yn")
+    Dim popup_yn        : popup_yn      = Request("popup_yn")
+    Dim writer          : writer        = Request("writer")
+    Dim contents        : contents      = Request("contents")
+    Dim ntc_idx         : ntc_idx       = Request("ntc_idx")
+    Dim division_yn     : division_yn   = Request("division_yn")
 
     Dim keyword         : keyword       = Request("keyword")
     Dim sort_cd         : sort_cd       = Request("sort_cd")
@@ -40,37 +44,36 @@
 
     Dim strContent
 
-    Dim oDic, oRs
+    Dim cNotice, oDic, oRs
     Dim iReturn     : iReturn = 0
     Dim iRowTotal   : iRowTotal = 0
     Dim iMsgCode    : iMsgCode = 0
 
-    Dim cOrderUser  : Set cOrderUser = New ORD_User_Cls
-
+    Set cNotice = New BOD_Notice_Cls
 
     If Len(doctype) = 0 Then doctype = "JSON"   '기본값 설정
 
     '-------------------------------------------------
     ' cmd 분기 처리    
-    If cmd = "READ_STATE" Then
+    If cmd = "READ" Then
         
         iMsgCode = -2000
         ' 필수값 검사
-        If Len(meb_idx) > 0 Then
+        If Len(ntc_idx) > 0 Then
             ' 프로퍼티 <필수>
-            cOrderUser.Meb_idx        = meb_idx
+            cNotice.Ntc_idx        = ntc_idx
             ' 프로퍼티 <옵션>
-            cOrderUser.MsgCode        = iMsgCode
+            cNotice.MsgCode        = iMsgCode
 
             Select Case UCase(doctype)
-                Case "XML"
-                    strContent = cOrderUser.ReadStateXml(iReturn)
-                Case "JSON"
-                    strContent = cOrderUser.ReadStateJson(iReturn)
-                Case "DIC"
-                    Set oDic = cOrderUser.ReadStateDic(iReturn)        
-                Case else
-                    Set oRs = cOrderUser.ReadState(iReturn)
+            Case "XML"
+                strContent = cNotice.ReadXml(iReturn)
+            Case "JSON"
+                strContent = cNotice.ReadJson(iReturn)
+            Case "DIC"
+                Set oDic = cNotice.ReadDic(iReturn)        
+            Case else
+                Set oRs = cNotice.Read(iReturn)
             End Select
         Else
             iReturn = iMsgCode
@@ -79,34 +82,27 @@
     ElseIf cmd = "LIST" Then
 
         iMsgCode = -5000
-        ' 필수값 검사
-        If Len(meb_idx) > 0 Then
-            ' 프로퍼티 <필수>
-            cOrderUser.Meb_idx        = meb_idx
-            ' 프로퍼티 <선택>
-            If Len(ord_id) > 0      Then cOrderUser.Ord_id          = ord_id
-            If Len(orderTel) > 0    Then cOrderUser.OrderTel        = orderTel
-            If Len(orderName) > 0   Then cOrderUser.OrderName      = orderName
-            If Len(page_size) > 0   Then cOrderUser.Page_size      = page_size
-            If Len(page_count) > 0  Then cOrderUser.Page_count     = page_count
-            If Len(sort_cd) > 0     Then cOrderUser.Sort_cd        = sort_cd
-            ' 프로퍼티 <옵션>
-            cOrderUser.MsgCode        = iMsgCode
+        ' 프로퍼티 <선택>
+        If Len(state_cd) > 0    Then cNotice.State_cd       = state_cd
+        If Len(division_yn) > 0 Then cNotice.Division_yn    = division_yn
+        If Len(keyword) > 0     Then cNotice.Keyword        = keyword
+        If Len(page_size) > 0   Then cNotice.Page_size      = page_size
+        If Len(page_count) > 0  Then cNotice.Page_count     = page_count
+        If Len(sort_cd) > 0     Then cNotice.Sort_cd        = sort_cd
+        ' 프로퍼티 <옵션>
+        cNotice.MsgCode        = iMsgCode
 
-            Select Case UCase(doctype)
-                Case "XML"
-                    strContent = cOrderUser.ListXml(iReturn, iRowTotal)
-                Case "JSON"
-                    strContent = cOrderUser.ListJson(iReturn, iRowTotal)
-                Case "DIC"
-                    Set oDic = cOrderUser.ListDic(iReturn, iRowTotal)        
-                Case else
-                    Set oRs = cOrderUser.List(iReturn, iRowTotal)
-            End Select
-        Else
-            iReturn = iMsgCode
-        End If 
-
+        Select Case UCase(doctype)
+        Case "XML"
+            strContent = cNotice.ListXml(iReturn, iRowTotal)
+        Case "JSON"
+            strContent = cNotice.ListJson(iReturn, iRowTotal)
+        Case "DIC"
+            Set oDic = cNotice.ListDic(iReturn, iRowTotal)        
+        Case else
+            Set oRs = cNotice.List(iReturn, iRowTotal)
+        End Select
+    
     Else
         iReturn = -10000
     End If
@@ -138,6 +134,6 @@
     '객체 해제
     Set oRs = Nothing
     Set oDic = Nothing
-    Set cOrderUser = Nothing
+    Set cNotice = Nothing
 %>
 <!--#include virtual="/Front/frt_cmn/include/Front_Global_Tail.I.asp"-->

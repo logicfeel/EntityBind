@@ -2674,12 +2674,12 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {isNotPass} */
-            Object.defineProperty(this, "isNotPass", 
+            /** @property {isNullPass} */
+            Object.defineProperty(this, "isNullPass", 
             {
                 get: function() { return __isNullPass },
                 set: function(newValue) { 
-                    if(typeof newValue !== "boolean") throw new Error("Only [isNotPass] type 'boolean' can be added");
+                    if(typeof newValue !== "boolean") throw new Error("Only [isNullPass] type 'boolean' can be added");
                     __isNullPass = newValue; 
                 },
                 configurable: true,
@@ -2918,7 +2918,8 @@ if (typeof Array.isArray === "undefined") {
             var result;
             var value = null;
 
-            if (!(typeof p_value === "string")) throw new Error("Only [p_value] type 'string' can be added");
+            // if (!(typeof p_value === "string")) throw new Error("Only [p_value] type 'string' can be added");
+            p_value = typeof p_value === "number" ? String(p_value) : p_value;  // number 형 변환
 
             // 1. 기본값 얻기
             value = p_value === null || typeof p_value === "undefined" ? this.default : p_value;

@@ -17,7 +17,7 @@
 '******************************************************************************
 %>
 <!--#include virtual="/Admin/adm_cmn/include/Admin_Global_Define.I.asp"-->
-<!--#include virtual="/Module/ORD/ORD_Reg.Cls.asp"-->
+<!--#include virtual="/Module/ORD/ORD_Register.Cls.asp"-->
 <%
     'On Error Resume Next 
     '-------------------------------------------------

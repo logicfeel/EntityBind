@@ -197,7 +197,7 @@
                             throw new Error("Only [constraints] type '{regex:object, msg:string, ?code:number}' can be added");
                         }
                     }
-                    __constraints = newValue;
+                    __constraints = list;
                 },
                 configurable: true,
                 enumerable: true
@@ -285,7 +285,7 @@
                 for(var prop in p_property) {
                     if (p_property.hasOwnProperty(prop) &&
                     [   "entity", "type", "size", "default", "caption", 
-                        "isNotNull", "callback", "constraints", 
+                        "isNotNull", "isNullPass", "callback", "constraints", 
                         "codeType", "order", "increase", "value", "getter", "setter" 
                     ].indexOf(prop) > -1) {
                         this[prop] = p_property[prop];
@@ -318,6 +318,7 @@
             if (this.default) clone["default"]          = this.default;
             if (this.caption) clone["caption"]          = this.caption;
             if (this.isNotNull) clone["isNotNull"]      = this.isNotNull;
+            if (this.isNullPass) clone["isNullPass"]     = this.isNullPass;
             if (this.callback) clone["callback"]        = this.callback;
             for (var i = 0; this.constraints.length > i; i++) {
                 constraints.push(this.constraints[i]);
