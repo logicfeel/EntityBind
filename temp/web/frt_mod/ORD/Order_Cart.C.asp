@@ -73,14 +73,14 @@
             cCart.MsgCode        = iMsgCode
 
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cCart.CreateXml(iReturn)
-            Case "JSON"
-                strContent = cCart.CreateJson(iReturn)
-            Case "DIC"
-                Set oDic = cCart.CreateDic(iReturn)        
-            Case else
-                Set oRs = cCart.Create(iReturn)
+                Case "XML"
+                    strContent = cCart.CreateXml(iReturn)
+                Case "JSON"
+                    strContent = cCart.CreateJson(iReturn)
+                Case "DIC"
+                    Set oDic = cCart.CreateDic(iReturn)        
+                Case else
+                    Set oRs = cCart.Create(iReturn)
             End Select        
         Else
             iReturn = iMsgCode
@@ -99,14 +99,14 @@
             cCart.MsgCode        = iMsgCode
             
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cCart.UpdateXml(iReturn)
-            Case "JSON"
-                strContent = cCart.UpdateJson(iReturn)
-            Case "DIC"
-                Set oDic = cCart.UpdateDic(iReturn)        
-            Case else
-                Set oRs = cCart.Update(iReturn)
+                Case "XML"
+                    strContent = cCart.UpdateXml(iReturn)
+                Case "JSON"
+                    strContent = cCart.UpdateJson(iReturn)
+                Case "DIC"
+                    Set oDic = cCart.UpdateDic(iReturn)        
+                Case else
+                    Set oRs = cCart.Update(iReturn)
             End Select
         Else
             iReturn = iMsgCode
@@ -123,14 +123,14 @@
             cCart.MsgCode        = iMsgCode
 
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cCart.DeleteXml(iReturn)
-            Case "JSON"
-                strContent = cCart.DeleteJson(iReturn)
-            Case "DIC"
-                Set oDic = cCart.DeleteDic(iReturn)        
-            Case else
-                Set oRs = cCart.Delete(iReturn)
+                Case "XML"
+                    strContent = cCart.DeleteXml(iReturn)
+                Case "JSON"
+                    strContent = cCart.DeleteJson(iReturn)
+                Case "DIC"
+                    Set oDic = cCart.DeleteDic(iReturn)        
+                Case else
+                    Set oRs = cCart.Delete(iReturn)
             End Select
         Else
             iReturn = iMsgCode
@@ -152,14 +152,14 @@
             cCart.MsgCode        = iMsgCode
 
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cCart.ListXml(iReturn, iRowTotal)
-            Case "JSON"
-                strContent = cCart.ListJson(iReturn, iRowTotal)
-            Case "DIC"
-                Set oDic = cCart.ListDic(iReturn, iRowTotal)        
-            Case else
-                Set oRs = cCart.List(iReturn, iRowTotal)
+                Case "XML"
+                    strContent = cCart.ListXml(iReturn, iRowTotal)
+                Case "JSON"
+                    strContent = cCart.ListJson(iReturn, iRowTotal)
+                Case "DIC"
+                    Set oDic = cCart.ListDic(iReturn, iRowTotal)        
+                Case else
+                    Set oRs = cCart.List(iReturn, iRowTotal)
             End Select
         Else
             iReturn = iMsgCode
@@ -176,14 +176,14 @@
             cCart.MsgCode        = iMsgCode
             
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cCart.OrderXml(iReturn)
-            Case "JSON"
-                strContent = cCart.OrderJson(iReturn)
-            Case "DIC"
-                Set oDic = cCart.OrderDic(iReturn)        
-            Case else
-                Set oRs = cCart.Order(iReturn)
+                Case "XML"
+                    strContent = cCart.OrderXml(iReturn)
+                Case "JSON"
+                    strContent = cCart.OrderJson(iReturn)
+                Case "DIC"
+                    Set oDic = cCart.OrderDic(iReturn)        
+                Case else
+                    Set oRs = cCart.Order(iReturn)
             End Select
         Else
             iReturn = iMsgCode
@@ -199,14 +199,14 @@
             cCart.MsgCode        = iMsgCode
             
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cCart.ResetXml(iReturn)
-            Case "JSON"
-                strContent = cCart.ResetJson(iReturn)
-            Case "DIC"
-                Set oDic = cCart.ResetDic(iReturn)        
-            Case else
-                Set oRs = cCart.Reset(iReturn)
+                Case "XML"
+                    strContent = cCart.ResetXml(iReturn)
+                Case "JSON"
+                    strContent = cCart.ResetJson(iReturn)
+                Case "DIC"
+                    Set oDic = cCart.ResetDic(iReturn)        
+                Case else
+                    Set oRs = cCart.Reset(iReturn)
             End Select
         Else
             iReturn = iMsgCode

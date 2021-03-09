@@ -101,14 +101,14 @@
             cOrder.MsgCode        = iMsgCode
 
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cOrder.CreateXml(iReturn, o_id)
-            Case "JSON"
-                strContent = cOrder.CreateJson(iReturn, o_id)
-            Case "DIC"
-                Set oDic = cOrder.CreateDic(iReturn, o_id)
-            Case else
-                Set oRs = cOrder.Create(iReturn, o_id)
+                Case "XML"
+                    strContent = cOrder.CreateXml(iReturn, o_id)
+                Case "JSON"
+                    strContent = cOrder.CreateJson(iReturn, o_id)
+                Case "DIC"
+                    Set oDic = cOrder.CreateDic(iReturn, o_id)
+                Case else
+                    Set oRs = cOrder.Create(iReturn, o_id)
             End Select        
         Else
             iReturn = iMsgCode
@@ -126,14 +126,14 @@
             cOrder.MsgCode        = iMsgCode
             
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cOrder.FinishXml(iReturn)
-            Case "JSON"
-                strContent = cOrder.FinishJson(iReturn)
-            Case "DIC"
-                Set oDic = cOrder.FinishDic(iReturn)        
-            Case else
-                Set oRs = cOrder.Finish(iReturn)
+                Case "XML"
+                    strContent = cOrder.FinishXml(iReturn)
+                Case "JSON"
+                    strContent = cOrder.FinishJson(iReturn)
+                Case "DIC"
+                    Set oDic = cOrder.FinishDic(iReturn)        
+                Case else
+                    Set oRs = cOrder.Finish(iReturn)
             End Select
         Else
             iReturn = iMsgCode
@@ -141,26 +141,29 @@
     ElseIf cmd = "LIST" Then
         
         iMsgCode = -5000
-        ' 프로퍼티 <선택>
-        If Len(state_cd) > 0    Then cOrder.State_cd       = state_cd
-        If Len(keyword) > 0     Then cOrder.Keyword        = keyword
-        If Len(page_size) > 0   Then cOrder.Page_size      = page_size
-        If Len(page_count) > 0  Then cOrder.Page_count     = page_count
-        If Len(sort_cd) > 0     Then cOrder.Sort_cd        = sort_cd
-        ' 프로퍼티 <옵션>
-        cOrder.MsgCode        = iMsgCode
+        If True Then
+            ' 프로퍼티 <선택>
+            If Len(state_cd) > 0    Then cOrder.State_cd       = state_cd
+            If Len(keyword) > 0     Then cOrder.Keyword        = keyword
+            If Len(page_size) > 0   Then cOrder.Page_size      = page_size
+            If Len(page_count) > 0  Then cOrder.Page_count     = page_count
+            If Len(sort_cd) > 0     Then cOrder.Sort_cd        = sort_cd
+            ' 프로퍼티 <옵션>
+            cOrder.MsgCode        = iMsgCode
 
-        Select Case UCase(doctype)
-        Case "XML"
-            strContent = cOrder.ListXml(iReturn, iRowTotal)
-        Case "JSON"
-            strContent = cOrder.ListJson(iReturn, iRowTotal)
-        Case "DIC"
-            Set oDic = cOrder.ListDic(iReturn, iRowTotal)        
-        Case else
-            Set oRs = cOrder.List(iReturn, iRowTotal)
-        End Select
-    
+            Select Case UCase(doctype)
+                Case "XML"
+                    strContent = cOrder.ListXml(iReturn, iRowTotal)
+                Case "JSON"
+                    strContent = cOrder.ListJson(iReturn, iRowTotal)
+                Case "DIC"
+                    Set oDic = cOrder.ListDic(iReturn, iRowTotal)        
+                Case else
+                    Set oRs = cOrder.List(iReturn, iRowTotal)
+            End Select
+        Else
+            iReturn = iMsgCode
+        End If
     Else
         iReturn = -10000
     End If

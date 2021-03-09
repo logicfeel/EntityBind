@@ -47,16 +47,16 @@
         function OrderRegisterService(p_this) {
             _super.call(this);
 
-            var _this = this;
-            
             // command 생성
-            p_this.create    = new BindCommandEditAjax(p_this, p_this._baseEntity);      // 임시 주문 등록
-            p_this.finish    = new BindCommandEditAjax(p_this, p_this._baseEntity);      // 주문 완료
+            p_this.create    = new BindCommandEditAjax(p_this);      // 임시 주문 등록
+            p_this.finish    = new BindCommandEditAjax(p_this);      // 주문 완료
             
+            // 모델 속성 설정
             p_this.baseUrl   = "/Front/frt_mod/ORD/Order_Register.C.asp";
 
             // prop 속성 설정
             this.prop = {
+                // bind
                 cmd:            "",
                 crt_idx:        { 
                     selector:       { key: "#crt_idx",       type: "value" } 
@@ -79,7 +79,7 @@
                         regex: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i, 
                         msg: "이메일 형식을 맞지 않습니다.", code: 150, return: true 
                     },
-                    isNullPass: true,
+                    isNullPass:     true,
                 },
                 recipient:      { 
                     selector:       { key: "#recipient",     type: "value" },
@@ -125,7 +125,7 @@
                     constraints:    { regex: /./, msg: "입금자명을 입력해 주세요.", code: 150, return: true},
                 },
             };
-            // mapping
+            // mapping 설정
             this.mapping = {
                 cmd:            { Array: ["bind"] },    // 전역설정
                 crt_idx:        { create: ["valid", "bind"] },
@@ -143,7 +143,7 @@
                 pay_mn:         { create: ["valid", "bind"] },
                 pay_method_cd:  { create: ["valid", "bind"] },
                 ord_id:         { finish: ["valid", "bind"] },
-                pg_yn:          { finish: "bind" }
+                pg_yn:          { finish: ["bind"] }
             };
             //--------------------------------------------------------------    
             // 4. 콜백 함수 구현
@@ -179,9 +179,7 @@
         };
         OrderRegisterService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {
-                if (p_this.checkSelector()) {
-                    console.log("preCheck : 선택자 검사 => 'Success' ");
-                }
+                if (p_this.checkSelector()) console.log("preCheck : 선택자 검사 => 'Success' ");
             }
             return true;
         };

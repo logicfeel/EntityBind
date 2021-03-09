@@ -47,23 +47,24 @@
         function MemberService(p_this) {
             _super.call(this);
 
-            var _this = this;
-            
             // command 생성
-            p_this.over         = new BindCommandLookupAjax(p_this, p_this._baseEntity);    // 아이디 중복 확인  REVIEW:: SP흐름이 모호함
-
-            p_this.create       = new BindCommandEditAjax(p_this, p_this._baseEntity);      // 회원가입
-            p_this.read         = new BindCommandLookupAjax(p_this, p_this._baseEntity);    // 회원가입
-            p_this.update       = new BindCommandEditAjax(p_this, p_this._baseEntity);      // 회원가입
-
+            p_this.create       = new BindCommandEditAjax(p_this);      // 회원가입
+            p_this.read         = new BindCommandLookupAjax(p_this);    // 회원가입
+            p_this.update       = new BindCommandEditAjax(p_this);      // 회원가입
+            
+            p_this.over         = new BindCommandLookupAjax(p_this);    // 아이디 중복 확인  REVIEW:: SP흐름이 모호함
+            
+            // 모델 속성 설정
             p_this.baseUrl      = "/Front/frt_mod/MEB/Member.C.asp";
-            p_this.over.url     = "/Front/frt_mod/MEB/Account.C.asp";
+            p_this.over.url     = "/Front/frt_mod/MEB/Member_Account.C.asp";
 
             p_this.read.outputOption = 3; 
 
             // prop 속성 설정
             this.prop = {
+                // inner
                 __finishURL:    "finish.asp",
+                // bind
                 cmd:            "",
                 sto_id:         "S00001",
                 meb_idx:        "",
@@ -76,7 +77,7 @@
                     ],
                 },
                 check_Meb_id:   { key: "#check_Meb_id",       type: "value" },
-                passwd:     {
+                passwd:         {
                     getter:         function() { return $("#passwd").val(); },
                     constraints:    [
                         { regex: /......+/, msg: "비밀번호를 6자리 이상 입력해주세요.", code: 150, return: true},
@@ -106,12 +107,12 @@
                     constraints:    { regex: /^\d{3}\d{3,4}\d{4}$/, msg: "휴대폰 번호를 정확히 입력해주세요.", code: 150, return: true }
                 },
                 zipcode:        {  selector:       { key: "#zipcode",       type: "value" } },
-                addr1:          {  selector:       { key: "#addr1",       type: "value" } },
-                addr2:          {  selector:       { key: "#addr2",       type: "value" } },
+                addr1:          {  selector:       { key: "#addr1",         type: "value" } },
+                addr2:          {  selector:       { key: "#addr2",         type: "value" } },
             };            
-            // mapping
+            // mapping 설정
             this.mapping = {
-                cmd:            { Array: ["bind"] },
+                cmd:            { Array:  ["bind"] },
                 check_Meb_id:   { create: ["valid", "bind"] },
                 sto_id:         { create: ["valid", "bind"] },
                 meb_idx:        { read:   ["valid", "bind"], update: ["valid", "bind"]  },
@@ -171,9 +172,7 @@
         };
         MemberService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {
-                if (p_this.checkSelector()) {       // 셀렉터검사 비활성화
-                    console.log("preCheck : 선택자 검사 => 'Success' ");
-                }
+                if (p_this.checkSelector()) console.log("preCheck : 선택자 검사 => 'Success' ");
             }
             return true;
         };

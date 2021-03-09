@@ -44,51 +44,55 @@
          * @abstract 추상클래스
          * @class
          */
-        function NoticeService(p_this) {
+        function NoticeService(p_this, p_suffix) {
             _super.call(this, p_this);
-            
-            var _this = this;
+
+            // 접미사 설정
+            var SUFF = p_suffix || "";  // 접미사
+            p_this.SUFF = SUFF;
 
             // command 생성
-            p_this.list = new BindCommandLookupAjax(p_this, p_this._baseEntity);
-            p_this.read = new BindCommandLookupAjax(p_this, p_this._baseEntity);
+            p_this.list = new BindCommandLookupAjax(p_this);
+            p_this.read = new BindCommandLookupAjax(p_this);
             
             // 모델 속성 설정
-            p_this.baseUrl = "/Front/frt_mod/BOD/Notice.C.asp";
+            p_this.baseUrl = "/Front/frt_mod/BOD/Board_Notice.C.asp";
             p_this.read.outputOption = 3;
 
-            // prop 설정
+            // prop 속성 설정
             this.prop = {
-                // inner 속성
+                // inner
                 __isGetLoad:    true,
                 __frmURL:       "",
-                // view 속성
-                _list_template: { selector: { key: "#notice-list-template",     type: "html" } },
-                _list_body:     { selector: { key: "#notice-list-body",         type: "html" } },
-                _totalView:     { selector: { key: "#totalView",                type: "html" } },
-                _CPage:         { selector: { key: "#CPage",                    type: "html" } },
-                // mapping 속성
+                // view
+                _temp_list:     { selector: { key: "#s-temp-list"+ SUFF,        type: "html" } },
+                _area_list:     { selector: { key: "#s-area-list"+ SUFF,        type: "html" } },
+                _txt_totalView: { selector: { key: "#s-txt-totalView"+ SUFF,    type: "html" } },
+                _area_page:     { selector: { key: "#s-area-page"+ SUFF,        type: "html" } },
+                _btn_search:    { selector: { key: "#s-btn-search"+ SUFF,       type: "html" } },
+                // bind
                 cmd:            "",
-                keyword:        { selector: { key: "#keyword",                  type: "val" } },
+                keyword:        { selector: { key: "#m-keyword"+ SUFF,          type: "value" } },
                 page_size:      {
-                    getter : function() { return page.page_size; },
-                    setter : function(val) { page.page_size = val; }
+                    getter:            function() { return page.page_size; },
+                    setter:            function(val) { page.page_size = val; }
                 },
-                page_count:      {
-                    getter: function() { return page.page_count; },
-                    setter: function(val) { page.page_count = val; }
+                page_count:     {
+                    getter:             function() { return page.page_count; },
+                    setter:             function(val) { page.page_count = val; }
                 },
                 sort_cd:        "",
-                state_cd:       { selector: {key: "[name=real_type]:checked",   type: "prop.checked" }},
+                state_cd:       { selector: { key: "[name=real_type"+ SUFF +"]:checked",  type: "prop.checked" }},
                 top_yn:         "",
                 popup_yn:       "",
                 ntc_idx:        "",
-                title:          { selector: { key: "#title",                    type: "text" } },
-                contents:       { selector: { key: "#_contents",                type: "text" } },
-                create_dt:      { selector: { key: "#create_dt",                type: "text" } },
-                writer:         { selector: { key: "#writer",                   type: "text" } },
+                title:          { selector: { key: "#m-title"+ SUFF,            type: "text" } },
+                contents:       { selector: { key: "#m-contents"+ SUFF,         type: "text" } },
+                create_dt:      { selector: { key: "#m-create_dt"+ SUFF,        type: "text" } },
+                writer:         { selector: { key: "#m-writer"+ SUFF,           type: "text" } },
             };
-            // mapping
+
+            // mapping 설정
             this.mapping = {
                 cmd:            { Array:    "bind" },
                 keyword:        { list:     "bind" },
@@ -113,35 +117,32 @@
             p_this.read.cbEnd  = function(p_entity) {
                 if (p_entity["return"] < 0) return alert("조회 처리가 실패하였습니다. Result Code : " + p_entity["return"]);
             };
+            // cbOutput
+            var template = null;
+            p_this.list.cbOutput  = function(p_entity) {
+                var row_total   = p_entity["row_total"];
+            
+                if ( template === null) {
+                    template = Handlebars.compile( p_this.items["_temp_list"].value );
+
+                    Handlebars.registerHelper('date_cut', function (p_date) {
+                        return p_date.substring(0, 10);
+                    });
+                }
+                p_this.items["_txt_totalView"].value = row_total;
+                p_this.items["_area_list"].value = template(p_entity);
+                p_this.items["_area_page"].value = page.parser(row_total);
+            };
         }
         util.inherits(NoticeService, _super);
     
         // 데코레이션 메소드
         NoticeService.prototype.preRegister = function(p_this) {
             BaseService.prototype.preRegister.call(this, p_this);
-            //--------------------------------------------------------------
-            // 4. 콜백 함수 구현
-            // cbOutput
-            var template;
-            
-            if (typeof this.items["_list_template"].value !== "undefined") {
-                template = Handlebars.compile( this.items["_list_template"].value );
-            }
-            Handlebars.registerHelper('date_cut', function (p_date) {
-                return p_date.substring(0, 10);
-            });
-            p_this.list.cbOutput  = function(p_entity) {
-                var row_total   = p_entity["row_total"];
-
-                p_this.items["_totalView"].value = row_total;
-                p_this.items["_list_body"].value = template(p_entity);
-                p_this.items["_CPage"].value = page.parser(row_total);
-            };
             //--------------------------------------------------------------    
             // 초기값 설정 : 서버측 > 파라메터 > 내부(기본값)
-            p_this.items["keyword"].value = decodeURI(getArgs("" /*서버측값*/, getParamsToJSON(location.href).keyword ));
-            page.page_count = Number( getArgs("" /*서버측값*/, getParamsToJSON(location.href).page_count, page.page_count) );
-            //--------------------------------------------------------------    
+            p_this.items["keyword"].value = decodeURI(getArgs("", getParamsToJSON(location.href).keyword ));
+            page.page_count = Number( getArgs("", getParamsToJSON(location.href).page_count, page.page_count) );
             // page 콜백 함수 설정 (방식)
             if (p_this.prop["__isGetLoad"] === true) {
                 // page.callback = goPage;                                  // 2-1) GET 방식     
@@ -151,32 +152,26 @@
             }
             //--------------------------------------------------------------    
             // 5. 이벤트 등록
-            $("#btn_Search").click(function () {
+            var btn_search = p_this.items["_btn_search"].selector.key;
+
+            $(btn_search + this.SUFF).click(function () {
                 page.page_count = 1;
                 p_this.list.execute();
             });
-            $("#btn_Reset").click(function () {
+            $("#s-btn-reset"+ this.SUFF).click(function () {
                 $("form").each(function() {
                     this.reset();
                 });
             });
-            $("#btn_Insert").click(function () {
-                var regURL = p_this.prop["__regURL"];
-
-                location.href = regURL + "?mode=CREATE";
-            });    
-            $("#page_size").change(function () {
-                page.page_size = $("#page_size").val();
+            $("#s-page_size"+ this.SUFF).change(function () {
+                page.page_size = $("#s-page_size").val();
                 page.page_count = 1;
                 p_this.list.execute();
             });
-
         };
         NoticeService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {
-                if (p_this.checkSelector()) {
-                    console.log("preCheck : 선택자 검사 => 'Success' ");
-                } 
+                if (p_this.checkSelector()) console.log("preCheck : 선택자 검사 => 'Success' ");
             }
             return true;
         };

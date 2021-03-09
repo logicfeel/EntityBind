@@ -49,57 +49,75 @@
         function ProductOpinionService(p_this) {
             _super.call(this);
             
-            var _this = this;
-
             // command 생성
-            p_this.list         = new BindCommandLookupAjax(p_this, p_this._baseEntity);
-            p_this.create       = new BindCommandEditAjax(p_this, p_this._baseEntity);
+            p_this.list         = new BindCommandLookupAjax(p_this);
+            p_this.create       = new BindCommandEditAjax(p_this);
 
-            //--------------------------------------------------------------    
-            // 2. 객체 설정 (등록)
+            // 모델 속성 설정
             p_this.baseUrl = "/Front/frt_mod/PRT/Product_Opinion.C.asp";
 
             // prop 속성 설정
             this.prop = {
-                // inner 속성
+                // inner
                 __isGetLoad:    true,
                 __frmURL:       "",
-                // view 속성
+                // view
                 _list_template: { selector: { key: "#opinion-list-template",            type: "html" } },
                 _list_body:     { selector: { key: "#opinion-list-body",                type: "html" } },
                 _totalView:     { selector: { key: "#opinion-totalView",                type: "html" } },
                 _CPage:         { selector: { key: "#opinion-CPage",                    type: "html" } },
-                // mapping 속성
+                // bind
                 cmd:            "",
                 prt_id:         "",
                 keyword:        { selector: { key: "#keyword",                  type: "val" } },
                 page_size:      {
-                    getter : function() { return page.page_size; },
-                    setter : function(val) { page.page_size = val; }
+                    getter:         function() { return page.page_size; },
+                    setter:         function(val) { page.page_size = val; }
                 },
                 page_count:      {
-                    getter: function() { return page.page_count; },
-                    setter: function(val) { page.page_count = val; }
+                    getter:         function() { return page.page_count; },
+                    setter:         function(val) { page.page_count = val; }
                 },
                 sort_cd:        "",
-
             };
-            // mapping
+
+            // mapping 설정
             this.mapping = {
                 cmd:            { Array: ["bind"] },    // 전역설정
-                prt_id:         { list: "bind"},
-                keyword:        { list: "bind"},
-                page_size:      { list: "bind"},
-                page_count:     { list: "bind"},
-                sort_cd:        { list: "bind"},
+                prt_id:         { list: ["bind"] },
+                keyword:        { list: ["bind"] },
+                page_size:      { list: ["bind"] },
+                page_count:     { list: ["bind"] },
+                sort_cd:        { list: ["bind"] },
             };
-            
 
             //--------------------------------------------------------------    
             // 4. 콜백 함수 구현
             // onExecute
             p_this.create.onExecute     = function(p_bindCommand) { p_this.items["cmd"].value = "CREATE"; };
             p_this.list.onExecute       = function(p_bindCommand) { p_this.items["cmd"].value = "LIST"; };
+            // cbOutput
+            var template = null;
+            p_this.list.cbOutput  = function(p_entity) {
+                var row_total   = p_entity["row_total"];
+
+                if ( template === null) {
+                    template = Handlebars.compile( p_this.items["_list_template"].value );
+
+                    Handlebars.registerHelper('date_cut', function (p_date) {
+                        return p_date.substring(0, 10);
+                    });
+                    Handlebars.registerHelper('grade_mark', function (p_date) {
+                        var mark = "";
+                        p_date = typeof p_date !== "number" ? p_date : 5;
+                        for (var i = 0; p_date > i; i++) mark += "★";
+                        return mark;
+                    });
+                }
+                p_this.items["_totalView"].value = row_total;
+                p_this.items["_list_body"].value = template(p_entity);
+                p_this.items["_CPage"].value = page.parser(row_total);
+            };
             // cbEnd
             p_this.list.cbEnd  = function(p_entity) {
                 if (p_entity["return"] < 0) return alert("조회 처리가 실패 하였습니다. Code : " + p_entity["return"]);
@@ -112,12 +130,9 @@
         ProductOpinionService.prototype.preRegister = function(p_this) {
             BaseService.prototype.preRegister.call(this, p_this);
             //--------------------------------------------------------------    
-            // 2. 객체 설정 (등록)
             // 초기값 설정 : 서버측 > 파라메터 > 내부(기본값)
-            p_this.items["keyword"].value = decodeURI(getArgs("" /*서버측값*/, getParamsToJSON(location.href).keyword ));
-            page.page_count = Number( getArgs("" /*서버측값*/, getParamsToJSON(location.href).page_count, page.page_count) );
-            // TODO:: 외부 검사 추가 필요 또는 _W.Util 에 추가 여부 : getArgs(), getParamsToJSON()
-
+            p_this.items["keyword"].value = decodeURI(getArgs("", getParamsToJSON(location.href).keyword ));
+            page.page_count = Number( getArgs("", getParamsToJSON(location.href).page_count, page.page_count) );
             // page 콜백 함수 설정 (방식)
             if (p_this.prop["__isGetLoad"] === true) {
                 // page.callback = goPage;                                  // 2-1) GET 방식     
@@ -125,33 +140,6 @@
             } else {
                 page.callback = p_this.list.execute.bind(p_this.list);      // 1) 콜백 방식
             }
-            //--------------------------------------------------------------    
-            // 4. 콜백 함수 구현
-            // cbOutput
-            var template;
-
-            if (typeof this.items["_list_template"].value !== "undefined") {
-                template = Handlebars.compile( this.items["_list_template"].value );
-            }
-            Handlebars.registerHelper('date_cut', function (p_date) {
-                return p_date.substring(0, 10);
-            });
-            Handlebars.registerHelper('grade_mark', function (p_date) {
-                var mark = "";
-
-                p_date = typeof p_date !== "number" ? p_date : 5;
-                for (var i = 0; p_date > i; i++) {
-                    mark += "★";
-                }
-                return mark;
-            });
-            p_this.list.cbOutput  = function(p_entity) {
-                var row_total   = p_entity["row_total"];
-
-                p_this.items["_totalView"].value = row_total;
-                p_this.items["_list_body"].value = template(p_entity);
-                p_this.items["_CPage"].value = page.parser(row_total);
-            };
             //--------------------------------------------------------------    
             // 5. 이벤트 등록
             $("#btn_Search").click(function () {
@@ -167,9 +155,7 @@
         };
         ProductOpinionService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {
-                if (p_this.checkSelector()) {
-                console.log("preCheck : 선택자 검사 => 'Success' ");
-                }
+                if (p_this.checkSelector()) console.log("preCheck : 선택자 검사 => 'Success' ");
             }
             return true;
         };

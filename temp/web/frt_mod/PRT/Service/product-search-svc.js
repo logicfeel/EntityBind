@@ -47,38 +47,37 @@
         function ProductSearchService(p_this) {
             _super.call(this, p_this);
             
-            var _this = this;
-
             // command 생성
-            p_this.list     = new BindCommandLookupAjax(p_this, p_this._baseEntity);
+            p_this.list     = new BindCommandLookupAjax(p_this);
             
             // 모델 속성 설정
             p_this.baseUrl = "/Front/frt_mod/PRT/Product_DisplayProduct.C.asp";
 
-            // prop 설정
+            // prop 속성 설정
             this.prop = {
-                // inner 속성
+                // inner
                 __isGetLoad:    true,
                 __frmURL:       "",
-                // view 속성
+                // view
                 _list_template: { selector: { key: "#list-template",            type: "html" } },
                 _list_body:     { selector: { key: "#list-body",                type: "html" } },
                 _totalView:     { selector: { key: "#totalView",                type: "html" } },
                 _CPage:         { selector: { key: "#CPage",                    type: "html" } },
-                // mapping 속성
+                // bind
                 cmd:            "",
                 keyword:        { selector: { key: "#keyword",                  type: "val" } },
                 page_size:      {
-                    getter : function() { return page.page_size; },
-                    setter : function(val) { page.page_size = val; }
+                    getter:         function() { return page.page_size; },
+                    setter:         function(val) { page.page_size = val; }
                 },
-                page_count:      {
-                    getter: function() { return page.page_count; },
-                    setter: function(val) { page.page_count = val; }
+                page_count:     {
+                    getter:         function() { return page.page_count; },
+                    setter:         function(val) { page.page_count = val; }
                 },
                 sort_cd:        "",
             };
-            // mapping
+            
+            // mapping 설정
             this.mapping = {
                 cmd:            { Array:    "bind" },
                 keyword:        { list:     "bind" },   
@@ -90,6 +89,22 @@
             // 4. 콜백 함수 구현
             // onExecute
             p_this.list.onExecute   = function(p_bindCommand) { p_this.items["cmd"].value = "SEARCH"; };
+            // cbOutput
+            var template = null;
+            p_this.list.cbOutput  = function(p_entity) {
+                var row_total   = p_entity["row_total"];
+
+                if ( template === null) {
+                    template = Handlebars.compile( p_this.items["_list_template"].value );
+
+                    Handlebars.registerHelper('comma_num', function (p_nmber) {
+                        return numberWithCommas(p_nmber);
+                    });
+                }
+                p_this.items["_totalView"].value = row_total;
+                p_this.items["_list_body"].value = template(p_entity);
+                p_this.items["_CPage"].value = page.parser(row_total);
+            };
             // cbEnd
             p_this.list.cbEnd  = function(p_entity) {
                 if (p_entity["return"] < 0) return alert("조회 처리가 실패하였습니다. Result Code : " + p_entity["return"]);
@@ -100,29 +115,10 @@
         // 데코레이션 메소드
         ProductSearchService.prototype.preRegister = function(p_this) {
             BaseService.prototype.preRegister.call(this, p_this);
-            //--------------------------------------------------------------
-            // 4. 콜백 함수 구현
-            // cbOutput
-            var template;
-            
-            if (typeof this.items["_list_template"].value !== "undefined") {
-                template = Handlebars.compile( this.items["_list_template"].value );
-            }
-            Handlebars.registerHelper('comma_num', function (p_nmber) {
-                return numberWithCommas(p_nmber);
-            });
-            p_this.list.cbOutput  = function(p_entity) {
-                var row_total   = p_entity["row_total"];
-
-                p_this.items["_totalView"].value = row_total;
-                p_this.items["_list_body"].value = template(p_entity);
-                p_this.items["_CPage"].value = page.parser(row_total);
-            };
             //--------------------------------------------------------------    
             // 초기값 설정 : 서버측 > 파라메터 > 내부(기본값)
-            p_this.items["keyword"].value = decodeURI(getArgs("" /*서버측값*/, getParamsToJSON(location.href).keyword ));
-            page.page_count = Number( getArgs("" /*서버측값*/, getParamsToJSON(location.href).page_count, page.page_count) );
-            //--------------------------------------------------------------    
+            p_this.items["keyword"].value = decodeURI(getArgs("", getParamsToJSON(location.href).keyword ));
+            page.page_count = Number( getArgs("", getParamsToJSON(location.href).page_count, page.page_count) );
             // page 콜백 함수 설정 (방식)
             if (p_this.prop["__isGetLoad"] === true) {
                 // page.callback = goPage;                                  // 2-1) GET 방식     
@@ -155,9 +151,7 @@
         };
         ProductSearchService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {
-                if (p_this.checkSelector()) {
-                    console.log("preCheck : 선택자 검사 => 'Success' ");
-                } 
+                if (p_this.checkSelector()) console.log("preCheck : 선택자 검사 => 'Success' ");
             }
             return true;
         };

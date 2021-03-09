@@ -89,14 +89,14 @@
             cMember.MsgCode        = iMsgCode
 
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cMember.CreateXml(iReturn)
-            Case "JSON"
-                strContent = cMember.CreateJson(iReturn)
-            Case "DIC"
-                Set oDic = cMember.CreateDic(iReturn)        
-            Case else
-                Set oRs = cMember.Create(iReturn)
+                Case "XML"
+                    strContent = cMember.CreateXml(iReturn)
+                Case "JSON"
+                    strContent = cMember.CreateJson(iReturn)
+                Case "DIC"
+                    Set oDic = cMember.CreateDic(iReturn)        
+                Case else
+                    Set oRs = cMember.Create(iReturn)
             End Select        
         Else
             iReturn = iMsgCode
@@ -112,14 +112,14 @@
             cMember.MsgCode        = iMsgCode
 
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cMember.ReadXml(iReturn)
-            Case "JSON"
-                strContent = cMember.ReadJson(iReturn)
-            Case "DIC"
-                Set oDic = cMember.ReadDic(iReturn)        
-            Case else
-                Set oRs = cMember.Read(iReturn)
+                Case "XML"
+                    strContent = cMember.ReadXml(iReturn)
+                Case "JSON"
+                    strContent = cMember.ReadJson(iReturn)
+                Case "DIC"
+                    Set oDic = cMember.ReadDic(iReturn)        
+                Case else
+                    Set oRs = cMember.Read(iReturn)
             End Select
         Else
             iReturn = iMsgCode
@@ -150,14 +150,14 @@
             cMember.MsgCode        = iMsgCode
 
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cMember.UpdateXml(iReturn)
-            Case "JSON"
-                strContent = cMember.UpdateJson(iReturn)
-            Case "DIC"
-                Set oDic = cMember.UpdateDic(iReturn)        
-            Case else
-                Set oRs = cMember.Update(iReturn)
+                Case "XML"
+                    strContent = cMember.UpdateXml(iReturn)
+                Case "JSON"
+                    strContent = cMember.UpdateJson(iReturn)
+                Case "DIC"
+                    Set oDic = cMember.UpdateDic(iReturn)        
+                Case else
+                    Set oRs = cMember.Update(iReturn)
             End Select
         Else
             iReturn = iMsgCode
@@ -173,14 +173,14 @@
             cMember.MsgCode        = iMsgCode
 
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cMember.DeleteXml(iReturn)
-            Case "JSON"
-                strContent = cMember.DeleteJson(iReturn)
-            Case "DIC"
-                Set oDic = cMember.DeleteDic(iReturn)        
-            Case else
-                Set oRs = cMember.Delete(iReturn)
+                Case "XML"
+                    strContent = cMember.DeleteXml(iReturn)
+                Case "JSON"
+                    strContent = cMember.DeleteJson(iReturn)
+                Case "DIC"
+                    Set oDic = cMember.DeleteDic(iReturn)        
+                Case else
+                    Set oRs = cMember.Delete(iReturn)
             End Select
         Else
             iReturn = iMsgCode

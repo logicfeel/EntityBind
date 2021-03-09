@@ -46,15 +46,12 @@
         function ProductService(p_this) {
             _super.call(this);
             
-            var _this = this;
-
             // command 생성
-            p_this.read         = new BindCommandLookupAjax(p_this, p_this._baseEntity);
-            p_this.list_option  = new BindCommandLookupAjax(p_this, p_this._baseEntity);
-            p_this.list_image   = new BindCommandLookupAjax(p_this, p_this._baseEntity);
+            p_this.read         = new BindCommandLookupAjax(p_this);
+            p_this.list_option  = new BindCommandLookupAjax(p_this);
+            p_this.list_image   = new BindCommandLookupAjax(p_this);
 
-            //--------------------------------------------------------------    
-            // 2. 객체 설정 (등록)
+            // 모델 속성 설정
             p_this.read.url         = "/Front/frt_mod/PRT/Product.C.asp";
             p_this.list_option.url  = "/Front/frt_mod/PRT/Product_Option.C.asp";
             p_this.list_image.url   = "/Front/frt_mod/PRT/Product_Image.C.asp";
@@ -80,22 +77,23 @@
                 cmd:                "",
                 prt_id:             "",
                 prtName:            { selector: { key: "#prtName",                      type: "html" } },
-                sell_mn:            { setter : function(val) { $("#sell_mn").html(numberWithCommas(val)); } },
-                discount_mn:        { setter : function(val) { $("#discount_mn").html(numberWithCommas(val)); } },
+                sell_mn:            { setter: function(val) { $("#sell_mn").html(numberWithCommas(val)); } },
+                discount_mn:        { setter: function(val) { $("#discount_mn").html(numberWithCommas(val)); } },
                 optName:            { selector: { key: "#optName",                      type: "html" } },
                 contents:           { selector: { key: "#prt-contents",                 type: "html" } },
                 fileName:           { selector: { key: "#prt_fileName",                 type: "attr.src" } },
             };
-            // mapping
+            
+            // mapping 설정
             this.mapping = {
                 cmd:                { Array: ["bind"] },    // 전역설정
-                prt_id:             { read: "bind", list_option: "bind", list_image: "bind" },
-                prtName:            { read: "output" },
-                sell_mn:            { read: "output" },
-                discount_mn:        { read: "output" },
-                optName:            { read: "output" },
-                contents:           { read: "output" },
-                fileName:           { read: "output" },
+                prt_id:             { read:  ["bind"],      list_option: "bind",        list_image: "bind" },
+                prtName:            { read:  ["output"] },
+                sell_mn:            { read:  ["output"] },
+                discount_mn:        { read:  ["output"] },
+                optName:            { read:  ["output"] },
+                contents:           { read:  ["output"] },
+                fileName:           { read:  ["output"] },
             };
 
             //--------------------------------------------------------------    
@@ -109,14 +107,18 @@
                 if (p_entity["return"] < 0) return alert("조회 처리가 실패 하였습니다. Code : " + p_entity["return"]);
             };
             // cbOutput
+            var template = null;
             p_this.list_option.cbOutput  = function(p_entity) {
                 var row_total   = p_entity["row_total"];
-                var template = Handlebars.compile( p_this.items["_opt_template"].value );
                 var row;
 
-                Handlebars.registerHelper('comma_num', function (p_nmber) {
-                    return numberWithCommas(p_nmber);
-                });
+                if ( template === null) {
+                    template = Handlebars.compile( p_this.items["_opt_template"].value );
+
+                    Handlebars.registerHelper('comma_num', function (p_nmber) {
+                        return numberWithCommas(p_nmber);
+                    });
+                }
                 p_this.items["_opt_total"].value = row_total;
                 p_this.items["_opt_body"].value = template(p_entity);
 
@@ -134,7 +136,6 @@
                     };    
                 }
             };
-            
             p_this.list_image.cbOutput  = function(p_entity) {
                 var row_total   = p_entity["row_total"];
                 var template = Handlebars.compile( p_this.items["_img_template"].value );
@@ -149,16 +150,15 @@
         // 데코레이션 메소드
         ProductService.prototype.preRegister = function(p_this) {
             BaseService.prototype.preRegister.call(this, p_this);
-            //--------------------------------------------------------------    
-            // 4. 콜백 함수 구현
-            //--------------------------------------------------------------    
-            // 5. 이벤트 등록
             // 인스턴스 함수 등록
+            var template = null;
             p_this._addOption = function(p_idx) {
 
-                var template = Handlebars.compile( p_this.items["_opt_view_template"].value );
                 var selector = p_this.items["_opt_view_body"].selector.key;
-                
+
+                if ( template === null) {
+                    template = Handlebars.compile( p_this.items["_opt_view_template"].value );
+                }
                 // 첫 등록시
                 if (typeof p_this.cartInfo[p_idx] === "undefined") {
                     p_this.cartInfo[p_idx] = p_this.optionInfo[p_idx];
@@ -222,9 +222,7 @@
         };
         ProductService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {
-                if (p_this.checkSelector()) {
-                console.log("preCheck : 선택자 검사 => 'Success' ");
-                }
+                if (p_this.checkSelector()) console.log("preCheck : 선택자 검사 => 'Success' ");
             }
             return true;
         };

@@ -6183,7 +6183,7 @@ if (typeof Array.isArray === "undefined") {
                             item: collection[1].name, 
                             key: collection[i].selector.key, 
                             type: collection[i].selector.type,
-                            check: util.validSelector(selector) === null ? true : false
+                            check: util.validSelector(selector.key) === null ? true : false
                         };
                         selectors.push(obj);
                 }

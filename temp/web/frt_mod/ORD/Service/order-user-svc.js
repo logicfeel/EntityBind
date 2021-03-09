@@ -47,21 +47,19 @@
         function OrderUserService(p_this) {
             _super.call(this);
 
-            var _this = this;
-            
-            //--------------------------------------------------------------
-	        // 1. Command 정의 및 생성
-            p_this.read_state       = new BindCommandLookupAjax(p_this, p_this._baseEntity);    // 주문상테 조회
-            p_this.list             = new BindCommandLookupAjax(p_this, p_this._baseEntity);    // 주문 목록
-            p_this.create_opinion   = new BindCommandEditAjax(p_this, p_this._baseEntity);      // 한줄평
-            //--------------------------------------------------------------    
-	        // 2. 객체 설정 (등록)
+            // command 생성
+            p_this.read_state       = new BindCommandLookupAjax(p_this);    // 주문상테 조회
+            p_this.list             = new BindCommandLookupAjax(p_this);    // 주문 목록
+            p_this.create_opinion   = new BindCommandEditAjax(p_this);      // 한줄평
+
+            // 모델 속성 설정
             p_this.read_state.outputOption = 3;
             p_this.baseUrl              = "/Front/frt_mod/ORD/Order_User.C.asp";
             p_this.create_opinion.url   = "/Front/frt_mod/PRT/Product_Opinion.C.asp";
 
             // prop 속성 설정
             this.prop = {
+                // bind
                 cmd:            "",
                 meb_idx:        "",
                 state_PW:       { selector: { key: "#state_PW",       type: "text" } },
@@ -76,9 +74,9 @@
                 page_size:      0,
                 grade_cd:       { constraints: { regex: /.+/, msg: "점수를 선택해주세요.", code: 150, return: true} },
                 ord_id:         "",
-                contents:       {constraints: { regex: /.+/, msg: "한줄을 입력해주세요.", code: 150, return: true} }
+                contents:       { constraints: { regex: /.+/, msg: "한줄을 입력해주세요.", code: 150, return: true} }
             };
-            // mapping
+            // mapping 설정
             this.mapping = {
                 cmd:            { Array: ["bind"] },    // 전역설정
                 meb_idx:    { 
@@ -86,20 +84,19 @@
                     list: ["bind"],      
                     create_opinion: ["bind"], 
                 },
-                state_PW:       { read_state: ["output"] },
-                state_PC:       { read_state: ["output"] },
-                state_RF:       { read_state: ["output"] },
-                state_PF:       { read_state: ["output"] },
-                state_DK:       { read_state: ["output"] },
-                state_DR:       { read_state: ["output"] },
-                state_DS:       { read_state: ["output"] },
-                state_DF:       { read_state: ["output"] },
-                state_TF:       { read_state: ["output"] },
-                page_size:      { list: ["bind"] },
-                grade_cd:       { create_opinion: ["valid", "bind"] },
-                ord_id:         { create_opinion: ["bind"] },
-                contents:       { create_opinion: ["valid", "bind"] },
-
+                state_PW:       { read_state:       ["output"] },
+                state_PC:       { read_state:       ["output"] },
+                state_RF:       { read_state:       ["output"] },
+                state_PF:       { read_state:       ["output"] },
+                state_DK:       { read_state:       ["output"] },
+                state_DR:       { read_state:       ["output"] },
+                state_DS:       { read_state:       ["output"] },
+                state_DF:       { read_state:       ["output"] },
+                state_TF:       { read_state:       ["output"] },
+                page_size:      { list:             ["bind"] },
+                grade_cd:       { create_opinion:   ["valid", "bind"] },
+                ord_id:         { create_opinion:   ["bind"] },
+                contents:       { create_opinion:   ["valid", "bind"] },
             };
 
             //--------------------------------------------------------------    
@@ -109,21 +106,23 @@
             p_this.list.onExecute           = function(p_bindCommand) { p_this.items["cmd"].value = "LIST"; };          // OrderUser.C.asp
             p_this.create_opinion.onExecute = function(p_bindCommand) { p_this.items["cmd"].value = "CREATE_ORDER"; };
             // cbOutput
+            var template = null;
             p_this.list.cbOutput  = function(p_entity) {
                 var row_total   = p_entity["row_total"];
-                var template    = Handlebars.compile( $("#list-template").html() );
+                if ( template === null) {
+                    template    = Handlebars.compile( $("#list-template").html() );
 
-                Handlebars.registerHelper('comma_num', function (p_nmber) {
-                    return numberWithCommas(p_nmber);
-                });
-                Handlebars.registerHelper("if", function(conditional, options) {
-                    if (conditional) {
-                        return options.fn(this);
-                    } else {
-                        return options.inverse(this);
-                    }
-                });
-    
+                    Handlebars.registerHelper('comma_num', function (p_nmber) {
+                        return numberWithCommas(p_nmber);
+                    });
+                    Handlebars.registerHelper("if", function(conditional, options) {
+                        if (conditional) {
+                            return options.fn(this);
+                        } else {
+                            return options.inverse(this);
+                        }
+                    });
+                }
                 $("#totalView").html(row_total);
                 $("#list-body").html("");
                 $('#list-body').append( template(p_entity) );
@@ -154,18 +153,15 @@
         util.inherits(OrderUserService, _super);
     
         // 데코레이션 메소드  (빼도 동작에 상관없음)
-        // OrderUserService.prototype.preRegister = function(p_this) {
-        //     BaseService.prototype.preRegister.call(this, p_this);
-        // };
-        // OrderUserService.prototype.preCheck = function(p_this) {
-        //     if (BaseService.prototype.preCheck.call(this, p_this)) {
-        //         if (p_this.checkSelector()) {
-        //         console.log("preCheck : 선택자 검사 => 'Success' ");
-        //             return true;
-        //         }
-        //     }
-        //     return false;
-        // };
+        OrderUserService.prototype.preRegister = function(p_this) {
+            BaseService.prototype.preRegister.call(this, p_this);
+        };
+        OrderUserService.prototype.preCheck = function(p_this) {
+            if (BaseService.prototype.preCheck.call(this, p_this)) {
+                if (p_this.checkSelector()) console.log("preCheck : 선택자 검사 => 'Success' ");
+            }
+            return true;
+        };
         // OrderUserService.prototype.preReady = function(p_this) {
         //     BaseService.prototype.preReady.call(this, p_this);
         // };

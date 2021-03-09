@@ -82,26 +82,30 @@
     ElseIf cmd = "SEARCH" Then
 
         iMsgCode = -5100
-        ' 프로퍼티 <필수>
-        cDispPrt.Dsp_id              = dsp_id
-        ' 프로퍼티 <선택>
-        If Len(keyword) > 0     Then cDispPrt.Keyword        = keyword
-        If Len(page_size) > 0   Then cDispPrt.Page_size      = page_size
-        If Len(page_count) > 0  Then cDispPrt.Page_count     = page_count
-        If Len(sort_cd) > 0     Then cDispPrt.Sort_cd        = sort_cd
-        ' 프로퍼티 <옵션>
-        cDispPrt.MsgCode        = iMsgCode
+        If True Then
+            ' 프로퍼티 <필수>
+            cDispPrt.Dsp_id              = dsp_id
+            ' 프로퍼티 <선택>
+            If Len(keyword) > 0     Then cDispPrt.Keyword        = keyword
+            If Len(page_size) > 0   Then cDispPrt.Page_size      = page_size
+            If Len(page_count) > 0  Then cDispPrt.Page_count     = page_count
+            If Len(sort_cd) > 0     Then cDispPrt.Sort_cd        = sort_cd
+            ' 프로퍼티 <옵션>
+            cDispPrt.MsgCode        = iMsgCode
 
-        Select Case UCase(doctype)
-            Case "XML"
-                strContent = cDispPrt.SearchXml(iReturn, iRowTotal)
-            Case "JSON"
-                strContent = cDispPrt.SearchJson(iReturn, iRowTotal)
-            Case "DIC"
-                Set oDic = cDispPrt.SearchDic(iReturn, iRowTotal)        
-            Case else
-                Set oRs = cDispPrt.Search(iReturn, iRowTotal)
-        End Select
+            Select Case UCase(doctype)
+                Case "XML"
+                    strContent = cDispPrt.SearchXml(iReturn, iRowTotal)
+                Case "JSON"
+                    strContent = cDispPrt.SearchJson(iReturn, iRowTotal)
+                Case "DIC"
+                    Set oDic = cDispPrt.SearchDic(iReturn, iRowTotal)        
+                Case else
+                    Set oRs = cDispPrt.Search(iReturn, iRowTotal)
+            End Select
+        Else
+            iReturn = iMsgCode
+        End If
     Else
         iReturn = -10000
     End If

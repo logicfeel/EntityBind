@@ -50,26 +50,24 @@
         function OrderCartService(p_this) {
             _super.call(this);
 
-            var _this = this;
-            
             // command 생성
-            p_this.create   = new BindCommandEditAjax(p_this, p_this._baseEntity);      // 장바구니 등록
-            p_this.list     = new BindCommandLookupAjax(p_this, p_this._baseEntity);    // 장바구니 목록
-            p_this.order    = new BindCommandEditAjax(p_this, p_this._baseEntity);      // 선택 상품 주문준비
-            p_this.delete   = new BindCommandEditAjax(p_this, p_this._baseEntity);      // 선택 상품 삭제
+            p_this.create   = new BindCommandEditAjax(p_this);      // 장바구니 등록
+            p_this.list     = new BindCommandLookupAjax(p_this);    // 장바구니 목록
+            p_this.order    = new BindCommandEditAjax(p_this);      // 선택 상품 주문준비
+            p_this.delete   = new BindCommandEditAjax(p_this);      // 선택 상품 삭제
             
-            //--------------------------------------------------------------    
-            // 2. 객체 설정 (등록)
+            // 모델 속성 설정
             p_this.baseUrl      = "/Front/frt_mod/ORD/Order_Cart.C.asp";
             
             // prop 속성 설정
             this.prop = {
-                // view 속성
+                // inner
                 __orderURL:         "",
+                // view
                 _cart_template:     { selector: { key: "#cart-list-template",       type: "html" } },
                 _cart_body:         { selector: { key: "#cart-list-body",           type: "html" } },
                 _cart_total:        { selector: { key: "#option-total",             type: "html" } },
-                // mapping 속성
+                // bind
                 cmd:                "",
                 page_size:          "0",
                 crt_idx:            "",
@@ -78,15 +76,15 @@
                 meb_idx:            "",
                 client_id:          "",
             };
-            // mapping
+            // mapping 설정
             this.mapping = {
-                cmd:                { Array: ["bind"] },    // 전역설정
-                page_size:          { list: "bind"},
-                crt_idx:            { list: ["valid", "bind"],      order: ["valid", "bind"],   delete: ["valid", "bind"] },
-                state_cd:           { list: "bind",                 create: ["valid", "bind"] },
-                arr_prt_opt_qty:    { create: ["valid", "bind"],    order: ["valid", "bind"],   delete: ["valid", "bind"] },
-                meb_idx:            { create: "bind" },
-                client_id:          { create: "bind" },
+                cmd:                { Array:  ["bind"] },    // 전역설정
+                page_size:          { list:   ["bind"] },
+                crt_idx:            { list:   ["valid", "bind"],    order:  ["valid", "bind"],   delete: ["valid", "bind"] },
+                state_cd:           { list:   ["bind"],             create: ["valid", "bind"] },
+                arr_prt_opt_qty:    { create: ["valid", "bind"],    order:  ["valid", "bind"],   delete: ["valid", "bind"] },
+                meb_idx:            { create: ["bind"] },
+                client_id:          { create: ["bind"] },
             };
             //--------------------------------------------------------------    
             // 4. 콜백 함수 구현
@@ -100,17 +98,19 @@
                 return confirm("선택된 상품을 장바구니에서 삭제 하시겠습니까.?");
             };
             // cbOutput
+            var template = null;
             p_this.list.cbOutput   = function(p_entity) {
                 var row_total   = p_entity["row_total"];
-                var template    = Handlebars.compile( p_this.items["_cart_template"].value ); 
-
-                Handlebars.registerHelper('sum_prt', function () {
-                    return numberWithCommas(this.discount_mn * this.qty_it);
-                });
-                Handlebars.registerHelper('comma_num', function (p_nmber) {
-                    return numberWithCommas(p_nmber);
-                });
-
+                
+                if ( template === null) {
+                    template    = Handlebars.compile( p_this.items["_cart_template"].value ); 
+                    Handlebars.registerHelper('sum_prt', function () {
+                        return numberWithCommas(this.discount_mn * this.qty_it);
+                    });
+                    Handlebars.registerHelper('comma_num', function (p_nmber) {
+                        return numberWithCommas(p_nmber);
+                    });
+                }
                 p_this.items["_cart_total"].value = row_total;
                 p_this.items["_cart_body"].value = template(p_entity);
             };
@@ -152,7 +152,6 @@
                 p_this.items["arr_prt_opt_qty"].value = arr_prt_opt_qty.join('|');;
                 p_this.order.execute();
             });
-
             $("#btn_orderCheck").click(function () {
                 var arr_prt_opt_qty = [];
 
@@ -164,7 +163,6 @@
                 p_this.items["arr_prt_opt_qty"].value = arr_prt_opt_qty.join('|');
                 p_this.order.execute();
             });
-
             $("#btn_deleteCheck").click(function () {
                 var arr_prt_opt_qty = [];
 
@@ -176,13 +174,10 @@
                 p_this.items["arr_prt_opt_qty"].value = arr_prt_opt_qty.join('|');
                 p_this.delete.execute();
             });
-
         };
         OrderCartService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {
-                if (p_this.checkSelector()) {
-                    console.log("preCheck : 선택자 검사 => 'Success' ");
-                }
+                if (p_this.checkSelector()) console.log("preCheck : 선택자 검사 => 'Success' ");
             }
             return true;
         };

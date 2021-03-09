@@ -47,48 +47,44 @@
         function PointMemberService(p_this) {
             _super.call(this);
 
-            var _this = this;
-            
-            //--------------------------------------------------------------
-	        // 1. Command 정의 및 생성
-            p_this.read             = new BindCommandLookupAjax(p_this, p_this._baseEntity);    // 포인트 조회
-            //--------------------------------------------------------------    
-	        // 2. 객체 설정 (등록)
+	        // Command 생성
+            p_this.read             = new BindCommandLookupAjax(p_this);    // 포인트 조회
+
+	        // 모델 속성 설정
+            p_this.baseUrl  = "/Front/frt_mod/POT/Point_Member.C.asp";
             p_this.read.outputOption = 3;
-            p_this.read.url  = "/Front/frt_mod/POT/Point_Member.C.asp";
-            //--------------------------------------------------------------    
-	        // 3. 아이템 등록 및 설정(추가)
-            this.prop["cmd"] = "";
-            this.prop["meb_idx"] = "";
-            this.prop["total_it"] = { setter: function(val) { return $("#total_it").text(numberWithCommas(val)); }, };
-            // mapping
+
+            // prop 속성 설정
+            this.prop =     {
+                cmd:            "",
+                meb_idx:        "",
+                total_it:       { setter: function(val) { return $("#total_it").text(numberWithCommas(val)); }, }
+            };
+
+            // mapping 설정
             this.mapping = {
                 cmd:            { Array: ["bind"] },    // 전역설정
-                meb_idx:        { read: ["bind"], },
-                total_it:       { read: ["output"] },
+                meb_idx:        { read:  ["bind"] },
+                total_it:       { read:  ["output"] },
             };
+
             //--------------------------------------------------------------    
             // 4. 콜백 함수 구현
             // onExecute
             p_this.read.onExecute = function(p_bindCommand) { p_this.items["cmd"].value = "READ"; };          // Point.C.asp
-            //--------------------------------------------------------------    
-            // 5. 이벤트 등록
         }
         util.inherits(PointMemberService, _super);
     
         // 데코레이션 메소드  (빼도 동작에 상관없음)
-        // PointMemberService.prototype.preRegister = function(p_this) {
-        //     BaseService.prototype.preRegister.call(this, p_this);
-        // };
-        // PointMemberService.prototype.preCheck = function(p_this) {
-        //     if (BaseService.prototype.preCheck.call(this, p_this)) {
-        //         if (p_this.checkSelector()) {
-        //         console.log("preCheck : 선택자 검사 => 'Success' ");
-        //             return true;
-        //         }
-        //     }
-        //     return false;
-        // };
+        PointMemberService.prototype.preRegister = function(p_this) {
+            BaseService.prototype.preRegister.call(this, p_this);
+        };
+        PointMemberService.prototype.preCheck = function(p_this) {
+            if (BaseService.prototype.preCheck.call(this, p_this)) {
+                if (p_this.checkSelector()) console.log("preCheck : 선택자 검사 => 'Success' ");
+            }
+            return true;
+        };
         // PointMemberService.prototype.preReady = function(p_this) {
         //     BaseService.prototype.preReady.call(this, p_this);
         // };

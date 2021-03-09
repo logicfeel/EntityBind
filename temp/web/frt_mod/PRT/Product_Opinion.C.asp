@@ -67,14 +67,14 @@
             cOpinion.MsgCode        = iMsgCode
 
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cOpinion.CreateOrderXml(iReturn)
-            Case "JSON"
-                strContent = cOpinion.CreateOrderJson(iReturn)
-            Case "DIC"
-                Set oDic = cOpinion.CreateOrderDic(iReturn)        
-            Case else
-                Set oRs = cOpinion.CreateOrder(iReturn)
+                Case "XML"
+                    strContent = cOpinion.CreateOrderXml(iReturn)
+                Case "JSON"
+                    strContent = cOpinion.CreateOrderJson(iReturn)
+                Case "DIC"
+                    Set oDic = cOpinion.CreateOrderDic(iReturn)        
+                Case else
+                    Set oRs = cOpinion.CreateOrder(iReturn)
             End Select        
         Else
             iReturn = iMsgCode
@@ -97,14 +97,14 @@
             cOpinion.MsgCode        = iMsgCode
 
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cOpinion.UpdateXml(iReturn)
-            Case "JSON"
-                strContent = cOpinion.UpdateJson(iReturn)
-            Case "DIC"
-                Set oDic = cOpinion.UpdateDic(iReturn)        
-            Case else
-                Set oRs = cOpinion.Update(iReturn)
+                Case "XML"
+                    strContent = cOpinion.UpdateXml(iReturn)
+                Case "JSON"
+                    strContent = cOpinion.UpdateJson(iReturn)
+                Case "DIC"
+                    Set oDic = cOpinion.UpdateDic(iReturn)        
+                Case else
+                    Set oRs = cOpinion.Update(iReturn)
             End Select        
         Else
             iReturn = iMsgCode
@@ -122,14 +122,14 @@
             cOpinion.MsgCode        = iMsgCode
 
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cOpinion.DeleteXml(iReturn)
-            Case "JSON"
-                strContent = cOpinion.DeleteJson(iReturn)
-            Case "DIC"
-                Set oDic = cOpinion.DeleteDic(iReturn)        
-            Case else
-                Set oRs = cOpinion.Delete(iReturn)
+                Case "XML"
+                    strContent = cOpinion.DeleteXml(iReturn)
+                Case "JSON"
+                    strContent = cOpinion.DeleteJson(iReturn)
+                Case "DIC"
+                    Set oDic = cOpinion.DeleteDic(iReturn)        
+                Case else
+                    Set oRs = cOpinion.Delete(iReturn)
             End Select        
         Else
             iReturn = iMsgCode
@@ -138,28 +138,30 @@
     ElseIf cmd = "LIST" Then
         
         iMsgCode = -5000
+        If True Then
+            ' 프로퍼티 <선택>
+            If Len(prt_id) > 0      Then cOpinion.Prt_id        = prt_id
+            If Len(keyword) > 0     Then cOpinion.Keyword        = keyword
+            If Len(page_size) > 0   Then cOpinion.Page_size      = page_size
+            If Len(page_count) > 0  Then cOpinion.Page_count     = page_count
+            If Len(sort_cd) > 0     Then cOpinion.Sort_cd        = sort_cd
 
-        ' 프로퍼티 <선택>
-        If Len(prt_id) > 0      Then cOpinion.Prt_id        = prt_id
-        If Len(keyword) > 0     Then cOpinion.Keyword        = keyword
-        If Len(page_size) > 0   Then cOpinion.Page_size      = page_size
-        If Len(page_count) > 0  Then cOpinion.Page_count     = page_count
-        If Len(sort_cd) > 0     Then cOpinion.Sort_cd        = sort_cd
+            ' 프로퍼티 <옵션>
+            cOpinion.MsgCode        = iMsgCode
 
-        ' 프로퍼티 <옵션>
-        cOpinion.MsgCode        = iMsgCode
-
-        Select Case UCase(doctype)
-            Case "XML"
-                strContent = cOpinion.ListXml(iReturn, iRowTotal)
-            Case "JSON"
-                strContent = cOpinion.ListJson(iReturn, iRowTotal)
-            Case "DIC"
-                Set oDic = cOpinion.ListDic(iReturn, iRowTotal)        
-            Case else
-                Set oRs = cOpinion.List(iReturn, iRowTotal)
-        End Select
-      
+            Select Case UCase(doctype)
+                    Case "XML"
+                        strContent = cOpinion.ListXml(iReturn, iRowTotal)
+                    Case "JSON"
+                        strContent = cOpinion.ListJson(iReturn, iRowTotal)
+                    Case "DIC"
+                        Set oDic = cOpinion.ListDic(iReturn, iRowTotal)        
+                    Case else
+                        Set oRs = cOpinion.List(iReturn, iRowTotal)
+            End Select
+        Else
+            iReturn = iMsgCode
+        End If   
 
     Else
         iReturn = -10000

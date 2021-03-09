@@ -66,14 +66,14 @@
             cNotice.MsgCode        = iMsgCode
 
             Select Case UCase(doctype)
-            Case "XML"
-                strContent = cNotice.ReadXml(iReturn)
-            Case "JSON"
-                strContent = cNotice.ReadJson(iReturn)
-            Case "DIC"
-                Set oDic = cNotice.ReadDic(iReturn)        
-            Case else
-                Set oRs = cNotice.Read(iReturn)
+                Case "XML"
+                    strContent = cNotice.ReadXml(iReturn)
+                Case "JSON"
+                    strContent = cNotice.ReadJson(iReturn)
+                Case "DIC"
+                    Set oDic = cNotice.ReadDic(iReturn)        
+                Case else
+                    Set oRs = cNotice.Read(iReturn)
             End Select
         Else
             iReturn = iMsgCode
@@ -82,31 +82,33 @@
     ElseIf cmd = "LIST" Then
 
         iMsgCode = -5000
-        ' 프로퍼티 <선택>
-        If Len(state_cd) > 0    Then cNotice.State_cd       = state_cd
-        If Len(division_yn) > 0 Then cNotice.Division_yn    = division_yn
-        If Len(keyword) > 0     Then cNotice.Keyword        = keyword
-        If Len(page_size) > 0   Then cNotice.Page_size      = page_size
-        If Len(page_count) > 0  Then cNotice.Page_count     = page_count
-        If Len(sort_cd) > 0     Then cNotice.Sort_cd        = sort_cd
-        ' 프로퍼티 <옵션>
-        cNotice.MsgCode        = iMsgCode
+        If True Then
+            ' 프로퍼티 <선택>
+            If Len(state_cd) > 0    Then cNotice.State_cd       = state_cd
+            If Len(division_yn) > 0 Then cNotice.Division_yn    = division_yn
+            If Len(keyword) > 0     Then cNotice.Keyword        = keyword
+            If Len(page_size) > 0   Then cNotice.Page_size      = page_size
+            If Len(page_count) > 0  Then cNotice.Page_count     = page_count
+            If Len(sort_cd) > 0     Then cNotice.Sort_cd        = sort_cd
+            ' 프로퍼티 <옵션>
+            cNotice.MsgCode        = iMsgCode
 
-        Select Case UCase(doctype)
-        Case "XML"
-            strContent = cNotice.ListXml(iReturn, iRowTotal)
-        Case "JSON"
-            strContent = cNotice.ListJson(iReturn, iRowTotal)
-        Case "DIC"
-            Set oDic = cNotice.ListDic(iReturn, iRowTotal)        
-        Case else
-            Set oRs = cNotice.List(iReturn, iRowTotal)
-        End Select
-    
+            Select Case UCase(doctype)
+                Case "XML"
+                    strContent = cNotice.ListXml(iReturn, iRowTotal)
+                Case "JSON"
+                    strContent = cNotice.ListJson(iReturn, iRowTotal)
+                Case "DIC"
+                    Set oDic = cNotice.ListDic(iReturn, iRowTotal)        
+                Case else
+                    Set oRs = cNotice.List(iReturn, iRowTotal)
+            End Select
+        Else
+            iReturn = iMsgCode
+        End If
     Else
         iReturn = -10000
     End If
-
 
     '-------------------------------------------------
     ' 출력
