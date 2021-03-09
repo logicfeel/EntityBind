@@ -19,6 +19,7 @@
     var IBindModel;
     var BindCommandLookupAjax;
     var BindCommandEditAjax;
+    var ItemDOM;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
         util                    = require("./utils");
@@ -26,7 +27,8 @@
         PropertyCollection      = require("./collection-property");
         IBindModel              = require("./i-bind-model");        
         BindCommandLookupAjax   = require("./bind-command-ajax-lookup");
-        BindCommandEditAjax     = require("./bind-command-ajax-edit");        
+        BindCommandEditAjax     = require("./bind-command-ajax-edit");
+        ItemDOM                 = require("./entity-item-dom");
     } else {
         util                    = global._W.Common.Util;
         BindModel               = global._W.Meta.Bind.BindModel;
@@ -34,6 +36,7 @@
         IBindModel              = global._W.Interface.IBindModel;        
         BindCommandLookupAjax   = global._W.Meta.Bind.BindCommandLookupAjax;
         BindCommandEditAjax     = global._W.Meta.Bind.BindCommandEditAjax;
+        ItemDOM                 = global._W.Meta.Entity.ItemDOM;
     }
 
     //==============================================================
@@ -44,6 +47,7 @@
     if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
     if (typeof BindCommandLookupAjax === "undefined") throw new Error("[BindCommandLookupAjax] module load fail...");
     if (typeof BindCommandEditAjax === "undefined") throw new Error("[BindCommandEditAjax] module load fail...");
+    if (typeof ItemDOM === "undefined") throw new Error("[ItemDOM] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -53,6 +57,8 @@
          */
         function BindModelAjax(p_itemType) {
             _super.call(this);
+            
+            p_itemType = p_itemType || ItemDOM; // 기본값
 
             var __baseAjaxSetup = {
                 url: "",
@@ -194,6 +200,8 @@
         BindModelAjax.prototype.setService  = function(p_service, p_isLoadProp) {
 
             var propObject;
+
+            p_isLoadProp = p_isLoadProp || true;       // 기본값
 
             // 유효성 검사
             if (!(p_service instanceof IBindModel)) throw new Error("Only [p_service] type 'IBindModel' can be added");

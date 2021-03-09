@@ -2715,7 +2715,7 @@ if (typeof Array.isArray === "undefined") {
                             throw new Error("Only [constraints] type '{regex:object, msg:string, ?code:number}' can be added");
                         }
                     }
-                    __constraints = newValue;
+                    __constraints = list;
                 },
                 configurable: true,
                 enumerable: true
@@ -2803,7 +2803,7 @@ if (typeof Array.isArray === "undefined") {
                 for(var prop in p_property) {
                     if (p_property.hasOwnProperty(prop) &&
                     [   "entity", "type", "size", "default", "caption", 
-                        "isNotNull", "callback", "constraints", 
+                        "isNotNull", "isNullPass", "callback", "constraints", 
                         "codeType", "order", "increase", "value", "getter", "setter" 
                     ].indexOf(prop) > -1) {
                         this[prop] = p_property[prop];
@@ -2836,6 +2836,7 @@ if (typeof Array.isArray === "undefined") {
             if (this.default) clone["default"]          = this.default;
             if (this.caption) clone["caption"]          = this.caption;
             if (this.isNotNull) clone["isNotNull"]      = this.isNotNull;
+            if (this.isNullPass) clone["isNullPass"]     = this.isNullPass;
             if (this.callback) clone["callback"]        = this.callback;
             for (var i = 0; this.constraints.length > i; i++) {
                 constraints.push(this.constraints[i]);
@@ -4657,6 +4658,8 @@ if (typeof Array.isArray === "undefined") {
         function BindCommand(p_bindModel, p_baseEntity) {
             _super.call(this);
             
+            p_baseEntity = p_baseEntity || p_bindModel._baseEntity;     // 기본값
+
             var __propagation   = true;
 
             if (p_bindModel && !(p_bindModel instanceof MetaObject && p_bindModel.instanceOf("BindModel"))) {
@@ -6028,6 +6031,7 @@ if (typeof Array.isArray === "undefined") {
     var IBindModel;
     var BindCommandLookupAjax;
     var BindCommandEditAjax;
+    var ItemDOM;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
         util                    = require("./utils");
@@ -6035,7 +6039,8 @@ if (typeof Array.isArray === "undefined") {
         PropertyCollection      = require("./collection-property");
         IBindModel              = require("./i-bind-model");        
         BindCommandLookupAjax   = require("./bind-command-ajax-lookup");
-        BindCommandEditAjax     = require("./bind-command-ajax-edit");        
+        BindCommandEditAjax     = require("./bind-command-ajax-edit");
+        ItemDOM                 = require("./entity-item-dom");
     } else {
         util                    = global._W.Common.Util;
         BindModel               = global._W.Meta.Bind.BindModel;
@@ -6043,6 +6048,7 @@ if (typeof Array.isArray === "undefined") {
         IBindModel              = global._W.Interface.IBindModel;        
         BindCommandLookupAjax   = global._W.Meta.Bind.BindCommandLookupAjax;
         BindCommandEditAjax     = global._W.Meta.Bind.BindCommandEditAjax;
+        ItemDOM                 = global._W.Meta.Entity.ItemDOM;
     }
 
     //==============================================================
@@ -6053,6 +6059,7 @@ if (typeof Array.isArray === "undefined") {
     if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
     if (typeof BindCommandLookupAjax === "undefined") throw new Error("[BindCommandLookupAjax] module load fail...");
     if (typeof BindCommandEditAjax === "undefined") throw new Error("[BindCommandEditAjax] module load fail...");
+    if (typeof ItemDOM === "undefined") throw new Error("[ItemDOM] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -6062,6 +6069,8 @@ if (typeof Array.isArray === "undefined") {
          */
         function BindModelAjax(p_itemType) {
             _super.call(this);
+            
+            p_itemType = p_itemType || ItemDOM; // 기본값
 
             var __baseAjaxSetup = {
                 url: "",
@@ -6203,6 +6212,8 @@ if (typeof Array.isArray === "undefined") {
         BindModelAjax.prototype.setService  = function(p_service, p_isLoadProp) {
 
             var propObject;
+
+            p_isLoadProp = p_isLoadProp || true;       // 기본값
 
             // 유효성 검사
             if (!(p_service instanceof IBindModel)) throw new Error("Only [p_service] type 'IBindModel' can be added");

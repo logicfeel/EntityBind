@@ -55,6 +55,8 @@
         function BindCommand(p_bindModel, p_baseEntity) {
             _super.call(this);
             
+            p_baseEntity = p_baseEntity || p_bindModel._baseEntity;     // 기본값
+
             var __propagation   = true;
 
             if (p_bindModel && !(p_bindModel instanceof MetaObject && p_bindModel.instanceOf("BindModel"))) {
