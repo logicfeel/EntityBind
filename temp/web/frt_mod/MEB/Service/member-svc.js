@@ -14,8 +14,8 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BindCommandLookupAjax   = _W.Meta.Bind.BindCommandLookupAjax;
-    var BindCommandEditAjax     =_W.Meta.Bind.BindCommandEditAjax;
+    var BindCommandLookupAjax;
+    var BindCommandEditAjax;
 
     // var accountFrmURL;          // 수정화면 경로(참조)
 
@@ -44,9 +44,13 @@
          * @abstract 추상클래스
          * @class
          */ 
-        function MemberService(p_this) {
+        function MemberService(p_this, p_suffix) {
             _super.call(this);
 
+            // 접미사 설정
+            var SUFF = p_suffix || "";  // 접미사
+            p_this.SUFF = SUFF;
+            
             // command 생성
             p_this.create       = new BindCommandEditAjax(p_this);      // 회원가입
             p_this.read         = new BindCommandLookupAjax(p_this);    // 회원가입
@@ -64,38 +68,68 @@
             this.prop = {
                 // inner
                 __finishURL:    "finish.asp",
+                // view
+                _btn_create:    { selector: { key: "#s-btn-create"+ SUFF,       type: "html" } },
+                _btn_checkID:   { selector: { key: "#s-btn-checkID"+ SUFF,       type: "html" } },
+                _btn_update:    { selector: { key: "#s-btn-update"+ SUFF,       type: "html" } },
                 // bind
                 cmd:            "",
                 sto_id:         "S00001",
                 meb_idx:        "",
                 meb_id:         { 
-                    getter:         function() { return $("#meb_id").val(); },
-                    setter:         function(val) { return $("#lbl_meb_id").text(val); },
+                    selector:       { key: "#m-meb_id"+ SUFF,        type: "value" },
                     constraints:    [
                         { regex: /......+/, msg: "아이디를 6자리 이상 입력해주세요.", code: 150, return: true},
                         { regex: /^[a-z]+[a-z0-9]{5,19}$/g, msg: "영문자와 숫자로만 입력해주세요.", code: 150, return: true},
                     ],
                 },
-                check_Meb_id:   { key: "#check_Meb_id",       type: "value" },
+                txt_meb_id:    { 
+                    selector:       { key: "#s-txt-meb_id"+ SUFF,    type: "text" },
+                },
                 passwd:         {
-                    getter:         function() { return $("#passwd").val(); },
+                    selector:       { key: "#m-passwd"+ SUFF,        type: "value" },
                     constraints:    [
-                        { regex: /......+/, msg: "비밀번호를 6자리 이상 입력해주세요.", code: 150, return: true},
+                        { regex: /......+/, msg: "비밀번호를 6자리 이상 입력해주세요.", code: 150, return: true },
+                    ]
+                },
+                passwd2:         {
+                    selector:       { key: "#m-passwd2"+ SUFF,        type: "value" },
+                    constraints:    [
+                        { regex: /......+/, msg: "비밀번호 확인을 6자리 이상 입력해주세요.", code: 150, return: true },
+                        function(p_item, p_value, r_result) { 
+                            if (p_this.items.passwd.value !== p_value) {
+                                r_result.msg = "비밀번호가 서로 다릅니다.";
+                                return false;
+                            }
+                            return true;
+                        },
                     ]
                 },
                 newPasswd:      {
-                    getter:         function() { return $("#newPasswd").val(); },
+                    selector:       { key: "#m-newPasswd"+ SUFF,     type: "value" },
                     constraints:    [
-                        { regex: /......+/, msg: "새 비밀번호를 6자리 이상 입력해주세요.", code: 150, return: true},
+                        { regex: /......+/, msg: "새 비밀번호를 6자리 이상 입력해주세요.", code: 150, return: true },
                     ],
                     isNullPass:     true
                 },
+                newPasswd2:      {
+                    selector:       { key: "#m-newPasswd2"+ SUFF,     type: "value" },
+                    constraints:    [
+                        function(p_item, p_value, r_result) { 
+                            if (p_this.items.newPasswd.value !== p_value) {
+                                r_result.msg = "비밀번호가 서로 다릅니다.";
+                                return false;
+                            }
+                            return true;
+                        },
+                    ],
+                },
                 mebName:        {
-                    selector:       { key: "#mebName",       type: "value" },
+                    selector:       { key: "#m-mebName"+ SUFF,      type: "value" },
                     constraints:    { regex: /..+/, msg: "2자 이상 이름을 정확하게 입력해주세요.", code: 150, return: true}
                 },
                 email:          { 
-                    selector:       { key: "#email",       type: "value" },
+                    selector:       { key: "#m-email"+ SUFF,       type: "value" },
                     constraints:    { 
                         regex: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i, 
                         msg: "이메일 형식을 맞지 않습니다.", code: 150, return: true 
@@ -103,22 +137,23 @@
                     isNullPass:     true
                 },
                 hp:             {
-                    selector:       { key: "#hp",       type: "value" },
+                    selector:       { key: "#m-hp"+ SUFF,       type: "value" },
                     constraints:    { regex: /^\d{3}\d{3,4}\d{4}$/, msg: "휴대폰 번호를 정확히 입력해주세요.", code: 150, return: true }
                 },
-                zipcode:        {  selector:       { key: "#zipcode",       type: "value" } },
-                addr1:          {  selector:       { key: "#addr1",         type: "value" } },
-                addr2:          {  selector:       { key: "#addr2",         type: "value" } },
+                zipcode:        {  selector:       { key: "#m-zipcode"+ SUFF,       type: "value" } },
+                addr1:          {  selector:       { key: "#m-addr1"+ SUFF,         type: "value" } },
+                addr2:          {  selector:       { key: "#m-addr2"+ SUFF,         type: "value" } },
             };            
             // mapping 설정
             this.mapping = {
                 cmd:            { Array:  ["bind"] },
-                check_Meb_id:   { create: ["valid", "bind"] },
                 sto_id:         { create: ["valid", "bind"] },
                 meb_idx:        { read:   ["valid", "bind"], update: ["valid", "bind"]  },
                 meb_id:         { create: ["valid", "bind"], over:   ["valid", "bind"], read: ["output"]  },
-                passwd:         { create: ["valid", "bind"]},
-                newPasswd:      { update: ["valid", "bind"]},
+                passwd:         { create: ["valid", "bind"], },
+                passwd2:        { create: ["valid", "bind"], },
+                newPasswd:      { update: ["valid", "bind"], },
+                newPasswd2:     { update: ["valid", "bind"], },
                 mebName:        { create: ["valid", "bind"], update: ["valid", "bind"], read: ["output"]  },
                 email:          { create: ["valid", "bind"], update: ["valid", "bind"], read: ["output"]  },
                 hp:             { create: ["valid", "bind"], update: ["valid", "bind"], read: ["output"]  },
@@ -137,7 +172,6 @@
             // cbEnd
             p_this.create.cbEnd  = function(p_entity) {
                 if (p_entity["return"] < 0) return alert("회원 등록 처리가 실패 하였습니다. Result Code : " + p_entity["return"]);
-
                 location.href = p_this.prop["__finishURL"] + "?meb_idx" + p_this.items["meb_id"];
             };
             p_this.over.cbEnd  = function(p_entity) {
@@ -148,10 +182,11 @@
             };
             p_this.update.cbEnd  = function(p_entity) {
                 if (p_entity["return"] < 0) return alert("회원 수정 처리가 실패 하였습니다. Result Code : " + p_entity["return"]);
-                
                 alert("회원정보가 수정되었습니다.");
                 p_this.read.execute();
             };
+            // onExecuted
+            p_this.read.onExecuted = function(p_bindCommand) { p_this.items["txt_meb_id"].value =  p_this.items["meb_id"].value; };
         }
         util.inherits(MemberService, _super);
     
@@ -160,13 +195,17 @@
             BaseService.prototype.preRegister.call(this, p_this);
             //--------------------------------------------------------------    
             // 5. 이벤트 등록
-            $("#btn_create").click(function () {
+            var _btn_create = p_this.items["_btn_create"].selector.key;
+            var _btn_checkID = p_this.items["_btn_checkID"].selector.key;
+            var _btn_update = p_this.items["_btn_update"].selector.key;
+            
+            $(_btn_create + this.SUFF).click(function () {
                 p_this.create.execute();
             });
-            $("#btn_ID_Check").click(function () {
+            $(_btn_checkID + this.SUFF).click(function () {
                 p_this.over.execute();
             });
-            $("#btn_update").click(function () {
+            $(_btn_update + this.SUFF).click(function () {
                 p_this.update.execute();
             });
         };

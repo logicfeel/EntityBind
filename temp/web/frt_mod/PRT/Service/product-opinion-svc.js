@@ -46,9 +46,13 @@
          * @abstract 추상클래스
          * @class
          */
-        function ProductOpinionService(p_this) {
+        function ProductOpinionService(p_this, p_suffix) {
             _super.call(this);
-            
+
+            // 접미사 설정
+            var SUFF = p_suffix || "";  // 접미사
+            p_this.SUFF = SUFF;
+
             // command 생성
             p_this.list         = new BindCommandLookupAjax(p_this);
             p_this.create       = new BindCommandEditAjax(p_this);
@@ -62,14 +66,17 @@
                 __isGetLoad:    true,
                 __frmURL:       "",
                 // view
-                _list_template: { selector: { key: "#opinion-list-template",            type: "html" } },
-                _list_body:     { selector: { key: "#opinion-list-body",                type: "html" } },
-                _totalView:     { selector: { key: "#opinion-totalView",                type: "html" } },
-                _CPage:         { selector: { key: "#opinion-CPage",                    type: "html" } },
+                _temp_list:     { selector: { key: "#s-temp-list-opinion"+ SUFF,        type: "html" } },
+                _area_list:     { selector: { key: "#s-area-list-opinion"+ SUFF,        type: "html" } },
+                _txt_totalView: { selector: { key: "#s-txt-totalView-opinion"+ SUFF,    type: "html" } },
+                _area_page:     { selector: { key: "#s-area-page-opinion"+ SUFF,        type: "html" } },
+                _btn_search:    { selector: { key: "#s-btn-search-opinion"+ SUFF,       type: "html" } },
+                _btn_reset:     { selector: { key: "#s-btn-reset-opinion"+ SUFF,        type: "html" } },
+                _txt_pageSize:  { selector: { key: "#s-txt-pageSize-opinion"+ SUFF,     type: "value" } },
                 // bind
                 cmd:            "",
                 prt_id:         "",
-                keyword:        { selector: { key: "#keyword",                  type: "val" } },
+                keyword:        { selector: { key: "#m-keyword",                  type: "val" } },
                 page_size:      {
                     getter:         function() { return page.page_size; },
                     setter:         function(val) { page.page_size = val; }
@@ -102,7 +109,7 @@
                 var row_total   = p_entity["row_total"];
 
                 if ( template === null) {
-                    template = Handlebars.compile( p_this.items["_list_template"].value );
+                    template = Handlebars.compile( p_this.items["_temp_list"].value );
 
                     Handlebars.registerHelper('date_cut', function (p_date) {
                         return p_date.substring(0, 10);
@@ -114,9 +121,9 @@
                         return mark;
                     });
                 }
-                p_this.items["_totalView"].value = row_total;
-                p_this.items["_list_body"].value = template(p_entity);
-                p_this.items["_CPage"].value = page.parser(row_total);
+                p_this.items["_txt_totalView"].value = row_total;
+                p_this.items["_area_list"].value = template(p_entity);
+                p_this.items["_area_page"].value = page.parser(row_total);
             };
             // cbEnd
             p_this.list.cbEnd  = function(p_entity) {
@@ -142,12 +149,16 @@
             }
             //--------------------------------------------------------------    
             // 5. 이벤트 등록
-            $("#btn_Search").click(function () {
+            var _btn_search     = p_this.items["_btn_search"].selector.key;
+            var _btn_reset      = p_this.items["_btn_reset"].selector.key;
+            var _txt_pageSize   = p_this.items["_txt_pageSize"].selector.key;
+
+            $(_btn_search).click(function () {
                 page.page_count = 1;
                 p_this.list.execute();
             });
-            $("#page_size").change(function () {
-                page.page_size = $("#page_size").val();
+            $(_txt_pageSize).change(function () {
+                page.page_size = p_this.items["_txt_pageSize"].value;
                 page.page_count = 1;
                 p_this.list.execute();
             });

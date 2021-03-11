@@ -14,8 +14,8 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BindCommandLookupAjax   = _W.Meta.Bind.BindCommandLookupAjax;
-    var BindCommandEditAjax     =_W.Meta.Bind.BindCommandEditAjax;
+    var BindCommandLookupAjax;
+    var BindCommandEditAjax;
 
     // var accountFrmURL;          // 수정화면 경로(참조)
 
@@ -44,8 +44,12 @@
          * @abstract 추상클래스
          * @class
          */
-        function OrderRegisterService(p_this) {
+        function OrderRegisterService(p_this, p_suffix) {
             _super.call(this);
+
+            // 접미사 설정
+            var SUFF = p_suffix || "";  // 접미사
+            p_this.SUFF = SUFF;
 
             // command 생성
             p_this.create    = new BindCommandEditAjax(p_this);      // 임시 주문 등록
@@ -56,25 +60,27 @@
 
             // prop 속성 설정
             this.prop = {
+                // view
+                _btn_create:    { selector: { key: "#s-btn-create"+ SUFF,       type: "html" } },
                 // bind
                 cmd:            "",
                 crt_idx:        { 
-                    selector:       { key: "#crt_idx",       type: "value" } 
+                    selector:       { key: "#m-crt_idx"+ SUFF,       type: "value" } 
                 },
                 order_mn:       { 
-                    selector:       { key: "#order_mn",      type: "value" },
+                    selector:       { key: "#m-order_mn"+ SUFF,      type: "value" },
                     constraints:    { regex: /\D/, msg: "결제금액은 숫자만 입력해야함", code: 150, return: false},
                 },
                 orderName:      { 
-                    selector:       { key: "#orderName",      type: "value" },
+                    selector:       { key: "#m-orderName"+ SUFF,      type: "value" },
                     constraints:    { regex: /./, msg: "주문자명을 입력해주세요.", code: 150, return: true}, 
                 },
                 orderTel:       { 
-                    selector:       { key: "#orderTel",       type: "value" },
+                    selector:       { key: "#m-orderTel"+ SUFF,       type: "value" },
                     constraints:    { regex: /^\d{3}-?\d{3,4}-?\d{4}$/, msg: "휴대폰 번호를 정확히 입력해주세요.", code: 150, return: true}, 
                 },
                 email:          { 
-                    selector:       { key: "#email",       type: "value" },
+                    selector:       { key: "#m-email"+ SUFF,       type: "value" },
                     constraints:    { 
                         regex: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i, 
                         msg: "이메일 형식을 맞지 않습니다.", code: 150, return: true 
@@ -82,46 +88,46 @@
                     isNullPass:     true,
                 },
                 recipient:      { 
-                    selector:       { key: "#recipient",     type: "value" },
+                    selector:       { key: "#m-recipient"+ SUFF,     type: "value" },
                     constraints:    { regex: /./, msg: "받으시는분 입력해주세요.", code: 150, return: true },
                 },
                 zipcode:        { 
-                    selector:       { key: "#zipcode",       type: "value" },
+                    selector:       { key: "#m-zipcode"+ SUFF,       type: "value" },
                     constraints:    { regex: /./, msg: "우편번호를 입력해주세요.", code: 150, return: true },
                 },
                 addr1:          { 
-                    selector:       { key: "#addr1",       type: "value" },
+                    selector:       { key: "#m-addr1"+ SUFF,       type: "value" },
                     constraints:    { regex: /./, msg: "주소를 입력해주세요.", code: 150, return: true }, 
                 },
                 addr2:          { 
-                    selector:       { key: "#addr2",       type: "value" },
+                    selector:       { key: "#m-addr2"+ SUFF,       type: "value" },
                     constraints:    { regex: /./, msg: "주소를 입력해주세요.", code: 150, return: true },
                 },
                 tel:            { 
-                    selector:       { key: "#tel",       type: "value" },
+                    selector:       { key: "#m-tel"+ SUFF,       type: "value" },
                     constraints:    { regex: /^\d{3}-?\d{3,4}-?\d{4}$/, msg: "받으시는분 연락처 정확히 입력해주세요.", code: 150, return: true },
                 },
                 memo:           { 
-                    selector:       { key: "#memo",       type: "value" } 
+                    selector:       { key: "#m-memo"+ SUFF,       type: "value" } 
                 },
                 choice_cd:      { 
-                    selector:       { key: "#choice_cd",       type: "value" } 
+                    selector:       { key: "#m-choice_cd"+ SUFF,       type: "value" } 
                 },
                 pay_method_cd:  { 
-                    selector:       { key: "input[name=method_cd]:checked",       type: "value" },
+                    selector:       { key: "input[name=m-method_cd]:checked",       type: "value" },
                     constraints:    { regex: /[PB]/, msg: "결제 수단을 선택해 주세요.", code: 150, return: true },
                 },
                 pay_mn:         { 
-                    selector:       { key: "#order_mn",       type: "value" } 
+                    selector:       { key: "#m-pay_mn"+ SUFF,       type: "value" } 
                 },
                 ord_id:         "",
                 pg_yn:          "",
                 bak_idx:        { 
-                    selector:       { key: "#bak_idx",       type: "value" },
+                    selector:       { key: "#m-bak_idx"+ SUFF,       type: "value" },
                     constraints:    { regex: /\d+/, msg: "입금은행을 선택해 주세요.", code: 150, return: true},
                 },
                 depositor:      { 
-                    selector:       { key: "#depositor",       type: "value" },
+                    selector:       { key: "#m-depositor"+ SUFF,       type: "value" },
                     constraints:    { regex: /./, msg: "입금자명을 입력해 주세요.", code: 150, return: true},
                 },
             };
@@ -138,7 +144,7 @@
                 addr1:          { create: ["valid", "bind"] },
                 addr2:          { create: ["valid", "bind"] },
                 tel:            { create: ["valid", "bind"] },
-                memo:           { create: "bind" },
+                memo:           { create: ["bind"] },
                 choice_cd:      { create: ["valid", "bind"] },
                 pay_mn:         { create: ["valid", "bind"] },
                 pay_method_cd:  { create: ["valid", "bind"] },
@@ -167,7 +173,9 @@
             BaseService.prototype.preRegister.call(this, p_this);
             //--------------------------------------------------------------    
             // 5. 이벤트 등록
-            $("#btn_order").click(function () {
+            var _btn_create = p_this.items["_btn_create"].selector.key;
+
+            $(_btn_create).click(function () {
                 if (p_this.items["pay_method_cd"].value === "B") {
                     p_this.create.setItem(["bak_idx", "depositor"], ["valid", "bind"]);
                 } else {

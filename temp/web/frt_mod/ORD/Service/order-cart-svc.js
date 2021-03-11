@@ -15,8 +15,8 @@
     // 2. 모듈 가져오기 (node | web)
     var util;
     var BaseService;
-    var BindCommandLookupAjax   = _W.Meta.Bind.BindCommandLookupAjax;
-    var BindCommandEditAjax     =_W.Meta.Bind.BindCommandEditAjax;
+    var BindCommandLookupAjax;
+    var BindCommandEditAjax;
 
     // var accountFrmURL;          // 수정화면 경로(참조)
 
@@ -47,8 +47,12 @@
          * @abstract 추상클래스
          * @class
          */
-        function OrderCartService(p_this) {
+        function OrderCartService(p_this, p_suffix) {
             _super.call(this);
+
+            // 접미사 설정
+            var SUFF = p_suffix || "";  // 접미사
+            p_this.SUFF = SUFF;
 
             // command 생성
             p_this.create   = new BindCommandEditAjax(p_this);      // 장바구니 등록
@@ -64,12 +68,21 @@
                 // inner
                 __orderURL:         "",
                 // view
-                _cart_template:     { selector: { key: "#cart-list-template",       type: "html" } },
-                _cart_body:         { selector: { key: "#cart-list-body",           type: "html" } },
-                _cart_total:        { selector: { key: "#option-total",             type: "html" } },
+                _temp_list:         { selector: { key: "#s-temp-list"+ SUFF,                        type: "html" } },
+                _area_list:         { selector: { key: "#s-area-list"+ SUFF,                        type: "html" } },
+                _btn_allOrder:      { selector: { key: "#s-btn-allOrder"+ SUFF,                     type: "html" } },
+                _btn_chkOrder:      { selector: { key: "#s-btn-chkOrder"+ SUFF,                     type: "html" } },
+                _btn_chkDelete:     { selector: { key: "#s-btn-chkDelete"+ SUFF,                    type: "html" } },
+                _checkbox:          { selector: { key: "input:checkbox[name=s-cartPrt"+ SUFF +"]",  type: "value" } },
+                _checkbox_row:      { selector: { key: "input:checkbox[name=s-cartPrt"+ SUFF +"]",  type: "attr.row_count" } },
+                _cart_count:        { selector: { key: "#s-cartCount"+ SUFF,                        type: "html" } },
+                _productTotal:      { selector: { key: "#s-prdouctTotal"+ SUFF,                     type: "html" } },
+                _deliveryTotal:     { selector: { key: "#s-deliveryTotal"+ SUFF,                    type: "html" } },
+                _cartTotal:         { selector: { key: "#s-cartTotal"+ SUFF,                        type: "html" } },
+                _orderTotal:        "",
                 // bind
                 cmd:                "",
-                page_size:          "0",
+                page_size:          0,
                 crt_idx:            "",
                 state_cd:           "P",
                 arr_prt_opt_qty:    "",     // 상품코드 & 옵션 & 수량 | ... 문자열
@@ -103,7 +116,7 @@
                 var row_total   = p_entity["row_total"];
                 
                 if ( template === null) {
-                    template    = Handlebars.compile( p_this.items["_cart_template"].value ); 
+                    template    = Handlebars.compile( p_this.items["_temp_list"].value ); 
                     Handlebars.registerHelper('sum_prt', function () {
                         return numberWithCommas(this.discount_mn * this.qty_it);
                     });
@@ -111,8 +124,8 @@
                         return numberWithCommas(p_nmber);
                     });
                 }
-                p_this.items["_cart_total"].value = row_total;
-                p_this.items["_cart_body"].value = template(p_entity);
+                p_this.items["_cart_count"].value = row_total;
+                p_this.items["_area_list"].value = template(p_entity);
             };
             // cbEnd
             p_this.list.cbEnd  = function(p_entity) {
@@ -120,20 +133,11 @@
             };
             p_this.order.cbEnd  = function(p_entity) {
                 if (p_entity["return"] < 0) return alert("주문 처리가 실패 하였습니다. Result Code : " + p_entity["return"]);
-
                 location.href = p_this.prop["__orderURL"];
             };
             p_this.delete.cbEnd  = function(p_entity) {
                 if (p_entity["return"] < 0) return alert("삭제 처리가 실패 하였습니다. Result Code : " + p_entity["return"]);
-
                 p_this.list.execute();
-            };
-            // onExecuted
-            p_this.list.onExecuted = function(p_cmd, p_result) {
-                // !! 템플릿 파싱후 이벤트를 등록해야함
-                $('input[name=cartPrt]:checkbox').click(function(e){
-                    $(this).next('label').toggleClass('on');
-                });
             };
         }
         util.inherits(OrderCartService, _super);
@@ -143,19 +147,29 @@
             BaseService.prototype.preRegister.call(this, p_this);
             //--------------------------------------------------------------    
             // 5. 이벤트 등록
-            $("#btn_orderAll").click(function () {
+            var _btn_allOrder   = p_this.items["_btn_allOrder"].selector.key;
+            var _btn_chkOrder   = p_this.items["_btn_chkOrder"].selector.key;
+            var _btn_chkDelete  = p_this.items["_btn_chkDelete"].selector.key;
+            var _checkbox       = p_this.items["_checkbox"].selector.key;
+            var _cart_count     = p_this.items["_cart_count"].selector.key;
+            var _productTotal   = p_this.items["_productTotal"].selector.key;
+            var _deliveryTotal  = p_this.items["_deliveryTotal"].selector.key;
+            var _cartTotal      = p_this.items["_cartTotal"].selector.key;
+            var _orderTotal     = p_this.items["_orderTotal"].selector.key;
+
+            $(_btn_allOrder).click(function () {      // 전체 상품 주문
                 var arr_prt_opt_qty = [];
 
-                $('input:checkbox[name=cartPrt]').each(function() {
+                $(_checkbox).each(function() {
                         arr_prt_opt_qty.push(this.value);
                 });
                 p_this.items["arr_prt_opt_qty"].value = arr_prt_opt_qty.join('|');;
                 p_this.order.execute();
             });
-            $("#btn_orderCheck").click(function () {
+            $(_btn_chkOrder).click(function () {    // 선택 상품 주문
                 var arr_prt_opt_qty = [];
 
-                $('input:checkbox[name=cartPrt]').each(function() {
+                $(_checkbox).each(function() {
                     if(this.checked) arr_prt_opt_qty.push(this.value);
                 });
                 if (arr_prt_opt_qty.length === 0) return alert('선택된 상품이 없습니다.');
@@ -163,10 +177,10 @@
                 p_this.items["arr_prt_opt_qty"].value = arr_prt_opt_qty.join('|');
                 p_this.order.execute();
             });
-            $("#btn_deleteCheck").click(function () {
+            $(_btn_chkDelete).click(function () {   // 선택 상품 삭제
                 var arr_prt_opt_qty = [];
 
-                $('input:checkbox[name=cartPrt]').each(function() {
+                $(_checkbox).each(function() {
                     if(this.checked) arr_prt_opt_qty.push(this.value);
                 });
                 if (arr_prt_opt_qty.length === 0) return alert('선택된 상품이 없습니다.');
@@ -174,6 +188,33 @@
                 p_this.items["arr_prt_opt_qty"].value = arr_prt_opt_qty.join('|');
                 p_this.delete.execute();
             });
+            //--------------------------------------------------------------
+            // 6. 사용자 함수 등록
+            // 체크된 상품 합계 가격 보기
+            p_this._viewCheckTotal = function(p_entity) {   
+                var table;
+                var row_count = [];
+                $(_checkbox).each(function() {
+                    if(this.checked) row_count.push($(this).attr("row_count") - 1);
+                    table = p_entity.select(null, row_count);  // 선택 복제
+                });
+                this._viewTotal(table);
+            };
+            // 상품 합계 가격 보기
+            p_this._viewTotal = function(p_entity) {
+                var total_deli_mn = 0, total_qty_mn = 0, total_prt_mn = 0, total_mn = 0;
+        
+                for (var i = 0; i < p_entity.rows.count; i++) {
+                    total_prt_mn += p_entity.rows[i].discount_mn * p_entity.rows[i].qty_it;
+                    total_qty_mn += p_entity.rows[i].qty_it;
+                }
+                total_mn = total_prt_mn + total_deli_mn;
+                p_this.items["_cart_count"].value       = total_qty_mn;
+                p_this.items["_deliveryTotal"].value    = numberWithCommas(total_deli_mn);
+                p_this.items["_productTotal"].value     = numberWithCommas(total_prt_mn);
+                p_this.items["_cartTotal"].value        = numberWithCommas(total_mn);
+                p_this.items["_orderTotal"].value = total_mn;
+            };
         };
         OrderCartService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {

@@ -70,6 +70,7 @@
                 _txt_totalView: { selector: { key: "#s-txt-totalView"+ SUFF,    type: "html" } },
                 _area_page:     { selector: { key: "#s-area-page"+ SUFF,        type: "html" } },
                 _btn_search:    { selector: { key: "#s-btn-search"+ SUFF,       type: "html" } },
+                _btn_reset:     { selector: { key: "#s-btn-reset"+ SUFF,        type: "html" } },
                 // bind
                 cmd:            "",
                 keyword:        { selector: { key: "#m-keyword"+ SUFF,          type: "value" } },
@@ -152,19 +153,9 @@
             }
             //--------------------------------------------------------------    
             // 5. 이벤트 등록
-            var btn_search = p_this.items["_btn_search"].selector.key;
+            var _btn_search = p_this.items["_btn_search"].selector.key;
 
-            $(btn_search + this.SUFF).click(function () {
-                page.page_count = 1;
-                p_this.list.execute();
-            });
-            $("#s-btn-reset"+ this.SUFF).click(function () {
-                $("form").each(function() {
-                    this.reset();
-                });
-            });
-            $("#s-page_size"+ this.SUFF).change(function () {
-                page.page_size = $("#s-page_size").val();
+            $(_btn_search + this.SUFF).click(function () {
                 page.page_count = 1;
                 p_this.list.execute();
             });

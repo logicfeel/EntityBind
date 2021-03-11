@@ -216,7 +216,7 @@ if (typeof Array.isArray === "undefined") {
      * @param {object<array | string> | array<string> | string} p_obj 
      * @returns {String} 없는 셀렉터, 통화하면 null 리턴
      */
-    var validSelector = function(p_obj) {
+    var validSelector = function(p_obj, p_isJQuery) {
         
         var selectors = [];
 
@@ -241,8 +241,17 @@ if (typeof Array.isArray === "undefined") {
             for(var i = 0; selectors.length > i; i++) {
                 if (typeof selectors[i] !== "string") throw new Error("Only [selectors] type 'string' can be added");
 
-                if (document.querySelector(selectors[i]) === null) {
-                    return selectors[i];
+                // if (document.querySelector(selectors[i]) === null) {
+                //     return selectors[i];
+                // }
+                if (p_isJQuery === true) {
+                    if (jQuery(selectors[i]).length === 0) {
+                        return selectors[i];
+                    }
+                } else {
+                    if (document.querySelector(selectors[i]) === null) {
+                        return selectors[i];
+                    }
                 }
             }
         } else {
@@ -2711,9 +2720,9 @@ if (typeof Array.isArray === "undefined") {
 
                     // 유효성 검사
                     for(var i = 0; list.length > i; i++) {
-                        if (typeof list[i].regex !== "object" || typeof list[i].msg !== "string") {
-                            throw new Error("Only [constraints] type '{regex:object, msg:string, ?code:number}' can be added");
-                        }
+                        if (!(typeof list[i] === "function" || (typeof list[i].regex === "object" && typeof list[i].msg === "string"))) {
+                            throw new Error("Only [constraints] type 'function OR {regex:object, msg:string, ?code:number}' can be added");
+                         }
                     }
                     __constraints = list;
                 },
@@ -2944,16 +2953,20 @@ if (typeof Array.isArray === "undefined") {
             // 2-3. 제약조건 검사
             for(var i = 0; this.constraints.length > i; i++) {
 
-                result = p_value.match(this.constraints[i].regex);
-
-                if ((this.constraints[i].return === false && result !== null) ||    // 실패 조건
-                    (this.constraints[i].return === true && result === null)) {     // 성공 조건
-
-                    r_result.msg   = this.constraints[i].msg;
-                    r_result.code  = this.constraints[i].code;
-                    return false;
+                if (typeof this.constraints[i] === "function") {
+                    return this.constraints[i].call(this, this, p_value, r_result);     // 함수형 제약조건
+                } else {
+                    result = p_value.match(this.constraints[i].regex);
+    
+                    if ((this.constraints[i].return === false && result !== null) ||    // 실패 조건
+                        (this.constraints[i].return === true && result === null)) {     // 성공 조건
+       
+                        r_result.msg   = this.constraints[i].msg;
+                        r_result.code  = this.constraints[i].code;
+                        return false;
+                    }
                 }
-            }
+            }            
             // // 3. 결과(Null) 검사
             // if ((p_option === 1 && this.isNotNull === true && p_value.trim().length <= 0) || 
             //     (p_option === 2 && p_value.trim().length <= 0)) {
@@ -6157,7 +6170,7 @@ if (typeof Array.isArray === "undefined") {
                 if (typeof collection[i].selector !== "undefined") {
                         selector = collection[i].selector.key;
 
-                        if (typeof selector === "string" && selector.length > 0) failSelector = util.validSelector(selector);
+                        if (typeof selector === "string" && selector.length > 0) failSelector = util.validSelector(selector, true);
                         
                         if (failSelector !== null) {
                             console.warn("selector 검사 실패 : %s ", failSelector);
@@ -6180,10 +6193,10 @@ if (typeof Array.isArray === "undefined") {
                 selector = collection[i].selector;
                 if (typeof selector !== "undefined" && typeof selector.key === "string" && selector.key.length > 0) {
                         obj = { 
-                            item: collection[1].name, 
+                            item: collection[i].name, 
                             key: collection[i].selector.key, 
                             type: collection[i].selector.type,
-                            check: util.validSelector(selector.key) === null ? true : false
+                            check: util.validSelector(selector.key, true) === null ? true : false
                         };
                         selectors.push(obj);
                 }

@@ -14,8 +14,8 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BindCommandLookupAjax   = _W.Meta.Bind.BindCommandLookupAjax;
-    var BindCommandEditAjax     =_W.Meta.Bind.BindCommandEditAjax;
+    var BindCommandLookupAjax;
+    var BindCommandEditAjax;
 
     // var accountFrmURL;          // 수정화면 경로(참조)
 
@@ -44,10 +44,14 @@
          * @abstract 추상클래스
          * @class
          */
-        function PointMemberService(p_this) {
+        function PointMemberService(p_this, p_suffix) {
             _super.call(this);
 
-	        // Command 생성
+            // 접미사 설정
+            var SUFF = p_suffix || "";  // 접미사
+            p_this.SUFF = SUFF;
+
+            // Command 생성
             p_this.read             = new BindCommandLookupAjax(p_this);    // 포인트 조회
 
 	        // 모델 속성 설정
@@ -56,9 +60,12 @@
 
             // prop 속성 설정
             this.prop =     {
+                // view
+                _txt_total:      { selector: { key: "#s-txt-total"+ SUFF,             type: "text" } },
+                // bind
                 cmd:            "",
                 meb_idx:        "",
-                total_it:       { setter: function(val) { return $("#total_it").text(numberWithCommas(val)); }, }
+                total_it:       0,
             };
 
             // mapping 설정
@@ -72,6 +79,10 @@
             // 4. 콜백 함수 구현
             // onExecute
             p_this.read.onExecute = function(p_bindCommand) { p_this.items["cmd"].value = "READ"; };          // Point.C.asp
+            // cbEnid
+            p_this.read.cbEnd = function(p_entity) { 
+                p_this.items["_txt_total"].value = numberWithCommas(p_this.items["total_it"].value); 
+            };
         }
         util.inherits(PointMemberService, _super);
     

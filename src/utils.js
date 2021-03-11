@@ -92,7 +92,7 @@
      * @param {object<array | string> | array<string> | string} p_obj 
      * @returns {String} 없는 셀렉터, 통화하면 null 리턴
      */
-    var validSelector = function(p_obj) {
+    var validSelector = function(p_obj, p_isJQuery) {
         
         var selectors = [];
 
@@ -117,8 +117,17 @@
             for(var i = 0; selectors.length > i; i++) {
                 if (typeof selectors[i] !== "string") throw new Error("Only [selectors] type 'string' can be added");
 
-                if (document.querySelector(selectors[i]) === null) {
-                    return selectors[i];
+                // if (document.querySelector(selectors[i]) === null) {
+                //     return selectors[i];
+                // }
+                if (p_isJQuery === true) {
+                    if (jQuery(selectors[i]).length === 0) {
+                        return selectors[i];
+                    }
+                } else {
+                    if (document.querySelector(selectors[i]) === null) {
+                        return selectors[i];
+                    }
                 }
             }
         } else {

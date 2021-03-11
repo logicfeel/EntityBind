@@ -14,8 +14,8 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BindCommandLookupAjax   = _W.Meta.Bind.BindCommandLookupAjax;
-    var BindCommandEditAjax     =_W.Meta.Bind.BindCommandEditAjax;
+    var BindCommandLookupAjax;
+    var BindCommandEditAjax;
 
     // var accountFrmURL;          // 수정화면 경로(참조)
 
@@ -44,8 +44,12 @@
          * @abstract 추상클래스
          * @class
          */
-        function OrderUserService(p_this) {
+        function OrderUserService(p_this, p_suffix) {
             _super.call(this);
+
+            // 접미사 설정
+            var SUFF = p_suffix || "";  // 접미사
+            p_this.SUFF = SUFF;
 
             // command 생성
             p_this.read_state       = new BindCommandLookupAjax(p_this);    // 주문상테 조회
@@ -59,18 +63,28 @@
 
             // prop 속성 설정
             this.prop = {
+                // view
+                _temp_list:     { selector: { key: "#s-temp-list"+ SUFF,            type: "html" } },
+                _area_list:     { selector: { key: "#s-area-list"+ SUFF,            type: "html" } },
+                _txt_totalView: { selector: { key: "#s-txt-totalView"+ SUFF,        type: "html" } },
+                _btn_opinion:   { selector: { key: ".s-btn_opinion"+ SUFF,          type: "html" } },
+                _btn_create:    { selector: { key: ".s-btn-create"+ SUFF,           type: "html" } },
+                _area_opinion:  { selector:  { key: "[name=s-area-opinion"+SUFF+"]",type: "attr.row_count" } },
+                _grade_cd:      { selector:  { key: "[name=m-grade_cd"+SUFF+"]",    type: "attr.row_count" } },
+                _ord_id:        { selector:  { key: "[name=m-ord_id"+SUFF+"]",      type: "attr.row_count" } },
+                _contents:      { selector:  { key: "[name=m-contents"+SUFF+"]",    type: "attr.row_count" } },
                 // bind
                 cmd:            "",
                 meb_idx:        "",
-                state_PW:       { selector: { key: "#state_PW",       type: "text" } },
-                state_PC:       { selector: { key: "#state_PC",       type: "text" } },
-                state_RF:       { selector: { key: "#state_RF",       type: "text" } },
-                state_PF:       { selector: { key: "#state_PF",       type: "text" } },
-                state_DK:       { selector: { key: "#state_DK",       type: "text" } },
-                state_DR:       { selector: { key: "#state_DR",       type: "text" } },
-                state_DS:       { selector: { key: "#state_DS",       type: "text" } },
-                state_DF:       { selector: { key: "#state_DF",       type: "text" } },
-                state_TF:       { selector: { key: "#state_TF",       type: "text" } },
+                state_PW:       { selector: { key: "#m-state_PW"+ SUFF,             type: "text" } },
+                state_PC:       { selector: { key: "#m-state_PC"+ SUFF,             type: "text" } },
+                state_RF:       { selector: { key: "#m-state_RF"+ SUFF,             type: "text" } },
+                state_PF:       { selector: { key: "#m-state_PF"+ SUFF,             type: "text" } },
+                state_DK:       { selector: { key: "#m-state_DK"+ SUFF,             type: "text" } },
+                state_DR:       { selector: { key: "#m-state_DR"+ SUFF,             type: "text" } },
+                state_DS:       { selector: { key: "#m-state_DS"+ SUFF,             type: "text" } },
+                state_DF:       { selector: { key: "#m-state_DF"+ SUFF,             type: "text" } },
+                state_TF:       { selector: { key: "#m-state_TF"+ SUFF,             type: "text" } },
                 page_size:      0,
                 grade_cd:       { constraints: { regex: /.+/, msg: "점수를 선택해주세요.", code: 150, return: true} },
                 ord_id:         "",
@@ -79,9 +93,9 @@
             // mapping 설정
             this.mapping = {
                 cmd:            { Array: ["bind"] },    // 전역설정
-                meb_idx:    { 
-                    read_state: ["bind"],      
-                    list: ["bind"],      
+                meb_idx:        { 
+                    read_state:     ["bind"],      
+                    list:           ["bind"],      
                     create_opinion: ["bind"], 
                 },
                 state_PW:       { read_state:       ["output"] },
@@ -110,42 +124,42 @@
             p_this.list.cbOutput  = function(p_entity) {
                 var row_total   = p_entity["row_total"];
                 if ( template === null) {
-                    template    = Handlebars.compile( $("#list-template").html() );
+                    template = Handlebars.compile( p_this.items["_temp_list"].value );
 
                     Handlebars.registerHelper('comma_num', function (p_nmber) {
                         return numberWithCommas(p_nmber);
                     });
                     Handlebars.registerHelper("if", function(conditional, options) {
-                        if (conditional) {
-                            return options.fn(this);
-                        } else {
-                            return options.inverse(this);
-                        }
+                        if (conditional) return options.fn(this);
+                        else return options.inverse(this);
                     });
                 }
-                $("#totalView").html(row_total);
-                $("#list-body").html("");
-                $('#list-body').append( template(p_entity) );
+                p_this.items["_txt_totalView"].value = row_total;
+                p_this.items["_area_list"].value = template(p_entity);
 
-                // 이벤트 등록
-                $(".btn_opinion").click(function(e) {
+                // 이벤트 등록  (바인딩후)
+                var _btn_opinion    = p_this.items["_btn_opinion"].selector.key;
+                var _btn_create     = p_this.items["_btn_create"].selector.key;
+                var _area_opinion   = p_this.items["_area_opinion"].selector.key;
+                var _grade_cd       = p_this.items["_grade_cd"].selector.key;
+                var _ord_id         = p_this.items["_ord_id"].selector.key;
+                var _contents       = p_this.items["_contents"].selector.key;
+    
+                $(_btn_opinion).click(function(e) {
                     var row_count = $(this).attr("row_count");
-                    
-                    $("#area_opinion_" + row_count).css("display", "");
+                    $(_area_opinion + "[row_count="+ row_count +"]").css("display", "");
                 });
-                $(".btn_qna_write").click(function(e) {
+                $(_btn_create).click(function(e) {
                     var row_count = $(this).attr("row_count");
-                    
-                    p_this.items["grade_cd"].value  = $("#grade_cd_" + row_count).val();
-                    p_this.items["ord_id"].value    = $("#ord_id_" + row_count).val();
-                    p_this.items["contents"].value  = $("#contents_" + row_count).val();
+                    p_this.items["grade_cd"].value  = $(_grade_cd +"[row_count="+ row_count +"]").val();
+                    p_this.items["ord_id"].value    = $(_ord_id +"[row_count="+ row_count +"]").val();
+                    p_this.items["contents"].value  = $(_contents +"[row_count="+ row_count +"]").val();
                     p_this.create_opinion.execute();
                 });
             };
             // cbEnd
             p_this.create_opinion.cbEnd  = function(p_entity) {
                 if (p_entity["return"] < 0) return alert("등록 처리가 실패 하였습니다. Result Code : " + p_entity["return"]);
-                
                 alert("한줄평이 등록되었습니다.");
                 p_this.list.execute();
             };

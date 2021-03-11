@@ -193,9 +193,9 @@
 
                     // 유효성 검사
                     for(var i = 0; list.length > i; i++) {
-                        if (typeof list[i].regex !== "object" || typeof list[i].msg !== "string") {
-                            throw new Error("Only [constraints] type '{regex:object, msg:string, ?code:number}' can be added");
-                        }
+                        if (!(typeof list[i] === "function" || (typeof list[i].regex === "object" && typeof list[i].msg === "string"))) {
+                            throw new Error("Only [constraints] type 'function OR {regex:object, msg:string, ?code:number}' can be added");
+                         }
                     }
                     __constraints = list;
                 },
@@ -426,16 +426,20 @@
             // 2-3. 제약조건 검사
             for(var i = 0; this.constraints.length > i; i++) {
 
-                result = p_value.match(this.constraints[i].regex);
-
-                if ((this.constraints[i].return === false && result !== null) ||    // 실패 조건
-                    (this.constraints[i].return === true && result === null)) {     // 성공 조건
-
-                    r_result.msg   = this.constraints[i].msg;
-                    r_result.code  = this.constraints[i].code;
-                    return false;
+                if (typeof this.constraints[i] === "function") {
+                    return this.constraints[i].call(this, this, p_value, r_result);     // 함수형 제약조건
+                } else {
+                    result = p_value.match(this.constraints[i].regex);
+    
+                    if ((this.constraints[i].return === false && result !== null) ||    // 실패 조건
+                        (this.constraints[i].return === true && result === null)) {     // 성공 조건
+       
+                        r_result.msg   = this.constraints[i].msg;
+                        r_result.code  = this.constraints[i].code;
+                        return false;
+                    }
                 }
-            }
+            }            
             // // 3. 결과(Null) 검사
             // if ((p_option === 1 && this.isNotNull === true && p_value.trim().length <= 0) || 
             //     (p_option === 2 && p_value.trim().length <= 0)) {

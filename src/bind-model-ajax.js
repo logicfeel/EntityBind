@@ -145,7 +145,7 @@
                 if (typeof collection[i].selector !== "undefined") {
                         selector = collection[i].selector.key;
 
-                        if (typeof selector === "string" && selector.length > 0) failSelector = util.validSelector(selector);
+                        if (typeof selector === "string" && selector.length > 0) failSelector = util.validSelector(selector, true);
                         
                         if (failSelector !== null) {
                             console.warn("selector 검사 실패 : %s ", failSelector);
@@ -168,10 +168,10 @@
                 selector = collection[i].selector;
                 if (typeof selector !== "undefined" && typeof selector.key === "string" && selector.key.length > 0) {
                         obj = { 
-                            item: collection[1].name, 
+                            item: collection[i].name, 
                             key: collection[i].selector.key, 
                             type: collection[i].selector.type,
-                            check: util.validSelector(selector.key) === null ? true : false
+                            check: util.validSelector(selector.key, true) === null ? true : false
                         };
                         selectors.push(obj);
                 }
