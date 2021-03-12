@@ -140,6 +140,9 @@
         // 데코레이션 메소드
         NoticeService.prototype.preRegister = function(p_this) {
             BaseService.prototype.preRegister.call(this, p_this);
+            // 셀렉터 얻기
+            var _btn_search = p_this.items["_btn_search"].selector.key;
+            
             //--------------------------------------------------------------    
             // 초기값 설정 : 서버측 > 파라메터 > 내부(기본값)
             p_this.items["keyword"].value = decodeURI(getArgs("", getParamsToJSON(location.href).keyword ));
@@ -153,12 +156,11 @@
             }
             //--------------------------------------------------------------    
             // 5. 이벤트 등록
-            var _btn_search = p_this.items["_btn_search"].selector.key;
-
             $(_btn_search + this.SUFF).click(function () {
                 page.page_count = 1;
                 p_this.list.execute();
             });
+            console.log("----------------------------------");
         };
         NoticeService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {
@@ -166,9 +168,9 @@
             }
             return true;
         };
-        // NoticeService.prototype.preReady = function(p_this) {
-        //     BaseService.prototype.preReady.call(this, p_this);
-        // };
+        NoticeService.prototype.preReady = function(p_this) {
+            BaseService.prototype.preReady.call(this, p_this);
+        };
 
         return NoticeService;
     

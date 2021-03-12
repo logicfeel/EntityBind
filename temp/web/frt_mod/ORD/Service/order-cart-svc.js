@@ -145,8 +145,7 @@
         // 데코레이션 메소드
         OrderCartService.prototype.preRegister = function(p_this) {
             BaseService.prototype.preRegister.call(this, p_this);
-            //--------------------------------------------------------------    
-            // 5. 이벤트 등록
+            // 셀렉터 얻기
             var _btn_allOrder   = p_this.items["_btn_allOrder"].selector.key;
             var _btn_chkOrder   = p_this.items["_btn_chkOrder"].selector.key;
             var _btn_chkDelete  = p_this.items["_btn_chkDelete"].selector.key;
@@ -157,13 +156,15 @@
             var _cartTotal      = p_this.items["_cartTotal"].selector.key;
             var _orderTotal     = p_this.items["_orderTotal"].selector.key;
 
+            //--------------------------------------------------------------    
+            // 5. 이벤트 등록
             $(_btn_allOrder).click(function () {      // 전체 상품 주문
                 var arr_prt_opt_qty = [];
 
                 $(_checkbox).each(function() {
                         arr_prt_opt_qty.push(this.value);
                 });
-                p_this.items["arr_prt_opt_qty"].value = arr_prt_opt_qty.join('|');;
+                p_this.items["arr_prt_opt_qty"].value = arr_prt_opt_qty.join('|');
                 p_this.order.execute();
             });
             $(_btn_chkOrder).click(function () {    // 선택 상품 주문
@@ -204,7 +205,7 @@
             p_this._viewTotal = function(p_entity) {
                 var total_deli_mn = 0, total_qty_mn = 0, total_prt_mn = 0, total_mn = 0;
         
-                for (var i = 0; i < p_entity.rows.count; i++) {
+                for (var i = 0; typeof p_entity !== "undefined" && i < p_entity.rows.count ; i++) {
                     total_prt_mn += p_entity.rows[i].discount_mn * p_entity.rows[i].qty_it;
                     total_qty_mn += p_entity.rows[i].qty_it;
                 }
@@ -215,6 +216,7 @@
                 p_this.items["_cartTotal"].value        = numberWithCommas(total_mn);
                 p_this.items["_orderTotal"].value = total_mn;
             };
+            console.log("----------------------------------");
         };
         OrderCartService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {
@@ -222,9 +224,9 @@
             }
             return true;
         };
-        // OrderCartService.prototype.preReady = function(p_this) {
-        //     BaseService.prototype.preReady.call(this, p_this);
-        // };
+        OrderCartService.prototype.preReady = function(p_this) {
+            BaseService.prototype.preReady.call(this, p_this);
+        };
 
         return OrderCartService;
     

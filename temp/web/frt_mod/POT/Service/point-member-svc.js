@@ -89,6 +89,7 @@
         // 데코레이션 메소드  (빼도 동작에 상관없음)
         PointMemberService.prototype.preRegister = function(p_this) {
             BaseService.prototype.preRegister.call(this, p_this);
+            console.log("----------------------------------");
         };
         PointMemberService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {
@@ -96,9 +97,9 @@
             }
             return true;
         };
-        // PointMemberService.prototype.preReady = function(p_this) {
-        //     BaseService.prototype.preReady.call(this, p_this);
-        // };
+        PointMemberService.prototype.preReady = function(p_this) {
+            BaseService.prototype.preReady.call(this, p_this);
+        };
 
         return PointMemberService;
     

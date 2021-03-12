@@ -69,10 +69,11 @@
                 _area_page:     { selector: { key: "#s-area-page"+ SUFF,        type: "html" } },
                 _btn_search:    { selector: { key: "#s-btn-search"+ SUFF,       type: "html" } },
                 _btn_reset:     { selector: { key: "#s-btn-reset"+ SUFF,        type: "html" } },
-                _txt_pageSize:  { selector: { key: "#s-txt-pageSize"+ SUFF,     type: "value" } },
+                _pageSize:      { selector: { key: "#s-pageSize"+ SUFF,         type: "value" } },
                 // bind
                 cmd:            "",
                 dsp_id:         "",
+                sub_yn:         "",
                 keyword:        { selector: { key: "#m-keyword"+ SUFF,          type: "val" } },
                 page_size:      {
                     getter:         function() { return page.page_size; },
@@ -89,6 +90,7 @@
             this.mapping = {
                 cmd:            { Array:    "bind" },
                 dsp_id:         { list:     "bind" },   
+                sub_yn:         { list:     "bind" },   
                 keyword:        { list:     "bind" },   
                 page_size:      { list:     "bind" },   
                 page_count:     { list:     "bind" },   
@@ -100,7 +102,7 @@
             p_this.list.onExecute   = function(p_bindCommand) { p_this.items["cmd"].value = "LIST"; };
             // cbOutput
             var template = null;
-            
+
             p_this.list.cbOutput  = function(p_entity) {
                 var row_total   = p_entity["row_total"];
                 
@@ -125,6 +127,11 @@
         // 데코레이션 메소드
         ProductDisplayProductService.prototype.preRegister = function(p_this) {
             BaseService.prototype.preRegister.call(this, p_this);
+            // 셀렉터 얻기
+            var _btn_search     = p_this.items["_btn_search"].selector.key;
+            var _btn_reset      = p_this.items["_btn_reset"].selector.key;
+            var _pageSize       = p_this.items["_pageSize"].selector.key;
+            
             //--------------------------------------------------------------    
             // 초기값 설정 : 서버측 > 파라메터 > 내부(기본값)
             p_this.items["keyword"].value = decodeURI(getArgs("", getParamsToJSON(location.href).keyword ));
@@ -138,10 +145,6 @@
             }
             //--------------------------------------------------------------    
             // 5. 이벤트 등록
-            var _btn_search     = p_this.items["_btn_search"].selector.key;
-            var _btn_reset      = p_this.items["_btn_reset"].selector.key;
-            var _txt_pageSize   = p_this.items["_txt_pageSize"].selector.key;
-
             $(_btn_search).click(function () {
                 page.page_count = 1;
                 p_this.list.execute();
@@ -151,12 +154,12 @@
                     this.reset();
                 });
             });
-            $(_txt_pageSize).change(function () {
-                page.page_size = p_this.items["_txt_pageSize"].value;
+            $(_pageSize).change(function () {
+                page.page_size = p_this.items["_pageSize"].value;
                 page.page_count = 1;
                 p_this.list.execute();
             });
-
+            console.log("----------------------------------");
         };
         ProductDisplayProductService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {

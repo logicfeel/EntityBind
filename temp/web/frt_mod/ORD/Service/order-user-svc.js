@@ -67,12 +67,12 @@
                 _temp_list:     { selector: { key: "#s-temp-list"+ SUFF,            type: "html" } },
                 _area_list:     { selector: { key: "#s-area-list"+ SUFF,            type: "html" } },
                 _txt_totalView: { selector: { key: "#s-txt-totalView"+ SUFF,        type: "html" } },
-                _btn_opinion:   { selector: { key: ".s-btn_opinion"+ SUFF,          type: "html" } },
-                _btn_create:    { selector: { key: ".s-btn-create"+ SUFF,           type: "html" } },
-                _area_opinion:  { selector:  { key: "[name=s-area-opinion"+SUFF+"]",type: "attr.row_count" } },
-                _grade_cd:      { selector:  { key: "[name=m-grade_cd"+SUFF+"]",    type: "attr.row_count" } },
-                _ord_id:        { selector:  { key: "[name=m-ord_id"+SUFF+"]",      type: "attr.row_count" } },
-                _contents:      { selector:  { key: "[name=m-contents"+SUFF+"]",    type: "attr.row_count" } },
+                _btn_opinion:   { selector: { key: "[name=s-btn-opinion"+SUFF+"]",  type: "attr.row_count" } },
+                _btn_create:    { selector: { key: "[name=s-btn-create"+SUFF+"]",   type: "attr.row_count" } },
+                _area_opinion:  { selector: { key: "[name=s-area-opinion"+SUFF+"]", type: "attr.row_count" } },
+                _grade_cd:      { selector: { key: "[name=m-grade_cd"+SUFF+"]",     type: "attr.row_count" } },
+                _ord_id:        { selector: { key: "[name=m-ord_id"+SUFF+"]",       type: "attr.row_count" } },
+                _contents:      { selector: { key: "[name=m-contents"+SUFF+"]",     type: "attr.row_count" } },
                 // bind
                 cmd:            "",
                 meb_idx:        "",
@@ -137,14 +137,15 @@
                 p_this.items["_txt_totalView"].value = row_total;
                 p_this.items["_area_list"].value = template(p_entity);
 
-                // 이벤트 등록  (바인딩후)
+                // 셀렉터 얻기
                 var _btn_opinion    = p_this.items["_btn_opinion"].selector.key;
                 var _btn_create     = p_this.items["_btn_create"].selector.key;
                 var _area_opinion   = p_this.items["_area_opinion"].selector.key;
                 var _grade_cd       = p_this.items["_grade_cd"].selector.key;
                 var _ord_id         = p_this.items["_ord_id"].selector.key;
                 var _contents       = p_this.items["_contents"].selector.key;
-    
+                
+                // 이벤트 등록  (바인딩후)
                 $(_btn_opinion).click(function(e) {
                     var row_count = $(this).attr("row_count");
                     $(_area_opinion + "[row_count="+ row_count +"]").css("display", "");
@@ -163,12 +164,14 @@
                 alert("한줄평이 등록되었습니다.");
                 p_this.list.execute();
             };
+            
         }
         util.inherits(OrderUserService, _super);
     
         // 데코레이션 메소드  (빼도 동작에 상관없음)
         OrderUserService.prototype.preRegister = function(p_this) {
             BaseService.prototype.preRegister.call(this, p_this);
+            console.log("----------------------------------");
         };
         OrderUserService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {
@@ -176,9 +179,9 @@
             }
             return true;
         };
-        // OrderUserService.prototype.preReady = function(p_this) {
-        //     BaseService.prototype.preReady.call(this, p_this);
-        // };
+        OrderUserService.prototype.preReady = function(p_this) {
+            BaseService.prototype.preReady.call(this, p_this);
+        };
 
         return OrderUserService;
     

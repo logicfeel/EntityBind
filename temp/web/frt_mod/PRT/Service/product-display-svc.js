@@ -94,12 +94,14 @@
             p_this.list.cbEnd  = function(p_entity) {
                 if (p_entity["return"] < 0) return alert("조회 처리가 실패하였습니다. Result Code : " + p_entity["return"]);
             };
+            
         }
         util.inherits(ProductDisplayService, _super);
     
         // 데코레이션 메소드
         ProductDisplayService.prototype.preRegister = function(p_this) {
             BaseService.prototype.preRegister.call(this, p_this);
+            console.log("----------------------------------");
         };
         ProductDisplayService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {

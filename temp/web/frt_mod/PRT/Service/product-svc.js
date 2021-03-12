@@ -43,8 +43,12 @@
          * @abstract 추상클래스
          * @class
          */
-        function ProductService(p_this) {
+        function ProductService(p_this, p_suffix) {
             _super.call(this);
+
+            // 접미사 설정
+            var SUFF = p_suffix || "";  // 접미사
+            p_this.SUFF = SUFF;
             
             // command 생성
             p_this.read         = new BindCommandLookupAjax(p_this);
@@ -64,24 +68,30 @@
 
             // prop 속성 설정
             this.prop = {
-                // view 속성
-                _opt_template:      { selector: { key: "#option-list-template",         type: "html" } },
-                _opt_body:          { selector: { key: "#option-list-body",             type: "html" } },
-                _opt_total:         { selector: { key: "#option-total",                 type: "html" } },
-                _img_template:      { selector: { key: "#image-list-template",          type: "html" } },
-                _img_body:          { selector: { key: "#image-list-body",              type: "html" } },
-                _img_total:         { selector: { key: "#image-total",                  type: "html" } },
-                _opt_view_template: { selector: { key: "#option-view-template",         type: "html" } },
-                _opt_view_body:     { selector: { key: "#option-view-body",             type: "html" } },                
-                // mapping 속성
+                // view
+                _temp_option:       { selector: { key: "#s-temp-option"+ SUFF,          type: "html" } },
+                _area_option:       { selector: { key: "#s-area-option"+ SUFF,          type: "html" } },
+                _temp_option_view:  { selector: { key: "#s-temp-option-view"+ SUFF,     type: "html" } },
+                _area_option_view:  { selector: { key: "#s-area-option-vlew"+ SUFF,     type: "html" } },
+                _temp_image:        { selector: { key: "#s-temp-image"+ SUFF,           type: "html" } },
+                _area_image:        { selector: { key: "#s-area-image"+ SUFF,           type: "html" } },
+                _sellTotal:         { selector: { key: "#s-txt-sellTotal"+ SUFF,        type: "html" } },
+                _decountTotal:      { selector: { key: "#s-txt-decountTotal"+ SUFF,     type: "html" } },
+                _productTotal:      { selector: { key: "#s-txt-productTotal"+ SUFF,     type: "html" } },
+                _option:            { selector: { key: "[name=s-option"+SUFF+"]",       type: "attr.row_count" } },
+                _productSum:        { selector: { key: "[name=s-productSum"+SUFF+"]",   type: "attr.row_count" } },
+                _qty:               { selector: { key: "[name=s-qty"+SUFF+"]",          type: "attr.row_count" } },
+                _txt_sell:          { selector: { key: "#s-txt-sell"+ SUFF,             type: "text" } },
+                _txt_discount:      { selector: { key: "#s-txt-discount"+ SUFF,         type: "text" } },
+                // bind
                 cmd:                "",
                 prt_id:             "",
-                prtName:            { selector: { key: "#prtName",                      type: "html" } },
-                sell_mn:            { setter: function(val) { $("#sell_mn").html(numberWithCommas(val)); } },
-                discount_mn:        { setter: function(val) { $("#discount_mn").html(numberWithCommas(val)); } },
-                optName:            { selector: { key: "#optName",                      type: "html" } },
-                contents:           { selector: { key: "#prt-contents",                 type: "html" } },
-                fileName:           { selector: { key: "#prt_fileName",                 type: "attr.src" } },
+                prtName:            { selector: { key: "#m-prtName",                    type: "html" } },
+                sell_mn:            0,
+                discount_mn:        0,
+                optName:            { selector: { key: "#m-optName",                    type: "text" } },
+                contents:           { selector: { key: "#m-contents",                   type: "html" } },
+                fileName:           { selector: { key: "#m-fileName",                   type: "attr.src" } },
             };
             
             // mapping 설정
@@ -102,30 +112,23 @@
             p_this.read.onExecute           = function(p_bindCommand) { p_this.items["cmd"].value = "READ"; };
             p_this.list_option.onExecute    = function(p_bindCommand) { p_this.items["cmd"].value = "LIST"; };
             p_this.list_image.onExecute     = function(p_bindCommand) { p_this.items["cmd"].value = "LIST"; };
-            // cbEnd
-            p_this.read.cbEnd  = function(p_entity) {
-                if (p_entity["return"] < 0) return alert("조회 처리가 실패 하였습니다. Code : " + p_entity["return"]);
-            };
             // cbOutput
             var template = null;
             p_this.list_option.cbOutput  = function(p_entity) {
-                var row_total   = p_entity["row_total"];
                 var row;
 
                 if ( template === null) {
-                    template = Handlebars.compile( p_this.items["_opt_template"].value );
-
+                    template = Handlebars.compile( p_this.items["_temp_option"].value );
                     Handlebars.registerHelper('comma_num', function (p_nmber) {
                         return numberWithCommas(p_nmber);
                     });
                 }
-                p_this.items["_opt_total"].value = row_total;
-                p_this.items["_opt_body"].value = template(p_entity);
-
+                p_this.items["_area_option"].value = template(p_entity);
                 // 엔티티 구성
                 for (var i = 0; i < p_entity.rows.length; i++) {
                     row = p_entity.rows[i];
-                    p_this.optionInfo[row["opt_idx"]] = { 
+                    p_this.optionInfo[row["row_count"]] = { 
+                        row_count: row["row_count"],
                         prt_id: row["prt_id"],
                         opt_idx: row["opt_idx"],
                         optName: row["optName"],
@@ -137,11 +140,14 @@
                 }
             };
             p_this.list_image.cbOutput  = function(p_entity) {
-                var row_total   = p_entity["row_total"];
-                var template = Handlebars.compile( p_this.items["_img_template"].value );
-
-                p_this.items["_img_total"].value = row_total;
-                p_this.items["_img_body"].value = template(p_entity);
+                var template = Handlebars.compile( p_this.items["_temp_image"].value );
+                p_this.items["_area_image"].value = template(p_entity);
+            };
+            // cbEnd
+            p_this.read.cbEnd  = function(p_entity) {
+                if (p_entity["return"] < 0) return alert("조회 처리가 실패 하였습니다. Code : " + p_entity["return"]);
+                p_this.items["_txt_sell"].value     =  numberWithCommas(p_this.items["sell_mn"].value);
+                p_this.items["_txt_discount"].value =  numberWithCommas(p_this.items["discount_mn"].value);
             };
 
         }
@@ -150,21 +156,29 @@
         // 데코레이션 메소드
         ProductService.prototype.preRegister = function(p_this) {
             BaseService.prototype.preRegister.call(this, p_this);
+            // 셀랙터 얻기
+            var _area_option_view = p_this.items["_area_option_view"].selector.key;
+            var _area_option = p_this.items["_area_option"].selector.key;
+            var _sellTotal = p_this.items["_sellTotal"].selector.key;
+            var _decountTotal = p_this.items["_decountTotal"].selector.key;
+            var _productTotal = p_this.items["_productTotal"].selector.key;
+            var _option = p_this.items["_option"].selector.key;
+            var _productSum = p_this.items["_productSum"].selector.key;
+            var _qty = p_this.items["_qty"].selector.key;
+
             // 인스턴스 함수 등록
             var template = null;
-            p_this._addOption = function(p_idx) {
-
-                var selector = p_this.items["_opt_view_body"].selector.key;
+            p_this._addOption = function(p_row_count) {
 
                 if ( template === null) {
-                    template = Handlebars.compile( p_this.items["_opt_view_template"].value );
+                    template = Handlebars.compile( p_this.items["_temp_option_view"].value );
                 }
-                // 첫 등록시
-                if (typeof p_this.cartInfo[p_idx] === "undefined") {
-                    p_this.cartInfo[p_idx] = p_this.optionInfo[p_idx];
-                    $(selector).append(template(p_this.optionInfo[p_idx]));
+                // 처음 등록시
+                if (typeof p_this.cartInfo[p_row_count] === "undefined") {
+                    p_this.cartInfo[p_row_count] = p_this.optionInfo[p_row_count];
+                    $(_area_option_view).append(template(p_this.optionInfo[p_row_count]));
+                    $(_area_option).val("").attr("selected", "selected");
                     p_this._sumTotal();
-                    $("#option-list-body").val("").attr("selected", "selected");
                 }
             };
             p_this._sumTotal =function() {
@@ -178,47 +192,45 @@
                         qty_it = this.cartInfo[prop].qty_it;
                         sell_mn = sell_mn + this.cartInfo[prop].sell_mn * qty_it;
                         discount_mn = discount_mn + this.cartInfo[prop].discount_mn  * qty_it;
-                        prt_mn = prt_mn + discount_mn;
                     }
                 }
-                $("#total_sell_mn").text(numberWithCommas(sell_mn));
-                $("#total_discount_mn").text(numberWithCommas(sell_mn - discount_mn) );
-                $("#total_prt_mn").text(numberWithCommas(prt_mn));
+                prt_mn = prt_mn + discount_mn;
+                $(_sellTotal).text(numberWithCommas(sell_mn));
+                $(_decountTotal).text(numberWithCommas(sell_mn - discount_mn) );
+                $(_productTotal).text(numberWithCommas(prt_mn));
             };
-            p_this._removeOption = function removeOption(p_idx) {
-                $("#option_display_item_" + p_idx).remove(); 
-                delete this.cartInfo[p_idx];
+            p_this._removeOption = function(p_row_count) {
+                $(_option +"[row_count="+ p_row_count +"]").remove(); 
+                delete this.cartInfo[p_row_count];
                 this._sumTotal();
             };
-            p_this._editQty = function editQty(p_idx, p_value) {
-                cartInfo[p_idx].qty_it = p_value;
+            p_this._editQty = function(p_row_count, p_value) {
+                cartInfo[p_row_count].qty_it = p_value;
                 this._sumTotal();;
             }
-            p_this._plusQty = function plusQty(p_idx){
-                var qty = $("#prt_qty_" + p_idx).val();
-                var sell_mn = this.cartInfo[p_idx].sell_mn;
-                var discount_mn = this.cartInfo[p_idx].discount_mn;
+            p_this._plusQty = function(p_row_count){
+                var qty = $(_qty +"[row_count="+ p_row_count +"]").val();
+                var discount_mn = this.cartInfo[p_row_count].discount_mn;
 
                 qty++;
-                $("#prt_qty_" + p_idx).val(qty);
-                $("#option_prt_display_"+ p_idx).text(numberWithCommas(discount_mn * qty));
-                this.cartInfo[p_idx].qty_it = qty;
+                $(_qty +"[row_count="+ p_row_count +"]").val(qty);
+                $(_productSum +"[row_count="+ p_row_count +"]").text(numberWithCommas(discount_mn * qty));
+                this.cartInfo[p_row_count].qty_it = qty;
                 this._sumTotal();
             };
-            p_this._minusQty = function minusQty(p_idx){
-                var qty = $("#prt_qty_" + p_idx).val();
-                var sell_mn = this.cartInfo[p_idx].sell_mn;
-                var discount_mn = this.cartInfo[p_idx].discount_mn;
+            p_this._minusQty = function(p_row_count){
+                var qty = $(_qty +"[row_count="+ p_row_count +"]").val();
+                var discount_mn = this.cartInfo[p_row_count].discount_mn;
 
                 qty--;
                 if (qty > 0 )  {
-                     $("#prt_qty_" + p_idx).val(qty);
-                     $("#option_prt_display_"+ p_idx).text(discount_mn * qty);
-                     this.cartInfo[p_idx].qty_it = qty;
+                    $(_qty +"[row_count="+ p_row_count +"]").val(qty);
+                    $(_productSum +"[row_count="+ p_row_count +"]").text(numberWithCommas(discount_mn * qty));
+                     this.cartInfo[p_row_count].qty_it = qty;
                      this._sumTotal();
                 }
             };
-
+            console.log("----------------------------------");
         };
         ProductService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {

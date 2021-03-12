@@ -171,10 +171,11 @@
         // 데코레이션 메소드
         OrderRegisterService.prototype.preRegister = function(p_this) {
             BaseService.prototype.preRegister.call(this, p_this);
-            //--------------------------------------------------------------    
-            // 5. 이벤트 등록
+            // 셀렉터 얻기
             var _btn_create = p_this.items["_btn_create"].selector.key;
 
+            //--------------------------------------------------------------    
+            // 5. 이벤트 등록
             $(_btn_create).click(function () {
                 if (p_this.items["pay_method_cd"].value === "B") {
                     p_this.create.setItem(["bak_idx", "depositor"], ["valid", "bind"]);
@@ -184,6 +185,7 @@
                 }
                 p_this.create.execute();
             });
+            console.log("----------------------------------");
         };
         OrderRegisterService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {
@@ -191,9 +193,9 @@
             }
             return true;
         };
-        // OrderRegisterService.prototype.preReady = function(p_this) {
-        //     BaseService.prototype.preReady.call(this, p_this);
-        // };
+        OrderRegisterService.prototype.preReady = function(p_this) {
+            BaseService.prototype.preReady.call(this, p_this);
+        };
 
         return OrderRegisterService;
     

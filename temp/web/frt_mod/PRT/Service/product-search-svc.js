@@ -69,7 +69,7 @@
                 _area_page:     { selector: { key: "#s-area-page"+ SUFF,        type: "html" } },
                 _btn_search:    { selector: { key: "#s-btn-search"+ SUFF,       type: "html" } },
                 _btn_reset:     { selector: { key: "#s-btn-reset"+ SUFF,        type: "html" } },
-                _txt_pageSize:  { selector: { key: "#s-txt-pageSize"+ SUFF,     type: "value" } },
+                _pageSize:      { selector: { key: "#s-pageSize"+ SUFF,     type: "value" } },
                 // bind
                 cmd:            "",
                 keyword:        { selector: { key: "#m-keyword",                type: "val" } },
@@ -122,6 +122,11 @@
         // 데코레이션 메소드
         ProductSearchService.prototype.preRegister = function(p_this) {
             BaseService.prototype.preRegister.call(this, p_this);
+            // 셀랙터 얻기
+            var _btn_search     = p_this.items["_btn_search"].selector.key;
+            var _btn_reset      = p_this.items["_btn_reset"].selector.key;
+            var _pageSize       = p_this.items["_pageSize"].selector.key;
+
             //--------------------------------------------------------------    
             // 초기값 설정 : 서버측 > 파라메터 > 내부(기본값)
             p_this.items["keyword"].value = decodeURI(getArgs("", getParamsToJSON(location.href).keyword ));
@@ -135,10 +140,6 @@
             }
             //--------------------------------------------------------------    
             // 5. 이벤트 등록
-            var _btn_search     = p_this.items["_btn_search"].selector.key;
-            var _btn_reset      = p_this.items["_btn_reset"].selector.key;
-            var _txt_pageSize   = p_this.items["_txt_pageSize"].selector.key;
-
             $(_btn_search).click(function () {
                 page.page_count = 1;
                 p_this.list.execute();
@@ -148,12 +149,12 @@
                     this.reset();
                 });
             });
-            $(_txt_pageSize).change(function () {
-                page.page_size = p_this.items["_txt_pageSize"].value;
+            $(_pageSize).change(function () {
+                page.page_size = p_this.items["_pageSize"].value;
                 page.page_count = 1;
                 p_this.list.execute();
             });
-
+            console.log("----------------------------------");
         };
         ProductSearchService.prototype.preCheck = function(p_this) {
             if (BaseService.prototype.preCheck.call(this, p_this)) {

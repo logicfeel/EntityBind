@@ -28,6 +28,7 @@
     Dim dsp_id          : dsp_id        = Request("dsp_id")
     Dim prt_id          : prt_id        = Request("prt_id")
     Dim rank_it         : rank_it       = Request("rank_it")
+    Dim sub_yn          : sub_yn        = Request("sub_yn")
 
     Dim keyword         : keyword       = Request("keyword")
     Dim sort_cd         : sort_cd       = Request("sort_cd")
@@ -58,6 +59,7 @@
             ' 프로퍼티 <필수>
             cDispPrt.Dsp_id              = dsp_id
             ' 프로퍼티 <선택>
+            If Len(sub_yn) > 0      Then cDispPrt.Sub_yn         = sub_yn
             If Len(keyword) > 0     Then cDispPrt.Keyword        = keyword
             If Len(page_size) > 0   Then cDispPrt.Page_size      = page_size
             If Len(page_count) > 0  Then cDispPrt.Page_count     = page_count
