@@ -40,8 +40,11 @@ https://www.colorion.co/        : 색 콤비네이션  (어울리는 색깔)
 
 
 
-# gulp 오류시
+# gulp 오류시 
  Set-ExecutionPolicy RempteSigned  실행권한 변경(Windows PowerShell <- 관리자권한 실행>)
 
 # ftp 드라이버 연결 프로그램
     - RaiDrive
+
+# 무료 아이콘
+    - https://www.flaticon.com/
