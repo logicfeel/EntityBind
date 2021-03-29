@@ -229,7 +229,7 @@
             }
             
             // 콜백 검사 (base)
-            if (typeof this._model.cbBaseBind === "function") this._model.cbBaseBind(ajaxSetup);
+            if (typeof this._model.cbBaseBind === "function") this._model.cbBaseBind(ajaxSetup, this);
 
             // 콜백 검사 (command)
             if (typeof this.cbBind === "function") this.cbBind(ajaxSetup);
