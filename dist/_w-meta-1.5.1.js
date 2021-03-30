@@ -2588,6 +2588,7 @@ if (typeof Array.isArray === "undefined") {
             var __increase      = 100;      // order 의 자동 추가수
             var __getter        = function() { return this.__value; };
             var __setter        = function(val) { 
+                val = val === null ? "" : val;  // null 등록 오류 처리
                 if(["number", "string", "boolean"].indexOf(typeof val) < 0) {
                     throw new Error("Only [value] type 'number, string, boolean' can be added");
                 }
@@ -5633,7 +5634,7 @@ if (typeof Array.isArray === "undefined") {
             }
             
             // 콜백 검사 (base)
-            if (typeof this._model.cbBaseBind === "function") this._model.cbBaseBind(ajaxSetup);
+            if (typeof this._model.cbBaseBind === "function") this._model.cbBaseBind(ajaxSetup, this);
 
             // 콜백 검사 (command)
             if (typeof this.cbBind === "function") this.cbBind(ajaxSetup);
