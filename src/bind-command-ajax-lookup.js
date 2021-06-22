@@ -99,7 +99,7 @@
 
             var loadOption = this.outputOption === 3 ? 2  : this.outputOption;
 
-            // 초기화
+            // 초기화 : opt = 1
             for (var i = 0; this._output.count > i; i++) {
                 if (loadOption === 1) this._output[i].clear();  // 전체 초기화 (item, rows)
                 else this._output[i].rows.clear();              // Row 초기화

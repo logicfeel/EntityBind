@@ -389,6 +389,41 @@
         }
 
         console.log("---------------------------------------------------------------------------");
+        console.log("BindModel.addItem(name, obj) :: 아이템 생성 (객체형), ItemDOM 기본값, [전체] cmd에 추가 ");
+        var model = new BindModelAjax();
+        model.create = new BindCommandEditAjax(model, model._baseEntity);
+        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.addItem("i1", { 
+            default: 10, 
+            value: "V1",
+        }, []);
+        if (// create 
+            model.create.valid.items.count === 1 &&
+            model.create.valid.items["i1"].value === "V1" &&
+            model.create.valid.items["i1"].entity.name === "first" &&
+            model.create.bind.items.count === 1 &&
+            model.create.bind.items["i1"].value === "V1" &&
+            model.create.bind.items["i1"].entity.name === "first" &&
+            // create 2
+            model.create2.valid.items.count === 1 &&
+            model.create2.valid.items["i1"].value === "V1" &&
+            model.create2.valid.items["i1"].entity.name === "first" &&
+            model.create2.bind.items.count === 1 &&
+            model.create2.bind.items["i1"].value === "V1" &&
+            model.create2.bind.items["i1"].entity.name === "first" &&
+            // first
+            model.first.items.count === 1 &&
+            model.first.items["i1"].value === "V1" &&            
+            model.first.items["i1"].default === 10 &&
+            model.itemType.name === 'ItemDOM' &&
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------------------------------------------");
         console.log("BindModel.addItem(name, value) :: 아이템 생성 및 [전체] cmd에 추가 ");
         var model = new BindModelAjax(Item);
         model.create = new BindCommandEditAjax(model, model._baseEntity);
@@ -417,6 +452,7 @@
             console.warn("Result = Fail");
             errorCount++;
         }
+
 
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.addItem(name, value, [], entity) :: 아이템 생성 및 [전체] cmd의 지정 entity에 추가 ");

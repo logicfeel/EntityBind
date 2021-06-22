@@ -15,7 +15,9 @@
     // 2. 모듈 가져오기 (node | web)
     var util;
     var BindCommand;
+    var entityView;
     var EntityView;
+    var EntityViewCollection;
     var request;        // node 전용
     var sync_request;   // node 전용
     var jquery;
@@ -24,13 +26,16 @@
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                    = require("util");
         BindCommand             = require("./bind-command");
-        EntityView              = require("./entity-view").EntityView;
+        entityView              = require("./entity-view");
+        EntityView              = entityView.EntityView;
+        EntityViewCollection    = entityView.EntityViewCollection;
         request                 = require("request");
         sync_request            = require("sync-request");
     } else {
         util                    = global._W.Common.Util;
         BindCommand             = global._W.Meta.Bind.BindCommand;
         EntityView              = global._W.Meta.Entity.EntityView;
+        EntityViewCollection    = global._W.Meta.Entity.EntityViewCollection;
         jquery                  = global.jQuery || global.$;     // jquery 로딩 REVIEW:: 로딩 확인
         ajax                    = jquery.ajax;
     }
@@ -40,6 +45,7 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BindCommand === "undefined") throw new Error("[BindCommand] module load fail...");
     if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
+    if (typeof EntityViewCollection === "undefined") throw new Error("[EntityViewCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -47,7 +53,7 @@
         /**
          * @class
          */
-        function BindCommandAjax(p_bindModel, p_baseEntity) {
+        function BindCommandAjax(p_bindModel, p_outputOption, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
 
             var __ajaxSetup = {
@@ -67,9 +73,17 @@
             // var __cbValid   = function() {return true;};
             // var __cbBind    = function() {};
             // var __cbEnd     = function() {};
-            var __cbValid   = null;
-            var __cbBind    = null;
-            var __cbEnd     = null;
+            var __cbValid       = null;
+            var __cbBind        = null;
+            var __cbEnd         = null;
+            var __cbOutput      = null;
+            var __outputOption  = 0;     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
+            
+            this._output = new EntityViewCollection(this, this._baseEntity);
+
+            // 속성 생성 및 참조 등록
+            this.addOutput("output");
+
 
             /** @property {ajaxSetup} */
             Object.defineProperty(this, "ajaxSetup", 
@@ -115,6 +129,19 @@
                 enumerable: true
             });
 
+            /** @property {outputOption} */
+            Object.defineProperty(this, "outputOption", 
+            {
+                get: function() { return __outputOption; },
+                set: function(newValue) { 
+                    if (!(typeof newValue === "number")) throw new Error("Only [outputOption] type 'number' can be added");
+                    __outputOption = newValue;
+                },
+
+                configurable: true,
+                enumerable: true
+            });
+            
             /** @property {cbValid} */
             Object.defineProperty(this, "cbValid", 
             {
@@ -139,6 +166,18 @@
                 enumerable: true
             });
 
+            /** @property {cbOutput} */
+            Object.defineProperty(this, "cbOutput", 
+            {
+                get: function() { return __cbOutput; },
+                set: function(newValue) { 
+                    if (typeof newValue  !== "function") throw new Error("Only [cbOutput] type 'Function' can be added");
+                    __cbOutput = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
             /** @property {vbEnd} */
             Object.defineProperty(this, "cbEnd", 
             {
@@ -151,10 +190,15 @@
                 enumerable: true
             });            
 
+            // outputOption 설정
+            if (typeof p_outputOption === 'number') this.outputOption = p_outputOption;
+
             // 예약어 등록
             this._symbol = this._symbol.concat(["valid", "bind", "ajaxSetup", "url", "valid", "bind"]);
             this._symbol = this._symbol.concat(["cbValid", "cbBind", "cbEnd"]);
             this._symbol = this._symbol.concat(["_execValid", "_execBind", "_execSuccess", "_execError", "_ajaxAdapter"]);
+            this._symbol = this._symbol.concat(["_output", "outputOption", "cbOutput", "output"]);
+            this._symbol = this._symbol.concat(["addOutput"]);
         }
         util.inherits(BindCommandAjax, _super);
 
@@ -237,14 +281,59 @@
             this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
 
-        /** 
-         * success(result,status,xhr)
-         * @virtual 
-         **/
+        /**
+         * 
+         * @param {*} p_result 
+         * @param {*} p_status 
+         * @param {*} p_xhr 
+         */
         BindCommandAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
             
+            var loadOption = this.outputOption === 3 ? 2  : this.outputOption;
+
             var result = typeof p_result === "object" ? p_result : JSON.parse(JSON.stringify(p_result));
-            
+
+            // 콜백 검사 (result)
+            if (typeof this._model.cbResult === "function" ) result = this._model.cbResult(result);
+
+            // ouputOption = 1,2,3  : 출력모드의 경우
+            if (this.outputOption > 0) {
+                
+                // 초기화 : opt = 1
+                for (var i = 0; this._output.count > i; i++) {
+                    if (loadOption === 1) this._output[i].clear();  // 전체 초기화 (item, rows)
+                    else this._output[i].rows.clear();              // Row 초기화
+                }
+                
+                // 결과 EntityView에 로딩
+                if(typeof result["entity"] !== "undefined" || typeof result["table"] !== "undefined" ) {
+
+                    this._output[0].load(result, loadOption); // this["output"]
+                
+                } else if (Array.isArray(result["entities"])) {
+
+                    for(var i = 0; result["entities"].length > i && typeof this._output[i] !== "undefined"; i++) {
+                        this._output[i].clear();
+                        this._output[i].load(result["entities"][i], loadOption);
+                    }
+                }
+                
+                // 존재하는 아이템 중에 지정된 값으로 설정
+                if (this.outputOption === 3) {
+                    for (var i = 0; this._output.count > i; i++) {
+                        if (this._output[i].items.count > 0 && this._output[i].rows.count > 0)
+                        this._output[i].setValue(this._output[i].rows[0]);
+                    }
+                }
+
+                // 콜백 검사 (base)
+                if (typeof this._model.cbBaseOutput === "function" ) this._model.cbBaseOutput(p_result);
+
+                // 콜백 검사 (command)
+                if (typeof this.cbOutput === "function" ) this.cbOutput(p_result);
+            }
+
+
             // 콜백 검사 (base)
             if (typeof this._model.cbBaseEnd === "function") this._model.cbBaseEnd(result, p_status, p_xhr);
 
@@ -253,6 +342,23 @@
             
             this._onExecuted(this, result);  // "실행 종료" 이벤트 발생
         };
+        /** 
+         * success(result,status,xhr)
+         * @virtual 
+         **/
+        // BindCommandAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
+            
+        //     var result = typeof p_result === "object" ? p_result : JSON.parse(JSON.stringify(p_result));
+            
+        //     // 콜백 검사 (base)
+        //     if (typeof this._model.cbBaseEnd === "function") this._model.cbBaseEnd(result, p_status, p_xhr);
+
+        //     // 콜백 검사 (command)
+        //     if (typeof this.cbEnd === "function" ) this.cbEnd(result, p_status, p_xhr);
+            
+        //     this._onExecuted(this, result);  // "실행 종료" 이벤트 발생
+        // };
+
 
         /**
          * AJAX 를 기준으로 구성함 (requst는 맞춤)
@@ -325,6 +431,24 @@
                 }
             }
         };
+        BindCommandAjax.prototype.addOutput = function(p_name) {
+
+            // 유효성 검사
+            if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
+            
+            // 예약어 검사
+            if (this._symbol.indexOf(p_name) > -1) {
+                throw new Error(" [" + p_name + "] is a Symbol word");   
+            }            
+
+            // 이름 중복 검사
+            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
+
+            // this._output.add("default", this._baseEntity);            // 등록방법 2
+            this._output.add(new EntityView(p_name, this._baseEntity));  // 등록방법 1
+            this[p_name] = this._output[p_name];
+        };
+
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
         BindCommandAjax.prototype.getTypes  = function() {

@@ -50,7 +50,7 @@
             var __entity        = null;
             var __type          = "string";
             var __size          = 0;
-            var __default       = "";
+            var __default       = null;
             var __caption       = "";
             var __isNotNull     = false;
             var __isNullPass    = false;
@@ -59,14 +59,17 @@
             var __codeType      = null;
             var __order         = 100;
             var __increase      = 100;      // order 의 자동 추가수
-            var __getter        = function() { return this.__value; };
+
+            // var __getter        = function() { return this.__value; };
+// POINT::
+            var __getter        = function() { return this.__value || __default; };
             var __setter        = function(val) { 
                 val = val === null ? "" : val;  // null 등록 오류 처리
                 if(["number", "string", "boolean"].indexOf(typeof val) < 0) {
                     throw new Error("Only [value] type 'number, string, boolean' can be added");
                 }
                 this.__value = val;
-            }
+            };
 
             this.__value         = null;
 
@@ -293,7 +296,9 @@
                     }
                 }
             } else if (["number", "string", "boolean"].indexOf(typeof p_property) > -1) {
-                this.default = p_property;
+                // this.default = p_property;
+// POINT::
+                this['value'] = p_property;
             }
 
         }
@@ -501,7 +506,7 @@
                 throw new Error("Only [value] type 'number, string, boolean' can be added");
             }
             
-            property = { value: p_value}
+            property = { value: p_value };
 
             item = new this.itemType(p_name, this._onwer, property);
 

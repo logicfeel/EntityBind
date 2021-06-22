@@ -343,22 +343,47 @@
         /**
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
          * @param {string} p_name
-         * @param {object | String | number | boolean} p_value 
+         * @param {object | String | number | boolean} p_obj 
          * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
          */
-        BindModel.prototype.addItem = function(p_name, p_value, p_cmds, p_entities) {
+// POINT::
+        BindModel.prototype.addItem = function(p_name, p_obj, p_cmds, p_entities) {
 
             var item;
-            
+            var property = {};
+
             // 유효성 검사
             if (typeof p_name !== "string") {
                 throw new Error("Only [p_name] type 'string' can be added");
             }
 
-            item = this._baseEntity.items.addValue(p_name, p_value);
+            if (typeof p_obj === 'object') {
+                property = p_obj;
+            } else {
+                property = { value: p_obj };
+            }
+            
+            item = new this.itemType(p_name, null, property);
 
             this.add(item, p_cmds, p_entities);
         };
+
+        // BindModel.prototype.addItem = function(p_name, p_value, p_cmds, p_entities) {
+
+        //     var item;
+        //     var property = {};
+
+        //     // 유효성 검사
+        //     if (typeof p_name !== "string") {
+        //         throw new Error("Only [p_name] type 'string' can be added");
+        //     }
+
+        //     item = this._baseEntity.items.addValue(p_name, p_value);
+
+        //     this.add(item, p_cmds, p_entities);
+        // };
+
+
 
         /**
          * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
