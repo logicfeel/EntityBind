@@ -45,8 +45,9 @@
     tasks.push({ns: "_W.Test.Item"                  , file: "./Meta.Entity.Item.test.js"});
     tasks.push({ns: "_W.Test.ItemDOM"               , file: "./Meta.Entity.ItemDOM.test.js"});
     tasks.push({ns: "_W.Test.Row"                   , file: "./Meta.Entity.Row.test.js"});
-    tasks.push({ns: "_W.Test.BindCommandEditAjax"   , file: "./Meta.Bind.BindCommandEditAjax.test.js"});
-    tasks.push({ns: "_W.Test.BindCommandLookupAjax" , file: "./Meta.Bind.BindCommandLookupAjax.test.js"});
+    tasks.push({ns: "_W.Test.BindCommandEditAjax"   , file: "./Meta.Bind.BindCommandAjax.test.js"});
+    // tasks.push({ns: "_W.Test.BindCommandEditAjax"   , file: "./Meta.Bind.BindCommandEditAjax.test.js"});
+    // tasks.push({ns: "_W.Test.BindCommandLookupAjax" , file: "./Meta.Bind.BindCommandLookupAjax.test.js"});
     tasks.push({ns: "_W.Test.BindModelAjax"         , file: "./Meta.Bind.BindModelAjax.test.js"});
     // tasks.push({ns: "_W.Test.BindModelReadAjax"     , file: "./Meta.Bind.BindModelReadAjax.test.js"});
     tasks.push({ns: "_W.Test.BindModelDI"           , file: "./Meta.Bind.BindModelDI.test.js"});

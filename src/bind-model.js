@@ -76,9 +76,9 @@
             
             var __cbFail        = function() { console.warn("바인딩 실패하였습니다."); };
             var __cbError       = function() { console.error("바인딩 오류가 발생 하였습니다."); };
-            var __cbResult      = null;
             var __cbBaseValid   = null;
             var __cbBaseBind    = null;
+            var __cbBaseResult  = null;
             var __cbBaseOutput  = null;
             var __cbBaseEnd     = null;
 
@@ -128,6 +128,17 @@
                 configurable: true,
                 enumerable: true
             });
+            /** @property {itemType} */
+            Object.defineProperty(this, "itemType", 
+            {
+                get: function() { return __itemType; },
+                set: function(newValue) { 
+                    if (!(new newValue() instanceof Item)) throw new Error("Only [itemType] type 'Item' can be added");
+                    __itemType = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
 
             /** @property {cbFail} */
             Object.defineProperty(this, "cbFail", 
@@ -153,18 +164,6 @@
                 enumerable: true
             });
 
-            /** @property {cbResult} */
-            Object.defineProperty(this, "cbResult", 
-            {
-                get: function() { return __cbResult; },
-                set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbResult] type 'Function' can be added");
-                    __cbResult = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });
-
             /** @property {cbBaseValid} */
             Object.defineProperty(this, "cbBaseValid", 
             {
@@ -184,6 +183,18 @@
                 set: function(newValue) { 
                     if (typeof newValue !== "function") throw new Error("Only [cbBaseBind] type 'Function' can be added");
                     __cbBaseBind = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+            
+            /** @property {cbResult} */
+            Object.defineProperty(this, "cbBaseResult", 
+            {
+                get: function() { return __cbBaseResult; },
+                set: function(newValue) { 
+                    if (typeof newValue !== "function") throw new Error("Only [cbBaseResult] type 'Function' can be added");
+                    __cbBaseResult = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -213,22 +224,12 @@
                 enumerable: true
             });
 
-            /** @property {itemType} */
-            Object.defineProperty(this, "itemType", 
-            {
-                get: function() { return __itemType; },
-                set: function(newValue) { 
-                    if (!(new newValue() instanceof Item)) throw new Error("Only [itemType] type 'Item' can be added");
-                    __itemType = newValue;
-                },
-                configurable: true,
-                enumerable: true
-            });
 
             // 예약어 등록
             this._symbol = this._symbol.concat(["__preRegister", "__preCheck", "__preReady"]);
             this._symbol = this._symbol.concat(["prop", "mode", "mapping"]);
-            this._symbol = this._symbol.concat(["cbFail", "cbError", "itemType"]);
+            this._symbol = this._symbol.concat(["itemType", "cbFail", "cbError"]);
+            this._symbol = this._symbol.concat(["cbBaseResult", "cbBaseValid", "cbBaseBind", "cbBaseOutput", "cbBaseEnd"]);
             this._symbol = this._symbol.concat(["getTypes", "init", "preRegister", "preCheck", "preReady", "addEntity"]);
             this._symbol = this._symbol.concat(["add", "addItem", "loadProp", "setMapping", "preReady", "addEntity"]);
             

@@ -24,8 +24,6 @@
     var EntityTable;
     var BindModelAjax;
     var IBindModel;
-    var BindCommandEditAjax;
-    var BindCommandLookupAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {  
         require("../src/object-implement"); // _implements() : 폴리필
@@ -36,8 +34,6 @@
         EntityView              = require("../src/entity-view").EntityView;
         EntityTable             = require("../src/entity-table").EntityTable;
         BindModelAjax           = require("../src/bind-model-ajax");
-        BindCommandEditAjax     = require("../src/bind-command-ajax-edit");
-        BindCommandLookupAjax   = require("../src/bind-command-ajax-lookup");
         IBindModel              = require("../src/i-bind-model");
     } else {
         util                    = global._W.Common.Util;
@@ -47,8 +43,6 @@
         EntityView              = global._W.Meta.Entity.EntityView;
         EntityTable             = global._W.Meta.Entity.EntityTable;
         BindModelAjax           = global._W.Meta.Bind.BindModelAjax;
-        BindCommandEditAjax     = global._W.Meta.Bind.BindCommandEditAjax;
-        BindCommandLookupAjax   = global._W.Meta.Bind.BindCommandLookupAjax;
         IBindModel              = global._W.Interface.IBindModel;
     }
 
@@ -102,9 +96,6 @@
             return "preReady";
         };
 
-        
-
-
 
         if (isCallback) {
             console.log("---------------------------------------------------------------------------");
@@ -113,7 +104,7 @@
             console.log("BindModel.cbFail           :: 검사 실패 발생시 실행 ");
             console.log("BindModel.cbError          :: 오류 발생시 실행 ");
             var model = new BindModelAjax(Item);
-            model.create = new BindCommandEditAjax(model, model._baseEntity);
+            model.create = new BindCommandAjax(model, model._baseEntity);
             model.result = [];        
             model.create.addItem("i1", "V1");
             model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
@@ -180,7 +171,7 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.cbFail           :: 실패 발생시 실행 (검사) ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
         model.result = [];
         model.create.addItem("i1", "");
         model.create.valid.items["i1"].isNotNull = true;
@@ -244,8 +235,8 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.add(item) :: 전체 cmd에 아이템 등록 (cmd 사용자 추가후) ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
-        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
+        model.create2 = new BindCommandAjax(model, model._baseEntity);
         model.add(new Item("i1"), []);
         model.first.items["i1"].value = "V1";
         if (// create 
@@ -275,8 +266,8 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.add(item, [], entity) :: 전체 cmd에 지정entity에 아이템 등록 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
-        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
+        model.create2 = new BindCommandAjax(model, model._baseEntity);
         // model.add(new Item("i1"), [], "bind");           // 정상
         // model.add(new Item("i1"), undefined, "bind");    // 정상
         // model.add(new Item("i1"), null, "bind");
@@ -305,8 +296,8 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.add(item, cmd) :: cmd 전체에 아이템 등록 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
-        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
+        model.create2 = new BindCommandAjax(model, model._baseEntity);
         model.add(new Item("i1"), "create2");
         model.first.items["i1"].value = "V1";
         if (// create 
@@ -332,8 +323,8 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.add(item, cmd, entity) :: 지정 cmd의 지정entity에 아이템 등록 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
-        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
+        model.create2 = new BindCommandAjax(model, model._baseEntity);
         model.add(new Item("i1"), "create2", "bind");
         model.first.items["i1"].value = "V1";
         if (// create 
@@ -357,9 +348,9 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.add(item, cmds) :: cmd 전체에 아이템 등록 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
-        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
-        model.create3 = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
+        model.create2 = new BindCommandAjax(model, model._baseEntity);
+        model.create3 = new BindCommandAjax(model, model._baseEntity);
         model.add(new Item("i1"), ["create", "create2"]);
         model.first.items["i1"].value = "V1";
         if (// create 
@@ -391,8 +382,8 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.addItem(name, obj) :: 아이템 생성 (객체형), ItemDOM 기본값, [전체] cmd에 추가 ");
         var model = new BindModelAjax();
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
-        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
+        model.create2 = new BindCommandAjax(model, model._baseEntity);
         model.addItem("i1", { 
             default: 10, 
             value: "V1",
@@ -426,8 +417,8 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.addItem(name, value) :: 아이템 생성 및 [전체] cmd에 추가 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
-        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
+        model.create2 = new BindCommandAjax(model, model._baseEntity);
         model.addItem("i1", "V1", []);
         if (// create 
             model.create.valid.items.count === 1 &&
@@ -457,8 +448,8 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.addItem(name, value, [], entity) :: 아이템 생성 및 [전체] cmd의 지정 entity에 추가 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
-        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
+        model.create2 = new BindCommandAjax(model, model._baseEntity);
         model.addItem("i1", "V1", [], "bind");
         if (// create 
             model.create.valid.items.count === 0 &&
@@ -483,8 +474,8 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.addItem(name, value, cmd) :: 아이템 생성 및 [특정] cmd에 추가 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
-        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
+        model.create2 = new BindCommandAjax(model, model._baseEntity);
         model.addItem("i1", "V1", "create2");
         if (// create 
             model.create.valid.items.count === 0 &&
@@ -508,9 +499,9 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.addItem(name, value, cmds) :: 아이템 생성 및 [특정목록] cmd에 추가 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
-        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
-        model.create3 = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
+        model.create2 = new BindCommandAjax(model, model._baseEntity);
+        model.create3 = new BindCommandAjax(model, model._baseEntity);
         model.addItem("i1", "V1", ["create", "create2"]);
         if (// create 
             model.create.valid.items.count === 1 &&
@@ -541,8 +532,8 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.setMapping(mapping: json) :: 메핑으로 부분 등록 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
-        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
+        model.create2 = new BindCommandAjax(model, model._baseEntity);
         model.items.addValue("i1", "V1");
         model.items.addValue("i2", "V1");
         var mapping = {
@@ -579,8 +570,8 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.setMapping(mapping: json) :: 메핑으로 전체 등록 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
-        model.create2 = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
+        model.create2 = new BindCommandAjax(model, model._baseEntity);
         model.items.addValue("i1", "V1");
         model.items.addValue("i2", "V1");
         var mapping = {
@@ -614,7 +605,7 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.addEntity(name) :: 모델에 엔티티 등록 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
         model.addEntity("second");
         model.add(new Item("i1"), []);
         model.first.items["i1"].value = "V1";
@@ -641,7 +632,7 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.loadProp() :: prop에 [모든] 속성을 first에 등록 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
         model.prop.add("i1", "V1");
         model.prop.add("i2", "V2");
         model.prop.add("i3", {caption: "C3"});    
@@ -666,7 +657,7 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.loadProp() :: prop에 [모든] 속성을 __시작이름 제외후 등록");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
         model.prop.add("i1", "V1");
         model.prop.add("i2", "V2");
         model.prop.add("i3", {caption: "C3"});    
@@ -692,7 +683,7 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.loadProp(props) :: prop에 [특정] 속성을  [first] 엔티티에 등록 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
         model.prop.add("i1", "V1");
         model.prop.add("i2", "V2");
         model.prop.add("i3", {caption: "C3"});    
@@ -715,7 +706,7 @@
         console.log("---------------------------------------------------------------------------");
         console.log("BindModel.loadProp(props, entity) :: prop에 [특정] 속성을  [특정] 엔티티에 등록 ");
         var model = new BindModelAjax(Item);
-        model.create = new BindCommandEditAjax(model, model._baseEntity);
+        model.create = new BindCommandAjax(model, model._baseEntity);
         model.addEntity("second");
         model.prop.add("i1", "V1");
         model.prop.add("i2", "V2");

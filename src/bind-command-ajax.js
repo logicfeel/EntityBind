@@ -70,11 +70,9 @@
             var __valid     = new EntityView("valid", this._baseEntity);
             var __bind      = new EntityView("bind", this._baseEntity);
 
-            // var __cbValid   = function() {return true;};
-            // var __cbBind    = function() {};
-            // var __cbEnd     = function() {};
             var __cbValid       = null;
             var __cbBind        = null;
+            var __cbResult      = null;
             var __cbEnd         = null;
             var __cbOutput      = null;
             var __outputOption  = 0;     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
@@ -128,6 +126,7 @@
                 configurable: true,
                 enumerable: true
             });
+            
 
             /** @property {outputOption} */
             Object.defineProperty(this, "outputOption", 
@@ -166,6 +165,18 @@
                 enumerable: true
             });
 
+            /** @property {cbResult} */
+            Object.defineProperty(this, "cbResult", 
+            {
+                get: function() { return __cbResult; },
+                set: function(newValue) { 
+                    if (typeof newValue !== "function") throw new Error("Only [cbResult] type 'Function' can be added");
+                    __cbResult = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
             /** @property {cbOutput} */
             Object.defineProperty(this, "cbOutput", 
             {
@@ -195,7 +206,7 @@
 
             // 예약어 등록
             this._symbol = this._symbol.concat(["valid", "bind", "ajaxSetup", "url", "valid", "bind"]);
-            this._symbol = this._symbol.concat(["cbValid", "cbBind", "cbEnd"]);
+            this._symbol = this._symbol.concat(["cbValid", "cbBind", "cbResult", "cbOutput", "cbEnd"]);
             this._symbol = this._symbol.concat(["_execValid", "_execBind", "_execSuccess", "_execError", "_ajaxAdapter"]);
             this._symbol = this._symbol.concat(["_output", "outputOption", "cbOutput", "output"]);
             this._symbol = this._symbol.concat(["addOutput"]);
@@ -207,21 +218,17 @@
             
             var result = {};     // 오류 참조 변수
             var value = null;
+            var bReturn = true;
 
-            // 콜백 검사 (base)
-            if (typeof this._model.cbBaseValid  === "function" && !this._model.cbBaseValid(this.valid)) {
+            // 콜백 검사 (valid)
+            if (typeof this.cbValid  === "function") bReturn = this.cbValid(this.valid);
+            else if (typeof this._model.cbBaseValid  === "function") bReturn= this._model.cbBaseValid(this.valid);
+
+            // valid 검사 결과
+            if (!bReturn) {
                 this._onExecuted(this);     // "실행 종료" 이벤트 발생
                 return false;
             }
-            
-            // 콜백 검사 (command)
-            if (typeof this.cbValid  === "function" && !this.cbValid(this.valid)) {
-                // this._model.cbFail("cbValid() => false 리턴 ");
-                // result.msg = "cbValid() 검사 실패";
-                // this._model.cbFail(result, this.valid.items);
-                this._onExecuted(this);     // "실행 종료" 이벤트 발생
-                return false;
-            } 
 
             // 아이템 검사
             for(var i = 0; i < this.valid.items.count; i++) {
@@ -241,7 +248,6 @@
                     }
                 // }
             }
-
             return true;
         };
 
@@ -272,11 +278,9 @@
                 ajaxSetup.data[item.name] = value;
             }
             
-            // 콜백 검사 (base)
-            if (typeof this._model.cbBaseBind === "function") this._model.cbBaseBind(ajaxSetup, this);
-
-            // 콜백 검사 (command)
-            if (typeof this.cbBind === "function") this.cbBind(ajaxSetup);
+            // 콜백 검사 (bind)
+            if (typeof this.cbBind === "function") this.cbBind(ajaxSetup, this);
+            else if (typeof this._model.cbBaseBind === "function") this._model.cbBaseBind(ajaxSetup, this);
             
             this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
@@ -294,7 +298,8 @@
             var result = typeof p_result === "object" ? p_result : JSON.parse(JSON.stringify(p_result));
 
             // 콜백 검사 (Result)
-            if (typeof this._model.cbResult === "function" ) result = this._model.cbResult(result);
+            if (typeof this.cbResult === "function" ) result = this.cbResult(result);
+            else if (typeof this._model.cbBaseResult === "function" ) result = this._model.cbBaseResult(result);
 
             // ouputOption = 1,2,3  : 출력모드의 경우
             if (this.outputOption > 0) {
@@ -326,18 +331,14 @@
                     }
                 }
 
-                // 콜백 검사 (BaseOutput)
-                if (typeof this._model.cbBaseOutput === "function" ) this._model.cbBaseOutput(result);
-
                 // 콜백 검사 (Output)
                 if (typeof this.cbOutput === "function" ) this.cbOutput(result);
+                else if (typeof this._model.cbBaseOutput === "function" ) this._model.cbBaseOutput(result);
             }
-
-            // 콜백 검사 (BaseEnd)
-            if (typeof this._model.cbBaseEnd === "function") this._model.cbBaseEnd(result, p_status, p_xhr);
 
             // 콜백 검사 (End)
             if (typeof this.cbEnd === "function" ) this.cbEnd(result, p_status, p_xhr);
+            else if (typeof this._model.cbBaseEnd === "function") this._model.cbBaseEnd(result, p_status, p_xhr);
             
             this._onExecuted(this, result);  // "실행 종료" 이벤트 발생
         };
