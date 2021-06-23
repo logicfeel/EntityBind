@@ -293,7 +293,7 @@
 
             var result = typeof p_result === "object" ? p_result : JSON.parse(JSON.stringify(p_result));
 
-            // 콜백 검사 (result)
+            // 콜백 검사 (Result)
             if (typeof this._model.cbResult === "function" ) result = this._model.cbResult(result);
 
             // ouputOption = 1,2,3  : 출력모드의 경우
@@ -326,18 +326,17 @@
                     }
                 }
 
-                // 콜백 검사 (base)
-                if (typeof this._model.cbBaseOutput === "function" ) this._model.cbBaseOutput(p_result);
+                // 콜백 검사 (BaseOutput)
+                if (typeof this._model.cbBaseOutput === "function" ) this._model.cbBaseOutput(result);
 
-                // 콜백 검사 (command)
-                if (typeof this.cbOutput === "function" ) this.cbOutput(p_result);
+                // 콜백 검사 (Output)
+                if (typeof this.cbOutput === "function" ) this.cbOutput(result);
             }
 
-
-            // 콜백 검사 (base)
+            // 콜백 검사 (BaseEnd)
             if (typeof this._model.cbBaseEnd === "function") this._model.cbBaseEnd(result, p_status, p_xhr);
 
-            // 콜백 검사 (command)
+            // 콜백 검사 (End)
             if (typeof this.cbEnd === "function" ) this.cbEnd(result, p_status, p_xhr);
             
             this._onExecuted(this, result);  // "실행 종료" 이벤트 발생
