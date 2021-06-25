@@ -19,21 +19,30 @@
     var BaseBind;
     var Item;
     var Entity;
+    var entityView;
+    var EntityView;
+    var EntityViewCollection;
+
 
     if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        MetaObject          = require("./meta-object");
-        BaseCollection      = require("./collection-base");
-        BaseBind            = require("./bind-base");
-        Item                = require("./entity-item").Item;
-        Entity              = require("./entity-base");
+        util                    = require("./utils");
+        MetaObject              = require("./meta-object");
+        BaseCollection          = require("./collection-base");
+        BaseBind                = require("./bind-base");
+        Item                    = require("./entity-item").Item;
+        Entity                  = require("./entity-base");
+        entityView              = require("./entity-view");
+        EntityView              = entityView.EntityView;
+        EntityViewCollection    = entityView.EntityViewCollection;
     } else {
-        util                = global._W.Common.Util;
-        MetaObject          = global._W.Meta.MetaObject;
-        BaseCollection      = global._W.Collection.BaseCollection;
-        BaseBind            = global._W.Meta.Bind.BaseBind;
-        Entity              = global._W.Meta.Entity.Entity;
-        Item                = global._W.Meta.Entity.Item;
+        util                    = global._W.Common.Util;
+        MetaObject              = global._W.Meta.MetaObject;
+        BaseCollection          = global._W.Collection.BaseCollection;
+        BaseBind                = global._W.Meta.Bind.BaseBind;
+        Entity                  = global._W.Meta.Entity.Entity;
+        EntityView              = global._W.Meta.Entity.EntityView;
+        EntityViewCollection    = global._W.Meta.Entity.EntityViewCollection;
+        Item                    = global._W.Meta.Entity.Item;
     }
 
     //==============================================================
@@ -44,6 +53,8 @@
     if (typeof BaseBind === "undefined") throw new Error("[BaseBind] module load fail...");
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
+    if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
+    if (typeof EntityViewCollection === "undefined") throw new Error("[EntityViewCollection] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -57,19 +68,33 @@
             
             p_baseEntity = p_baseEntity || p_bindModel._baseEntity;     // 기본값
 
+            /** @protected 소유자 */
+            this._model = p_bindModel;          // 최상위 설정
+            this._baseEntity = p_baseEntity;    // 최상위 설정
+
+            this._output = new EntityViewCollection(this, this._baseEntity);
+            this.addOutput("output");
+
             var __propagation   = true;
 
+            var __valid     = new EntityView("valid", this._baseEntity);
+            var __bind      = new EntityView("bind", this._baseEntity);
+
+            var __cbValid       = null;
+            var __cbBind        = null;
+            var __cbResult      = null;
+            var __cbEnd         = null;
+            var __cbOutput      = null;
+            var __outputOption  = 0;     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
+
+            
             if (p_bindModel && !(p_bindModel instanceof MetaObject && p_bindModel.instanceOf("BindModel"))) {
                 throw new Error("Only [p_bindModel] type 'BindModel' can be added");
             }
             if (p_baseEntity && !(p_bindModel instanceof MetaObject && p_baseEntity.instanceOf("Entity"))) {
                 throw new Error("Only [p_baseEntity] type 'Entity' can be added");
             }
-
-            /** @protected 소유자 */
-            this._model = p_bindModel;
-
-            this._baseEntity = p_baseEntity;
+            
 
             /** @property */
             Object.defineProperty(this, "eventPropagation", {
@@ -80,11 +105,115 @@
                     __propagation = p_bool;
                 },
                 get: function() { return __propagation; }
-            });            
+            }); 
+            
+            /** @property {valid} */
+            Object.defineProperty(this, "valid", 
+            {
+                get: function() { return __valid; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
+                    __valid = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {bind} */
+            Object.defineProperty(this, "bind", 
+            {
+                get: function() { return __bind; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
+                    __bind = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+            
+
+            /** @property {outputOption} */
+            Object.defineProperty(this, "outputOption", 
+            {
+                get: function() { return __outputOption; },
+                set: function(newValue) { 
+                    if (!(typeof newValue === "number")) throw new Error("Only [outputOption] type 'number' can be added");
+                    __outputOption = newValue;
+                },
+
+                configurable: true,
+                enumerable: true
+            });
+            
+            /** @property {cbValid} */
+            Object.defineProperty(this, "cbValid", 
+            {
+                get: function() { return __cbValid; },
+                set: function(newValue) { 
+                    if (typeof newValue !== "function") throw new Error("Only [cbValid] type 'Function' can be added");
+                    __cbValid = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {cbBind} */
+            Object.defineProperty(this, "cbBind", 
+            {
+                get: function() { return __cbBind; },
+                set: function(newValue) { 
+                    if (typeof newValue !== "function") throw new Error("Only [cbBind] type 'Function' can be added");
+                    __cbBind = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {cbResult} */
+            Object.defineProperty(this, "cbResult", 
+            {
+                get: function() { return __cbResult; },
+                set: function(newValue) { 
+                    if (typeof newValue !== "function") throw new Error("Only [cbResult] type 'Function' can be added");
+                    __cbResult = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {cbOutput} */
+            Object.defineProperty(this, "cbOutput", 
+            {
+                get: function() { return __cbOutput; },
+                set: function(newValue) { 
+                    if (typeof newValue  !== "function") throw new Error("Only [cbOutput] type 'Function' can be added");
+                    __cbOutput = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            /** @property {vbEnd} */
+            Object.defineProperty(this, "cbEnd", 
+            {
+                get: function() { return __cbEnd; },
+                set: function(newValue) { 
+                    if (typeof newValue !== "function") throw new Error("Only [cbEnd] type 'Function' can be added");
+                    __cbEnd = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });    
+
 
             // 예약어 등록
             this._symbol = this._symbol.concat(["_model", "eventPropagation"]);
+            this._symbol = this._symbol.concat(["valid", "bind"]);
+            this._symbol = this._symbol.concat(["cbValid", "cbBind", "cbResult", "cbOutput", "cbEnd"]);
+            this._symbol = this._symbol.concat(["_output", "outputOption", "cbOutput"]);
             this._symbol = this._symbol.concat(["execute", "_onExecute", "_onExecuted", "getTypes", "add", "addItem", "setItem"]);
+            this._symbol = this._symbol.concat(["addOutput"]);
+
 
         }
         util.inherits(BindCommand, _super);
@@ -294,6 +423,25 @@
                 }
             }
         };
+
+        BindCommand.prototype.addOutput = function(p_name) {
+
+            // 유효성 검사
+            if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
+            
+            // 예약어 검사
+            if (this._symbol.indexOf(p_name) > -1) {
+                throw new Error(" [" + p_name + "] is a Symbol word");   
+            }            
+
+            // 이름 중복 검사
+            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
+
+            // this._output.add("default", this._baseEntity);            // 등록방법 2
+            this._output.add(new EntityView(p_name, this._baseEntity));  // 등록방법 1
+            this[p_name] = this._output[p_name];
+        };
+
 
         return BindCommand;
     

@@ -23,6 +23,7 @@
     var EntityTable;
     var Item;
     var MetaObject;
+    var BindCommandAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                        = require("./utils");
@@ -35,6 +36,7 @@
         EntityTable                 = require("./entity-table").EntityTable;
         Item                        = require("./entity-item").Item;
         MetaObject                  = require("./meta-object");
+        BindCommandAjax         = require("./bind-command-ajax");
     } else {
         util                        = global._W.Common.Util;
         BaseBind                    = global._W.Meta.Bind.BaseBind;
@@ -46,6 +48,7 @@
         EntityTable                 = global._W.Meta.Entity.EntityTable;        
         Item                        = global._W.Meta.Entity.Item;        
         MetaObject                  = global._W.Meta.MetaObject;        
+        BindCommandAjax         = global._W.Meta.Bind.BindCommandAjax;
     }
 
     //==============================================================
@@ -59,6 +62,7 @@
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
     if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
+    if (typeof BindCommandAjax === "undefined") throw new Error("[BindCommandAjax] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -71,7 +75,7 @@
             _super.call(this);
 
             var __prop          = new PropertyCollection(this);
-            var __mode          = new PropertyFunctionCollection(this);
+            var __fn            = new PropertyFunctionCollection(this);
             var __mapping       = new PropertyCollection(this);
             
             var __cbFail        = function() { console.warn("바인딩 실패하였습니다."); };
@@ -105,13 +109,13 @@
                 enumerable: true
             });
 
-            /** @property {mode} */
-            Object.defineProperty(this, "mode", 
+            /** @property {fn} */
+            Object.defineProperty(this, "fn", 
             {
-                get: function() { return __mode; },
+                get: function() { return __fn; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof PropertyFunctionCollection)) throw new Error("Only [mode] type 'PropertyFunctionCollection' can be added");
-                    __mode = newValue;
+                    if (!(newValue instanceof PropertyFunctionCollection)) throw new Error("Only [fn] type 'PropertyFunctionCollection' can be added");
+                    __fn = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -135,6 +139,7 @@
                 set: function(newValue) { 
                     if (!(new newValue() instanceof Item)) throw new Error("Only [itemType] type 'Item' can be added");
                     __itemType = newValue;
+                    this._baseEntity.items.itemType = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -232,6 +237,7 @@
             this._symbol = this._symbol.concat(["cbBaseResult", "cbBaseValid", "cbBaseBind", "cbBaseOutput", "cbBaseEnd"]);
             this._symbol = this._symbol.concat(["getTypes", "init", "preRegister", "preCheck", "preReady", "addEntity"]);
             this._symbol = this._symbol.concat(["add", "addItem", "loadProp", "setMapping", "preReady", "addEntity"]);
+            this._symbol = this._symbol.concat(["addCommand", "setService"]);
             
             /** @implements IBindModel 인터페이스 구현 */
             this._implements(IBindModel);
@@ -487,6 +493,260 @@
                 }
             }
         };
+
+        BindModel.prototype.addCommand  = function(p_name, p_option, p_entities) {
+
+            // 유효성 검사
+            if (typeof p_name !== "string") {
+                throw new Error("Only [p_name] type 'string' can be added");
+            }
+
+            // 예약어 검사
+            if (this._symbol.indexOf(p_name) > -1) {
+                throw new Error(" [" + p_name + "] is a Symbol word");   
+            }            
+            
+            // 중복 검사
+            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
+
+            // 생성
+            this[p_name] = new BindCommandAjax(this, p_option, p_entities);
+
+            return this[p_name];
+        };
+
+        BindModel.prototype.setService  = function(p_service, p_isLoadProp) {
+
+            var propObject;
+            var propSubObject;
+            var command;
+
+            p_isLoadProp = p_isLoadProp || true;       // 기본값
+
+            // 유효성 검사
+            if (typeof p_service !== 'object') throw new Error("Only [p_service] type 'object' can be added");
+
+            // command 등록
+            if (typeof p_service["command"] !== "undefined" && p_service["prop"] !== null) {
+                propObject = p_service["command"];
+                for(var prop in propObject) {
+                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+
+                        // 예약어 검사
+                        if (this._symbol.indexOf(prop) > -1) {
+                            throw new Error(" [" + prop + "] is a Symbol word");   
+                        }            
+
+                        // 중복 검사
+                        if (typeof this[prop] !== "undefined") throw new Error("에러!! command 이름 중복 : " + prop);
+
+                        // command 등록 및 설정
+                        command = this.addCommand(prop);
+                        if (typeof propObject["outputOption"] === "number") command.outputOption = propObject["outputOption"];
+                        if (typeof propObject["onExecute"] === "function")  command.onExecute = propObject["onExecute"];
+                        if (typeof propObject["onExecuted"] === "function") command.onExecute = propObject["onExecuted"];
+                        if (typeof propObject["cbValid"] === "function")    command.onExecute = propObject["cbValid"];
+                        if (typeof propObject["cbBind"] === "function")     command.onExecute = propObject["cbBind"];
+                        if (typeof propObject["cbResult"] === "function")   command.onExecute = propObject["cbResult"];
+                        if (typeof propObject["cbOutput"] === "function")   command.onExecute = propObject["cbOutput"];
+                        if (typeof propObject["cbEnd"] === "function")      command.onExecute = propObject["cbEnd"];
+                    }
+                }
+            }
+            
+            // prop 등록
+            if (typeof p_service["prop"] !== "undefined" && p_service["prop"] !== null) {
+                propObject = p_service["prop"];
+                for(var prop in propObject) {
+                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+                        //__prop.add(prop, propObject[prop]);
+                        // get/sett 형식의 기능 추가        REVIEW:: 확인필요 get/set 의 필요성, 중복 및 혼선의 이슈
+                        if (typeof propObject[prop] === "object" 
+                            && (typeof propObject[prop].get === "function" || typeof propObject[prop].set === "function")) {
+                            this.prop.add(prop, "", propObject[prop]);    
+                        } else {
+                            this.prop.add(prop, propObject[prop]);
+                        }
+                    }
+                }
+            }
+            
+            // fn 등록
+            if (typeof p_service["fn"] !== "undefined" && p_service["fn"] !== null) {
+                propObject = p_service["fn"];
+                for(var prop in propObject) {
+                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+                        this.fn.add(prop, propObject[prop]);
+                    }
+                }
+            }
+
+            if (typeof p_service["mapping"] !== "undefined" && p_service["mapping"] !== null) {
+                propObject = p_service["mapping"];
+                for(var prop in propObject) {
+                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+                        this.mapping.add(prop, propObject[prop]);
+                    }
+                }
+            }
+            
+            // pre 메소드 등록
+            if (typeof p_service["preRegister"] === "function") {
+                // __preRegister = p_service["preRegister"];
+                this.preRegister = p_service["preRegister"];
+            }
+            if (typeof p_service["preCheck"] === "function") {
+                // __preCheck = p_service["preCheck"];
+                this.preCheck = p_service["preCheck"];
+            }
+            if (typeof p_service["preReady"] === "function") {
+                // __preReady = p_service["preReady"];
+                this.preReady = p_service["preReady"];
+            }
+            
+            // fail, error 등록
+            if (typeof p_service["cbFail"] === "function") {
+                this.cbFail = p_service["cbFail"];
+            }
+            if (typeof p_service["cbError"] === "function") {
+                this.cbError = p_service["cbError"];
+            }
+            
+            // base 등록
+            if (typeof p_service["cbBaseValid"] === "function") {
+                this.cbBaseValid = p_service["cbBaseValid"];
+            }
+            if (typeof p_service["cbBaseBind"] === "function") {
+                this.cbBaseBind = p_service["cbBaseBind"];
+            }
+            if (typeof p_service["cbBaseResult"] === "function") {
+                this.cbResult = p_service["cbBaseResult"];
+            }
+            if (typeof p_service["cbBaseOutput"] === "function") {
+                this.cbBaseOutput = p_service["cbBaseOutput"];
+            }
+            if (typeof p_service["cbBaseEnd"] === "function") {
+                this.cbBaseEnd = p_service["cbBaseEnd"];
+            }
+
+            // execute 이벤트 등록
+            if (typeof p_service["onExecute"] === "function") {
+                this.onExecute = p_service["onExecute"];    // 복수 등록
+            }
+            if (typeof p_service["onExecuted"] === "function") {
+                this.onExecuted = p_service["onExecuted"];  // 복수 등록
+            }
+            
+            // 속성(prop)을 아이템으로 로딩 ("__"시작이름 제외)
+            if (p_isLoadProp === true) {
+                this.loadProp();
+            }  
+        };
+
+        // BindModel.prototype.setService  = function(p_service, p_isLoadProp) {
+
+        //     var propObject;
+
+        //     p_isLoadProp = p_isLoadProp || true;       // 기본값
+
+        //     // 유효성 검사
+        //     if (!(p_service instanceof IBindModel)) throw new Error("Only [p_service] type 'IBindModel' can be added");
+
+        //     // command 등록
+        //     for (var prop in p_service) {
+        //         if (p_service.hasOwnProperty(prop)) {
+        //             if (typeof p_service[prop] === "function" && p_service[prop].name ==="BindCommandEditAjax") {
+        //                 this[prop] = new BindCommandEditAjax(this, this._baseEntity);
+        //             }
+        //             if (typeof p_service[prop] === "function" && p_service[prop].name ==="BindCommandLookupAjax") {
+        //                 this[prop] = new BindCommandLookupAjax(this, this._baseEntity);
+        //             }
+        //         }
+        //     }            
+            
+        //     // prop 등록
+        //     if (typeof p_service["prop"] !== "undefined" && p_service["prop"] !== null) {
+        //         propObject = p_service["prop"];
+        //         for(var prop in propObject) {
+        //             if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+
+        //                 //__prop.add(prop, propObject[prop]);
+        //                 // get/sett 형식의 기능 추가
+        //                 if (typeof propObject[prop] === "object" 
+        //                     && (typeof propObject[prop].get === "function" || typeof propObject[prop].set === "function")) {
+        //                     this.prop.add(prop, "", propObject[prop]);    
+        //                 } else {
+        //                     this.prop.add(prop, propObject[prop]);
+        //                 }
+        //             }
+        //         }
+        //     }
+            
+        //     // mode 등록
+        //     if (typeof p_service["mode"] !== "undefined" && p_service["mode"] !== null) {
+        //         propObject = p_service["mode"];
+        //         for(var prop in propObject) {
+        //             if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+        //                 this.mode.add(prop, propObject[prop]);
+        //             }
+        //         }
+        //     }
+        //     if (typeof p_service["mapping"] !== "undefined" && p_service["mapping"] !== null) {
+        //         propObject = p_service["mapping"];
+        //         for(var prop in propObject) {
+        //             if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+        //                 this.mapping.add(prop, propObject[prop]);
+        //             }
+        //         }
+        //     }
+        //     if (typeof p_service["preRegister"] === "function") {
+        //         // __preRegister = p_service["preRegister"];
+        //         this.preRegister = p_service["preRegister"];
+        //     }
+        //     if (typeof p_service["preCheck"] === "function") {
+        //         // __preCheck = p_service["preCheck"];
+        //         this.preCheck = p_service["preCheck"];
+        //     }
+        //     if (typeof p_service["preReady"] === "function") {
+        //         // __preReady = p_service["preReady"];
+        //         this.preReady = p_service["preReady"];
+        //     }
+        //     if (typeof p_service["cbFail"] === "function") {
+        //         this.cbFail = p_service["cbFail"];
+        //     }
+        //     if (typeof p_service["cbError"] === "function") {
+        //         this.cbError = p_service["cbError"];
+        //     }
+            
+        //     if (typeof p_service["cbResult"] === "function") {
+        //         this.cbResult = p_service["cbResult"];
+        //     }
+        //     if (typeof p_service["cbBaseValid"] === "function") {
+        //         this.cbBaseValid = p_service["cbBaseValid"];
+        //     }
+        //     if (typeof p_service["cbBaseBind"] === "function") {
+        //         this.cbBaseBind = p_service["cbBaseBind"];
+        //     }
+        //     if (typeof p_service["cbBaseOutput"] === "function") {
+        //         this.cbBaseOutput = p_service["cbBaseOutput"];
+        //     }
+        //     if (typeof p_service["cbBaseEnd"] === "function") {
+        //         this.cbBaseEnd = p_service["cbBaseEnd"];
+        //     }
+
+        //     if (typeof p_service["onExecute"] === "function") {
+        //         this.onExecute = p_service["onExecute"];
+        //     }
+        //     if (typeof p_service["onExecuted"] === "function") {
+        //         this.onExecuted = p_service["onExecuted"];
+        //     }
+            
+            
+        //     // 속성(prop)을 아이템으로 로딩 ("__"시작이름 제외)
+        //     if (p_isLoadProp === true) {
+        //         this.loadProp();
+        //     }  
+        // };
 
         return BindModel;
     

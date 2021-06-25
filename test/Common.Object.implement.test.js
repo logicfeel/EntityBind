@@ -204,6 +204,14 @@
             errorCount++;
         }
 
+        //#################################################
+        if (errorCount > 0) {
+            console.warn("Error Sub SUM : %dEA", errorCount);    
+        } else {
+            console.log("===========================================================================");
+            console.log("단위 테스트 : OK");
+        }
+        
         return errorCount;
     }
 

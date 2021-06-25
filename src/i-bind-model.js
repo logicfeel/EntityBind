@@ -21,9 +21,15 @@
     var IBindModel  = (function () {
         function IBindModel() {
 
-            this.prop      = {};
-            this.mode      = {};
-            this.mapping   = {};
+            this.prop       = {};
+            this.fn         = {};
+            this.mapping    = {};
+
+            this.cbBaseValid    = null;
+            this.cbBaseBind     = null;
+            this.cbBaseResult   = null;
+            this.cbBaseOutput   = null;
+            this.cbBaseEnd      = null;
 
             this.onExecute  = null;
             this.onExecuted = null;
