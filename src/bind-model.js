@@ -542,14 +542,14 @@
 
                         // command 등록 및 설정
                         command = this.addCommand(prop);
-                        if (typeof propObject["outputOption"] === "number") command.outputOption = propObject["outputOption"];
-                        if (typeof propObject["onExecute"] === "function")  command.onExecute = propObject["onExecute"];
-                        if (typeof propObject["onExecuted"] === "function") command.onExecute = propObject["onExecuted"];
-                        if (typeof propObject["cbValid"] === "function")    command.onExecute = propObject["cbValid"];
-                        if (typeof propObject["cbBind"] === "function")     command.onExecute = propObject["cbBind"];
-                        if (typeof propObject["cbResult"] === "function")   command.onExecute = propObject["cbResult"];
-                        if (typeof propObject["cbOutput"] === "function")   command.onExecute = propObject["cbOutput"];
-                        if (typeof propObject["cbEnd"] === "function")      command.onExecute = propObject["cbEnd"];
+                        if (typeof propObject[prop]["outputOption"] === "number") command.outputOption = propObject[prop]["outputOption"];
+                        if (typeof propObject[prop]["onExecute"] === "function")  command.onExecute = propObject[prop]["onExecute"];
+                        if (typeof propObject[prop]["onExecuted"] === "function") command.onExecuted = propObject[prop]["onExecuted"];
+                        if (typeof propObject[prop]["cbValid"] === "function")    command.cbValid = propObject[prop]["cbValid"];
+                        if (typeof propObject[prop]["cbBind"] === "function")     command.cbBind = propObject[prop]["cbBind"];
+                        if (typeof propObject[prop]["cbResult"] === "function")   command.cbResult = propObject[prop]["cbResult"];
+                        if (typeof propObject[prop]["cbOutput"] === "function")   command.cbOutput = propObject[prop]["cbOutput"];
+                        if (typeof propObject[prop]["cbEnd"] === "function")      command.cbEnd = propObject[prop]["cbEnd"];
                     }
                 }
             }

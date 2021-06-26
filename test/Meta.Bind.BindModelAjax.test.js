@@ -1049,6 +1049,18 @@
                     ]
                 }
             },
+            command: {
+                read: {
+                    outputOption: 3,
+                    onExecute: function(p_bindCommand) {
+                        _this.items['cmd'].value = 'READ';
+                    },
+                    cbEnd: function(p_entity) {
+                        // if (p_entity['return'] < 0) return alert('조회 실패 ');
+                        return "cbEnd";
+                    },
+                }
+            },
             preRegister: function() {
                 return "preRegister";
             },
@@ -1066,6 +1078,8 @@
             },
         });
         if (model.prop.count === 3 &&
+            model.read.outputOption === 3 &&
+            model.read.cbEnd() === 'cbEnd' &&
             model.preRegister() === "preRegister" &&
             model.preCheck() === "preCheck" &&
             model.preReady() === "preReady" &&
