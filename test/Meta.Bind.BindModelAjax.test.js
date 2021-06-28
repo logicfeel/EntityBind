@@ -1034,7 +1034,7 @@
 
 
         console.log("---------------------------------------------------------------------------");
-        console.log("new BindModelAjax( {...} ) :: 생성시 객체 주입 ");
+        console.log("new BindModelAjax( {...} ) :: 생성시 객체 주입 (전체) ");
         var model = new BindModelAjax({
             prop: {
                 i1: "V1",
@@ -1052,33 +1052,25 @@
             command: {
                 read: {
                     outputOption: 3,
-                    onExecute: function(p_bindCommand) {
-                        _this.items['cmd'].value = 'READ';
-                    },
-                    cbEnd: function(p_entity) {
-                        // if (p_entity['return'] < 0) return alert('조회 실패 ');
-                        return "cbEnd";
-                    },
+                    cbValid: function() { return 'cbValid'; },
+                    cbBind: function() { return 'cbBind'; },
+                    cbResult: function() { return 'cbResult'; },
+                    cbOutput: function() { return 'cbOutput'; },
+                    cbEnd: function() { return 'cbEnd'; },
                 }
             },
-            preRegister: function() {
-                return "preRegister";
-            },
-            preCheck: function() {
-                 return "preCheck";
-            },
-            preReady: function(model) {
-                 return "preReady";
-            },
-            cbFail: function(p_msg, p_code) {
-                 return "cbFail";
-            },
-            cbError: function(p_msg, p_status) {
-                 return "cbError";
-            },
+            preRegister: function() { return "preRegister"; },
+            preCheck: function() { return "preCheck"; },
+            preReady: function(model) { return "preReady"; },
+            cbFail: function(p_msg, p_code) { return "cbFail"; },
+            cbError: function(p_msg, p_status) { return "cbError"; },
         });
         if (model.prop.count === 3 &&
             model.read.outputOption === 3 &&
+            model.read.cbValid() === 'cbValid' &&
+            model.read.cbBind() === 'cbBind' &&
+            model.read.cbResult() === 'cbResult' &&
+            model.read.cbOutput() === 'cbOutput' &&
             model.read.cbEnd() === 'cbEnd' &&
             model.preRegister() === "preRegister" &&
             model.preCheck() === "preCheck" &&
