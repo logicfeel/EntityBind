@@ -17,8 +17,8 @@
     var BindModel;
     var PropertyCollection;
     var IBindModel;
-    var BindCommandLookupAjax;
-    var BindCommandEditAjax;
+    // var BindCommandLookupAjax;
+    // var BindCommandEditAjax;
     var ItemDOM;
     var BindCommandAjax;
 
@@ -27,8 +27,8 @@
         BindModel               = require("./bind-model");
         PropertyCollection      = require("./collection-property");
         IBindModel              = require("./i-bind-model");        
-        BindCommandLookupAjax   = require("./bind-command-ajax-lookup");
-        BindCommandEditAjax     = require("./bind-command-ajax-edit");
+        // BindCommandLookupAjax   = require("./bind-command-ajax-lookup");
+        // BindCommandEditAjax     = require("./bind-command-ajax-edit");
         ItemDOM                 = require("./entity-item-dom");
         BindCommandAjax         = require("./bind-command-ajax");
 
@@ -37,8 +37,8 @@
         BindModel               = global._W.Meta.Bind.BindModel;
         PropertyCollection      = global._W.Collection.PropertyCollection;
         IBindModel              = global._W.Interface.IBindModel;        
-        BindCommandLookupAjax   = global._W.Meta.Bind.BindCommandLookupAjax;
-        BindCommandEditAjax     = global._W.Meta.Bind.BindCommandEditAjax;
+        // BindCommandLookupAjax   = global._W.Meta.Bind.BindCommandLookupAjax;
+        // BindCommandEditAjax     = global._W.Meta.Bind.BindCommandEditAjax;
         ItemDOM                 = global._W.Meta.Entity.ItemDOM;
         BindCommandAjax         = global._W.Meta.Bind.BindCommandAjax;
     }
@@ -49,8 +49,8 @@
     if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
     if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
-    if (typeof BindCommandLookupAjax === "undefined") throw new Error("[BindCommandLookupAjax] module load fail...");
-    if (typeof BindCommandEditAjax === "undefined") throw new Error("[BindCommandEditAjax] module load fail...");
+    // if (typeof BindCommandLookupAjax === "undefined") throw new Error("[BindCommandLookupAjax] module load fail...");
+    // if (typeof BindCommandEditAjax === "undefined") throw new Error("[BindCommandEditAjax] module load fail...");
     if (typeof ItemDOM === "undefined") throw new Error("[ItemDOM] module load fail...");
     if (typeof BindCommandAjax === "undefined") throw new Error("[BindCommandAjax] module load fail...");
 
@@ -207,6 +207,26 @@
             return selectors;
         };
 
+        BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_entities) {
+
+            // 유효성 검사
+            if (typeof p_name !== "string") {
+                throw new Error("Only [p_name] type 'string' can be added");
+            }
+
+            // 예약어 검사
+            if (this._symbol.indexOf(p_name) > -1) {
+                throw new Error(" [" + p_name + "] is a Symbol word");   
+            }            
+            
+            // 중복 검사
+            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
+
+            // 생성
+            this[p_name] = new BindCommandAjax(this, p_option, p_entities);
+
+            return this[p_name];
+        };
         // BindModelAjax.prototype.setService  = function(p_service, p_isLoadProp) {
 
         //     var propObject;

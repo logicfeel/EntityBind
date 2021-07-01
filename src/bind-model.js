@@ -23,7 +23,6 @@
     var EntityTable;
     var Item;
     var MetaObject;
-    var BindCommandAjax;
 
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                        = require("./utils");
@@ -36,7 +35,6 @@
         EntityTable                 = require("./entity-table").EntityTable;
         Item                        = require("./entity-item").Item;
         MetaObject                  = require("./meta-object");
-        BindCommandAjax         = require("./bind-command-ajax");
     } else {
         util                        = global._W.Common.Util;
         BaseBind                    = global._W.Meta.Bind.BaseBind;
@@ -48,7 +46,6 @@
         EntityTable                 = global._W.Meta.Entity.EntityTable;        
         Item                        = global._W.Meta.Entity.Item;        
         MetaObject                  = global._W.Meta.MetaObject;        
-        BindCommandAjax         = global._W.Meta.Bind.BindCommandAjax;
     }
 
     //==============================================================
@@ -62,7 +59,6 @@
     if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
     if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
     if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
-    if (typeof BindCommandAjax === "undefined") throw new Error("[BindCommandAjax] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -496,23 +492,7 @@
 
         BindModel.prototype.addCommand  = function(p_name, p_option, p_entities) {
 
-            // 유효성 검사
-            if (typeof p_name !== "string") {
-                throw new Error("Only [p_name] type 'string' can be added");
-            }
-
-            // 예약어 검사
-            if (this._symbol.indexOf(p_name) > -1) {
-                throw new Error(" [" + p_name + "] is a Symbol word");   
-            }            
-            
-            // 중복 검사
-            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
-
-            // 생성
-            this[p_name] = new BindCommandAjax(this, p_option, p_entities);
-
-            return this[p_name];
+            throw new Error("[ execute() ] Abstract method definition, fail...");
         };
 
         BindModel.prototype.setService  = function(p_service, p_isLoadProp) {

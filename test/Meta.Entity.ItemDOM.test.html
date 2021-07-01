@@ -1,0 +1,182 @@
+<html>
+<head></head>
+<body>
+Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
+
+<div>
+    <h2> 1. ItemDOM :: setter + selector + filter : 계산값 + 통화단위 </h2>
+    <p>item : 3 </p>
+    <p>item.value(filter) : <span id="t1"></span> </p>
+    <p>item.value : <span id="t1-1"></span> </p>
+</div>
+<div>
+    <h2> 2. ItemDOM :: setter + selector  : 라디오박스 (체크박스)</h2>
+    t2 : 
+    <input type="radio" name="t2" value="1" onclick="radio_event(this.value)">상
+    <input type="radio" name="t2" value="2" onclick="radio_event(this.value)">중
+    <input type="radio" name="t2" value="3" onclick="radio_event(this.value)">하
+    <p>item.value : <span id="t2-1"></span> </p>
+</div>
+<div>
+    <h2> 3. ItemDOM :: selector + filter :통화단위(읽기전용) </h2>
+    <p>item : 3 </p>
+    <p>item.value(filter) : <span id="t3"></span> </p>
+    <p>item.value : <span id="t3-1"></span> </p>
+</div>
+<div>
+    <h2> 4. ItemDOM :: selector : 입력텍스트</h2>
+    t4 : 
+    <input type="text" name="t4" value="1" onblur="text_event(this.value)">
+    <p>item.value : <span id="t4-1"></span> </p>
+</div>
+<div>
+    <h2> 5. ItemDOM :: selector : 셀렉트박스</h2>
+    t5 : 
+    <select name="t5" onchange="select_event(this.value)">
+        <option value="1">1.교사</option>
+        <option value="2">2.학생</option>
+        <option value="3" selected="selected">3.회사</option>
+    </select>
+    <p>item.value : <span id="t5-1"></span> </p>
+</div>
+<div>
+    <h2> 6. ItemDOM :: selector : 체크박스(단일값 | bool)</h2>
+    t6 : 
+    <input type="checkbox" name="t6" onclick="check_event1(this.value)">
+    <p>item.value : <span id="t6-1"></span> </p>
+</div>
+<div>
+    <h2> 7. ItemDOM :: selector : 체크박스(단일값)</h2>
+    t7 : 
+    <input type="checkbox" name="t7" value="1" onclick="check_event2(this.value)">
+    <p>item.value : <span id="t7-1"></span> </p>
+</div>
+<div>
+    <h2> 8. ItemDOM :: setter + getter : 체크박스-복수 (라디오박스)</h2>
+    t8 : 
+    <input type="checkbox" name="t8" value="A" onclick="check_event3(this.value)">
+    <input type="checkbox" name="t8" value="B" onclick="check_event3(this.value)">
+    <p>item.value : <span id="t8-1"></span> </p>
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+<script src="../dist/_w-meta-1.5.2.js"></script>
+<script>
+    var errorCount = 0;
+
+    console.log("---------------------------------------------------------------------------");
+    console.log(" 1. ItemDOM :: setter + selector + filter : 계산값 + 통화단위 (setter 리턴의 경우) ");
+    var item = new ItemDOM("i1");
+    item.setter = function(val) { 
+        return val * 10; 
+    };
+    item.selector = { key: '#t1', type: 'text'};
+    item.filter = function(val) { return val * 2; };
+    item.value = 3;
+    $('#t1-1').text(item.value);
+    if (item.value == 30 &&
+        $('#t1').text() == 60 &&
+        true) {
+        console.log("Result = Success");
+    } else {
+        console.warn("Result = Fail");
+        errorCount++;
+    }
+
+    console.log("---------------------------------------------------------------------------");
+    console.log(" 2. ItemDOM :: setter + selector  : 라디오박스 (체크박스) ");
+    var item2 = new ItemDOM("i1");
+    item2.setter = function(val) { 
+        $("input[name=t2][value="+ val + "]").prop("checked", "checked");
+        return val; 
+    };
+    item2.selector = { key: 'input[name=t2]:checked', type: 'value'};
+    item2.value = 2;
+    function radio_event(val) { 
+        $('#t2-1').text(item2.value) 
+    }
+
+    console.log("---------------------------------------------------------------------------");
+    console.log(" 3. ItemDOM :: selector + filter :통화단위(읽기전용) ");
+    var item3 = new ItemDOM("i1");
+    item3.selector = { key: '#t3', type: 'text'};
+    item3.filter = function(val) { return val * 2; };
+    item3.value = 3;
+    $('#t3-1').text(item3.value);
+    if (item3.value == 3 &&
+        $('#t3').text() == 6 &&
+        true) {
+        console.log("Result = Success");
+    } else {
+        console.warn("Result = Fail");
+        errorCount++;
+    }
+
+    console.log("---------------------------------------------------------------------------");
+    console.log(" 4. ItemDOM :: selector : 입력텍스트 ");
+    var item4 = new ItemDOM("i1");
+    item4.selector = { key: 'input[name=t4]', type: 'value'};
+    item4.value = 2;
+    function text_event(val) { 
+        $('#t4-1').text(item4.value);
+    }
+
+    console.log("---------------------------------------------------------------------------");
+    console.log(" 5. ItemDOM :: selector : 셀렉트박스");
+    var item5 = new ItemDOM("i1");
+    item5.selector = { key: 'select[name=t5]', type: 'value'};
+    item5.value = 2;
+    function select_event(val) { 
+        $('#t5-1').text(item5.value);
+    }
+    console.log("---------------------------------------------------------------------------");
+    console.log(" 6. ItemDOM :: selector : 체크박스(단일값 = bool) ");
+    var item6 = new ItemDOM("i1");
+    item6.selector = { key: 'input[name=t6]', type: 'prop.checked'};
+    item6.value = true;
+    function check_event1(val) { 
+        $('#t6-1').text(item6.value);
+    }
+
+    console.log("---------------------------------------------------------------------------");
+    console.log(" 7. ItemDOM :: selector : 체크박스(단일값) ");
+    var item7 = new ItemDOM("i1");
+    item7.selector = { key: 'input[name=t7]:checked', type: 'value'};
+    item7.default = "";
+    function check_event2(val) { 
+        $('#t7-1').text(item7.value);
+    }
+
+    console.log("---------------------------------------------------------------------------");
+    console.log(" 8. ItemDOM :: setter + getter : 체크박스-복수 (라디오박스) ");
+    var item8 = new ItemDOM("i1");
+    item8.getter = function() { 
+        var vv = '';
+        vv += $("input[name=t8][value=A]:checked").val() ? $("input[name=t8][value=A]:checked").val() : '';
+        vv += $("input[name=t8][value=B]:checked").val() ? $("input[name=t8][value=B]:checked").val() : '';
+        return vv; 
+    };
+    item8.setter = function(val) { 
+        if (val.indexOf("A") >= 0) $("input[name=t8][value=A]").prop("checked", true);
+        if (val.indexOf("B") >= 0) $("input[name=t8][value=B]").prop("checked", true);
+    };
+    item8.value = 'A';
+    function check_event3(val) { 
+        $('#t8-1').text(item8.value);
+    }
+
+    console.log("---------------------------------------------------------------------------");
+    console.log(" 9. ItemDOM :: setter + getter : 외부값 ");
+
+    console.log("---------------------------------------------------------------------------");
+    console.log(" 10. ItemDOM :: setter + filter : 필터 작동 안함 ");
+
+    console.log("---------------------------------------------------------------------------");
+    console.log(" 11. ItemDOM :: getter : 특정외부값, 값관리 안함 ");
+
+
+    // var item = new ItemDOM("i1");
+
+</script>
+</body>
+</html>

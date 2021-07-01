@@ -33,7 +33,7 @@ var paths = {
         'src/entity-table.js', 'src/entity-view.js', 'src/entity-set.js', 
         // 바인드
         'src/bind-base.js', 'src/bind-command.js', 'src/bind-model.js', 'src/bind-command-ajax.js', 
-        'src/bind-command-ajax-edit.js', 'src/bind-command-ajax-lookup.js', 
+        //'src/bind-command-ajax-edit.js', 'src/bind-command-ajax-lookup.js', 
         'src/bind-model-ajax.js', 
         // 'src/bind-model-ajax-create.js', 
         // 'src/bind-model-ajax-read.js', 'src/bind-model-ajax-read-del.js', 

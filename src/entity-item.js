@@ -18,15 +18,18 @@
     var util;
     var MetaElement;
     var PropertyCollection;
+    var Observer;
     
     if (typeof module === "object" && typeof module.exports === "object") {     
         util                = require("util");
         MetaElement         = require("./meta-element");
         PropertyCollection  = require("./collection-property");
+        Observer            = require("./observer");
     } else {
         util                = global._W.Common.Util;
         MetaElement         = global._W.Meta.MetaElement;
-        PropertyCollection  =  global._W.Collection.PropertyCollection;
+        PropertyCollection  = global._W.Collection.PropertyCollection;
+        Observer            = global._W.Common.Observer;
     }
 
     //==============================================================
@@ -34,6 +37,7 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof MetaElement === "undefined") throw new Error("[MetaElement] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
+    if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -62,22 +66,40 @@
 
             // var __getter        = function() { return this.__value; };
 // POINT::
-            var __getter        = function() { return this.__value || __default; };
-            var __setter        = function(val) { 
-                val = val === null ? "" : val;  // null 등록 오류 처리
-                if(["number", "string", "boolean"].indexOf(typeof val) < 0) {
-                    throw new Error("Only [value] type 'number, string, boolean' can be added");
-                }
-                this.__value = val;
-            };
-
-            this.__value         = null;
+            // var __getter        = function() { return this.__value || __default; };
+            // var __setter        = function(val) { 
+            //     val = val === null ? "" : val;  // null 등록 오류 처리
+            //     if(["number", "string", "boolean"].indexOf(typeof val) < 0) {
+            //         throw new Error("Only [value] type 'number, string, boolean' can be added");
+            //     }
+            //     this.__value = val;
+            // };
+            var __getter        = null;
+            var __setter        = null;
+            var __value         = null;
 
             // Entity 등록 & order(순서) 값 계산
             if (p_entity && p_entity instanceof MetaElement && p_entity.instanceOf("Entity")) {
                 __entity    = p_entity;
                 __order     = __entity.items.count === 0 ? __order : __entity.items[__entity.items.count - 1].order + __increase;
             }
+
+            /** @private */
+            this.__event    = new Observer(this, this);
+
+
+            /** @property {__value} */
+            Object.defineProperty(this, "__value", 
+            {
+                get: function() { return __value; },
+                set: function(newValue) { 
+                    // 직접 입력하면 안됨
+                    // throw new Error("Only getter !! ");
+                    __value = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
 
             /** @property {entity} */
             Object.defineProperty(this, "entity", 
@@ -240,48 +262,112 @@
                 enumerable: true
             });
             
+// POINT::
+            // /** @property {value} */
+            // Object.defineProperty(this, "value", 
+            // {
+            //     get: __getter,
+            //     set: __setter,
+            //     configurable: true,
+            //     enumerable: true
+            // });
+
+            // /** @property {value} */
+            // Object.defineProperty(this, "getter", 
+            // {
+            //     get: function() { return __getter; },
+            //     set: function(val) { 
+            //         if(val !== null && typeof val !== "function") throw new Error("Only [getter] type 'function' can be added");
+            //         __getter = val;
+            //         Object.defineProperty(this, "value", {
+            //             get: __getter,
+            //             configurable: true,
+            //             enumerable: true
+            //         });
+            //     },
+            //     configurable: true,
+            //     enumerable: true
+            // });
+
+            // /** @property {value} */
+            // Object.defineProperty(this, "setter", 
+            // {
+            //     get: function() { return __setter; },
+            //     set: function(val) { 
+            //         if(val !== null && typeof val !== "function") throw new Error("Only [setter] type 'function' can be added");
+            //         __setter = val;
+            //         Object.defineProperty(this, "value", {
+            //             set: __setter,
+            //             configurable: true,
+            //             enumerable: true
+            //         });
+            //     },
+            //     configurable: true,
+            //     enumerable: true
+            // });
+
             /** @property {value} */
             Object.defineProperty(this, "value", 
             {
-                get: __getter,
-                set: __setter,
+                get: function() { 
+                    var __val;
+                    if (typeof __getter === 'function' ) __val = __getter.call(this);
+                    else __val = this.__value || this.default;
+                    return __val; 
+                },
+                set:  function(val) { 
+                    var __val, _val;
+                    if (typeof __setter === 'function' ) _val = __setter.call(this, val);
+                    
+                    // settter 의 리턴이 여부
+                    if (typeof _val !== 'undefined') __val = _val;
+                    else __val = val; 
+
+                    __val = __val === null ? '' : __val;  // null 등록 오류 처리
+                    if(["number", "string", "boolean"].indexOf(typeof __val) < 0) {
+                        throw new Error("Only [value] type 'number, string, boolean' can be added");
+                    }
+                    this.__value = __val;
+                    // 이벤트 발생
+                    this._onChanged(this.value);
+                },
                 configurable: true,
                 enumerable: true
             });
 
-            /** @property {value} */
+            /** @property {getter} */
             Object.defineProperty(this, "getter", 
             {
                 get: function() { return __getter; },
                 set: function(val) { 
                     if(val !== null && typeof val !== "function") throw new Error("Only [getter] type 'function' can be added");
                     __getter = val;
-                    Object.defineProperty(this, "value", {
-                        get: __getter,
-                        configurable: true,
-                        enumerable: true
-                    });
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            /** @property {value} */
+            /** @property {setter} */
             Object.defineProperty(this, "setter", 
             {
                 get: function() { return __setter; },
                 set: function(val) { 
                     if(val !== null && typeof val !== "function") throw new Error("Only [setter] type 'function' can be added");
                     __setter = val;
-                    Object.defineProperty(this, "value", {
-                        set: __setter,
-                        configurable: true,
-                        enumerable: true
-                    });
                 },
                 configurable: true,
                 enumerable: true
             });
+
+            /** @event onChanged */
+            Object.defineProperty(this, "onChanged", {
+                enumerable: true,
+                configurable: true,
+                set: function(p_fn) {
+                    this.__event.subscribe(p_fn, "onChanged");
+                }
+            });
+            
 
             //---------------------------------------------------
             // 아이템 옵션속성 추가
@@ -303,6 +389,11 @@
 
         }
         util.inherits(Item, _super);
+
+        /** @event */
+        Item.prototype._onChanged = function(p_value) {
+            this.__event.publish("onChanged", p_value);
+        };
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
         Item.prototype.getTypes  = function() {
@@ -364,31 +455,32 @@
             this.constraints.push(constraint);
         };
 
+// POINT:: 삭제 대기
         /**
          * @method
          */
-        Item.prototype.defineValueProperty = function(p_getter, p_setter) {
+        // Item.prototype.defineValueProperty = function(p_getter, p_setter) {
 
-            // 타입검사 
-            if(typeof p_getter !== "undefined" && typeof p_getter !== "function") {
-                throw new Error("Only [p_getter] type 'function' can be added");
-            }
-            if(typeof p_setter !== "undefined" && typeof p_setter !== "function") {
-                throw new Error("Only [p_getter] type 'function' can be added");
-            }
+        //     // 타입검사 
+        //     if(typeof p_getter !== "undefined" && typeof p_getter !== "function") {
+        //         throw new Error("Only [p_getter] type 'function' can be added");
+        //     }
+        //     if(typeof p_setter !== "undefined" && typeof p_setter !== "function") {
+        //         throw new Error("Only [p_getter] type 'function' can be added");
+        //     }
 
-            // 기본값 설정
-            p_getter = p_getter || function() { return this.__value; };
-            p_setter = p_setter || function(val) { this.__value = val; };
+        //     // 기본값 설정
+        //     p_getter = p_getter || function() { return this.__value; };
+        //     p_setter = p_setter || function(val) { this.__value = val; };
 
-            /** @event */
-            Object.defineProperty(this, "value", {
-                enumerable: true,
-                configurable: true,
-                get: p_getter,
-                set: p_setter
-            });
-        };
+        //     /** @event */s
+        //     Object.defineProperty(this, "value", {
+        //         enumerable: true,
+        //         configurable: true,
+        //         get: p_getter,
+        //         set: p_setter
+        //     });
+        // };
         
         /**
          * 

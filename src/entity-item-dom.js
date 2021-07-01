@@ -46,9 +46,12 @@
             var __isReadOnly    = false;
             var __isHide        = false;
             var __element       = null;
+            var __filter        = null;
             
             //var __selector      = [];
-            var __selector      = { key: "", type: "value" };
+// POINT:: 
+            // var __selector      = { key: "", type: "value" };
+            var __selector      = null;
 
             /** @property {domType} */
             Object.defineProperty(this, "domType", 
@@ -162,65 +165,175 @@
                     }
                     __selector = selector;
 
-                    // node 에서는 종료함
-                    if (typeof module === "object") return;
+                    // // node 에서는 종료함
+                    // if (typeof module === "object") return;
                     
-                    // value 값 설정
-                    if (typeof selector.key === "string" && selector.key.length > 0) {
-                        this.defineValueProperty(
-                            function() {    // value getter
-                                var key = this.selector.key;
-                                var type = this.selector.type;
-                                var option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
-                                var value = "";
+                    // // value 값 설정
+                    // if (typeof selector.key === "string" && selector.key.length > 0) {
+                    //     this.defineValueProperty(
+                    //         function() {    // value getter
+                    //             var key = this.selector.key;
+                    //             var type = this.selector.type;
+                    //             var option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
+                    //             var value = "";
 
-                                if (type === "value" || type === "val") {
-                                    value = jQuery(key).val();
-                                } else if (type === "text") {
-                                    value = jQuery(key).text();
-                                } else if (type === "html") {
-                                    value = jQuery(key).html();
-                                } else if (type.indexOf("prop") > -1) {
-                                    value = jQuery(key).prop(option);
-                                } else if (type.indexOf("attr") > -1) {
-                                    value = jQuery(key).attr(option);
-                                } else if (type.indexOf("css") > -1) {
-                                    value = jQuery(key).css(option);
-                                } else {
-                                    console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
-                                }
-                                return value;
-                            }, 
-                            function(val) { // value setter
-                                var key = this.selector.key;
-                                var type = this.selector.type;
-                                var option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
-                                var value = "";
+                    //             if (type === "value" || type === "val") {
+                    //                 value = jQuery(key).val();
+                    //             } else if (type === "text") {
+                    //                 value = jQuery(key).text();
+                    //             } else if (type === "html") {
+                    //                 value = jQuery(key).html();
+                    //             } else if (type.indexOf("prop") > -1) {
+                    //                 value = jQuery(key).prop(option);
+                    //             } else if (type.indexOf("attr") > -1) {
+                    //                 value = jQuery(key).attr(option);
+                    //             } else if (type.indexOf("css") > -1) {
+                    //                 value = jQuery(key).css(option);
+                    //             } else {
+                    //                 console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
+                    //             }
+                    //             return value;
+                    //         }, 
+                    //         function(val) { // value setter
+                    //             var key = this.selector.key;
+                    //             var type = this.selector.type;
+                    //             var option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
+                    //             var value = "";
 
-                                if (type === "value" || type === "val") {
-                                    jQuery(key).val(val);
-                                } else if (type === "text") {
-                                    jQuery(key).text(val);
-                                } else if (type === "html") {
-                                    jQuery(key).html(val);
-                                } else if (type.indexOf("prop") > -1) {
-                                    jQuery(key).prop(option, val);
-                                } else if (type.indexOf("attr") > -1) {
-                                    jQuery(key).attr(option, val);
-                                } else if (type.indexOf("css") > -1) {
-                                    jQuery(key).css(option, val);
-                                } else {
-                                    console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
-                                }
-                            }
-                        );
-                    }
+                    //             if (type === "value" || type === "val") {
+                    //                 jQuery(key).val(val);
+                    //             } else if (type === "text") {
+                    //                 jQuery(key).text(val);
+                    //             } else if (type === "html") {
+                    //                 jQuery(key).html(val);
+                    //             } else if (type.indexOf("prop") > -1) {
+                    //                 jQuery(key).prop(option, val);
+                    //             } else if (type.indexOf("attr") > -1) {
+                    //                 jQuery(key).attr(option, val);
+                    //             } else if (type.indexOf("css") > -1) {
+                    //                 jQuery(key).css(option, val);
+                    //             } else {
+                    //                 console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
+                    //             }
+                    //         }
+                    //     );
+                    // }
                 },
                 configurable: true,
                 enumerable: true
             });
 
+            /** @property {value} 오버라이딩 */
+            Object.defineProperty(this, "value", 
+            {
+                get: function() { 
+                    var __val;
+                    var key, type, option;
+
+                    if (typeof this.getter === 'function' ) {
+                        __val = this.getter.call(this);
+                    } else if (__selector !== null && __filter === null) {
+
+                        // node 에서는 강제 종료함
+                        if (typeof module !== "object") {
+
+                            key = this.selector.key;
+                            type = this.selector.type;
+                            option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
+                            
+                            if (type === "value" || type === "val") {
+                                __val = jQuery(key).val();
+                            } else if (type === "text") {
+                                __val = jQuery(key).text();
+                            } else if (type === "html") {
+                                __val = jQuery(key).html();
+                            } else if (type.indexOf("prop") > -1) {
+                                __val = jQuery(key).prop(option);
+                            } else if (type.indexOf("attr") > -1) {
+                                __val = jQuery(key).attr(option);
+                            } else if (type.indexOf("css") > -1) {
+                                __val = jQuery(key).css(option);
+                            } else {
+                                console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
+                            }
+                            
+                            if (typeof __val === 'undefined') {
+                                console.warn("["+ key +"] 일치하는 selector가 없습니다. ");
+                            }
+                        }
+                    }
+                    
+                    if (typeof __val === 'undefined') {
+                        __val = this.__value || this.default;  // value 없으면 기본값 리턴
+                    }
+
+                    return __val; 
+                },
+                set:  function(val) { 
+                    var __val, _val;
+                    var key, type, option;
+
+                    if (typeof this.setter === 'function' ) _val = this.setter.call(this, val);
+                    
+                    // settter 의 리턴이 여부
+                    if (typeof _val !== 'undefined') __val = _val;
+                    else __val = val; 
+
+                    __val = __val === null ? '' : __val;  // null 등록 오류 처리
+                    if(["number", "string", "boolean"].indexOf(typeof __val) < 0) {
+                        throw new Error("Only [value] type 'number, string, boolean' can be added");
+                    }
+                    this.__value = __val;   // 내부에 저장
+
+                    // node 에서는 강제 종료함
+                    if (typeof module !== "object") {
+
+                        // 필터 적용
+                        if (typeof __filter === 'function') __val = __filter.call(this, __val);
+
+                        key = this.selector.key;
+                        type = this.selector.type;
+                        option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
+
+                        if (type === "value" || type === "val") {
+                            jQuery(key).val(__val);
+                        } else if (type === "text") {
+                            jQuery(key).text(__val);
+                        } else if (type === "html") {
+                            jQuery(key).html(__val);
+                        } else if (type.indexOf("prop") > -1) {
+                            jQuery(key).prop(option, __val);
+                        } else if (type.indexOf("attr") > -1) {
+                            jQuery(key).attr(option, __val);
+                        } else if (type.indexOf("css") > -1) {
+                            jQuery(key).css(option, __val);
+                        } else {
+                            console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
+                        }
+                    }
+
+                    // 이벤트 발생
+                    this._onChanged(this.value);
+                },
+                configurable: true,
+                enumerable: true
+            });
             
+            /** @property {filter} */
+            Object.defineProperty(this, "filter", 
+            {
+                get: function() { return __filter; },
+                set: function(val) { 
+                    if(val !== null && typeof val !== "function") throw new Error("Only [filter] type 'function' can be added");
+                    __filter = val;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+
+            //---------------------------------------------------
+            // 아이템 옵션속성 추가
             if (typeof p_option === "object" ) {
                 for(var prop in p_option) {
                     if (p_option.hasOwnProperty(prop) && 
@@ -263,27 +376,28 @@
             return clone;
         };
 
-        /**
-         * 상위 Item.value 의 특성을 오버라이딩함
-         * @param {Function} p_getter 
-         * @param {Function} p_setter 
-         */
-        ItemDOM.prototype.defineValueProperty  = function(p_getter, p_setter) {
-            p_getter = p_getter || function() { return this.value };
-            p_setter = p_setter || function(val) { this.value = val };
+// POINT:: 삭제대기
+        // /**
+        //  * 상위 Item.value 의 특성을 오버라이딩함
+        //  * @param {Function} p_getter 
+        //  * @param {Function} p_setter 
+        //  */
+        // ItemDOM.prototype.defineValueProperty  = function(p_getter, p_setter) {
+        //     p_getter = p_getter || function() { return this.value };
+        //     p_setter = p_setter || function(val) { this.value = val };
 
-            // 유효성 검사
-            if (typeof p_getter !== "function") throw new Error("Only [p_getter] type 'function' can be added");
-            if (typeof p_setter !== "function") throw new Error("Only [p_setter] type 'function' can be added");
+        //     // 유효성 검사
+        //     if (typeof p_getter !== "function") throw new Error("Only [p_getter] type 'function' can be added");
+        //     if (typeof p_setter !== "function") throw new Error("Only [p_setter] type 'function' can be added");
 
-            Object.defineProperty(this, "value", 
-            {
-                get: p_getter,
-                set: p_setter,
-                configurable: true,
-                enumerable: true
-            });
-        };
+        //     Object.defineProperty(this, "value", 
+        //     {
+        //         get: p_getter,
+        //         set: p_setter,
+        //         configurable: true,
+        //         enumerable: true
+        //     });
+        // };
 
         /** @override */
         ItemDOM.prototype.getObject = function() {

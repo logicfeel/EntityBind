@@ -71,6 +71,22 @@
         }
 
         console.log("---------------------------------------------------------------------------");
+        console.log("Item.onChanged(fn) :: 변경이벤트 ");
+        var item = new Item("i1");
+        var evt;
+        item.onChanged = function(val) {evt = val};
+        item.value = 10;
+        if (item.value === 10 &&
+            evt === 10. &&
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+
+        console.log("---------------------------------------------------------------------------");
         console.log("Item.setConstraint(regex, msg, code, return) :: 제약조건 등록 ");
         var item = new Item("i1");
         item.setConstraint(/10/, "10 시작...", 100, true);
@@ -88,11 +104,12 @@
         }
 
         console.log("---------------------------------------------------------------------------");
-        console.log("Item.defineValueProperty(getter) :: value getter만 설정 ");
+        console.log("Item.getter :: value getter만 설정 ");
         var item = new Item("i1");
         var item_value = 10;
         item.value = "V1";
-        item.defineValueProperty(function() { return item_value; });
+        // item.defineValueProperty(function() { return item_value; });
+        item.getter = function() { return item_value; };
         if (item.value  === 10 && 
             true) {
             console.log("Result = Success");
@@ -102,13 +119,14 @@
         }
 
         console.log("---------------------------------------------------------------------------");
-        console.log("Item.defineValueProperty( , setter) :: value setter만 설정 ");
+        console.log("Item.setter :: value setter만 설정 ");
         var item = new Item("i1");
         var item_value = 10;
         item.value = "V1";
-        item.defineValueProperty(undefined, function(val) { item_value = val; });
+        // item.defineValueProperty(undefined, function(val) { item_value = val; });
+        item.setter = function(val) { item_value = val; };
         item.value = "V11";
-        if (item.value  === "V1" && 
+        if (item.value  === "V11" && 
             item_value  === "V11" && 
             true) {
             console.log("Result = Success");
@@ -122,7 +140,9 @@
         var item = new Item("i1");
         var item_value = 10;
         item.value = "V1";
-        item.defineValueProperty(function() { return item_value; }, function(val) { item_value = val; });
+        // item.defineValueProperty(function() { return item_value; }, function(val) { item_value = val; });
+        item.getter = function() { return item_value; }
+        item.setter = function(val) { item_value = val; };
         item.value = "V11";
         if (item.value  === "V11" && 
             item_value  === "V11" && 
@@ -156,8 +176,40 @@
         item.value = "V1";
         item.setter = function(val) { item_value = val; };
         item.value = "V11";
-        if (item.value  === "V1" && 
+        if (item.value  === "V11" && 
             item_value  === "V11" && 
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+
+        console.log("---------------------------------------------------------------------------");
+        console.log("Item.getter = func :: setter 만 설정 (내부와 외부 값 다른경우) ");
+        var item = new Item("i1");
+        var item_value = 10;
+        item.value = "V1";
+        item.setter = function(val) { item_value = val + 'R'; };
+        item.value = "V11";
+        if (item.value  === "V11" && 
+            item_value  === "V11R" && 
+            true) {
+            console.log("Result = Success");
+        } else {
+            console.warn("Result = Fail");
+            errorCount++;
+        }
+        
+        console.log("---------------------------------------------------------------------------");
+        console.log("Item.getter = func :: setter 만 설정 (셋터리턴이 있는경우)");
+        var item = new Item("i1");
+        var item_value = 10;
+        item.value = "V1";
+        item.setter = function(val) { return item_value = val + 'R'; };
+        item.value = "V11";
+        if (item.value  === "V11R" && 
+            item_value  === "V11R" && 
             true) {
             console.log("Result = Success");
         } else {
