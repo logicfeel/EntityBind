@@ -20,9 +20,10 @@ var paths = {
         // 인터페이스
         'src/i-object.js', 'src/i-marshal.js', 'src/i-control*.js',
         'src/i-collection.js', 'src/i-collection-property.js', 'src/i-collection-control.js',
-        'src/i-bind-model.js', 'src/i-bind-model-read.js', 'src/i-bind-model-list.js',
-        'src/i-bind-model-edit.js', 'src/i-bind-model-create.js',
-        'src/i-bind-model-read-del.js', 'src/i-bind-model-form.js', 'src/i-bind-model-list-del.js',
+        'src/i-bind-model.js', 
+        // 'src/i-bind-model-read.js', 'src/i-bind-model-list.js',
+        // 'src/i-bind-model-edit.js', 'src/i-bind-model-create.js',
+        // 'src/i-bind-model-read-del.js', 'src/i-bind-model-form.js', 'src/i-bind-model-list-del.js',
         // 컬렉션
         'src/collection-base.js', 'src/collection-array.js', 'src/collection-property.js',
         'src/collection-property-object.js','src/collection-property-function.js',
