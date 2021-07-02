@@ -2596,17 +2596,6 @@ if (typeof Array.isArray === "undefined") {
             var __codeType      = null;
             var __order         = 100;
             var __increase      = 100;      // order 의 자동 추가수
-
-            // var __getter        = function() { return this.__value; };
-// POINT::
-            // var __getter        = function() { return this.__value || __default; };
-            // var __setter        = function(val) { 
-            //     val = val === null ? "" : val;  // null 등록 오류 처리
-            //     if(["number", "string", "boolean"].indexOf(typeof val) < 0) {
-            //         throw new Error("Only [value] type 'number, string, boolean' can be added");
-            //     }
-            //     this.__value = val;
-            // };
             var __getter        = null;
             var __setter        = null;
             var __value         = null;
@@ -2795,50 +2784,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
             
-// POINT::
-            // /** @property {value} */
-            // Object.defineProperty(this, "value", 
-            // {
-            //     get: __getter,
-            //     set: __setter,
-            //     configurable: true,
-            //     enumerable: true
-            // });
-
-            // /** @property {value} */
-            // Object.defineProperty(this, "getter", 
-            // {
-            //     get: function() { return __getter; },
-            //     set: function(val) { 
-            //         if(val !== null && typeof val !== "function") throw new Error("Only [getter] type 'function' can be added");
-            //         __getter = val;
-            //         Object.defineProperty(this, "value", {
-            //             get: __getter,
-            //             configurable: true,
-            //             enumerable: true
-            //         });
-            //     },
-            //     configurable: true,
-            //     enumerable: true
-            // });
-
-            // /** @property {value} */
-            // Object.defineProperty(this, "setter", 
-            // {
-            //     get: function() { return __setter; },
-            //     set: function(val) { 
-            //         if(val !== null && typeof val !== "function") throw new Error("Only [setter] type 'function' can be added");
-            //         __setter = val;
-            //         Object.defineProperty(this, "value", {
-            //             set: __setter,
-            //             configurable: true,
-            //             enumerable: true
-            //         });
-            //     },
-            //     configurable: true,
-            //     enumerable: true
-            // });
-
             /** @property {value} */
             Object.defineProperty(this, "value", 
             {
@@ -2862,7 +2807,7 @@ if (typeof Array.isArray === "undefined") {
                     }
                     this.__value = __val;
                     // 이벤트 발생
-                    this._onChanged(this.value);
+                    this._onChanged();
                 },
                 configurable: true,
                 enumerable: true
@@ -2915,8 +2860,6 @@ if (typeof Array.isArray === "undefined") {
                     }
                 }
             } else if (["number", "string", "boolean"].indexOf(typeof p_property) > -1) {
-                // this.default = p_property;
-// POINT::
                 this['value'] = p_property;
             }
 
@@ -2924,8 +2867,8 @@ if (typeof Array.isArray === "undefined") {
         util.inherits(Item, _super);
 
         /** @event */
-        Item.prototype._onChanged = function(p_value) {
-            this.__event.publish("onChanged", p_value);
+        Item.prototype._onChanged = function() {
+            this.__event.publish("onChanged", this.value);
         };
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
@@ -3348,10 +3291,6 @@ if (typeof Array.isArray === "undefined") {
             var __isHide        = false;
             var __element       = null;
             var __filter        = null;
-            
-            //var __selector      = [];
-// POINT:: 
-            // var __selector      = { key: "", type: "value" };
             var __selector      = null;
 
             /** @property {domType} */
@@ -3366,6 +3305,7 @@ if (typeof Array.isArray === "undefined") {
                 configurable: true,
                 enumerable: true
             });
+            
             /** @property {isReadOnly} */
             Object.defineProperty(this, "isReadOnly", 
             {
@@ -3377,6 +3317,7 @@ if (typeof Array.isArray === "undefined") {
                 configurable: true,
                 enumerable: true
             });
+            
             /** @property {isHide} */
             Object.defineProperty(this, "isHide", 
             {
@@ -3388,6 +3329,7 @@ if (typeof Array.isArray === "undefined") {
                 configurable: true,
                 enumerable: true
             });
+            
             /** @property {element} */
             Object.defineProperty(this, "element", 
             {
@@ -3400,50 +3342,9 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            // /** @property {selector} */
-            // Object.defineProperty(this, "selector", 
-            // {
-            //     get: function() { return __selector; },
-            //     set: function(newValue) { 
-            //         var values = [];
-            //         if (Array.isArray(newValue)) values = newValue;
-            //         else values.push(newValue);
-            //         for (var i = 0; values.length > i; i++) {
-            //             if(typeof values[i] !== "string" ) {  // 검사 
-            //                 throw new Error("Only [selector] type 'string' can be added");
-            //             }
-            //         }
-            //         __selector = __selector.concat(values);
-            //     },
-            //     configurable: true,
-            //     enumerable: true
-            // });
             /** @property {selector} */
             Object.defineProperty(this, "selector", 
             {
-                // get: function() { 
-                //     var _sel = [];
-                //     var _str = "";
-                //     for (var i = 0; this.__selector.length > i; i++) {
-                //         _str  = typeof this.__selector[i] === "function" ? this.__selector[i].call(this) : this.__selector[i];
-                //         _sel.push(_str);
-                //     }
-                //     return _sel; 
-                // },
-                // set: function(newValue) { 
-                //     var values = [];
-                //     var temp = "";
-                //     if (Array.isArray(newValue)) values = newValue; // 배열로 넣으면 기존내용이 초기화됨
-                //     else values.push(newValue);
-                //     for (var i = 0; values.length > i; i++) {
-                //         temp  = typeof values[i] === "function" ? values[i].call(this) : values[i];
-                        
-                //         if(typeof temp !== "string" ) {  // 검사 
-                //             throw new Error("Only [selector] type 'string' can be added");
-                //         }
-                //     }
-                //     this.__selector = this.__selector.concat(values);    // 기존에 추가됨
-                // },
                 /**
                  * type
                  *  - val | value   : 요소의 value 속성값
@@ -3452,6 +3353,7 @@ if (typeof Array.isArray === "undefined") {
                  *  - css.속성명    : css 의 속성값 (객체)
                  *  - prop.속성명   : 요소의 속성명값 (초기상태기준)
                  *  - attr.속성명   : 요소의 속성명값 (현재상태)
+                 *  - none         : 아무일도 하지 않음, 표현의 목적
                  */
                 get: function() { return __selector; },
                 set: function(newValue) { 
@@ -3465,60 +3367,6 @@ if (typeof Array.isArray === "undefined") {
                         throw new Error("Only [selector] type 'string | object.key' can be added");
                     }
                     __selector = selector;
-
-                    // // node 에서는 종료함
-                    // if (typeof module === "object") return;
-                    
-                    // // value 값 설정
-                    // if (typeof selector.key === "string" && selector.key.length > 0) {
-                    //     this.defineValueProperty(
-                    //         function() {    // value getter
-                    //             var key = this.selector.key;
-                    //             var type = this.selector.type;
-                    //             var option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
-                    //             var value = "";
-
-                    //             if (type === "value" || type === "val") {
-                    //                 value = jQuery(key).val();
-                    //             } else if (type === "text") {
-                    //                 value = jQuery(key).text();
-                    //             } else if (type === "html") {
-                    //                 value = jQuery(key).html();
-                    //             } else if (type.indexOf("prop") > -1) {
-                    //                 value = jQuery(key).prop(option);
-                    //             } else if (type.indexOf("attr") > -1) {
-                    //                 value = jQuery(key).attr(option);
-                    //             } else if (type.indexOf("css") > -1) {
-                    //                 value = jQuery(key).css(option);
-                    //             } else {
-                    //                 console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
-                    //             }
-                    //             return value;
-                    //         }, 
-                    //         function(val) { // value setter
-                    //             var key = this.selector.key;
-                    //             var type = this.selector.type;
-                    //             var option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
-                    //             var value = "";
-
-                    //             if (type === "value" || type === "val") {
-                    //                 jQuery(key).val(val);
-                    //             } else if (type === "text") {
-                    //                 jQuery(key).text(val);
-                    //             } else if (type === "html") {
-                    //                 jQuery(key).html(val);
-                    //             } else if (type.indexOf("prop") > -1) {
-                    //                 jQuery(key).prop(option, val);
-                    //             } else if (type.indexOf("attr") > -1) {
-                    //                 jQuery(key).attr(option, val);
-                    //             } else if (type.indexOf("css") > -1) {
-                    //                 jQuery(key).css(option, val);
-                    //             } else {
-                    //                 console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
-                    //             }
-                    //         }
-                    //     );
-                    // }
                 },
                 configurable: true,
                 enumerable: true
@@ -3542,24 +3390,26 @@ if (typeof Array.isArray === "undefined") {
                             type = this.selector.type;
                             option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
                             
-                            if (type === "value" || type === "val") {
-                                __val = jQuery(key).val();
-                            } else if (type === "text") {
-                                __val = jQuery(key).text();
-                            } else if (type === "html") {
-                                __val = jQuery(key).html();
-                            } else if (type.indexOf("prop") > -1) {
-                                __val = jQuery(key).prop(option);
-                            } else if (type.indexOf("attr") > -1) {
-                                __val = jQuery(key).attr(option);
-                            } else if (type.indexOf("css") > -1) {
-                                __val = jQuery(key).css(option);
-                            } else {
-                                console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
-                            }
-                            
-                            if (typeof __val === 'undefined') {
-                                console.warn("["+ key +"] 일치하는 selector가 없습니다. ");
+                            if (type !== 'none' &&  type !== ''){
+                                if (type === "value" || type === "val") {
+                                    __val = jQuery(key).val();
+                                } else if (type === "text") {
+                                    __val = jQuery(key).text();
+                                } else if (type === "html") {
+                                    __val = jQuery(key).html();
+                                } else if (type.indexOf("prop") > -1) {
+                                    __val = jQuery(key).prop(option);
+                                } else if (type.indexOf("attr") > -1) {
+                                    __val = jQuery(key).attr(option);
+                                } else if (type.indexOf("css") > -1) {
+                                    __val = jQuery(key).css(option);
+                                } else {
+                                    console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ");
+                                }
+                                
+                                if (typeof __val === 'undefined') {
+                                    console.warn("["+ key +"] 일치하는 selector가 없습니다. ");
+                                }
                             }
                         }
                     }
@@ -3586,35 +3436,40 @@ if (typeof Array.isArray === "undefined") {
                     }
                     this.__value = __val;   // 내부에 저장
 
-                    // node 에서는 강제 종료함
-                    if (typeof module !== "object") {
+                    if (__selector !== null) {
 
-                        // 필터 적용
-                        if (typeof __filter === 'function') __val = __filter.call(this, __val);
+                        // node 에서는 강제 종료함
+                        if (typeof module !== "object") {
 
-                        key = this.selector.key;
-                        type = this.selector.type;
-                        option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
+                            // 필터 적용
+                            if (typeof __filter === 'function') __val = __filter.call(this, __val);
 
-                        if (type === "value" || type === "val") {
-                            jQuery(key).val(__val);
-                        } else if (type === "text") {
-                            jQuery(key).text(__val);
-                        } else if (type === "html") {
-                            jQuery(key).html(__val);
-                        } else if (type.indexOf("prop") > -1) {
-                            jQuery(key).prop(option, __val);
-                        } else if (type.indexOf("attr") > -1) {
-                            jQuery(key).attr(option, __val);
-                        } else if (type.indexOf("css") > -1) {
-                            jQuery(key).css(option, __val);
-                        } else {
-                            console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
+                            key = this.selector.key;
+                            type = this.selector.type;
+                            option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
+
+                            if (type !== 'none' && type !== ''){
+                                if (type === "value" || type === "val") {
+                                    jQuery(key).val(__val);
+                                } else if (type === "text") {
+                                    jQuery(key).text(__val);
+                                } else if (type === "html") {
+                                    jQuery(key).html(__val);
+                                } else if (type.indexOf("prop") > -1) {
+                                    jQuery(key).prop(option, __val);
+                                } else if (type.indexOf("attr") > -1) {
+                                    jQuery(key).attr(option, __val);
+                                } else if (type.indexOf("css") > -1) {
+                                    jQuery(key).css(option, __val);
+                                } else {
+                                    console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ");
+                                }
+                            }
                         }
                     }
 
                     // 이벤트 발생
-                    this._onChanged(this.value);
+                    this._onChanged();
                 },
                 configurable: true,
                 enumerable: true
@@ -3643,6 +3498,8 @@ if (typeof Array.isArray === "undefined") {
                     }
                 }
             }
+            // 기본값 설정
+            this.default = this.default || '';
         }
         util.inherits(ItemDOM, _super);
     
@@ -5915,111 +5772,6 @@ if (typeof Array.isArray === "undefined") {
             }  
         };
 
-        // BindModel.prototype.setService  = function(p_service, p_isLoadProp) {
-
-        //     var propObject;
-
-        //     p_isLoadProp = p_isLoadProp || true;       // 기본값
-
-        //     // 유효성 검사
-        //     if (!(p_service instanceof IBindModel)) throw new Error("Only [p_service] type 'IBindModel' can be added");
-
-        //     // command 등록
-        //     for (var prop in p_service) {
-        //         if (p_service.hasOwnProperty(prop)) {
-        //             if (typeof p_service[prop] === "function" && p_service[prop].name ==="BindCommandEditAjax") {
-        //                 this[prop] = new BindCommandEditAjax(this, this._baseEntity);
-        //             }
-        //             if (typeof p_service[prop] === "function" && p_service[prop].name ==="BindCommandLookupAjax") {
-        //                 this[prop] = new BindCommandLookupAjax(this, this._baseEntity);
-        //             }
-        //         }
-        //     }            
-            
-        //     // prop 등록
-        //     if (typeof p_service["prop"] !== "undefined" && p_service["prop"] !== null) {
-        //         propObject = p_service["prop"];
-        //         for(var prop in propObject) {
-        //             if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-
-        //                 //__prop.add(prop, propObject[prop]);
-        //                 // get/sett 형식의 기능 추가
-        //                 if (typeof propObject[prop] === "object" 
-        //                     && (typeof propObject[prop].get === "function" || typeof propObject[prop].set === "function")) {
-        //                     this.prop.add(prop, "", propObject[prop]);    
-        //                 } else {
-        //                     this.prop.add(prop, propObject[prop]);
-        //                 }
-        //             }
-        //         }
-        //     }
-            
-        //     // mode 등록
-        //     if (typeof p_service["mode"] !== "undefined" && p_service["mode"] !== null) {
-        //         propObject = p_service["mode"];
-        //         for(var prop in propObject) {
-        //             if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-        //                 this.mode.add(prop, propObject[prop]);
-        //             }
-        //         }
-        //     }
-        //     if (typeof p_service["mapping"] !== "undefined" && p_service["mapping"] !== null) {
-        //         propObject = p_service["mapping"];
-        //         for(var prop in propObject) {
-        //             if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-        //                 this.mapping.add(prop, propObject[prop]);
-        //             }
-        //         }
-        //     }
-        //     if (typeof p_service["preRegister"] === "function") {
-        //         // __preRegister = p_service["preRegister"];
-        //         this.preRegister = p_service["preRegister"];
-        //     }
-        //     if (typeof p_service["preCheck"] === "function") {
-        //         // __preCheck = p_service["preCheck"];
-        //         this.preCheck = p_service["preCheck"];
-        //     }
-        //     if (typeof p_service["preReady"] === "function") {
-        //         // __preReady = p_service["preReady"];
-        //         this.preReady = p_service["preReady"];
-        //     }
-        //     if (typeof p_service["cbFail"] === "function") {
-        //         this.cbFail = p_service["cbFail"];
-        //     }
-        //     if (typeof p_service["cbError"] === "function") {
-        //         this.cbError = p_service["cbError"];
-        //     }
-            
-        //     if (typeof p_service["cbResult"] === "function") {
-        //         this.cbResult = p_service["cbResult"];
-        //     }
-        //     if (typeof p_service["cbBaseValid"] === "function") {
-        //         this.cbBaseValid = p_service["cbBaseValid"];
-        //     }
-        //     if (typeof p_service["cbBaseBind"] === "function") {
-        //         this.cbBaseBind = p_service["cbBaseBind"];
-        //     }
-        //     if (typeof p_service["cbBaseOutput"] === "function") {
-        //         this.cbBaseOutput = p_service["cbBaseOutput"];
-        //     }
-        //     if (typeof p_service["cbBaseEnd"] === "function") {
-        //         this.cbBaseEnd = p_service["cbBaseEnd"];
-        //     }
-
-        //     if (typeof p_service["onExecute"] === "function") {
-        //         this.onExecute = p_service["onExecute"];
-        //     }
-        //     if (typeof p_service["onExecuted"] === "function") {
-        //         this.onExecuted = p_service["onExecuted"];
-        //     }
-            
-            
-        //     // 속성(prop)을 아이템으로 로딩 ("__"시작이름 제외)
-        //     if (p_isLoadProp === true) {
-        //         this.loadProp();
-        //     }  
-        // };
-
         return BindModel;
     
     }(BaseBind));
@@ -6385,8 +6137,6 @@ if (typeof Array.isArray === "undefined") {
     var BindModel;
     var PropertyCollection;
     var IBindModel;
-    // var BindCommandLookupAjax;
-    // var BindCommandEditAjax;
     var ItemDOM;
     var BindCommandAjax;
 
@@ -6395,8 +6145,6 @@ if (typeof Array.isArray === "undefined") {
         BindModel               = require("./bind-model");
         PropertyCollection      = require("./collection-property");
         IBindModel              = require("./i-bind-model");        
-        // BindCommandLookupAjax   = require("./bind-command-ajax-lookup");
-        // BindCommandEditAjax     = require("./bind-command-ajax-edit");
         ItemDOM                 = require("./entity-item-dom");
         BindCommandAjax         = require("./bind-command-ajax");
 
@@ -6405,8 +6153,6 @@ if (typeof Array.isArray === "undefined") {
         BindModel               = global._W.Meta.Bind.BindModel;
         PropertyCollection      = global._W.Collection.PropertyCollection;
         IBindModel              = global._W.Interface.IBindModel;        
-        // BindCommandLookupAjax   = global._W.Meta.Bind.BindCommandLookupAjax;
-        // BindCommandEditAjax     = global._W.Meta.Bind.BindCommandEditAjax;
         ItemDOM                 = global._W.Meta.Entity.ItemDOM;
         BindCommandAjax         = global._W.Meta.Bind.BindCommandAjax;
     }
@@ -6417,8 +6163,6 @@ if (typeof Array.isArray === "undefined") {
     if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
     if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
     if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
-    // if (typeof BindCommandLookupAjax === "undefined") throw new Error("[BindCommandLookupAjax] module load fail...");
-    // if (typeof BindCommandEditAjax === "undefined") throw new Error("[BindCommandEditAjax] module load fail...");
     if (typeof ItemDOM === "undefined") throw new Error("[ItemDOM] module load fail...");
     if (typeof BindCommandAjax === "undefined") throw new Error("[BindCommandAjax] module load fail...");
 
@@ -6431,25 +6175,15 @@ if (typeof Array.isArray === "undefined") {
         function BindModelAjax(p_service) {
             _super.call(this);
             
-            // p_itemType = p_itemType || ItemDOM; // 기본값
             var __baseAjaxSetup = {
                 url: "",
                 type: "GET"
             };
-
-            // Entity 추가 및 baseEntity 설정
-            this._baseEntity = this.addEntity('first');
-
-            this.itemType                   = ItemDOM;          // 기본 아이템 타입 변경
-            this._baseEntity.items.itemType = this.itemType;    // base 엔티티 타입 변경
-            // 참조 추가
-            this.items                      = this._baseEntity.items; 
-
-// POINT::            
-            // if (typeof p_itemType === "function") {
-            //     this.itemType = p_itemType;
-            //     this._baseEntity.items.itemType = this.itemType;
-            // }
+            
+            this._baseEntity                = this.addEntity('first');   // Entity 추가 및 baseEntity 설정
+            this.itemType                   = ItemDOM;                   // 기본 아이템 타입 변경
+            this._baseEntity.items.itemType = this.itemType;            // base 엔티티 타입 변경
+            this.items                      = this._baseEntity.items;   // 참조 추가
 
             /** @property {baseAjaxSetup} */
             Object.defineProperty(this, "baseAjaxSetup", 
@@ -6595,130 +6329,6 @@ if (typeof Array.isArray === "undefined") {
 
             return this[p_name];
         };
-        // BindModelAjax.prototype.setService  = function(p_service, p_isLoadProp) {
-
-        //     var propObject;
-
-        //     p_isLoadProp = p_isLoadProp || true;       // 기본값
-
-        //     // 유효성 검사
-        //     if (!(p_service instanceof IBindModel)) throw new Error("Only [p_service] type 'IBindModel' can be added");
-
-        //     // command 등록
-        //     for (var prop in p_service) {
-        //         if (p_service.hasOwnProperty(prop)) {
-        //             if (typeof p_service[prop] === "function" && p_service[prop].name ==="BindCommandEditAjax") {
-        //                 this[prop] = new BindCommandEditAjax(this, this._baseEntity);
-        //             }
-        //             if (typeof p_service[prop] === "function" && p_service[prop].name ==="BindCommandLookupAjax") {
-        //                 this[prop] = new BindCommandLookupAjax(this, this._baseEntity);
-        //             }
-        //         }
-        //     }            
-            
-        //     // prop 등록
-        //     if (typeof p_service["prop"] !== "undefined" && p_service["prop"] !== null) {
-        //         propObject = p_service["prop"];
-        //         for(var prop in propObject) {
-        //             if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-
-        //                 //__prop.add(prop, propObject[prop]);
-        //                 // get/sett 형식의 기능 추가
-        //                 if (typeof propObject[prop] === "object" 
-        //                     && (typeof propObject[prop].get === "function" || typeof propObject[prop].set === "function")) {
-        //                     this.prop.add(prop, "", propObject[prop]);    
-        //                 } else {
-        //                     this.prop.add(prop, propObject[prop]);
-        //                 }
-        //             }
-        //         }
-        //     }
-            
-        //     // mode 등록
-        //     if (typeof p_service["mode"] !== "undefined" && p_service["mode"] !== null) {
-        //         propObject = p_service["mode"];
-        //         for(var prop in propObject) {
-        //             if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-        //                 this.mode.add(prop, propObject[prop]);
-        //             }
-        //         }
-        //     }
-        //     if (typeof p_service["mapping"] !== "undefined" && p_service["mapping"] !== null) {
-        //         propObject = p_service["mapping"];
-        //         for(var prop in propObject) {
-        //             if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
-        //                 this.mapping.add(prop, propObject[prop]);
-        //             }
-        //         }
-        //     }
-        //     if (typeof p_service["preRegister"] === "function") {
-        //         // __preRegister = p_service["preRegister"];
-        //         this.preRegister = p_service["preRegister"];
-        //     }
-        //     if (typeof p_service["preCheck"] === "function") {
-        //         // __preCheck = p_service["preCheck"];
-        //         this.preCheck = p_service["preCheck"];
-        //     }
-        //     if (typeof p_service["preReady"] === "function") {
-        //         // __preReady = p_service["preReady"];
-        //         this.preReady = p_service["preReady"];
-        //     }
-        //     if (typeof p_service["cbFail"] === "function") {
-        //         this.cbFail = p_service["cbFail"];
-        //     }
-        //     if (typeof p_service["cbError"] === "function") {
-        //         this.cbError = p_service["cbError"];
-        //     }
-            
-        //     if (typeof p_service["cbResult"] === "function") {
-        //         this.cbResult = p_service["cbResult"];
-        //     }
-        //     if (typeof p_service["cbBaseValid"] === "function") {
-        //         this.cbBaseValid = p_service["cbBaseValid"];
-        //     }
-        //     if (typeof p_service["cbBaseBind"] === "function") {
-        //         this.cbBaseBind = p_service["cbBaseBind"];
-        //     }
-        //     if (typeof p_service["cbBaseOutput"] === "function") {
-        //         this.cbBaseOutput = p_service["cbBaseOutput"];
-        //     }
-        //     if (typeof p_service["cbBaseEnd"] === "function") {
-        //         this.cbBaseEnd = p_service["cbBaseEnd"];
-        //     }
-
-        //     if (typeof p_service["onExecute"] === "function") {
-        //         this.onExecute = p_service["onExecute"];
-        //     }
-        //     if (typeof p_service["onExecuted"] === "function") {
-        //         this.onExecuted = p_service["onExecuted"];
-        //     }
-            
-            
-        //     // 속성(prop)을 아이템으로 로딩 ("__"시작이름 제외)
-        //     if (p_isLoadProp === true) {
-        //         this.loadProp();
-        //     }  
-        // };
-
-        // BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_entities) {
-
-        //     // 유효성 검사
-        //     if (typeof p_name !== "string") {
-        //         throw new Error("Only [p_name] type 'string' can be added");
-        //     }
-
-        //     // 예약어 검사
-        //     if (this._symbol.indexOf(p_name) > -1) {
-        //         throw new Error(" [" + p_name + "] is a Symbol word");   
-        //     }            
-            
-        //     // 중복 검사
-        //     if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
-
-        //     // 생성
-        //     this[p_name] = new BindCommandAjax(this, p_option, p_entities);
-        // };
-
 
         return BindModelAjax;
     

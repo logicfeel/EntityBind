@@ -47,10 +47,6 @@
             var __isHide        = false;
             var __element       = null;
             var __filter        = null;
-            
-            //var __selector      = [];
-// POINT:: 
-            // var __selector      = { key: "", type: "value" };
             var __selector      = null;
 
             /** @property {domType} */
@@ -65,6 +61,7 @@
                 configurable: true,
                 enumerable: true
             });
+            
             /** @property {isReadOnly} */
             Object.defineProperty(this, "isReadOnly", 
             {
@@ -76,6 +73,7 @@
                 configurable: true,
                 enumerable: true
             });
+            
             /** @property {isHide} */
             Object.defineProperty(this, "isHide", 
             {
@@ -87,6 +85,7 @@
                 configurable: true,
                 enumerable: true
             });
+            
             /** @property {element} */
             Object.defineProperty(this, "element", 
             {
@@ -99,50 +98,9 @@
                 enumerable: true
             });
 
-            // /** @property {selector} */
-            // Object.defineProperty(this, "selector", 
-            // {
-            //     get: function() { return __selector; },
-            //     set: function(newValue) { 
-            //         var values = [];
-            //         if (Array.isArray(newValue)) values = newValue;
-            //         else values.push(newValue);
-            //         for (var i = 0; values.length > i; i++) {
-            //             if(typeof values[i] !== "string" ) {  // 검사 
-            //                 throw new Error("Only [selector] type 'string' can be added");
-            //             }
-            //         }
-            //         __selector = __selector.concat(values);
-            //     },
-            //     configurable: true,
-            //     enumerable: true
-            // });
             /** @property {selector} */
             Object.defineProperty(this, "selector", 
             {
-                // get: function() { 
-                //     var _sel = [];
-                //     var _str = "";
-                //     for (var i = 0; this.__selector.length > i; i++) {
-                //         _str  = typeof this.__selector[i] === "function" ? this.__selector[i].call(this) : this.__selector[i];
-                //         _sel.push(_str);
-                //     }
-                //     return _sel; 
-                // },
-                // set: function(newValue) { 
-                //     var values = [];
-                //     var temp = "";
-                //     if (Array.isArray(newValue)) values = newValue; // 배열로 넣으면 기존내용이 초기화됨
-                //     else values.push(newValue);
-                //     for (var i = 0; values.length > i; i++) {
-                //         temp  = typeof values[i] === "function" ? values[i].call(this) : values[i];
-                        
-                //         if(typeof temp !== "string" ) {  // 검사 
-                //             throw new Error("Only [selector] type 'string' can be added");
-                //         }
-                //     }
-                //     this.__selector = this.__selector.concat(values);    // 기존에 추가됨
-                // },
                 /**
                  * type
                  *  - val | value   : 요소의 value 속성값
@@ -151,6 +109,7 @@
                  *  - css.속성명    : css 의 속성값 (객체)
                  *  - prop.속성명   : 요소의 속성명값 (초기상태기준)
                  *  - attr.속성명   : 요소의 속성명값 (현재상태)
+                 *  - none         : 아무일도 하지 않음, 표현의 목적
                  */
                 get: function() { return __selector; },
                 set: function(newValue) { 
@@ -164,60 +123,6 @@
                         throw new Error("Only [selector] type 'string | object.key' can be added");
                     }
                     __selector = selector;
-
-                    // // node 에서는 종료함
-                    // if (typeof module === "object") return;
-                    
-                    // // value 값 설정
-                    // if (typeof selector.key === "string" && selector.key.length > 0) {
-                    //     this.defineValueProperty(
-                    //         function() {    // value getter
-                    //             var key = this.selector.key;
-                    //             var type = this.selector.type;
-                    //             var option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
-                    //             var value = "";
-
-                    //             if (type === "value" || type === "val") {
-                    //                 value = jQuery(key).val();
-                    //             } else if (type === "text") {
-                    //                 value = jQuery(key).text();
-                    //             } else if (type === "html") {
-                    //                 value = jQuery(key).html();
-                    //             } else if (type.indexOf("prop") > -1) {
-                    //                 value = jQuery(key).prop(option);
-                    //             } else if (type.indexOf("attr") > -1) {
-                    //                 value = jQuery(key).attr(option);
-                    //             } else if (type.indexOf("css") > -1) {
-                    //                 value = jQuery(key).css(option);
-                    //             } else {
-                    //                 console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
-                    //             }
-                    //             return value;
-                    //         }, 
-                    //         function(val) { // value setter
-                    //             var key = this.selector.key;
-                    //             var type = this.selector.type;
-                    //             var option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
-                    //             var value = "";
-
-                    //             if (type === "value" || type === "val") {
-                    //                 jQuery(key).val(val);
-                    //             } else if (type === "text") {
-                    //                 jQuery(key).text(val);
-                    //             } else if (type === "html") {
-                    //                 jQuery(key).html(val);
-                    //             } else if (type.indexOf("prop") > -1) {
-                    //                 jQuery(key).prop(option, val);
-                    //             } else if (type.indexOf("attr") > -1) {
-                    //                 jQuery(key).attr(option, val);
-                    //             } else if (type.indexOf("css") > -1) {
-                    //                 jQuery(key).css(option, val);
-                    //             } else {
-                    //                 console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
-                    //             }
-                    //         }
-                    //     );
-                    // }
                 },
                 configurable: true,
                 enumerable: true
@@ -241,24 +146,26 @@
                             type = this.selector.type;
                             option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
                             
-                            if (type === "value" || type === "val") {
-                                __val = jQuery(key).val();
-                            } else if (type === "text") {
-                                __val = jQuery(key).text();
-                            } else if (type === "html") {
-                                __val = jQuery(key).html();
-                            } else if (type.indexOf("prop") > -1) {
-                                __val = jQuery(key).prop(option);
-                            } else if (type.indexOf("attr") > -1) {
-                                __val = jQuery(key).attr(option);
-                            } else if (type.indexOf("css") > -1) {
-                                __val = jQuery(key).css(option);
-                            } else {
-                                console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
-                            }
-                            
-                            if (typeof __val === 'undefined') {
-                                console.warn("["+ key +"] 일치하는 selector가 없습니다. ");
+                            if (type !== 'none' &&  type !== ''){
+                                if (type === "value" || type === "val") {
+                                    __val = jQuery(key).val();
+                                } else if (type === "text") {
+                                    __val = jQuery(key).text();
+                                } else if (type === "html") {
+                                    __val = jQuery(key).html();
+                                } else if (type.indexOf("prop") > -1) {
+                                    __val = jQuery(key).prop(option);
+                                } else if (type.indexOf("attr") > -1) {
+                                    __val = jQuery(key).attr(option);
+                                } else if (type.indexOf("css") > -1) {
+                                    __val = jQuery(key).css(option);
+                                } else {
+                                    console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ");
+                                }
+                                
+                                if (typeof __val === 'undefined') {
+                                    console.warn("["+ key +"] 일치하는 selector가 없습니다. ");
+                                }
                             }
                         }
                     }
@@ -285,35 +192,40 @@
                     }
                     this.__value = __val;   // 내부에 저장
 
-                    // node 에서는 강제 종료함
-                    if (typeof module !== "object") {
+                    if (__selector !== null) {
 
-                        // 필터 적용
-                        if (typeof __filter === 'function') __val = __filter.call(this, __val);
+                        // node 에서는 강제 종료함
+                        if (typeof module !== "object") {
 
-                        key = this.selector.key;
-                        type = this.selector.type;
-                        option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
+                            // 필터 적용
+                            if (typeof __filter === 'function') __val = __filter.call(this, __val);
 
-                        if (type === "value" || type === "val") {
-                            jQuery(key).val(__val);
-                        } else if (type === "text") {
-                            jQuery(key).text(__val);
-                        } else if (type === "html") {
-                            jQuery(key).html(__val);
-                        } else if (type.indexOf("prop") > -1) {
-                            jQuery(key).prop(option, __val);
-                        } else if (type.indexOf("attr") > -1) {
-                            jQuery(key).attr(option, __val);
-                        } else if (type.indexOf("css") > -1) {
-                            jQuery(key).css(option, __val);
-                        } else {
-                            console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css] 이어야합니다. ");
+                            key = this.selector.key;
+                            type = this.selector.type;
+                            option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
+
+                            if (type !== 'none' && type !== ''){
+                                if (type === "value" || type === "val") {
+                                    jQuery(key).val(__val);
+                                } else if (type === "text") {
+                                    jQuery(key).text(__val);
+                                } else if (type === "html") {
+                                    jQuery(key).html(__val);
+                                } else if (type.indexOf("prop") > -1) {
+                                    jQuery(key).prop(option, __val);
+                                } else if (type.indexOf("attr") > -1) {
+                                    jQuery(key).attr(option, __val);
+                                } else if (type.indexOf("css") > -1) {
+                                    jQuery(key).css(option, __val);
+                                } else {
+                                    console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ");
+                                }
+                            }
                         }
                     }
 
                     // 이벤트 발생
-                    this._onChanged(this.value);
+                    this._onChanged();
                 },
                 configurable: true,
                 enumerable: true
@@ -342,6 +254,8 @@
                     }
                 }
             }
+            // 기본값 설정
+            this.default = this.default || '';
         }
         util.inherits(ItemDOM, _super);
     

@@ -63,17 +63,6 @@
             var __codeType      = null;
             var __order         = 100;
             var __increase      = 100;      // order 의 자동 추가수
-
-            // var __getter        = function() { return this.__value; };
-// POINT::
-            // var __getter        = function() { return this.__value || __default; };
-            // var __setter        = function(val) { 
-            //     val = val === null ? "" : val;  // null 등록 오류 처리
-            //     if(["number", "string", "boolean"].indexOf(typeof val) < 0) {
-            //         throw new Error("Only [value] type 'number, string, boolean' can be added");
-            //     }
-            //     this.__value = val;
-            // };
             var __getter        = null;
             var __setter        = null;
             var __value         = null;
@@ -262,50 +251,6 @@
                 enumerable: true
             });
             
-// POINT::
-            // /** @property {value} */
-            // Object.defineProperty(this, "value", 
-            // {
-            //     get: __getter,
-            //     set: __setter,
-            //     configurable: true,
-            //     enumerable: true
-            // });
-
-            // /** @property {value} */
-            // Object.defineProperty(this, "getter", 
-            // {
-            //     get: function() { return __getter; },
-            //     set: function(val) { 
-            //         if(val !== null && typeof val !== "function") throw new Error("Only [getter] type 'function' can be added");
-            //         __getter = val;
-            //         Object.defineProperty(this, "value", {
-            //             get: __getter,
-            //             configurable: true,
-            //             enumerable: true
-            //         });
-            //     },
-            //     configurable: true,
-            //     enumerable: true
-            // });
-
-            // /** @property {value} */
-            // Object.defineProperty(this, "setter", 
-            // {
-            //     get: function() { return __setter; },
-            //     set: function(val) { 
-            //         if(val !== null && typeof val !== "function") throw new Error("Only [setter] type 'function' can be added");
-            //         __setter = val;
-            //         Object.defineProperty(this, "value", {
-            //             set: __setter,
-            //             configurable: true,
-            //             enumerable: true
-            //         });
-            //     },
-            //     configurable: true,
-            //     enumerable: true
-            // });
-
             /** @property {value} */
             Object.defineProperty(this, "value", 
             {
@@ -329,7 +274,7 @@
                     }
                     this.__value = __val;
                     // 이벤트 발생
-                    this._onChanged(this.value);
+                    this._onChanged();
                 },
                 configurable: true,
                 enumerable: true
@@ -382,8 +327,6 @@
                     }
                 }
             } else if (["number", "string", "boolean"].indexOf(typeof p_property) > -1) {
-                // this.default = p_property;
-// POINT::
                 this['value'] = p_property;
             }
 
@@ -391,8 +334,8 @@
         util.inherits(Item, _super);
 
         /** @event */
-        Item.prototype._onChanged = function(p_value) {
-            this.__event.publish("onChanged", p_value);
+        Item.prototype._onChanged = function() {
+            this.__event.publish("onChanged", this.value);
         };
 
         /** @override 상속 클래스에서 오버라이딩 필요!! **/
