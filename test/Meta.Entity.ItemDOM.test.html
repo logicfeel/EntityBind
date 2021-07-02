@@ -127,10 +127,10 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
     
     { // *************************************************
         item2.setter = function(val) { 
-            $("input[name=t2][type=radio][value="+ val + "]").prop("checked", true);
+            $("input[name=t2][value="+ val + "]").prop("checked", true);
             // return val; 
         };
-        item2.selector = { key: 'input[name=t2]:checked', type: 'value'};
+        item2.selector = { key: 'input[name=t2][type=radio]:checked', type: 'value'};
     } // *************************************************
     
     item2.value = 2;
