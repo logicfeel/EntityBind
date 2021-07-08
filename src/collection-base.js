@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Collection.BaseCollection 
+ * @namespace _W.Collection 
  */
 (function(global) {
 
@@ -50,7 +50,7 @@
             this._element       = [];
             this._symbol        = [];
 
-            /** @member {Observer} BaseCollection.elementType 요소타입 */
+            /** @member {Observer} BaseCollection#elementType 요소타입 */
             Object.defineProperty(this, "elementType", {
                 enumerable: true,
                 configurable: true,
@@ -66,7 +66,9 @@
                 }
             });
 
-            /** @property */
+            /**
+             * @member {Array}  BaseCollection#list  컬렉션 목록 
+             */
             Object.defineProperty(this, "list", {
                 enumerable: true,
                 configurable: true,
@@ -74,7 +76,9 @@
                     return this._element;
                 }
             });
-            /** @property */
+            /** 
+             * @member {Number} BaseCollection#count 갯수
+             */
             Object.defineProperty(this, "count", {
                 enumerable: true,
                 configurable: true,
@@ -82,7 +86,7 @@
                     return this._element.length;
                 }
             });
-            /** @event */
+
             Object.defineProperty(this, "onAdd", {
                 enumerable: true,
                 configurable: true,
@@ -99,8 +103,7 @@
                 }
             });
             /** 
-             * 전체 제거 이벤트  
-             * @event BaseCollection#onClear 
+             * @event BaseCollection#onClear 전체 제거 이벤트
              */
             Object.defineProperty(this, "onClear", {
                 enumerable: true,
@@ -166,7 +169,10 @@
             };
         };
 
-        /** @event BaseCollection#onAdd 등록 이벤트 발생 */
+        /**
+         * 등록 이벤트 
+         * @event BaseCollection#onAdd  
+         */
         BaseCollection.prototype._onAdd = function(p_idx, p_value) {
             this.__event.publish("add", p_idx, p_value); 
         };
@@ -177,7 +183,7 @@
         };
 
         /** 
-         *  전체삭제 이벤트 발생
+         *  전체삭제 이벤트 수신
          * @method BaseCollection#_onClear
          * @listens BaseCollection#onClear
          */

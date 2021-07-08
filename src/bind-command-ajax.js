@@ -1,5 +1,6 @@
 /**
- * @namespace _W.Meta.Bind.BindCommandAjax
+ * BindCommandAjax
+ * @namespace _W.Meta.Bind
  */
 (function(global) {
 

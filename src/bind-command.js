@@ -1,5 +1,6 @@
 /**
- * @namespace _W.Meta.Bind.BindCommand
+ * BindCommand
+ * @namespace _W.Meta.Bind
  */
 (function(global) {
 

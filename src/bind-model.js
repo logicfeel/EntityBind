@@ -1,5 +1,6 @@
 /**
- * @namespace _W.Meta.Bind.BindModel
+ * 메타.바인드
+ * @namespace _W.Meta.Bind
  */
 (function(global) {
 
@@ -64,8 +65,8 @@
     // 4. 모듈 구현    
     var BindModel  = (function (_super) {
         /**
-         * @abstract 추상클래스
-         * @class
+         * 바인드모델 추상클래스
+         * @class BindModel 
          */
         function BindModel()  {
             _super.call(this);
@@ -93,7 +94,9 @@
             //     throw new Error("Only [p_objectDI] type 'IBindModel' can be added");
             // }
             
-            /** @property {prop} */
+            /**
+             * 프로퍼티 
+             * @member {prop} */
             Object.defineProperty(this, "prop", 
             {
                 get: function() { return __prop; },
@@ -256,6 +259,11 @@
             }
         };
 
+        /**
+         * 전처리 등록
+         * @param {*} p_this 
+         * @returns 
+         */
         BindModel.prototype.preRegister = function(p_this) {
             return this.__preRegister.call(this, p_this);
         };

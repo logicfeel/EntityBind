@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Bind.BaseBind
+ * @namespace _W.Meta.Bind
  */
 (function(global) {
 
