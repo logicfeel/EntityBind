@@ -25,10 +25,12 @@
     "test": "tests"
   },
   "devDependencies": {
+    "docdash": "^1.2.0",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-minify-html": "^1.0.6",
     "gulp-uglify": "^3.0.2",
+    "jsdoc": "^3.6.7",
     "request": "^2.88.2",
     "sync-request": "^6.1.0"
   }

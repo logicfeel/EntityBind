@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Collection.BaseCollection
+ * @namespace _W.Collection.BaseCollection 
  */
 (function(global) {
 
@@ -29,11 +29,14 @@
     if (typeof ICollection === "undefined") throw new Error("[ICollection] module load fail...");
 
     //==============================================================
-    // 4. 모듈 구현    
+    // 4. 모듈 구현 
+
     var BaseCollection  = (function () {
         /**
-         * @abstract 추상클래스
-         * @class 속성타입 컬렉션 최상위(부모) 클래스
+         * BaseCollection 추상클래스
+         * @class BaseCollection
+         * @classdesc 컬렉션 최상위(부모) 클래스
+         * @param {obejct} p_onwer 소유객체
          */
         function BaseCollection(p_onwer) {
     
@@ -47,7 +50,7 @@
             this._element       = [];
             this._symbol        = [];
 
-            /** @property */
+            /** @member {Observer} BaseCollection.elementType 요소타입 */
             Object.defineProperty(this, "elementType", {
                 enumerable: true,
                 configurable: true,
@@ -95,7 +98,10 @@
                     this.__event.subscribe(p_fn, "remove");
                 }
             });
-            /** @event */
+            /** 
+             * 전체 제거 이벤트  
+             * @event BaseCollection#onClear 
+             */
             Object.defineProperty(this, "onClear", {
                 enumerable: true,
                 configurable: true,
@@ -103,7 +109,10 @@
                     this.__event.subscribe(p_fn, "clear");
                 }
             });
-            /** @event */
+            /** 
+             * 변경(등록/삭제) 전 이벤트  
+             * @event BaseCollection#onChanging 
+             */
             Object.defineProperty(this, "onChanging", {
                 enumerable: true,
                 configurable: true,
@@ -111,7 +120,10 @@
                     this.__event.subscribe(p_fn, "changing");
                 }
             });
-            /** @event */
+            /** 
+             * 변경(등록/삭제) 후 이벤트  
+             * @event BaseCollection#onChanged 
+             */
             Object.defineProperty(this, "onChanged", {
                 enumerable: true,
                 configurable: true,
@@ -131,7 +143,8 @@
         }
     
         /**
-         * @method private 프로퍼티 기술자 설정
+         * 프로퍼티 기술자 설정
+         * @method BaseCollection#_getPropDescriptor 
          * @param {number} p_idx 인덱스
          */
         BaseCollection.prototype._getPropDescriptor = function(p_idx) {
@@ -153,7 +166,7 @@
             };
         };
 
-        /** @event onAdd 등록 이벤트 발생 */
+        /** @event BaseCollection#onAdd 등록 이벤트 발생 */
         BaseCollection.prototype._onAdd = function(p_idx, p_value) {
             this.__event.publish("add", p_idx, p_value); 
         };
@@ -163,17 +176,29 @@
             this.__event.publish("remove", p_idx); 
         };
 
-        /** @event onClear 전체삭제 이벤트 발생 */
+        /** 
+         *  전체삭제 이벤트 발생
+         * @method BaseCollection#_onClear
+         * @listens BaseCollection#onClear
+         */
         BaseCollection.prototype._onClear = function() {
             this.__event.publish("clear"); 
         };
 
-        /** @event onChanging 변경시 이벤트 발생 */
+        /** 
+         *  변경(등록/삭제) 전 이벤트 수신
+         * @method BaseCollection#_onChanging
+         * @listens BaseCollection#onChanging
+         */
         BaseCollection.prototype._onChanging = function() {
             this.__event.publish("changing"); 
         };
 
-        /** @event onChanged 변경후 이벤트 발생 */
+        /** 
+         *  변경(등록/삭제) 후 이벤트 수신
+         * @method BaseCollection#_onChanged
+         * @listens BaseCollection#onChanged
+         */        
         BaseCollection.prototype._onChanged = function() {
             this.__event.publish("changed"); 
         };
@@ -188,7 +213,12 @@
             throw new Error("[ add() ] Abstract method definition, fail...");
         };
         
-        /** @abstract */
+        /** 
+         * 전체삭제(초기화)
+         * @abstract 
+         * @method BaseCollection#clear
+         * @fires BaseCollection#onClear 
+         */
         BaseCollection.prototype.clear  = function() {
             throw new Error("[ clear() ] Abstract method definition, fail...");
         };

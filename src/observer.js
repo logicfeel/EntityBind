@@ -54,9 +54,9 @@
         /**
          * 구독 신청
          * @method Observer#subscribe 
+         * @desc 이벤트 "p_code"를 입력하지 않으면 전역(any)에 등록 된다.
          * @param {function} p_fn  구독 콜백 함수
          * @param {?string} p_code 구독 코드명 : 기본값 "any"
-         * @summary 이벤트 "p_code"를 입력하지 않으면 전역(any)에 등록 된다.
          */
         Observer.prototype.subscribe = function(p_fn, p_code) {
             p_code = p_code || 'any';
@@ -78,10 +78,9 @@
         
         /**
          * @method Observer#unsubscribe 
+         * @desc 이벤트 "p_code"를 입력하지 않으면 전역(any)에서 취소 된다.
          * @param {function} p_fn [필수] 이벤트 콜백 함수
          * @param {?string} p_code 이벤트 코드명 : 기본값 "any"
-         * @description sdfds
-         * @summary 이벤트 "p_code"를 입력하지 않으면 전역(any)에서 취소 된다.
          */
         Observer.prototype.unsubscribe = function(p_fn, p_code) {
             p_code = p_code || "any";

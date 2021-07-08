@@ -55,7 +55,7 @@
             // Protected
             this._symbol        = [];
 
-            /** @property */
+            /** @property @protected */
             Object.defineProperty(this, "_baseEntity", 
             {
                 get: function() { return __baseEntity; },
