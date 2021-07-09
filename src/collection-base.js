@@ -1,8 +1,6 @@
-/**
- * @namespace _W.Collection 
- */
-(function(global) {
+/** @namespace Collection */
 
+(function(global) {
     "use strict";
 
     //==============================================================
@@ -30,27 +28,42 @@
 
     //==============================================================
     // 4. 모듈 구현 
-
-    var BaseCollection  = (function () {
-        /**
-         * BaseCollection 추상클래스
-         * @class BaseCollection
-         * @classdesc 컬렉션 최상위(부모) 클래스
-         * @param {obejct} p_onwer 소유객체
-         */
-        function BaseCollection(p_onwer) {
     
+    var BaseCollection  = (function () {
+       /**
+        * 컬렉션 최상위 클래스 (추상클래스)
+        * @constructs Collection.BaseCollection
+        * @param {Object} p_onwer 소유객체
+        */
+        function BaseCollection(p_onwer) { 
+            
             var __elementType   = null;
 
-            // Private
+            /** @private */
             this.__event        = new Observer(this, this);
 
-            // Protected
+            /** 
+             * 소유객체
+             * @protected 
+             * @member {Object}
+             */
             this._onwer         = p_onwer;
+
+            /** 
+             * 배열요소
+             * @protected 
+             * @member {Array}
+             */
             this._element       = [];
+            
+            /** 
+             * 심볼 배열입니다. 
+             * @protected
+             * @member {Array} 
+             */
             this._symbol        = [];
 
-            /** @member {Observer} BaseCollection#elementType 요소타입 */
+            /** @member {Observer}  Collection.BaseCollection#elementType 요소타입 */
             Object.defineProperty(this, "elementType", {
                 enumerable: true,
                 configurable: true,
@@ -67,7 +80,8 @@
             });
 
             /**
-             * @member {Array}  BaseCollection#list  컬렉션 목록 
+             * 컬렉션 목록 
+             * @member {Array}  Collection.BaseCollection#list  
              */
             Object.defineProperty(this, "list", {
                 enumerable: true,
@@ -76,8 +90,10 @@
                     return this._element;
                 }
             });
-            /** 
-             * @member {Number} BaseCollection#count 갯수
+
+            /**
+             * 컬랙션 갯수 
+             * @member {Number} Collection.BaseCollection#count 
              */
             Object.defineProperty(this, "count", {
                 enumerable: true,
@@ -87,6 +103,10 @@
                 }
             });
 
+            /** 
+             * 변경(등록/삭제) 후 이벤트  
+             * @event Collection.BaseCollection#onAdd 
+             */
             Object.defineProperty(this, "onAdd", {
                 enumerable: true,
                 configurable: true,
@@ -94,7 +114,11 @@
                     this.__event.subscribe(p_fn, "add");
                 }
             });
-            /** @event */
+
+            /** 
+             * 제거 이벤트
+             * @event Collection.BaseCollection#onRemove
+             */
             Object.defineProperty(this, "onRemove", {
                 enumerable: true,
                 configurable: true,
@@ -102,8 +126,10 @@
                     this.__event.subscribe(p_fn, "remove");
                 }
             });
+
             /** 
-             * @event BaseCollection#onClear 전체 제거 이벤트
+             * 전체 제거 이벤트
+             * @event Collection.BaseCollection#onClear
              */
             Object.defineProperty(this, "onClear", {
                 enumerable: true,
@@ -112,9 +138,10 @@
                     this.__event.subscribe(p_fn, "clear");
                 }
             });
+
             /** 
              * 변경(등록/삭제) 전 이벤트  
-             * @event BaseCollection#onChanging 
+             * @event Collection.BaseCollection#onChanging 
              */
             Object.defineProperty(this, "onChanging", {
                 enumerable: true,
@@ -123,6 +150,7 @@
                     this.__event.subscribe(p_fn, "changing");
                 }
             });
+
             /** 
              * 변경(등록/삭제) 후 이벤트  
              * @event BaseCollection#onChanged 
@@ -141,13 +169,13 @@
             this._symbol = this._symbol.concat(["_getPropDescriptor", "_onAdd", "_onRemove", "_onClear", "_onChanging", "_onChanged"]);
             this._symbol = this._symbol.concat(["_remove", "add", "clear", "remove", "removeAt", "indexOf"]);
 
-            /** @implements ICollection 인터페이스 구현 */
+            /** implements ICollection 인터페이스 구현 */
              this._implements(ICollection);
         }
     
         /**
          * 프로퍼티 기술자 설정
-         * @method BaseCollection#_getPropDescriptor 
+         * @protected
          * @param {number} p_idx 인덱스
          */
         BaseCollection.prototype._getPropDescriptor = function(p_idx) {
@@ -170,22 +198,22 @@
         };
 
         /**
-         * 등록 이벤트 
-         * @event BaseCollection#onAdd  
+         * @listens Collection.BaseCollection#onClear
          */
         BaseCollection.prototype._onAdd = function(p_idx, p_value) {
             this.__event.publish("add", p_idx, p_value); 
         };
 
-        /** @event onRemove 삭제 이벤트 발생 */
+        /**
+         * @listens Collection.BaseCollection#onRemove
+         */
         BaseCollection.prototype._onRemove = function(p_idx) {
             this.__event.publish("remove", p_idx); 
         };
 
         /** 
          *  전체삭제 이벤트 수신
-         * @method BaseCollection#_onClear
-         * @listens BaseCollection#onClear
+         * @listens Collection.BaseCollection#onClear
          */
         BaseCollection.prototype._onClear = function() {
             this.__event.publish("clear"); 
@@ -193,8 +221,7 @@
 
         /** 
          *  변경(등록/삭제) 전 이벤트 수신
-         * @method BaseCollection#_onChanging
-         * @listens BaseCollection#onChanging
+         * @listens Collection.BaseCollection#onChanging
          */
         BaseCollection.prototype._onChanging = function() {
             this.__event.publish("changing"); 
@@ -202,8 +229,7 @@
 
         /** 
          *  변경(등록/삭제) 후 이벤트 수신
-         * @method BaseCollection#_onChanged
-         * @listens BaseCollection#onChanged
+         * @listens Collection.BaseCollection#onChanged
          */        
         BaseCollection.prototype._onChanged = function() {
             this.__event.publish("changed"); 
@@ -222,15 +248,14 @@
         /** 
          * 전체삭제(초기화)
          * @abstract 
-         * @method BaseCollection#clear
-         * @fires BaseCollection#onClear 
+         * @fires Collection.BaseCollection#onClear 
          */
         BaseCollection.prototype.clear  = function() {
             throw new Error("[ clear() ] Abstract method definition, fail...");
         };
 
         /**
-         * @method remove 배열속성 삭제
+         * 배열속성 삭제
          * @param {element} p_elem 속성명
          * @returns {number} 삭제한 인덱스
          */
@@ -252,7 +277,7 @@
         };
         
         /**
-         * @method removeAt 배열속성 삭제
+         * 배열속성 삭제
          * @param {number} p_idx 인덱스
          */
         BaseCollection.prototype.removeAt = function(p_idx) {
@@ -268,7 +293,7 @@
         };
 
         /**
-         * @method contains 배열속성 여부 
+         * 배열속성 여부 
          * @param {object} p_elem 속성 객체
          * @returns {boolean}
          */
@@ -277,7 +302,7 @@
         };
 
         /**
-         * @method 배열속성 인덱스 찾기
+         * 배열속성 인덱스 찾기
          * @param {Object} p_elem 속성 객체
          * @returns {Number}
          */

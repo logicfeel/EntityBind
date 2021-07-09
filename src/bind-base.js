@@ -1,4 +1,7 @@
 /**
+ * @namespace _W.Meta
+ */
+/**
  * @namespace _W.Meta.Bind
  */
 (function(global) {

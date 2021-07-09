@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Common.Observer : 옵서버
+ * @namespace Common
  */
 (function(global) {
 
@@ -22,10 +22,9 @@
     //==============================================================
     // 4. 모듈 구현    
     
-    // 클래스 정의
     var Observer = (function () {
         /**
-         * @class Observer
+         * @constructs Common.Observer
          * @classdesc 구독자 클래스, 이벤트에 활용
          * @param {obejct} p_onwer Observer 클래스의 소유 함수 또는 클래스
          * @param {object} p_this 함수 호출 본문에서 this 역활 publish.apply(p_this, ...)
@@ -34,26 +33,39 @@
 
             this.isDebug = false;
 
-            /** @member {object} Observer._this 등록함수의 this */
+            /** @member {Object}  등록함수의 this */
             this._this = p_this;    
 
-            /** @member {object} Observer._onwer 이벤트의 소유자 */
+            /** 
+             * 이벤트의 소유자
+             * @protected
+             * @member {Object}   
+             */
             this._onwer = p_onwer;
             
-            this.subscribers = {        // 전역 구독자
+            /**
+             * 전역 구독자
+             * @member {Object}
+             */
+            this.subscribers = {
                 any: []
             };
             
-            /** @member {boolean} Observer.propagation  이벤트 전파 설정 (기본값:true) */
+            /** 
+             * 이벤트 전파 설정 (기본값:true)
+             * @member {Boolean}
+             */
             this.propagation    = true;
 
-            /** @member {boolean} Observer.isMultiMode 단일 구독자 모드, 마지막 등록 구독자만 활성화 (기본값:true) */
+            /** 
+             * 단일 구독자 모드, 마지막 등록 구독자만 활성화 (기본값:true)  
+             * @member {Boolean} 
+             */
             this.isMultiMode    = true;
         }
 
         /**
          * 구독 신청
-         * @method Observer#subscribe 
          * @desc 이벤트 "p_code"를 입력하지 않으면 전역(any)에 등록 된다.
          * @param {function} p_fn  구독 콜백 함수
          * @param {?string} p_code 구독 코드명 : 기본값 "any"
@@ -77,7 +89,6 @@
         };
         
         /**
-         * @method Observer#unsubscribe 
          * @desc 이벤트 "p_code"를 입력하지 않으면 전역(any)에서 취소 된다.
          * @param {function} p_fn [필수] 이벤트 콜백 함수
          * @param {?string} p_code 이벤트 코드명 : 기본값 "any"
@@ -97,7 +108,6 @@
         };
 
         /**
-         * @method Observer#unsubscribeAll
          * @param {?string} p_code 이벤트 코드명
          * @summary 
          *  - p_code 입력하면 해당 콜백함수들 구독 취소한다.
@@ -114,7 +124,6 @@
 
         /**
          * @description 구독 함수 호출
-         * @method Observer#publish
          * @param {?string} p_code 이벤트 코드명 : 기본값 "any"
          */
         Observer.prototype.publish = function(p_code) {

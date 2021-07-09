@@ -1,23 +1,25 @@
 {
-    "applicationName": "Demo",
-    "disqus": "",
-    "googleAnalytics": "",
-    "openGraph": {
-        "title": "",
-        "type": "website",
-        "image": "",
-        "site_name": "",
-        "url": ""
-    },
-    "meta": {
-        "title": "",
-        "description": "",
-        "keyword": ""
-    },
-    "linenums": true,
+    "templates": {
+        "applicationName": "_W",
+        "disqus": "",
+        "googleAnalytics": "",
+        "openGraph": {
+            "title": "_w",
+            "type": "website",
+            "image": "",
+            "site_name": "",
+            "url": ""
+        },
+        "meta": {
+            "title": "_W",
+            "description": "White",
+            "keyword": ""
+        },
+        "linenums": true
+    },        
     "source": {
         "include": [
-            "./src/"
+            "./src/namespace.js", "./src/collection-base.js", "./src/observer.js" 
         ],
         "includePattern": ".+\\.js(doc)?$",
         "exclude": ["./src/old"],

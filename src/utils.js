@@ -1,8 +1,5 @@
 /**
- * @namespace _W.Common.Util.inherits : 상속
- * @namespace _W.Common.Util.getArrayLevel : 배열 깊이 얻기
- * @namespace _W.Common.Util.createGUID : GUID 생성
- * @namespace _W.Common.Util.validSelector : 셀렉터의 유효성 검사
+ * @namespace _W.Common.Util
  */
 (function(global) {
 
@@ -57,6 +54,7 @@
     }());
 
     /**
+     * 배열 깊이 얻기
      * @param {*} p_elem 
      * @param {*} p_depts 
      */
