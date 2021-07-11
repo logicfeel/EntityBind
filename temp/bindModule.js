@@ -4,10 +4,12 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -18,30 +20,30 @@ var BaseCollection = /** @class */ (function () {
     }
     Object.defineProperty(BaseCollection.prototype, "count", {
         get: function () {
-            return this._element.length;
+            return this._items.length;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BaseCollection.prototype, "onAdd", {
         set: function (func) {
             this._onAdd = func;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BaseCollection.prototype, "onRemove", {
         set: function (func) {
             this._onRemove = func;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BaseCollection.prototype, "onClear", {
         set: function (func) {
             this._onClear = func;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     // 이벤트 경우에 따라 추가함
@@ -67,7 +69,7 @@ var Item = /** @class */ (function () {
         set: function (name) {
             this._name = name;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Item.prototype, "defaultValue", {
@@ -77,7 +79,7 @@ var Item = /** @class */ (function () {
         set: function (value) {
             this._defaultValue = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Item.prototype, "caption", {
@@ -87,7 +89,7 @@ var Item = /** @class */ (function () {
         set: function (name) {
             this._caption = name;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Item.prototype, "codeType", {
@@ -97,7 +99,7 @@ var Item = /** @class */ (function () {
         set: function (codeType) {
             this._codeType = codeType;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return Item;

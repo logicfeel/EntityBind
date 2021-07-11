@@ -33,6 +33,7 @@
     "jaguarjs-jsdoc": "^1.1.0",
     "jsdoc": "^3.6.7",
     "request": "^2.88.2",
-    "sync-request": "^6.1.0"
+    "sync-request": "^6.1.0",
+    "typedoc": "^0.21.3"
   }
 }
