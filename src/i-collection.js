@@ -1,6 +1,3 @@
-/**
- * @namespace _W.Interface.ICollection
- */
 (function(global) {
     
     "use strict";
@@ -29,6 +26,10 @@
     //==============================================================
     // 4. 모듈 구현    
     var ICollection  = (function () {
+        /**
+         * 컬렉션 최상위 컬렉션 인터페이스
+         * @interface Interface.ICollection
+         */
         function ICollection() {
             /**
              * @member count 컬렉션 갯수
@@ -40,13 +41,14 @@
              */
             this.list = [];
 
-            /** @implements IPartControl 인터페이스 구현 */
-            /** @implements ILookupControl 인터페이스 구현 */
+            /** implements IPartControl 인터페이스 구현 */
+            /** implements ILookupControl 인터페이스 구현 */
             this._implements(IPartControl, ILookupControl);            
         }
     
         /**
          * 등록 : insert
+         * @method Interface.ICollection#add
          */
         ICollection.prototype.add  = function() {
             throw new Error("[ add() ] Abstract method definition, fail...");

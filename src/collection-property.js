@@ -1,8 +1,5 @@
-/**
- * @namespace _W.Collection.PropertyCollection
- */
-(function(global) {
 
+(function(global) {
     "use strict";
 
     //==============================================================
@@ -36,14 +33,17 @@
     // 4. 모듈 구현    
     var PropertyCollection  = (function (_super) {
         /**
-         * @method 속성타입 컬렉션 클래스
+         * 속성타입 컬렉션 클래스
+         * @constructs Collection.PropertyCollection
+         * @extends Collection.BaseCollection
+         * @param {Object} p_onwer 소유자
          */
         function PropertyCollection(p_onwer) {
             _super.call(this, p_onwer); 
 
             var __properties = [];
 
-            /** @property {properties} */
+            /** @member {Array} Collection.PropertyCollection#properties 속성들값 */
             Object.defineProperty(this, "properties", 
             {
                 get: function() { return __properties; },
@@ -61,7 +61,8 @@
         util.inherits(PropertyCollection, _super);
 
         /**
-         * @method __remove 배열속성 삭제 (내부처리)
+         * 배열속성 삭제 (내부처리)
+         * @protected
          * @param {*} p_name 속성명
          * @returns {number} 삭제한 인덱스
          */
@@ -92,7 +93,7 @@
         };
 
         /**
-         * @method add 배열속성 설정 및 속성값 등록
+         * 배열속성 설정 및 속성값 등록
          * @param {string} p_name [필수] 속성명
          * @param {?any} p_value 속성값
          * @returns {any} 입력 속성 참조값 REVIEW:: 필요성 검토
@@ -141,7 +142,7 @@
         };
 
         /**
-         * @method clear 배열속성 전체삭제
+         * 배열속성 전체삭제
          */
         PropertyCollection.prototype.clear = function() {
             
@@ -163,7 +164,7 @@
         };
         
         /**
-         * @method indexOfName 이름으로 index값 조회
+         * 이름으로 index값 조회
          * @param {string} p_name 
          */
         PropertyCollection.prototype.indexOfName = function(p_name) {
@@ -178,7 +179,7 @@
         };
 
         /**
-         * @method propertyOf 배열속성 이름 찾기
+         * 배열속성 이름 찾기
          * @param {number} p_idx 인덱스
          * @returns {string}
          */

@@ -1,8 +1,5 @@
-/**
- * @namespace _W.Collection.ArrayCollection
- */
-(function(global) {
 
+(function(global) {
     "use strict";
 
     //==============================================================
@@ -32,15 +29,20 @@
     // 4. 모듈 구현    
     var ArrayCollection  = (function (_super) {
         /**
-         * @class 배열타입 컬렉션 클래스
+         * 배열타입 컬렉션 클래스
+         * @constructs Collection.ArrayCollection
+         * @extends Collection.BaseCollection
+         * @param {Object} p_onwer 소유객체
          */
         function ArrayCollection(p_onwer) {
-            _super.call(this, p_onwer); 
+            _super.call(this, p_onwer);
+
         }
         util.inherits(ArrayCollection, _super);
 
         /**
-         * @method __remove 배열속성 삭제 (내부처리)
+         * 배열속성 삭제 (내부처리)
+         * @protected
          * @param {*} p_idx 인덱스 번호
          */
         ArrayCollection.prototype._remove = function(p_idx) {
@@ -61,7 +63,7 @@
         };
 
         /**
-         * @method add 배열속성 속성값 설정
+         * 배열속성 속성값 설정
          * @param {*} p_value [필수] 속성값
          * @returns {*} 입력 속성 참조값
          */
@@ -90,7 +92,7 @@
         };
 
         /**
-         * @method clear 배열속성 전체삭제
+         * 배열속성 전체삭제
          */
         ArrayCollection.prototype.clear = function() {
             

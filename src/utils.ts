@@ -1,4 +1,4 @@
-declare namespace _W {
+namespace _W {
     namespace Common {
         namespace Util {
             /**
@@ -6,7 +6,9 @@ declare namespace _W {
              * @param ctor 대상객체
              * @param superCtor 부모객체
              */
-            export function inherits(ctor: Object, superCtor: Object): void
+            function inherits(ctor: Object, superCtor: Object): void {
+                // var ....
+            }
 
         }
     }

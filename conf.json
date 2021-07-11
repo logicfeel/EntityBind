@@ -19,7 +19,14 @@
     },        
     "source": {
         "include": [
-            "./src/collection-base.js", "./src/observer.js" 
+            "./src/namespace.js",
+            "./src/i-object.js",
+            "./src/i-marshal.js",
+            "./src/i-collection.js",
+            "./src/observer.js",
+            "./src/collection-base.js", 
+            "./src/collection-property.js",
+            "./src/collection-array.js"
         ],
         "includePattern": ".+\\.js(doc)?$",
         "exclude": ["./src/old"],

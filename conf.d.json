@@ -19,7 +19,7 @@
     },        
     "source": {
         "include": [
-            "./src/utils.d.ts"
+            "./src/utils.ts"
         ],
         "includePattern": ".+\\.ts(doc)?$",
         "exclude": ["./src/old"],

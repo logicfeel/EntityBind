@@ -1,4 +1,3 @@
-/** @namespace Collection */
 
 (function(global) {
     "use strict";
@@ -33,6 +32,7 @@
        /**
         * 컬렉션 최상위 클래스 (추상클래스)
         * @constructs Collection.BaseCollection
+        * @implements {Interface.ICollection} ddd
         * @param {Object} p_onwer 소유객체
         */
         function BaseCollection(p_onwer) { 

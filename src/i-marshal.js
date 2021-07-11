@@ -1,6 +1,3 @@
-/**
- * @namespace _W.Interface.IMarshal
- */
 (function(global) {
 
     "use strict";
@@ -31,11 +28,21 @@
     //==============================================================
     // 4. 모듈 구현    
     var IMarshal  = (function (_super) {
+        /**
+         * 최상위 객체
+         * @interface Interface.IMarshal
+         * @extends Interface.IObject
+         */
         function IMarshal() {
             _super.call(this);
         }
         util.inherits(IMarshal, _super);
 
+        /**
+         * 객체 얻기
+         * @method Interface.IMarshal#getObject
+         * @returns {Object}
+         */
         IMarshal.prototype.getObject  = function() {
             throw new Error("[ getObject() ] Abstract method definition, fail...");
         };
