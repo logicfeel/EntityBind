@@ -1,7 +1,7 @@
 /**
  * Object : 폴리필
- * @namespace Object.prototype.isImplementOf [protected] 구현 여부
- * @namespace Object.prototype._implements 인터페이스(클래스 포함) 등록 *다중상속*
+ * namespace Object.prototype.isImplementOf [protected] 구현 여부
+ * namespace Object.prototype._implements 인터페이스(클래스 포함) 등록 *다중상속*
  */
 if ((typeof Object.prototype._implements === "undefined") ||
     (typeof Object.prototype.isImplementOf === "undefined")) {

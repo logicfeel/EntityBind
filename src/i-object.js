@@ -1,3 +1,6 @@
+/**
+ * namespace _W.Interface.IObject
+ */
 (function(global) {
     
     "use strict";
@@ -18,14 +21,14 @@
     var IObject  = (function () {
         /**
          * 최상위 객체 인터페이스
-         * @interface Interface.IObject
+         * @constructs _W.Interface.IObject 
+         * @interface
          */
         function IObject() {
         }
         
         /**
          * 객체타입 얻기
-         * @method Interface.IObject#getTypes
          */
         IObject.prototype.getTypes  = function() {
             throw new Error("[ getTypes() ] Abstract method definition, fail...");
@@ -33,7 +36,6 @@
         
         /**
          * 인스턴스 검사
-         * @method Interface.IObject#instanceOf
          * @returns {Boolean}
          */
         IObject.prototype.instanceOf  = function() {

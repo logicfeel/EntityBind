@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.MetaElement
+ * namespace _W.Meta.MetaElement
  */
 (function(global) {
 
@@ -39,9 +39,12 @@
     // 4. 모듈 구현    
     var MetaElement  = (function (_super) {
         /**
-         * IMarshal 인터페이스는 IObject를 상속함
-         * @abstract 추상클래스
-         * @class
+         * IMarshal 인터페이스 구현 및 ..
+         * @constructs _W.Meta.MetaElement
+         * @abstract
+         * @extends _W.Meta.MetaObject
+         * @implements {_W.Interface.IMarshal}
+         * @param {*} p_name 
          */
         function MetaElement(p_name) {
             _super.call(this);
@@ -52,12 +55,12 @@
 
             this.name = p_name;
             
-            /** @implements IMarshal 인터페이스 구현 */
+            /** implements IMarshal 인터페이스 구현 */
             this._implements(IMarshal);            
         }
         util.inherits(MetaElement, _super);
     
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         MetaElement.prototype.getTypes = function() {
             
             var type = ["MetaElement"];
@@ -66,8 +69,8 @@
         };
 
         /**
+         * GUID 생성
          * @private
-         * @method GUID 생성
          */
         MetaObject.prototype.__newGUID  = function() {
             return util.createGUID();
@@ -75,7 +78,7 @@
 
         /**
          * 조건 : GUID는 한번만 생성해야 함
-         * @method GUID 얻기
+         * GUID 얻기
          */
         MetaObject.prototype.getGUID  = function() {
             if (this.__GUID === null) {
@@ -85,7 +88,7 @@
         };
 
         /**
-         * @method 객체 얻기 : 추상메소드 : REVIEW:: 공통 요소? 확인필요
+         * 객체 얻기 : 추상메소드 : REVIEW:: 공통 요소? 확인필요
          */
         MetaElement.prototype.getObject  = function(p_context) {
 

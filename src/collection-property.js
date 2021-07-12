@@ -1,4 +1,6 @@
-
+/**
+ * namespace _W.Collection.PropertyCollection
+ */
 (function(global) {
     "use strict";
 

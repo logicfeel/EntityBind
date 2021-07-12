@@ -1,6 +1,5 @@
 /**
- * BindCommandAjax
- * @namespace _W.Meta.Bind
+ * namespace _W.Meta.Bind.BindCommandAjax
  */
 (function(global) {
 
@@ -51,8 +50,14 @@
     //==============================================================
     // 4. 모듈 구현    
     var BindCommandAjax  = (function (_super) {
+        
         /**
-         * @class
+         * 바인드 명령 Ajax 
+         * @constructs _W.Meta.Bind.BindCommandAjax
+         * @extends _W.Meta.Bind.BindCommand
+         * @param {*} p_bindModel 
+         * @param {*} p_outputOption 
+         * @param {*} p_baseEntity 
          */
         function BindCommandAjax(p_bindModel, p_outputOption, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
@@ -68,7 +73,6 @@
                 complete: null      // 완료 콜백
             };
 
-            /** @property {ajaxSetup} */
             Object.defineProperty(this, "ajaxSetup", 
             {
                 get: function() { return __ajaxSetup; },
@@ -76,7 +80,6 @@
                 enumerable: true
             });
 
-            /** @property {url} */
             Object.defineProperty(this, "url", 
             {
                 get: function() { return __ajaxSetup.url; },
@@ -138,7 +141,7 @@
 
         /**
          * Ajax 바인딩 구현
-         * @method
+         * @protected
          */
         BindCommandAjax.prototype._execBind = function() {
             
@@ -171,10 +174,11 @@
         };
 
         /**
-         * 
+         * 실행 성공
          * @param {*} p_result 
          * @param {*} p_status 
          * @param {*} p_xhr 
+         * @protected
          */
         BindCommandAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
             
@@ -234,6 +238,7 @@
          * @param {*} p_xhr 
          * @param {*} p_status 
          * @param {*} p_error 
+         * @protected
          */
         BindCommandAjax.prototype._execError = function(p_xhr, p_status, p_error) {
             
@@ -247,6 +252,7 @@
          * (WEB & NodeJs 의 어뎁터 패턴)
          * node 에서는 비동기만 반영함 (테스트 용도) =>> 필요시 개발함
          * @param {Object} p_ajaxSetup 
+         * @protected
          */
         BindCommandAjax.prototype._ajaxAdapter = function(p_ajaxSetup) {
             
@@ -300,7 +306,10 @@
             }
         };
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /**
+         * 상속 클래스에서 오버라이딩 필요!! 
+         * @override 
+         */
         BindCommandAjax.prototype.getTypes  = function() {
                     
             var type = ["BindCommandAjax"];
@@ -309,7 +318,7 @@
         };
 
         /**
-         * @method 
+         * 실행 
          */
         BindCommandAjax.prototype.execute = function() {
             this._onExecute(this);  // "실행 시작" 이벤트 발생

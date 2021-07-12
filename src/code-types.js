@@ -1,6 +1,4 @@
-/**
- * @namespace _W.Meta.Entity.CodeType
- */
+ // CodeType
 (function(global) {
 
     "use strict";

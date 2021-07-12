@@ -1,5 +1,5 @@
 /**
- * @namespace Array.isArray : 배열 유무 (폴리필 웹전용)
+ * namespace Array.isArray : 배열 유무 (폴리필 웹전용)
  */
 if (typeof Array.isArray === "undefined") {
 

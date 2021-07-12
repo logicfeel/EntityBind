@@ -1,3 +1,6 @@
+/**
+ * namespace _W.Common.Util
+ */
 (function(global) {
 
     "use strict";

@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Data.DataSet
+ * namespace _W.Meta.Data.DataSet
  */
 (function(global) {
     "use strict";

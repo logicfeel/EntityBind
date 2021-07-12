@@ -1,8 +1,5 @@
 /**
- * @namespace _W.Meta
- */
-/**
- * @namespace _W.Meta.Bind
+ * namespace _W.Meta.Bind.BaseBind
  */
 (function(global) {
 
@@ -44,7 +41,10 @@
     // 4. 모듈 구현    
     var BaseBind  = (function (_super) {
         /**
-         * @abstract @class 추상클래스
+         * 기본 바인드 (최상위)
+         * @constructs _W.Meta.Bind.BaseBind
+         * @abstract
+         * @extends _W.Meta.MetaObject
          */
         function BaseBind() {
             _super.call(this);
@@ -56,9 +56,17 @@
             this.__event    = new Observer(this, this);
 
             // Protected
+            /**
+             * 심볼 (내부 심볼 등록)
+             * @protected
+             */
             this._symbol        = [];
 
-            /** @property @protected */
+            /**
+             * 기본 엔티티
+             * @member _W.Meta.Bind.BaseBind#_baseEntity
+             * @protected
+             */
             Object.defineProperty(this, "_baseEntity", 
             {
                 get: function() { return __baseEntity; },
@@ -70,7 +78,10 @@
                 enumerable: true
             });  
 
-            /** @property */
+            /**
+             * 실행전 이벤트
+             * @event _W.Meta.Bind.BaseBind#onExecute
+             */
             Object.defineProperty(this, "onExecute", {
                 enumerable: true,
                 configurable: true,
@@ -79,7 +90,10 @@
                 }
             });
 
-            /** @property */
+            /**
+             * 실행후 이벤트
+             * @event _W.Meta.Bind.BaseBind#onExecuted
+             */
             Object.defineProperty(this, "onExecuted", {
                 enumerable: true,
                 configurable: true,
@@ -96,7 +110,10 @@
         util.inherits(BaseBind, _super);
 
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** 
+         * 상속 클래스에서 오버라이딩 필요!!
+         * @override
+         */
         BaseBind.prototype.getTypes  = function() {
                     
             var type = ["BaseBind"];
@@ -105,11 +122,17 @@
         };
 
         /** @event */
+        /**
+         * @listens _W.Meta.Bind.BaseBind#_onExecute
+         */
         BaseBind.prototype._onExecute = function(p_bindCommand) {
             this.__event.publish("execute", p_bindCommand);
         };
 
         /** @event */
+        /**
+         * @listens _W.Meta.Bind.BaseBind#_onExecuted
+         */
         BaseBind.prototype._onExecuted = function(p_bindCommand, p_result) {
             this.__event.publish("executed", p_bindCommand, p_result); 
         };

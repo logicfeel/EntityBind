@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Interface.IControlCollection
+ * namespace _W.Interface.IControlCollection
  */
 (function(global) {
 
@@ -39,17 +39,24 @@
     //==============================================================
     // 4. 모듈 구현    
     var IControlCollection  = (function (_super) {
+        /** 
+         * 컨트롤 컬렉션 엔터페이스
+         * @constructs _W.Interface.IControlCollection
+         * @interface
+         * @extends _W.Interface.ICollection
+         * @implements {_W.Interface.IGroupControl}
+         * @implements {_W.Interface.IAllControl}
+         */
         function IControlCollection() {
             _super.call(this);
 
-            /** @implements IGroupControl 인터페이스 구현 */
-            /** @implements IAllControl 인터페이스 구현 */
             this._implements(IGroupControl, IAllControl);            
         }
         util.inherits(IControlCollection, _super);        
     
         /**
          * 병합, 합침
+         * @abstract
          */
         IControlCollection.prototype.merge  = function() {
             throw new Error("[ concat() ] Abstract method definition, fail...");
@@ -57,6 +64,7 @@
 
         /**
          * 범위 복사
+         * @abstract
          */
         IControlCollection.prototype.copyTo  = function() {
             throw new Error("[ copyTo() ] Abstract method definition, fail...");
@@ -64,6 +72,7 @@
 
         /**
          * 전체 복제(복사)
+         * @abstract
          */
         IControlCollection.prototype.clone  = function() {
             throw new Error("[ clone() ] Abstract method definition, fail...");
@@ -71,6 +80,7 @@
 
         /**
          * 로드 : 전체
+         * @abstract
          */
         IControlCollection.prototype.load  = function() {
             throw new Error("[ load() ] Abstract method definition, fail...");
@@ -78,6 +88,7 @@
 
         /**
          * 삭제 : 전체
+         * @abstract
          */
         IControlCollection.prototype.clear  = function() {
             throw new Error("[ clear() ] Abstract method definition, fail...");

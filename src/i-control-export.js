@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Interface.IExportControl
+ * namespace _W.Interface.IExportControl
  */
 (function(global) {
     
@@ -19,11 +19,16 @@
     //==============================================================
     // 4. 모듈 구현    
     var IExportControl  = (function () {
+        /**
+         * @constructs _W.Interface.IExportControl
+         * @interface
+         */
         function IExportControl() {
         }
     
         /**
          * 출력 : 전체
+         * @abstract
          */
         IExportControl.prototype.write  = function() {
             throw new Error("[ write() ] Abstract method definition, fail...");

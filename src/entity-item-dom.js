@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Entity.ItemDOM
+ * namespace _W.Meta.Entity.ItemDOM
  */
 (function(global) {
 

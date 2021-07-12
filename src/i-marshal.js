@@ -1,3 +1,6 @@
+/**
+ * namespace _W.Interface.IMarshal
+ */
 (function(global) {
 
     "use strict";
@@ -30,7 +33,8 @@
     var IMarshal  = (function (_super) {
         /**
          * 최상위 객체
-         * @interface Interface.IMarshal
+         * @constructs _W.Interface.IMarshal
+         * @interface
          * @extends Interface.IObject
          */
         function IMarshal() {
@@ -40,13 +44,17 @@
 
         /**
          * 객체 얻기
-         * @method Interface.IMarshal#getObject
          * @returns {Object}
          */
         IMarshal.prototype.getObject  = function() {
             throw new Error("[ getObject() ] Abstract method definition, fail...");
         };
 
+        /**
+         * GUID 얻기
+         * @abstract
+         * @returns {Stirng}
+         */
         IMarshal.prototype.getGUID  = function() {
             throw new Error("[ getGUID() ] Abstract method definition, fail...");
 

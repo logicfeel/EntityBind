@@ -1,7 +1,7 @@
 /**
- * @namespace _W.Meta.Entity.Item
- * @namespace _W.Meta.Entity.ItemCollection
- * @namespace _W.Meta.Entity.ItemViewCollection
+ * namespace _W.Meta.Entity.Item
+ * namespace _W.Meta.Entity.ItemCollection
+ * namespace _W.Meta.Entity.ItemViewCollection
  */
 (function(global) {
 

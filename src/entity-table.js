@@ -1,6 +1,6 @@
 /**
- * @namespace _W.Meta.Entity.EntityTable
- * @namespace _W.Meta.Entity.EntityTableCollection
+ * namespace _W.Meta.Entity.EntityTable
+ * namespace _W.Meta.Entity.EntityTableCollection
  */
 (function(global) {
 

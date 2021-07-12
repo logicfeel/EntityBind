@@ -1,4 +1,6 @@
-
+/**
+ * namespace _W.Collection.BaseCollection
+ */
 (function(global) {
     "use strict";
 
@@ -31,8 +33,8 @@
     var BaseCollection  = (function () {
        /**
         * 컬렉션 최상위 클래스 (추상클래스)
-        * @constructs Collection.BaseCollection
-        * @implements {Interface.ICollection} ddd
+        * @constructs _W.Collection.BaseCollection
+        * @implements {_W.Interface.ICollection}
         * @param {Object} p_onwer 소유객체
         */
         function BaseCollection(p_onwer) { 
@@ -63,7 +65,7 @@
              */
             this._symbol        = [];
 
-            /** @member {Observer}  Collection.BaseCollection#elementType 요소타입 */
+            /** @member {Observer}  _W.Collection.BaseCollection#elementType 요소타입 */
             Object.defineProperty(this, "elementType", {
                 enumerable: true,
                 configurable: true,
@@ -81,7 +83,7 @@
 
             /**
              * 컬렉션 목록 
-             * @member {Array}  Collection.BaseCollection#list  
+             * @member {Array}  _W.Collection.BaseCollection#list  
              */
             Object.defineProperty(this, "list", {
                 enumerable: true,
@@ -93,7 +95,7 @@
 
             /**
              * 컬랙션 갯수 
-             * @member {Number} Collection.BaseCollection#count 
+             * @member {Number} _W.Collection.BaseCollection#count 
              */
             Object.defineProperty(this, "count", {
                 enumerable: true,
@@ -105,7 +107,7 @@
 
             /** 
              * 변경(등록/삭제) 후 이벤트  
-             * @event Collection.BaseCollection#onAdd 
+             * @event _W.Collection.BaseCollection#onAdd 
              */
             Object.defineProperty(this, "onAdd", {
                 enumerable: true,
@@ -117,7 +119,7 @@
 
             /** 
              * 제거 이벤트
-             * @event Collection.BaseCollection#onRemove
+             * @event _W.Collection.BaseCollection#onRemove
              */
             Object.defineProperty(this, "onRemove", {
                 enumerable: true,
@@ -129,7 +131,7 @@
 
             /** 
              * 전체 제거 이벤트
-             * @event Collection.BaseCollection#onClear
+             * @event _W.Collection.BaseCollection#onClear
              */
             Object.defineProperty(this, "onClear", {
                 enumerable: true,
@@ -141,7 +143,7 @@
 
             /** 
              * 변경(등록/삭제) 전 이벤트  
-             * @event Collection.BaseCollection#onChanging 
+             * @event _W.Collection.BaseCollection#onChanging 
              */
             Object.defineProperty(this, "onChanging", {
                 enumerable: true,
@@ -153,7 +155,7 @@
 
             /** 
              * 변경(등록/삭제) 후 이벤트  
-             * @event BaseCollection#onChanged 
+             * @event _W.BaseCollection#onChanged 
              */
             Object.defineProperty(this, "onChanged", {
                 enumerable: true,
@@ -198,14 +200,14 @@
         };
 
         /**
-         * @listens Collection.BaseCollection#onClear
+         * @listens _W.Collection.BaseCollection#onClear
          */
         BaseCollection.prototype._onAdd = function(p_idx, p_value) {
             this.__event.publish("add", p_idx, p_value); 
         };
 
         /**
-         * @listens Collection.BaseCollection#onRemove
+         * @listens _W.Collection.BaseCollection#onRemove
          */
         BaseCollection.prototype._onRemove = function(p_idx) {
             this.__event.publish("remove", p_idx); 
@@ -213,7 +215,7 @@
 
         /** 
          *  전체삭제 이벤트 수신
-         * @listens Collection.BaseCollection#onClear
+         * @listens _W.Collection.BaseCollection#onClear
          */
         BaseCollection.prototype._onClear = function() {
             this.__event.publish("clear"); 
@@ -221,7 +223,7 @@
 
         /** 
          *  변경(등록/삭제) 전 이벤트 수신
-         * @listens Collection.BaseCollection#onChanging
+         * @listens _W.Collection.BaseCollection#onChanging
          */
         BaseCollection.prototype._onChanging = function() {
             this.__event.publish("changing"); 
@@ -229,7 +231,7 @@
 
         /** 
          *  변경(등록/삭제) 후 이벤트 수신
-         * @listens Collection.BaseCollection#onChanged
+         * @listens _W.Collection.BaseCollection#onChanged
          */        
         BaseCollection.prototype._onChanged = function() {
             this.__event.publish("changed"); 
@@ -248,7 +250,7 @@
         /** 
          * 전체삭제(초기화)
          * @abstract 
-         * @fires Collection.BaseCollection#onClear 
+         * @fires _W.Collection.BaseCollection#onClear 
          */
         BaseCollection.prototype.clear  = function() {
             throw new Error("[ clear() ] Abstract method definition, fail...");

@@ -1,7 +1,6 @@
 /**
- * BindModelAjax
- * @namespace _W.Meta.Bind
- */
+ * namespace _W.Meta.Bind.BindModelAjax
+ */ 
 (function(global) {
 
     "use strict";
@@ -51,7 +50,10 @@
     // 4. 모듈 구현    
     var BindModelAjax  = (function (_super) {
         /**
-         * @class
+         * 바인드모델 Ajax
+         * @constructs _W.Meta.Bind.BindModelAjax
+         * @extends _W.Meta.Bind.BindModel
+         * @param {*} p_service 
          */
         function BindModelAjax(p_service) {
             _super.call(this);
@@ -66,7 +68,6 @@
             this._baseEntity.items.itemType = this.itemType;            // base 엔티티 타입 변경
             this.items                      = this._baseEntity.items;   // 참조 추가
 
-            /** @property {baseAjaxSetup} */
             Object.defineProperty(this, "baseAjaxSetup", 
             {
                 get: function() { return __baseAjaxSetup; },
@@ -74,7 +75,6 @@
                 enumerable: true
             });
 
-            /** @property {baseUrl} */
             Object.defineProperty(this, "baseUrl", 
             {
                 get: function() { return __baseAjaxSetup.url; },
@@ -95,7 +95,10 @@
         }
         util.inherits(BindModelAjax, _super);
     
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /**
+         * 상속 클래스에서 오버라이딩 필요!! *
+         * @override
+         */
         BindModelAjax.prototype.getTypes  = function() {
                     
             var type = ["BindModelAjax"];
@@ -103,6 +106,10 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
+        /**
+         * 셀렉터 검사
+         * @param {*} p_collection 
+         */
         BindModelAjax.prototype.checkSelector  = function(p_collection) {
             
             var collection = p_collection || this.prop;
@@ -150,6 +157,10 @@
             return true;
         };
 
+        /**
+         * 셀렉터 목록 얻기
+         * @param {*} p_isLog 
+         */
         BindModelAjax.prototype.listSelector  = function(p_isLog) {
             
             var collection = this.items;
@@ -190,6 +201,12 @@
             return selectors;
         };
 
+        /**
+         * 명령 추가
+         * @param {*} p_name 
+         * @param {*} p_option 
+         * @param {*} p_entities 
+         */
         BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_entities) {
 
             // 유효성 검사

@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Interface.IPartControl
+ * namespace _W.Interface.IPartControl
  */
 (function(global) {
     
@@ -19,11 +19,16 @@
     //==============================================================
     // 4. 모듈 구현    
     var IPartControl  = (function () {
+        /**
+         * @constructs _W.Interface.IPartControl
+         * @interface
+         */
         function IPartControl() {
         }
     
         /**
          * 등록 : 부분
+         * @abstract
          */
         IPartControl.prototype.add  = function() {
             throw new Error("[ add() ] Abstract method definition, fail...");
@@ -31,6 +36,7 @@
 
         /**
          * 삭제 : 부분
+         * @abstract
          */
         IPartControl.prototype.remove  = function() {
             throw new Error("[ remove() ] Abstract method definition, fail...");

@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Entity.CodeRule
+ * namespace _W.Meta.Entity.CodeRule
  */
 (function(global) {
 

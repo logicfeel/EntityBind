@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Procedure.*
+ * namespace _W.Meta.Procedure
   */
 (function(global) {
 

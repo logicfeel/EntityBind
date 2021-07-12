@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Interface.IAllControl
+ * namespace _W.Interface.IAllControl
  */
 (function(global) {
     
@@ -19,11 +19,16 @@
     //==============================================================
     // 4. 모듈 구현    
     var IAllControl  = (function () {
+        /**
+         * @constructs _W.Interface.IAllControl
+         * @interface
+         */
         function IAllControl() {
         }
     
         /**
          * 복제 : 전체
+         * @abstract
          */
         IAllControl.prototype.clone  = function() {
             throw new Error("[ clone() ] Abstract method definition, fail...");
@@ -31,6 +36,7 @@
 
         /**
          * 로드 : 전체
+         * @abstract
          */
         IAllControl.prototype.load  = function() {
             throw new Error("[ load() ] Abstract method definition, fail...");
@@ -38,6 +44,7 @@
 
         /**
          * 삭제 : 전체
+         * @abstract
          */
         IAllControl.prototype.clear  = function() {
             throw new Error("[ clear() ] Abstract method definition, fail...");

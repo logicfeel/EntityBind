@@ -1,7 +1,4 @@
-/**
- * @namespace _W.Common.Util
- * @namespace _W.Common.Extend
- */
+// util, Observer
 (function(global) {
     
     "use strict";
@@ -16,7 +13,7 @@
     global._W.Common.Extend = global._W.Common.Extend || {};
 
     var util;
-    var Observer;
+    var util;
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)

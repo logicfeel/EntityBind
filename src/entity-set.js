@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Entity.EntitySet
+ * namespace _W.Meta.Entity.EntitySet
  */
 (function(global) {
 

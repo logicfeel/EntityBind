@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Entity.Entity
+ * namespace _W.Meta.Entity.Entity
  */
 (function(global) {
 
@@ -55,7 +55,12 @@
     // 4. 모듈 구현    
     var Entity  = (function (_super) {
         /**
-         * @abstract @class
+         * 엔티티
+         * @constructs _W.Meta.Entity.Entity
+         * @extends _W.Meta.MetaElement
+         * @implements {_W.Interface.IGroupControl}
+         * @implements {_W.Interface.IAllControl}
+         * @param {*} p_name 
          */
         function Entity(p_name) {
             _super.call(this, p_name);
@@ -63,7 +68,6 @@
             var __items = null;     // 상속해서 생성해야함
             var __rows  = new RowCollection(this);
 
-            /** @property {first} */
             Object.defineProperty(this, "items", 
             {
                 get: function() { return __items; },
@@ -75,7 +79,6 @@
                 enumerable: true
             });
             
-            /** @property {first} */
             Object.defineProperty(this, "rows", 
             {
                 get: function() { return __rows; },
@@ -87,12 +90,16 @@
                 enumerable: true
             });
 
-            /** @implements IGroupControlI 인터페이스 구현 */
-            /** @implements IAllControl 인터페이스 구현 */
             this._implements(IGroupControl, IAllControl);                
         }
         util.inherits(Entity, _super);
 
+        /**
+         * 아이템 추가 (내부)
+         * @Private
+         * @param {*} p_name 
+         * @param {*} p_property 
+         */
         Entity.prototype.__addItem  = function(p_name, p_property) {
             
             if(!this.items.contains(this.items[p_name])) this.items.add(p_name);
@@ -122,6 +129,12 @@
             }            
         };
 
+        /**
+         * 로드 JSON
+         * @private 
+         * @param {*} p_object 
+         * @param {*} p_option 
+         */
         Entity.prototype.__loadJSON  = function(p_object, p_option) {
             p_option = p_option || 1;   // 기본값 덮어쓰기
             
@@ -189,6 +202,12 @@
             }   
         };
 
+        /**
+         * 로드 Entity
+         * @private
+         * @param {*} p_object 
+         * @param {*} p_option 
+         */
         Entity.prototype.__loadEntity  = function(p_object, p_option) {
             p_option = p_option || 1;   // 기본값 덮어쓰기
 
@@ -228,7 +247,7 @@
             if (p_option === 1) this.__fillRow(entity);
         };
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         Entity.prototype.getTypes = function() {
             
             var type = ["Entity"];
@@ -241,10 +260,17 @@
             // TODO::
         };
 
+        /**
+         * 새로운 Row 추가
+         */
         Entity.prototype.newRow  = function() {
             return new Row(this);
         };
 
+        /**
+         * value 설정
+         * @param {*} p_row 
+         */
         Entity.prototype.setValue  = function(p_row) {
             
             if (!(p_row instanceof Row)) throw new Error("Only [p_row] type 'Row' can be added");
@@ -254,6 +280,9 @@
             }
         };
 
+        /**
+         * value 얻기
+         */
         Entity.prototype.getValue  = function() {
             
             var row = this.newRow();
@@ -355,7 +384,12 @@
             return entity;
         };
 
-        /**@abstract IGroupControl */
+        /**
+         * 복사
+         * @param {*} p_filter 
+         * @param {*} p_index 
+         * @param {*} p_end 
+         */
         Entity.prototype.copy  = function(p_filter, p_index, p_end) {
             
             var entity = this.select(p_filter, p_index, p_end);
@@ -366,12 +400,13 @@
         /**
          * "구조를 구성하는게 주용도임"
          * 병합 : 컬렉션 순서에 따라 병한다.
-         * * @param {*} p_target 병합할 Entity
-         * @param {*} p_option {item: 1, row:2}
          * Item과 Row가 있는 경우
          * - 1 items, rows 병합 (기존유지) *기본값
          * - 2 items, rows 병합 (덮어쓰기)  
          * - 3 row 안가져오기    (기존유지)
+         * @param {*} p_target 병합할 Entity
+         * @param {*} p_option {item: 1, row:2}
+
          */
         Entity.prototype.merge  = function(p_target, p_option) {
             p_option = p_option || 1;    // 기본값
@@ -453,7 +488,7 @@
             this.rows.clear();
         };
 
-        /** @abstract IAllControl */
+        /** @abstract */
         Entity.prototype.clone  = function() {
             throw new Error("[ clone() ] Abstract method definition, fail...");
         };

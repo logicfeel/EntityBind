@@ -1,7 +1,6 @@
 /**
- * BindCommand
- * @namespace _W.Meta.Bind
- */
+ * namespace _W.Meta.Bind.BindCommand
+ */ 
 (function(global) {
 
     "use strict";
@@ -61,16 +60,27 @@
     // 4. 모듈 구현    
     var BindCommand  = (function (_super) {
         /**
-         * @abstract 바인드 명령 (상위)
-         * @class
+         * 바인드 명령 (상위)
+         * @constructs _W.Meta.Bind.BindCommand
+         * @abstract
+         * @extends _W.Meta.Bind.BaseBind
+         * @param {*} p_bindModel 
+         * @param {*} p_baseEntity 
          */
         function BindCommand(p_bindModel, p_baseEntity) {
             _super.call(this);
             
             p_baseEntity = p_baseEntity || p_bindModel._baseEntity;     // 기본값
 
-            /** @protected 소유자 */
+            /**
+             * 모델
+             * @protected  
+             */
             this._model = p_bindModel;          // 최상위 설정
+            /**
+             * 기본 요소
+             * @protected
+             */
             this._baseEntity = p_baseEntity;    // 최상위 설정
 
             this._output = new EntityViewCollection(this, this._baseEntity);
@@ -97,7 +107,7 @@
             }
             
 
-            /** @property */
+            
             Object.defineProperty(this, "eventPropagation", {
                 enumerable: true,
                 configurable: true,
@@ -108,7 +118,6 @@
                 get: function() { return __propagation; }
             }); 
             
-            /** @property {valid} */
             Object.defineProperty(this, "valid", 
             {
                 get: function() { return __valid; },
@@ -120,7 +129,7 @@
                 enumerable: true
             });
 
-            /** @property {bind} */
+
             Object.defineProperty(this, "bind", 
             {
                 get: function() { return __bind; },
@@ -133,7 +142,6 @@
             });
             
 
-            /** @property {outputOption} */
             Object.defineProperty(this, "outputOption", 
             {
                 get: function() { return __outputOption; },
@@ -146,7 +154,6 @@
                 enumerable: true
             });
             
-            /** @property {cbValid} */
             Object.defineProperty(this, "cbValid", 
             {
                 get: function() { return __cbValid; },
@@ -158,7 +165,6 @@
                 enumerable: true
             });
 
-            /** @property {cbBind} */
             Object.defineProperty(this, "cbBind", 
             {
                 get: function() { return __cbBind; },
@@ -170,7 +176,6 @@
                 enumerable: true
             });
 
-            /** @property {cbResult} */
             Object.defineProperty(this, "cbResult", 
             {
                 get: function() { return __cbResult; },
@@ -182,7 +187,6 @@
                 enumerable: true
             });
 
-            /** @property {cbOutput} */
             Object.defineProperty(this, "cbOutput", 
             {
                 get: function() { return __cbOutput; },
@@ -194,7 +198,6 @@
                 enumerable: true
             });
 
-            /** @property {vbEnd} */
             Object.defineProperty(this, "cbEnd", 
             {
                 get: function() { return __cbEnd; },
@@ -205,7 +208,6 @@
                 configurable: true,
                 enumerable: true
             });    
-
 
             // 예약어 등록
             this._symbol = this._symbol.concat(["_model", "eventPropagation"]);
@@ -227,8 +229,8 @@
 
         /** @override */
         BindCommand.prototype._onExecute = function(p_bindCommand) {
-            
             _super.prototype._onExecute.call(this, p_bindCommand);               // 자신에 이벤트 발생
+            
             if (this.eventPropagation) this._model._onExecute(p_bindCommand);    // 모델에 이벤트 추가 발생
         };
 
@@ -238,7 +240,10 @@
             if (this.eventPropagation) this._model._onExecuted(p_bindCommand, p_result);
         };
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** 
+         * 상속 클래스에서 오버라이딩 필요!!
+         * @override  
+         */
         BindCommand.prototype.getTypes  = function() {
                     
             var type = ["BindCommand"];

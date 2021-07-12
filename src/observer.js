@@ -1,3 +1,6 @@
+/**
+ * namespace _W.Common.Observer
+ */
 (function(global) {
 
     "use strict";
@@ -21,7 +24,7 @@
     
     var Observer = (function () {
         /**
-         * @constructs Common.Observer
+         * @constructs _W.Common.Observer
          * @classdesc 구독자 클래스, 이벤트에 활용
          * @param {obejct} p_onwer Observer 클래스의 소유 함수 또는 클래스
          * @param {object} p_this 함수 호출 본문에서 this 역활 publish.apply(p_this, ...)

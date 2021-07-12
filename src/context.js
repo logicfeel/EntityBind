@@ -1,6 +1,4 @@
-/**
- * @namespace _W.Meta.Entity.Context
- */
+// Context
 (function(global) {
 
     "use strict";

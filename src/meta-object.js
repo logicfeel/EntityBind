@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.MetaObject
+ * namespace _W.Meta.MetaObject
  */
 (function(global) {
 
@@ -30,15 +30,20 @@
     // 4. 모듈 구현    
     var MetaObject  = (function () {
         /**
-         * @class 메타 최상위 클래스 (실체)
+         * 메타 최상위 클래스 (실체)
+         * @constructs _W.Meta.MetaObject
+         * @abstract
+         * @implements {_W.Interface.IObject}
          */
         function MetaObject() {
             
-            /** @implements IObject 인터페이스 구현 */
+            /** implements IObject 인터페이스 구현 */
             this._implements(IObject);
         }
         
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /**
+         * 상속 클래스에서 오버라이딩 필요!! 
+         */
         MetaObject.prototype.getTypes  = function() {
             
             var type = ["MetaObject"];

@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Interface.IGroupControl
+ * namespace _W.Interface.IGroupControl
  */
 (function(global) {
     
@@ -19,11 +19,16 @@
     //==============================================================
     // 4. 모듈 구현    
     var IGroupControl  = (function () {
+        /**
+         * @constructs _W.Interface.IGroupControl
+         * @interface
+         */
         function IGroupControl() {
         }
     
         /**
          * 병합 : 그룹
+         * @abstract
          */
         IGroupControl.prototype.merge  = function() {
             throw new Error("[ merge() ] Abstract method definition, fail...");
@@ -31,6 +36,7 @@
 
         /**
          * 복사 : 그룹
+         * @abstract
          */
         IGroupControl.prototype.copy  = function() {
             throw new Error("[ copyTo() ] Abstract method definition, fail...");

@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Interface.IPropertyCollection
+ * namespace _W.Interface.IPropertyCollection
  */
 (function(global) {
     "use strict";
@@ -30,6 +30,11 @@
     //==============================================================
     // 4. 모듈 구현    
     var IPropertyCollection  = (function (_super) {
+        /**
+         * @constructs _W.Interface.IPropertyCollection
+         * @interface
+         * @extends  _W.Interface.ICollection
+         */
         function IPropertyCollection() {
             _super.call(this);
         }

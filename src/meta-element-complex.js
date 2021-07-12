@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.ComplexElement
+ * namespace _W.Meta.ComplexElement
  */
 (function(global) {
 
@@ -37,16 +37,17 @@
     // 4. 모듈 구현    
     var ComplexElement  = (function (_super) {
         /**
-         * @class
+         * 복합요소
+         * @constructs _W.Meta.ComplexElement
+         * @abstract
+         * @extends _W.Meta.MetaElement
+         * @implements {_W.Interface.IPropertyCollection}
          */
         function ComplexElement() {
             _super.call(this);
 
             var __element = [];
-            /**
-             * TODO::
-             * @implements
-             */
+
             Object.defineProperty(this, "count", 
             {
                 get: function() { return __element.length; },
@@ -60,12 +61,12 @@
                 enumerable: true
             });
 
-            /** @implements IPropertyCollection 인터페이스 선언 */
+            /** implements IPropertyCollection 인터페이스 선언 */
             this._implements(IPropertyCollection);                
         }
         util.inherits(ComplexElement, _super);
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         ComplexElement.prototype.getTypes  = function() {
                             
             var type = ["ComplexElement"];

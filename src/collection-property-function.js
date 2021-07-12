@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Collection.PropertyFunctionCollection
+ * namespace _W.Collection.PropertyFunctionCollection
  */
 (function(global) {
 

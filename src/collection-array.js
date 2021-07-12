@@ -1,4 +1,6 @@
-
+/**
+ * namespace _W.Collection.ArrayCollection
+ */
 (function(global) {
     "use strict";
 

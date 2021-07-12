@@ -1,6 +1,5 @@
 /**
- * 메타.바인드
- * @namespace _W.Meta.Bind
+ * namespace _W.Meta.Bind.BindModel
  */
 (function(global) {
 
@@ -68,6 +67,12 @@
          * 바인드모델 추상클래스
          * @class BindModel 
          */
+        /**
+         * 바인드모델 추상클래스
+         * @constructs _W.Meta.Bind.BindModel
+         * @abstract
+         * @extends _W.Meta.Bind.BaseBind
+         */
         function BindModel()  {
             _super.call(this);
 
@@ -94,9 +99,6 @@
             //     throw new Error("Only [p_objectDI] type 'IBindModel' can be added");
             // }
             
-            /**
-             * 프로퍼티 
-             * @member {prop} */
             Object.defineProperty(this, "prop", 
             {
                 get: function() { return __prop; },
@@ -108,7 +110,6 @@
                 enumerable: true
             });
 
-            /** @property {fn} */
             Object.defineProperty(this, "fn", 
             {
                 get: function() { return __fn; },
@@ -120,7 +121,6 @@
                 enumerable: true
             });
 
-            /** @property {mapping} */
             Object.defineProperty(this, "mapping", 
             {
                 get: function() { return __mapping; },
@@ -131,7 +131,7 @@
                 configurable: true,
                 enumerable: true
             });
-            /** @property {itemType} */
+
             Object.defineProperty(this, "itemType", 
             {
                 get: function() { return __itemType; },
@@ -144,7 +144,6 @@
                 enumerable: true
             });
 
-            /** @property {cbFail} */
             Object.defineProperty(this, "cbFail", 
             {
                 get: function() { return __cbFail; },
@@ -156,7 +155,6 @@
                 enumerable: true
             });
 
-            /** @property {cbError} */
             Object.defineProperty(this, "cbError", 
             {
                 get: function() { return __cbError; },
@@ -168,7 +166,6 @@
                 enumerable: true
             });
 
-            /** @property {cbBaseValid} */
             Object.defineProperty(this, "cbBaseValid", 
             {
                 get: function() { return __cbBaseValid; },
@@ -180,7 +177,6 @@
                 enumerable: true
             });
 
-            /** @property {cbBaseBind} */
             Object.defineProperty(this, "cbBaseBind", 
             {
                 get: function() { return __cbBaseBind; },
@@ -192,7 +188,6 @@
                 enumerable: true
             });
             
-            /** @property {cbResult} */
             Object.defineProperty(this, "cbBaseResult", 
             {
                 get: function() { return __cbBaseResult; },
@@ -204,7 +199,6 @@
                 enumerable: true
             });
 
-            /** @property {cbBaseOutput} */
             Object.defineProperty(this, "cbBaseOutput", 
             {
                 get: function() { return __cbBaseOutput; },
@@ -216,7 +210,6 @@
                 enumerable: true
             });
 
-            /** @property {cbBaseEnd} */
             Object.defineProperty(this, "cbBaseEnd", 
             {
                 get: function() { return __cbBaseEnd; },
@@ -238,12 +231,16 @@
             this._symbol = this._symbol.concat(["add", "addItem", "loadProp", "setMapping", "preReady", "addEntity"]);
             this._symbol = this._symbol.concat(["addCommand", "setService"]);
             
-            /** @implements IBindModel 인터페이스 구현 */
+            /** implements IBindModel 인터페이스 구현 */
+            // TODO: 삭제 하는제 맞을듯  
             this._implements(IBindModel);
         }
         util.inherits(BindModel, _super);
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** 
+         * 상속 클래스에서 오버라이딩 필요!! 
+         * @override 
+         */
         BindModel.prototype.getTypes  = function() {
                     
             var type = ["BindModel"];
@@ -251,7 +248,7 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @method */
+        /** 초기화 */
         BindModel.prototype.init = function() {
             this.preRegister.call(this, this);
             if (this.preCheck.call(this, this)) {
@@ -262,15 +259,22 @@
         /**
          * 전처리 등록
          * @param {*} p_this 
-         * @returns 
          */
         BindModel.prototype.preRegister = function(p_this) {
             return this.__preRegister.call(this, p_this);
         };
 
+        /**
+         * 전처리 검사
+         */
         BindModel.prototype.preCheck = function(p_this) {
             return this.__preCheck.call(this, p_this);
         };
+        
+        /**
+         * 전처리 준비
+         * @param {*} p_this 
+         */
         BindModel.prototype.preReady = function(p_this) {
             return this.__preReady.call(this, p_this);
         };
@@ -498,11 +502,23 @@
             }
         };
 
+        /**
+         * 명령 추가
+         * @abstract
+         * @param {*} p_name 
+         * @param {*} p_option 
+         * @param {*} p_entities 
+         */
         BindModel.prototype.addCommand  = function(p_name, p_option, p_entities) {
 
             throw new Error("[ execute() ] Abstract method definition, fail...");
         };
 
+        /**
+         * 서비스 설정
+         * @param {*} p_service 
+         * @param {*} p_isLoadProp 
+         */
         BindModel.prototype.setService  = function(p_service, p_isLoadProp) {
 
             var propObject;

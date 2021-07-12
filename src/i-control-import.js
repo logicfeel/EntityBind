@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Interface.IImportControl
+ * namespace _W.Interface.IImportControl
  */
 (function(global) {
     
@@ -19,11 +19,16 @@
     //==============================================================
     // 4. 모듈 구현    
     var IImportControl  = (function () {
+        /**
+         * @constructs _W.Interface.IImportControl
+         * @interface
+         */
         function IImportControl() {
         }
     
         /**
          * 입력 : 전체
+         * @abstract
          */
         IImportControl.prototype.read  = function() {
             throw new Error("[ read() ] Abstract method definition, fail...");

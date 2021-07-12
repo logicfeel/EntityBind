@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Interface.ILookupControl
+ * namespace _W.Interface.ILookupControl
  */
 (function(global) {
     
@@ -19,11 +19,16 @@
     //==============================================================
     // 4. 모듈 구현    
     var ILookupControl  = (function () {
+        /**
+         * @constructs _W.Interface.ILookupControl
+         * @interface
+         */
         function ILookupControl() {
         }
     
         /**
          * 유무 검사
+         * @abstract
          */
         ILookupControl.prototype.contains  = function() {
             throw new Error("[ contains() ] Abstract method definition, fail...");

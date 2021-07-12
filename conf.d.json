@@ -19,7 +19,7 @@
     },        
     "source": {
         "include": [
-            "./src/utils.ts"
+            "./src/utils.d.ts"
         ],
         "includePattern": ".+\\.ts(doc)?$",
         "exclude": ["./src/old"],
@@ -30,7 +30,8 @@
         "recurse": true,
         "private": false,
         "lenient": true,
-        "destination": "./docs2",
-        "template": "./node_modules/jaguarjs-jsdoc"
+        "destination": "./docs3",
+        "template": "node_modules/docdash"
+
     }
 }
