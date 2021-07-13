@@ -46,7 +46,11 @@
     // 4. 모듈 구현    
     var EntityView  = (function (_super) {
         /**
-         * @abstract @class
+         * 뷰 엔티티
+         * @constructs _W.Meta.Entity.EntityView
+         * @extends _W.Meta.Entity.Entity
+         * @param {*} p_name 
+         * @param {*} p_baseEntity 
          */
         function EntityView(p_name, p_baseEntity) {
             _super.call(this, p_name);
@@ -74,7 +78,7 @@
             if (this._refEntities.indexOf(p_entity) < 0) this._refEntities.push(p_entity);
         };
         
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         EntityView.prototype.getTypes  = function() {
             
             var type = ["EntityView"];
@@ -87,6 +91,10 @@
             // TODO::
         };
 
+        /**
+         * 복제
+         * @returns {*}
+         */
         EntityView.prototype.clone  = function() {
             
             var clone = new EntityView(this.name);  // 뷰를 복제하면 참조타입 >> 엔티티타입으로 변경
@@ -114,7 +122,9 @@
     //---------------------------------------
     var EntityViewCollection  = (function (_super) {
         /**
-         * @class
+         * 뷰 엔티티 컬렉션
+         * @constructs _W.Meta.Entity.EntityViewCollection
+         * @extends _W.Meta.Entity.PropertyCollection
          * @param {*} p_onwer 소유자 
          */
         function EntityViewCollection(p_onwer) {

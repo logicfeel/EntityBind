@@ -65,10 +65,6 @@
     var BindModel  = (function (_super) {
         /**
          * 바인드모델 추상클래스
-         * @class BindModel 
-         */
-        /**
-         * 바인드모델 추상클래스
          * @constructs _W.Meta.Bind.BindModel
          * @abstract
          * @extends _W.Meta.Bind.BaseBind

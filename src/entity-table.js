@@ -41,7 +41,12 @@
     //==============================================================
     // 4. 모듈 구현    
     var EntityTable  = (function (_super) {
-        /** @class */
+        /**
+         * 테이블 엔티티
+         * @constructs _W.Meta.Entity.EntityTable
+         * @extends _W.Meta.Entity.Entity
+         * @param {*} p_name 
+         */
         function EntityTable(p_name) {
             _super.call(this, p_name);
 
@@ -49,7 +54,7 @@
         }
         util.inherits(EntityTable, _super);
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         EntityTable.prototype.getTypes  = function() {
             
             var type = ["EntityTable"];
@@ -62,6 +67,10 @@
             // TODO::
         };
 
+        /**
+         * 복제
+         * @returns {*}
+         */
         EntityTable.prototype.clone  = function() {
             
             var clone = new EntityTable(this.name);
@@ -87,7 +96,9 @@
      //---------------------------------------
      var EntityTableCollection  = (function (_super) {
         /**
-         * @class
+         * 테이블 엔티티 컬렉션
+         * @constructs _W.Meta.Entity.EntityTableCollection
+         * @extends _W.Collection.PropertyCollection
          * @param {*} p_onwer 소유자 
          */
         function EntityTableCollection(p_onwer) {
@@ -98,7 +109,7 @@
         util.inherits(EntityTableCollection, _super);
 
         /**
-         * 
+         * 엔티티 추가
          * @param {String | Item} p_object 
          * @returns {Item} 등록한 아이템
          */

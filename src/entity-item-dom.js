@@ -37,7 +37,8 @@
     // 4. 모듈 구현    
     var ItemDOM  = (function (_super) {
         /**
-         * @class
+         * @constructs _W.Meta.Entity.ItemDOM
+         * @extends _W.Meta.Entity.Item
          */
         function ItemDOM(p_name, p_entity, p_option) {
             _super.call(this, p_name, p_entity, p_option);
@@ -49,7 +50,6 @@
             var __filter        = null;
             var __selector      = null;
 
-            /** @property {domType} */
             Object.defineProperty(this, "domType", 
             {
                 get: function() { return __domType; },
@@ -62,7 +62,6 @@
                 enumerable: true
             });
             
-            /** @property {isReadOnly} */
             Object.defineProperty(this, "isReadOnly", 
             {
                 get: function() { return __isReadOnly; },
@@ -74,7 +73,6 @@
                 enumerable: true
             });
             
-            /** @property {isHide} */
             Object.defineProperty(this, "isHide", 
             {
                 get: function() { return __isHide; },
@@ -86,7 +84,6 @@
                 enumerable: true
             });
             
-            /** @property {element} */
             Object.defineProperty(this, "element", 
             {
                 get: function() { return __element; },
@@ -98,7 +95,6 @@
                 enumerable: true
             });
 
-            /** @property {selector} */
             Object.defineProperty(this, "selector", 
             {
                 /**
@@ -128,7 +124,7 @@
                 enumerable: true
             });
 
-            /** @property {value} 오버라이딩 */
+            /** property {value} 오버라이딩 */
             Object.defineProperty(this, "value", 
             {
                 get: function() { 
@@ -231,7 +227,6 @@
                 enumerable: true
             });
             
-            /** @property {filter} */
             Object.defineProperty(this, "filter", 
             {
                 get: function() { return __filter; },
@@ -259,7 +254,7 @@
         }
         util.inherits(ItemDOM, _super);
     
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         ItemDOM.prototype.getTypes  = function() {
                     
             var type = ["ItemDOM"];
@@ -267,7 +262,7 @@
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         ItemDOM.prototype.clone  = function() {
                     
             var top = _super.prototype.clone.call(this);
@@ -318,6 +313,9 @@
             // TODO::
         };
 
+        /**
+         * TODO:
+         */
         ItemDOM.prototype.toEntityColumn = function() {
             // TODO::
         };

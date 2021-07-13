@@ -44,7 +44,9 @@
     //---------------------------------------
     var Item  = (function (_super) {
         /**
-         * @class 
+         * 아이템
+         * @constructs _W.Meta.Entity.Item
+         * @extends _W.Meta.MetaElement
          * @param {String} p_name 아이템명
          * @param {Entity} p_entity 소유 Entity
          */
@@ -76,8 +78,6 @@
             /** @private */
             this.__event    = new Observer(this, this);
 
-
-            /** @property {__value} */
             Object.defineProperty(this, "__value", 
             {
                 get: function() { return __value; },
@@ -90,7 +90,6 @@
                 enumerable: true
             });
 
-            /** @property {entity} */
             Object.defineProperty(this, "entity", 
             {
                 get: function() { return __entity; },
@@ -105,7 +104,6 @@
                 enumerable: true
             });
 
-            /** @property {type} */
             Object.defineProperty(this, "type", 
             {
                 get: function() { return __type; },
@@ -118,7 +116,6 @@
                 enumerable: true
             });
 
-            /** @property {size} */
             Object.defineProperty(this, "size", 
             {
                 get: function() { return __size; },
@@ -130,7 +127,6 @@
                 enumerable: true
             });
 
-            /** @property {default} */
             Object.defineProperty(this, "default", 
             {
                 get: function() { return __default; },
@@ -142,7 +138,6 @@
                 enumerable: true
             });
 
-            /** @property {caption} */
             Object.defineProperty(this, "caption", 
             {
                 get: function() { return __caption; },
@@ -154,7 +149,6 @@
                 enumerable: true
             });
 
-            /** @property {isNotNull} */
             Object.defineProperty(this, "isNotNull", 
             {
                 // get: function() { 
@@ -171,7 +165,6 @@
                 enumerable: true
             });
 
-            /** @property {isNullPass} */
             Object.defineProperty(this, "isNullPass", 
             {
                 get: function() { return __isNullPass },
@@ -183,7 +176,6 @@
                 enumerable: true
             });
             
-            /** @property {callback} */
             Object.defineProperty(this, "callback", 
             {
                 get: function() { return __callback; },
@@ -195,7 +187,6 @@
                 enumerable: true
             });
 
-            /** @property {constraints} */
             Object.defineProperty(this, "constraints", 
             {
                 get: function() { return __constraints; },
@@ -218,7 +209,6 @@
                 enumerable: true
             });
 
-            /** @property {codeType} */
             Object.defineProperty(this, "codeType", 
             {
                 get: function() { return __codeType; },
@@ -227,7 +217,6 @@
                 enumerable: true
             });
 
-            /** @property {order} */
             Object.defineProperty(this, "order", 
             {
                 get: function() { return __order; },
@@ -239,7 +228,6 @@
                 enumerable: true
             });
 
-            /** @property {increase} */
             Object.defineProperty(this, "increase", 
             {
                 get: function() { return __increase; },
@@ -251,7 +239,6 @@
                 enumerable: true
             });
             
-            /** @property {value} */
             Object.defineProperty(this, "value", 
             {
                 get: function() { 
@@ -280,7 +267,6 @@
                 enumerable: true
             });
 
-            /** @property {getter} */
             Object.defineProperty(this, "getter", 
             {
                 get: function() { return __getter; },
@@ -292,7 +278,6 @@
                 enumerable: true
             });
 
-            /** @property {setter} */
             Object.defineProperty(this, "setter", 
             {
                 get: function() { return __setter; },
@@ -304,7 +289,7 @@
                 enumerable: true
             });
 
-            /** @event onChanged */
+            /** @event _W.Meta.Entity.Item#onChanged */
             Object.defineProperty(this, "onChanged", {
                 enumerable: true,
                 configurable: true,
@@ -333,12 +318,14 @@
         }
         util.inherits(Item, _super);
 
-        /** @event */
+        /**
+         * @listens _W.Meta.Entity.Item#_onChanged
+         */
         Item.prototype._onChanged = function() {
             this.__event.publish("onChanged", this.value);
         };
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         Item.prototype.getTypes  = function() {
                     
             var type = ["Item"];
@@ -380,7 +367,7 @@
         };
 
         /**
-         * @method
+         * 제약조건 설정
          */
         Item.prototype.setConstraint = function(p_regex, p_msg, p_code, p_return) {
             p_return = p_return || false;
@@ -426,7 +413,7 @@
         // };
         
         /**
-         * 
+         * 검사
          * @param {string} p_value 
          * @param {object} r_result 메세지는 참조(객체)형 으로 전달
          * @param {number} p_option 1. isNotNull 참조 | 2: null검사 진행   |  3: null검사 무시
@@ -499,7 +486,10 @@
     //---------------------------------------
     var ItemCollection  = (function (_super) {
         /**
-         * @class
+         * 아이템 컬렉션 (최상위)
+         * @constructs _W.Meta.Entity.ItemCollection
+         * @extends _W.Collection.PropertyCollection
+         * @abstract
          * @param {*} p_onwer 소유자 
          */
         function ItemCollection(p_onwer) {
@@ -522,6 +512,11 @@
         }
         util.inherits(ItemCollection, _super);
         
+        /**
+         * 유무 검사
+         * @param {*} p_elem 
+         * @returns {*} 
+         */
         ItemCollection.prototype.contains = function(p_elem) {
 
             if (p_elem instanceof Item) {
@@ -531,6 +526,12 @@
             }
         };
 
+        /**
+         * 아이템 추가 : 이름, 값
+         * @param {*} p_name 
+         * @param {*} p_value 
+         * @returns {*}
+         */
         ItemCollection.prototype.addValue  = function(p_name, p_value) {
 
             var item;
@@ -556,8 +557,9 @@
     //---------------------------------------
     var ItemTableCollection  = (function (_super) {
         /**
-         * @class
-         * @constructor
+         * 테이블 아이템 컬렉션
+         * @constructs _W.Meta.Entity.ItemTableCollection
+         * @extends _W.Meta.Entity.ItemCollection
          * @param {*} p_onwer 소유자
          * @param {?ItemCollection} p_baseCollection 참조기본 컬렉션
          */
@@ -600,8 +602,8 @@
     //---------------------------------------
     var ItemViewCollection  = (function (_super) {
         /**
-         * @class
-         * @constructor
+         * @constructs _W.Meta.Entity.ItemViewCollection
+         * @extends _W.Meta.Entity.ItemCollection
          * @param {*} p_onwer 소유자
          * @param {?ItemCollection} p_baseCollection 참조기본 컬렉션
          */
@@ -632,7 +634,7 @@
          *  TODO:: filter 옵션 : 충돌방지에 이용
          *  TODO:: 객체 비교는 string 이 아니고 값과 타입을 비교해야함 (그래야 참조를 사용)
          * 
-         * @param {string, Item} p_object 
+         * @param {String | Item} p_object 
          * @param {?ItemCollection} p_baseCollection
          */
         ItemViewCollection.prototype.add  = function(p_object, p_baseCollection) {
@@ -678,6 +680,10 @@
             return _super.prototype.add.call(this, i_name, i_value);
         };
 
+        /**
+         * 엔티티 추가
+         * @param {*} p_entity 
+         */
         ItemViewCollection.prototype.addEntity  = function(p_entity) {
             if (typeof p_entity === "undefined" && !(p_entity instanceof MetaElement && p_entity.instanceOf("Entity"))) {
                 throw new Error("Only [p_entity] type 'Entity' can be added");

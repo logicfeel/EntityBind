@@ -22,6 +22,8 @@
 
     /**
      * inherits(대상, 부모) : 상속
+     * @function
+     * @memberof _W.Common.Util
      */
     var inherits = (function () {
         if (typeof Object.create === 'function') {
@@ -57,6 +59,7 @@
      * 배열 깊이 얻기
      * @param {*} p_elem 
      * @param {*} p_depts 
+     * @memberof _W.Common.Util
      */
     var getArrayLevel = function (p_elem, p_depts) {
         
@@ -74,7 +77,8 @@
     };
     
     /**
-     * @function createGUID GUID 생성
+     * createGUID GUID 생성
+     * @memberof _W.Common.Util
      */
     var createGUID = function() {
         function _p8(s) {  
@@ -89,6 +93,7 @@
      * 주의!! DOM(web) 에서만 작동한다.
      * @param {object<array | string> | array<string> | string} p_obj 
      * @returns {String} 없는 셀렉터, 통화하면 null 리턴
+     * @memberof _W.Common.Util
      */
     var validSelector = function(p_obj, p_isJQuery) {
         

@@ -42,7 +42,9 @@
     // 4. 모듈 구현    
     var Row  = (function (_super) {
         /**
-         * @abstract @class
+         * 로우
+         * @constructs _W.Meta.Enity.Row
+         * @extends _W.Collection.PropertyCollection
          */
         function Row(p_entity) {
             _super.call(this, p_entity);
@@ -70,7 +72,7 @@
         }
         util.inherits(Row, _super);
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         Row.prototype.getTypes  = function() {
                     
             var type = ["Row"];
@@ -79,6 +81,7 @@
         };
 
         /**
+         * 복사
          * @param {Object} p_filter 필터객체
          */
         Row.prototype.copy = function(p_filter) {
@@ -88,6 +91,10 @@
             if (this.value) clone["value"] = this.value;
         };
         
+        /**
+         * 복제
+         * @returns {*}
+         */
         Row.prototype.clone  = function() {
           
             var clone = new Row(this.entity);
@@ -108,7 +115,9 @@
     //---------------------------------------
     var RowCollection  = (function (_super) {
         /**
-         * @class
+         * 로우 컬렉션
+         * @constructs _W.Meta.Entity.RowCollection
+         * @extends _W.Collection.ArrayCollection
          * @param {*} p_onwer 소유자 
          */
         function RowCollection(p_onwer) {
@@ -119,7 +128,7 @@
         util.inherits(RowCollection, _super);
 
         /**
-         * 
+         * 추가
          * @param {String | Item} p_row 
          * @returns {Item} 등록한 아이템
          */
