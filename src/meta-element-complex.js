@@ -48,12 +48,21 @@
 
             var __element = [];
 
+            /**
+             * 요소 갯수
+             * @member _W.Meta.ComplexElement#count
+             */
             Object.defineProperty(this, "count", 
             {
                 get: function() { return __element.length; },
                 configurable: true,
                 enumerable: true
             });
+
+            /**
+             * 요소 목록
+             * @member _W.Meta.ComplexElement#list
+             */
             Object.defineProperty(this, "list", 
             {
                 get: function() { return __element; },

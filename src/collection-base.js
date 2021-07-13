@@ -155,7 +155,7 @@
 
             /** 
              * 변경(등록/삭제) 후 이벤트  
-             * @event _W.BaseCollection#onChanged 
+             * @event _W.Collection.BaseCollection#onChanged 
              */
             Object.defineProperty(this, "onChanged", {
                 enumerable: true,

@@ -51,8 +51,17 @@
             
             p_name = p_name || "";
             
+            /**
+             * GUID 값 
+             * @type {String}
+             * @private 
+             */
             this.__GUID = null;
 
+            /**
+             * 메타 이름
+             * @member {String}
+             */
             this.name = p_name;
             
             /** implements IMarshal 인터페이스 구현 */
@@ -71,6 +80,7 @@
         /**
          * GUID 생성
          * @private
+         * @returns {String}
          */
         MetaObject.prototype.__newGUID  = function() {
             return util.createGUID();
@@ -79,6 +89,7 @@
         /**
          * 조건 : GUID는 한번만 생성해야 함
          * GUID 얻기
+         * @returns {String}
          */
         MetaObject.prototype.getGUID  = function() {
             if (this.__GUID === null) {
@@ -89,6 +100,8 @@
 
         /**
          * 객체 얻기 : 추상메소드 : REVIEW:: 공통 요소? 확인필요
+         * @virtual
+         * @returns {Object}
          */
         MetaElement.prototype.getObject  = function(p_context) {
 

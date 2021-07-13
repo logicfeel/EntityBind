@@ -95,18 +95,20 @@
                 enumerable: true
             });
 
+            /**
+             * 셀렉터
+             * type
+             *  - val | value   : 요소의 value 속성값
+             *  - text          : 요소의 텍스트값
+             *  - html          : 요소의 html값
+             *  - css.속성명    : css 의 속성값 (객체)
+             *  - prop.속성명   : 요소의 속성명값 (초기상태기준)
+             *  - attr.속성명   : 요소의 속성명값 (현재상태)
+             *  - none         : 아무일도 하지 않음, 표현의 목적
+             * @member _W.Meta.Entity.ItemDOM#selector
+             */
             Object.defineProperty(this, "selector", 
             {
-                /**
-                 * type
-                 *  - val | value   : 요소의 value 속성값
-                 *  - text          : 요소의 텍스트값
-                 *  - html          : 요소의 html값
-                 *  - css.속성명    : css 의 속성값 (객체)
-                 *  - prop.속성명   : 요소의 속성명값 (초기상태기준)
-                 *  - attr.속성명   : 요소의 속성명값 (현재상태)
-                 *  - none         : 아무일도 하지 않음, 표현의 목적
-                 */
                 get: function() { return __selector; },
                 set: function(newValue) { 
                     var selector = { key: "", type: "value" };

@@ -39,7 +39,8 @@
          */
         function ICollection() {
             /**
-             * @member count 컬렉션 갯수
+             * 컬렉션 갯수
+             * @member
              */
             this.count = 0;
 

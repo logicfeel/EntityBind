@@ -32,8 +32,8 @@
     var ArrayCollection  = (function (_super) {
         /**
          * 배열타입 컬렉션 클래스
-         * @constructs Collection.ArrayCollection
-         * @extends Collection.BaseCollection
+         * @constructs _W.Collection.ArrayCollection
+         * @extends _W.Collection.BaseCollection
          * @param {Object} p_onwer 소유객체
          */
         function ArrayCollection(p_onwer) {

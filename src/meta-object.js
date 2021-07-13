@@ -42,7 +42,9 @@
         }
         
         /**
-         * 상속 클래스에서 오버라이딩 필요!! 
+         * 객체 타입 얻기
+         * @virtual
+         * @returns {Array}
          */
         MetaObject.prototype.getTypes  = function() {
             
@@ -52,8 +54,8 @@
         };
 
         /**
-         * 상위 클래스 또는 인터페이스 구현 여부 
-         * @param {String} p_name 클래스, Function 이름
+         * 상위 클래스 또는 인터페이스 구현 여부 검사
+         * @param {String} p_name 클래스명
          * @returns {Boolean}
          */
         MetaObject.prototype.instanceOf  = function(p_name) {

@@ -36,8 +36,9 @@
     var PropertyCollection  = (function (_super) {
         /**
          * 속성타입 컬렉션 클래스
-         * @constructs Collection.PropertyCollection
-         * @extends Collection.BaseCollection
+         * @constructs _W.Collection.PropertyCollection
+         * @extends _W.Collection.BaseCollection
+         * @memberof _W
          * @param {Object} p_onwer 소유자
          */
         function PropertyCollection(p_onwer) {
@@ -45,7 +46,7 @@
 
             var __properties = [];
 
-            /** @member {Array} Collection.PropertyCollection#properties 속성들값 */
+            /** @member {Array} _W.Collection.PropertyCollection#properties 속성들값 */
             Object.defineProperty(this, "properties", 
             {
                 get: function() { return __properties; },

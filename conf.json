@@ -15,19 +15,11 @@
             "description": "White",
             "keyword": ""
         },
+        "sort": false,
         "linenums": true
     },        
     "source": {
-        "include": [
-            "./src/namespace.js",
-            "./src/i-object.js",
-            "./src/i-marshal.js",
-            "./src/i-collection.js",
-            "./src/observer.js",
-            "./src/collection-base.js", 
-            "./src/collection-property.js",
-            "./src/collection-array.js"
-        ],
+        "include": ["./src"],
         "includePattern": ".+\\.js(doc)?$",
         "exclude": ["./src/old"],
         "excludePattern": "(^|\\/|\\\\)_"
@@ -35,7 +27,7 @@
     "opts": {
         "encoding": "utf8",
         "recurse": true,
-        "private": false,
+        "private": true,
         "lenient": true,
         "destination": "./docs2",
         "template": "./node_modules/jaguarjs-jsdoc"

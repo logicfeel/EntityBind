@@ -33,7 +33,9 @@
 
             this.isDebug = false;
 
-            /** @member {Object}  등록함수의 this */
+            /**
+             * 등록함수의 this 
+             * @member {Object} */
             this._this = p_this;    
 
             /** 
