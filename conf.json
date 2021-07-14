@@ -19,7 +19,7 @@
         "linenums": true
     },        
     "source": {
-        "include": ["./src"],
+        "include": ["./src", "./example"],
         "includePattern": ".+\\.js(doc)?$",
         "exclude": ["./src/old"],
         "excludePattern": "(^|\\/|\\\\)_"

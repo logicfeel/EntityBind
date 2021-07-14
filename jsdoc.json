@@ -3,7 +3,7 @@
       "allowUnknownTags": false
     },
     "source": {
-      "include": ["./src"],
+      "include": ["./src", "./example"],
       "includePattern": ".js$",
       "exclude": ["./src/old"],
       "excludePattern": "(node_modules/|docs)"
@@ -35,8 +35,8 @@
         "Externals",
         "Mixins",
         "Tutorials",
-        "Interfaces",
-        "Events"        
+        "Interfaces"
+        // "Events" 
       ],
       "disqus": "",     // disqus의 짧은 이름(사이트 생성 중 하위 도메인)
       "openGraph": {    // 그래프 옵션 열기(대부분 Facebook 및 기타 사이트에서 메타 정보를 쉽게 추출할 수 있음)

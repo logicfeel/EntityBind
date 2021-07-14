@@ -51,9 +51,50 @@
     var BindModelAjax  = (function (_super) {
         /**
          * 바인드모델 Ajax
+         * - aaa
+         * - bbb
          * @constructs _W.Meta.Bind.BindModelAjax
          * @extends _W.Meta.Bind.BindModel
          * @param {*} p_service 
+         * @example
+         * // returns 2
+         * globalNS.method1(5, 10);
+         * @example
+         * // returns 3
+         * globalNS.method(5, 15); 
+         * 어떤 샘플이 들어....
+         * 
+         * @summary
+         * - aaa : ddd
+         * - a-1
+         * - ddd
+         * - b-1
+         * - ccc
+         * @desc
+         *  바인딩 모델 의 기본 설정
+         * - 무엇을 하는가.
+         * - 뭐든지 하지요.
+         * - 할것
+         * - 또할것
+         * # ㅁㅁㅁ
+         * - ㅇㅇㅇㅇㅇ
+         * - ㅉ
+         * # ㅉㅈ
+         * ㅇㅇㅇㅇㅇ
+         * ** 굵게(강조)**
+         * ~~취소선~~
+         * - aaa
+         *  - bbbb
+         * + 1111
+         *  + 2222
+         * 
+         * ```javascript
+         * var s = "JavaScript syntax highlighting";
+         * alert(s);
+         * ``
+         * @todo 할것 목록
+         * 
+         * @tutorial tutorial-1  튜토리얼이 들어있음
          */
         function BindModelAjax(p_service) {
             _super.call(this);
