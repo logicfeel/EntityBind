@@ -620,7 +620,7 @@
                 this.cbBaseBind = p_service["cbBaseBind"];
             }
             if (typeof p_service["cbBaseResult"] === "function") {
-                this.cbResult = p_service["cbBaseResult"];
+                this.cbBaseResult = p_service["cbBaseResult"];
             }
             if (typeof p_service["cbBaseOutput"] === "function") {
                 this.cbBaseOutput = p_service["cbBaseOutput"];

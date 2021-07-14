@@ -1,7 +1,7 @@
 /**
  * Object : 폴리필
- * @namespace Object.prototype.isImplementOf [protected] 구현 여부
- * @namespace Object.prototype._implements 인터페이스(클래스 포함) 등록 *다중상속*
+ * namespace Object.prototype.isImplementOf [protected] 구현 여부
+ * namespace Object.prototype._implements 인터페이스(클래스 포함) 등록 *다중상속*
  */
 if ((typeof Object.prototype._implements === "undefined") ||
     (typeof Object.prototype.isImplementOf === "undefined")) {
@@ -89,7 +89,7 @@ if ((typeof Object.prototype._implements === "undefined") ||
     }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 }
 /**
- * @namespace Array.isArray : 배열 유무 (폴리필 웹전용)
+ * namespace Array.isArray : 배열 유무 (폴리필 웹전용)
  */
 if (typeof Array.isArray === "undefined") {
 
@@ -123,10 +123,7 @@ if (typeof Array.isArray === "undefined") {
     }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 }
 /**
- * @namespace _W.Common.Util.inherits : 상속
- * @namespace _W.Common.Util.getArrayLevel : 배열 깊이 얻기
- * @namespace _W.Common.Util.createGUID : GUID 생성
- * @namespace _W.Common.Util.validSelector : 셀렉터의 유효성 검사
+ * namespace _W.Common.Util
  */
 (function(global) {
 
@@ -149,6 +146,8 @@ if (typeof Array.isArray === "undefined") {
 
     /**
      * inherits(대상, 부모) : 상속
+     * @function
+     * @memberof _W.Common.Util
      */
     var inherits = (function () {
         if (typeof Object.create === 'function') {
@@ -181,8 +180,10 @@ if (typeof Array.isArray === "undefined") {
     }());
 
     /**
+     * 배열 깊이 얻기
      * @param {*} p_elem 
      * @param {*} p_depts 
+     * @memberof _W.Common.Util
      */
     var getArrayLevel = function (p_elem, p_depts) {
         
@@ -200,7 +201,8 @@ if (typeof Array.isArray === "undefined") {
     };
     
     /**
-     * @function createGUID GUID 생성
+     * createGUID GUID 생성
+     * @memberof _W.Common.Util
      */
     var createGUID = function() {
         function _p8(s) {  
@@ -215,6 +217,7 @@ if (typeof Array.isArray === "undefined") {
      * 주의!! DOM(web) 에서만 작동한다.
      * @param {object<array | string> | array<string> | string} p_obj 
      * @returns {String} 없는 셀렉터, 통화하면 null 리턴
+     * @memberof _W.Common.Util
      */
     var validSelector = function(p_obj, p_isJQuery) {
         
@@ -276,7 +279,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Common.Observer : 옵서버
+ * namespace _W.Common.Observer
  */
 (function(global) {
 
@@ -293,16 +296,15 @@ if (typeof Array.isArray === "undefined") {
     } else {
     }
 
-    //==============================================================
+    //==============================================================Á
     // 3. 의존성 검사
 
     //==============================================================
     // 4. 모듈 구현    
     
-    // 클래스 정의
     var Observer = (function () {
         /**
-         * @class Observer
+         * @constructs _W.Common.Observer
          * @classdesc 구독자 클래스, 이벤트에 활용
          * @param {obejct} p_onwer Observer 클래스의 소유 함수 또는 클래스
          * @param {object} p_this 함수 호출 본문에서 this 역활 publish.apply(p_this, ...)
@@ -311,29 +313,44 @@ if (typeof Array.isArray === "undefined") {
 
             this.isDebug = false;
 
-            /** @member {object} Observer._this 등록함수의 this */
+            /**
+             * 등록함수의 this 
+             * @member {Object} */
             this._this = p_this;    
 
-            /** @member {object} Observer._onwer 이벤트의 소유자 */
+            /** 
+             * 이벤트의 소유자
+             * @protected
+             * @member {Object}   
+             */
             this._onwer = p_onwer;
             
-            this.subscribers = {        // 전역 구독자
+            /**
+             * 전역 구독자
+             * @member {Object}
+             */
+            this.subscribers = {
                 any: []
             };
             
-            /** @member {boolean} Observer.propagation  이벤트 전파 설정 (기본값:true) */
+            /** 
+             * 이벤트 전파 설정 (기본값:true)
+             * @member {Boolean}
+             */
             this.propagation    = true;
 
-            /** @member {boolean} Observer.isMultiMode 단일 구독자 모드, 마지막 등록 구독자만 활성화 (기본값:true) */
+            /** 
+             * 단일 구독자 모드, 마지막 등록 구독자만 활성화 (기본값:true)  
+             * @member {Boolean} 
+             */
             this.isMultiMode    = true;
         }
 
         /**
          * 구독 신청
-         * @method Observer#subscribe 
+         * 이벤트 "p_code"를 입력하지 않으면 전역(any)에 등록 된다.
          * @param {function} p_fn  구독 콜백 함수
          * @param {?string} p_code 구독 코드명 : 기본값 "any"
-         * @summary 이벤트 "p_code"를 입력하지 않으면 전역(any)에 등록 된다.
          */
         Observer.prototype.subscribe = function(p_fn, p_code) {
             p_code = p_code || 'any';
@@ -354,11 +371,9 @@ if (typeof Array.isArray === "undefined") {
         };
         
         /**
-         * @method Observer#unsubscribe 
+         * @desc 이벤트 "p_code"를 입력하지 않으면 전역(any)에서 취소 된다.
          * @param {function} p_fn [필수] 이벤트 콜백 함수
          * @param {?string} p_code 이벤트 코드명 : 기본값 "any"
-         * @description sdfds
-         * @summary 이벤트 "p_code"를 입력하지 않으면 전역(any)에서 취소 된다.
          */
         Observer.prototype.unsubscribe = function(p_fn, p_code) {
             p_code = p_code || "any";
@@ -375,9 +390,9 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * @method Observer#unsubscribeAll
+         * 
          * @param {?string} p_code 이벤트 코드명
-         * @summary 
+         * @desc 
          *  - p_code 입력하면 해당 콜백함수들 구독 취소한다.
          *  - p_code 를 입력하지 않으면 전체 등록된 이벤트가 취소된다.
          */
@@ -391,8 +406,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * @description 구독 함수 호출
-         * @method Observer#publish
+         * @desc 구독 함수 호출
          * @param {?string} p_code 이벤트 코드명 : 기본값 "any"
          */
         Observer.prototype.publish = function(p_code) {
@@ -435,7 +449,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Interface.IObject
+ * namespace _W.Interface.IObject
  */
 (function(global) {
     
@@ -455,13 +469,25 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var IObject  = (function () {
+        /**
+         * 최상위 객체 인터페이스
+         * @constructs _W.Interface.IObject 
+         * @interface
+         */
         function IObject() {
         }
-    
+        
+        /**
+         * 객체타입 얻기
+         */
         IObject.prototype.getTypes  = function() {
             throw new Error("[ getTypes() ] Abstract method definition, fail...");
         };
         
+        /**
+         * 인스턴스 검사
+         * @returns {Boolean}
+         */
         IObject.prototype.instanceOf  = function() {
             throw new Error("[ instanceOf() ] Abstract method definition, fail...");
         };
@@ -479,7 +505,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Interface.IMarshal
+ * namespace _W.Interface.IMarshal
  */
 (function(global) {
 
@@ -511,15 +537,30 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var IMarshal  = (function (_super) {
+        /**
+         * 최상위 객체
+         * @constructs _W.Interface.IMarshal
+         * @interface
+         * @extends Interface.IObject
+         */
         function IMarshal() {
             _super.call(this);
         }
         util.inherits(IMarshal, _super);
 
+        /**
+         * 객체 얻기
+         * @returns {Object}
+         */
         IMarshal.prototype.getObject  = function() {
             throw new Error("[ getObject() ] Abstract method definition, fail...");
         };
 
+        /**
+         * GUID 얻기
+         * @abstract
+         * @returns {Stirng}
+         */
         IMarshal.prototype.getGUID  = function() {
             throw new Error("[ getGUID() ] Abstract method definition, fail...");
 
@@ -538,7 +579,7 @@ if (typeof Array.isArray === "undefined") {
     
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Interface.IAllControl
+ * namespace _W.Interface.IAllControl
  */
 (function(global) {
     
@@ -558,11 +599,16 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var IAllControl  = (function () {
+        /**
+         * @constructs _W.Interface.IAllControl
+         * @interface
+         */
         function IAllControl() {
         }
     
         /**
          * 복제 : 전체
+         * @abstract
          */
         IAllControl.prototype.clone  = function() {
             throw new Error("[ clone() ] Abstract method definition, fail...");
@@ -570,6 +616,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 로드 : 전체
+         * @abstract
          */
         IAllControl.prototype.load  = function() {
             throw new Error("[ load() ] Abstract method definition, fail...");
@@ -577,6 +624,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 삭제 : 전체
+         * @abstract
          */
         IAllControl.prototype.clear  = function() {
             throw new Error("[ clear() ] Abstract method definition, fail...");
@@ -595,7 +643,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Interface.IExportControl
+ * namespace _W.Interface.IExportControl
  */
 (function(global) {
     
@@ -615,11 +663,16 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var IExportControl  = (function () {
+        /**
+         * @constructs _W.Interface.IExportControl
+         * @interface
+         */
         function IExportControl() {
         }
     
         /**
          * 출력 : 전체
+         * @abstract
          */
         IExportControl.prototype.write  = function() {
             throw new Error("[ write() ] Abstract method definition, fail...");
@@ -638,7 +691,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Interface.IGroupControl
+ * namespace _W.Interface.IGroupControl
  */
 (function(global) {
     
@@ -658,11 +711,16 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var IGroupControl  = (function () {
+        /**
+         * @constructs _W.Interface.IGroupControl
+         * @interface
+         */
         function IGroupControl() {
         }
     
         /**
          * 병합 : 그룹
+         * @abstract
          */
         IGroupControl.prototype.merge  = function() {
             throw new Error("[ merge() ] Abstract method definition, fail...");
@@ -670,6 +728,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 복사 : 그룹
+         * @abstract
          */
         IGroupControl.prototype.copy  = function() {
             throw new Error("[ copyTo() ] Abstract method definition, fail...");
@@ -688,7 +747,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Interface.IImportControl
+ * namespace _W.Interface.IImportControl
  */
 (function(global) {
     
@@ -708,11 +767,16 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var IImportControl  = (function () {
+        /**
+         * @constructs _W.Interface.IImportControl
+         * @interface
+         */
         function IImportControl() {
         }
     
         /**
          * 입력 : 전체
+         * @abstract
          */
         IImportControl.prototype.read  = function() {
             throw new Error("[ read() ] Abstract method definition, fail...");
@@ -731,7 +795,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Interface.ILookupControl
+ * namespace _W.Interface.ILookupControl
  */
 (function(global) {
     
@@ -751,11 +815,16 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var ILookupControl  = (function () {
+        /**
+         * @constructs _W.Interface.ILookupControl
+         * @interface
+         */
         function ILookupControl() {
         }
     
         /**
          * 유무 검사
+         * @abstract
          */
         ILookupControl.prototype.contains  = function() {
             throw new Error("[ contains() ] Abstract method definition, fail...");
@@ -774,7 +843,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Interface.IPartControl
+ * namespace _W.Interface.IPartControl
  */
 (function(global) {
     
@@ -794,11 +863,16 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var IPartControl  = (function () {
+        /**
+         * @constructs _W.Interface.IPartControl
+         * @interface
+         */
         function IPartControl() {
         }
     
         /**
          * 등록 : 부분
+         * @abstract
          */
         IPartControl.prototype.add  = function() {
             throw new Error("[ add() ] Abstract method definition, fail...");
@@ -806,6 +880,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 삭제 : 부분
+         * @abstract
          */
         IPartControl.prototype.remove  = function() {
             throw new Error("[ remove() ] Abstract method definition, fail...");
@@ -824,7 +899,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Interface.ICollection
+ * namespace _W.Interface.ICollection
  */
 (function(global) {
     
@@ -854,24 +929,35 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var ICollection  = (function () {
+        /**
+         * 컬렉션 최상위
+         * @classdesc 컬렉션 최상위 컬렉션 인터페이스
+         * @constructs _W.Interface.ICollection
+         * @interface
+         * @implements {_W.Interface.IPartControl}
+         * @implements {_W.Interface.ILookupControl}
+         */
         function ICollection() {
             /**
-             * @member count 컬렉션 갯수
+             * 컬렉션 갯수
+             * @member
              */
             this.count = 0;
 
             /**
-             * @member list 컬렉션 배열 반환
+             * 컬렉션 배열 반환
+             * @member
              */
             this.list = [];
 
-            /** @implements IPartControl 인터페이스 구현 */
-            /** @implements ILookupControl 인터페이스 구현 */
+            /** implements IPartControl 인터페이스 구현 */
+            /** implements ILookupControl 인터페이스 구현 */
             this._implements(IPartControl, ILookupControl);            
         }
     
         /**
          * 등록 : insert
+         * @abstract
          */
         ICollection.prototype.add  = function() {
             throw new Error("[ add() ] Abstract method definition, fail...");
@@ -879,6 +965,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 삭제 (객체, 이름) : delete
+         * @abstract
          */
         ICollection.prototype.remove  = function() {
             throw new Error("[ remove() ] Abstract method definition, fail...");
@@ -886,6 +973,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 삭제 (번호) : delete
+         * @abstract
          */
         ICollection.prototype.removeAt  = function() {
             throw new Error("[ removeAt() ] Abstract method definition, fail...");
@@ -893,6 +981,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 초기화 : update (delete 후 insert 의 의미)
+         * @abstract
          */
         ICollection.prototype.clear  = function() {
             throw new Error("[ clear() ] Abstract method definition, fail...");
@@ -900,6 +989,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 유무 검사 (소유) : read (select)
+         * @abstract
          */
         ICollection.prototype.contains  = function() {
             throw new Error("[ contains() ] Abstract method definition, fail...");
@@ -907,6 +997,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 찾기 (번호) : read(select)
+         * @abstract
          */
         ICollection.prototype.indexOf  = function() {
             throw new Error("[ indexOf() ] Abstract method definition, fail...");
@@ -925,7 +1016,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Interface.IPropertyCollection
+ * namespace _W.Interface.IPropertyCollection
  */
 (function(global) {
     "use strict";
@@ -956,6 +1047,11 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var IPropertyCollection  = (function (_super) {
+        /**
+         * @constructs _W.Interface.IPropertyCollection
+         * @interface
+         * @extends  _W.Interface.ICollection
+         */
         function IPropertyCollection() {
             _super.call(this);
         }
@@ -981,7 +1077,7 @@ if (typeof Array.isArray === "undefined") {
     
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Interface.IControlCollection
+ * namespace _W.Interface.IControlCollection
  */
 (function(global) {
 
@@ -1021,17 +1117,24 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var IControlCollection  = (function (_super) {
+        /** 
+         * 컨트롤 컬렉션 엔터페이스
+         * @constructs _W.Interface.IControlCollection
+         * @interface
+         * @extends _W.Interface.ICollection
+         * @implements {_W.Interface.IGroupControl}
+         * @implements {_W.Interface.IAllControl}
+         */
         function IControlCollection() {
             _super.call(this);
 
-            /** @implements IGroupControl 인터페이스 구현 */
-            /** @implements IAllControl 인터페이스 구현 */
             this._implements(IGroupControl, IAllControl);            
         }
         util.inherits(IControlCollection, _super);        
     
         /**
          * 병합, 합침
+         * @abstract
          */
         IControlCollection.prototype.merge  = function() {
             throw new Error("[ concat() ] Abstract method definition, fail...");
@@ -1039,6 +1142,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 범위 복사
+         * @abstract
          */
         IControlCollection.prototype.copyTo  = function() {
             throw new Error("[ copyTo() ] Abstract method definition, fail...");
@@ -1046,6 +1150,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 전체 복제(복사)
+         * @abstract
          */
         IControlCollection.prototype.clone  = function() {
             throw new Error("[ clone() ] Abstract method definition, fail...");
@@ -1053,6 +1158,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 로드 : 전체
+         * @abstract
          */
         IControlCollection.prototype.load  = function() {
             throw new Error("[ load() ] Abstract method definition, fail...");
@@ -1060,6 +1166,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 삭제 : 전체
+         * @abstract
          */
         IControlCollection.prototype.clear  = function() {
             throw new Error("[ clear() ] Abstract method definition, fail...");
@@ -1078,7 +1185,7 @@ if (typeof Array.isArray === "undefined") {
     
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Interface.IBindModel
+ * namespace _W.Interface.IBindModel
  */
 (function(global) {
     
@@ -1098,26 +1205,98 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var IBindModel  = (function () {
+        /**
+         * 바인드모델 인터페이스
+         * @constructs _W.Interface.IBindModel
+         * @interface
+         */
         function IBindModel() {
 
+            /**
+             * 속성(아이템)
+             * @member
+             */
             this.prop       = {};
+            
+            /**
+             * 함수
+             * @member
+             */
             this.fn         = {};
+
+            /** 
+             * 매핑
+             * @member  
+             */
             this.mapping    = {};
 
+            /**
+             * 기본 검사 콜백
+             * @member
+             */
             this.cbBaseValid    = null;
+            
+            /**
+             * 기본 바인드 콜백
+             * @member
+             */
             this.cbBaseBind     = null;
+            
+            /**
+             * 기본 결과 콜백
+             * @member
+             */
             this.cbBaseResult   = null;
+            
+            /**
+             * 기본 출력 콜백
+             * @member
+             */
             this.cbBaseOutput   = null;
+            
+            /**
+             * 기본 종료 콜백
+             * @member
+             */
             this.cbBaseEnd      = null;
 
+            /**
+             * 실행전 이벤트
+             * @member
+             */
             this.onExecute  = null;
+            
+            /**
+             * 실행후 이벤트
+             * @member
+             */
             this.onExecuted = null;
 
+            /**
+             * 실패 콜백
+             * @member
+             */
             this.cbFail = function() {};
+            
+            /**
+             * 에러 콜백
+             * @member
+             */
             this.cbError = function() {};
         }
+        /**
+         * 사전 등록
+         */
         IBindModel.prototype.preRegister = function() {};
+        
+        /**
+         * 사전 검사
+         */
         IBindModel.prototype.preCheck = function() { return true };
+
+        /**
+         * 사전 준비
+         */
         IBindModel.prototype.preReady = function() {};
 
         // IBindModel.prototype.cbFail = function() {};
@@ -1136,10 +1315,9 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Collection.BaseCollection
+ * namespace _W.Collection.BaseCollection
  */
 (function(global) {
-
     "use strict";
 
     //==============================================================
@@ -1166,25 +1344,44 @@ if (typeof Array.isArray === "undefined") {
     if (typeof ICollection === "undefined") throw new Error("[ICollection] module load fail...");
 
     //==============================================================
-    // 4. 모듈 구현    
-    var BaseCollection  = (function () {
-        /**
-         * @abstract 추상클래스
-         * @class 속성타입 컬렉션 최상위(부모) 클래스
-         */
-        function BaseCollection(p_onwer) {
+    // 4. 모듈 구현 
     
+    var BaseCollection  = (function () {
+       /**
+        * 컬렉션 최상위 클래스 (추상클래스)
+        * @constructs _W.Collection.BaseCollection
+        * @implements {_W.Interface.ICollection}
+        * @param {Object} p_onwer 소유객체
+        */
+        function BaseCollection(p_onwer) { 
+            
             var __elementType   = null;
 
-            // Private
+            /** @private */
             this.__event        = new Observer(this, this);
 
-            // Protected
+            /** 
+             * 소유객체
+             * @protected 
+             * @member {Object}
+             */
             this._onwer         = p_onwer;
+
+            /** 
+             * 배열요소
+             * @protected 
+             * @member {Array}
+             */
             this._element       = [];
+            
+            /** 
+             * 심볼 배열입니다. 
+             * @protected
+             * @member {Array} 
+             */
             this._symbol        = [];
 
-            /** @property */
+            /** @member {Observer}  _W.Collection.BaseCollection#elementType 요소타입 */
             Object.defineProperty(this, "elementType", {
                 enumerable: true,
                 configurable: true,
@@ -1200,7 +1397,10 @@ if (typeof Array.isArray === "undefined") {
                 }
             });
 
-            /** @property */
+            /**
+             * 컬렉션 목록 
+             * @member {Array}  _W.Collection.BaseCollection#list  
+             */
             Object.defineProperty(this, "list", {
                 enumerable: true,
                 configurable: true,
@@ -1208,7 +1408,11 @@ if (typeof Array.isArray === "undefined") {
                     return this._element;
                 }
             });
-            /** @property */
+
+            /**
+             * 컬랙션 갯수 
+             * @member {Number} _W.Collection.BaseCollection#count 
+             */
             Object.defineProperty(this, "count", {
                 enumerable: true,
                 configurable: true,
@@ -1216,7 +1420,11 @@ if (typeof Array.isArray === "undefined") {
                     return this._element.length;
                 }
             });
-            /** @event */
+
+            /** 
+             * 변경(등록/삭제) 후 이벤트  
+             * @event _W.Collection.BaseCollection#onAdd 
+             */
             Object.defineProperty(this, "onAdd", {
                 enumerable: true,
                 configurable: true,
@@ -1224,7 +1432,11 @@ if (typeof Array.isArray === "undefined") {
                     this.__event.subscribe(p_fn, "add");
                 }
             });
-            /** @event */
+
+            /** 
+             * 제거 이벤트
+             * @event _W.Collection.BaseCollection#onRemove
+             */
             Object.defineProperty(this, "onRemove", {
                 enumerable: true,
                 configurable: true,
@@ -1232,7 +1444,11 @@ if (typeof Array.isArray === "undefined") {
                     this.__event.subscribe(p_fn, "remove");
                 }
             });
-            /** @event */
+
+            /** 
+             * 전체 제거 이벤트
+             * @event _W.Collection.BaseCollection#onClear
+             */
             Object.defineProperty(this, "onClear", {
                 enumerable: true,
                 configurable: true,
@@ -1240,7 +1456,11 @@ if (typeof Array.isArray === "undefined") {
                     this.__event.subscribe(p_fn, "clear");
                 }
             });
-            /** @event */
+
+            /** 
+             * 변경(등록/삭제) 전 이벤트  
+             * @event _W.Collection.BaseCollection#onChanging 
+             */
             Object.defineProperty(this, "onChanging", {
                 enumerable: true,
                 configurable: true,
@@ -1248,7 +1468,11 @@ if (typeof Array.isArray === "undefined") {
                     this.__event.subscribe(p_fn, "changing");
                 }
             });
-            /** @event */
+
+            /** 
+             * 변경(등록/삭제) 후 이벤트  
+             * @event _W.Collection.BaseCollection#onChanged 
+             */
             Object.defineProperty(this, "onChanged", {
                 enumerable: true,
                 configurable: true,
@@ -1263,12 +1487,13 @@ if (typeof Array.isArray === "undefined") {
             this._symbol = this._symbol.concat(["_getPropDescriptor", "_onAdd", "_onRemove", "_onClear", "_onChanging", "_onChanged"]);
             this._symbol = this._symbol.concat(["_remove", "add", "clear", "remove", "removeAt", "indexOf"]);
 
-            /** @implements ICollection 인터페이스 구현 */
+            /** implements ICollection 인터페이스 구현 */
              this._implements(ICollection);
         }
     
         /**
-         * @method private 프로퍼티 기술자 설정
+         * 프로퍼티 기술자 설정
+         * @protected
          * @param {number} p_idx 인덱스
          */
         BaseCollection.prototype._getPropDescriptor = function(p_idx) {
@@ -1290,27 +1515,40 @@ if (typeof Array.isArray === "undefined") {
             };
         };
 
-        /** @event onAdd 등록 이벤트 발생 */
+        /**
+         * @listens _W.Collection.BaseCollection#onClear
+         */
         BaseCollection.prototype._onAdd = function(p_idx, p_value) {
             this.__event.publish("add", p_idx, p_value); 
         };
 
-        /** @event onRemove 삭제 이벤트 발생 */
+        /**
+         * @listens _W.Collection.BaseCollection#onRemove
+         */
         BaseCollection.prototype._onRemove = function(p_idx) {
             this.__event.publish("remove", p_idx); 
         };
 
-        /** @event onClear 전체삭제 이벤트 발생 */
+        /** 
+         *  전체삭제 이벤트 수신
+         * @listens _W.Collection.BaseCollection#onClear
+         */
         BaseCollection.prototype._onClear = function() {
             this.__event.publish("clear"); 
         };
 
-        /** @event onChanging 변경시 이벤트 발생 */
+        /** 
+         *  변경(등록/삭제) 전 이벤트 수신
+         * @listens _W.Collection.BaseCollection#onChanging
+         */
         BaseCollection.prototype._onChanging = function() {
             this.__event.publish("changing"); 
         };
 
-        /** @event onChanged 변경후 이벤트 발생 */
+        /** 
+         *  변경(등록/삭제) 후 이벤트 수신
+         * @listens _W.Collection.BaseCollection#onChanged
+         */        
         BaseCollection.prototype._onChanged = function() {
             this.__event.publish("changed"); 
         };
@@ -1325,13 +1563,17 @@ if (typeof Array.isArray === "undefined") {
             throw new Error("[ add() ] Abstract method definition, fail...");
         };
         
-        /** @abstract */
+        /** 
+         * 전체삭제(초기화)
+         * @abstract 
+         * @fires _W.Collection.BaseCollection#onClear 
+         */
         BaseCollection.prototype.clear  = function() {
             throw new Error("[ clear() ] Abstract method definition, fail...");
         };
 
         /**
-         * @method remove 배열속성 삭제
+         * 배열속성 삭제
          * @param {element} p_elem 속성명
          * @returns {number} 삭제한 인덱스
          */
@@ -1353,7 +1595,7 @@ if (typeof Array.isArray === "undefined") {
         };
         
         /**
-         * @method removeAt 배열속성 삭제
+         * 배열속성 삭제
          * @param {number} p_idx 인덱스
          */
         BaseCollection.prototype.removeAt = function(p_idx) {
@@ -1369,7 +1611,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * @method contains 배열속성 여부 
+         * 배열속성 여부 
          * @param {object} p_elem 속성 객체
          * @returns {boolean}
          */
@@ -1378,7 +1620,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * @method 배열속성 인덱스 찾기
+         * 배열속성 인덱스 찾기
          * @param {Object} p_elem 속성 객체
          * @returns {Number}
          */
@@ -1400,10 +1642,9 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Collection.ArrayCollection
+ * namespace _W.Collection.ArrayCollection
  */
 (function(global) {
-
     "use strict";
 
     //==============================================================
@@ -1433,15 +1674,20 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var ArrayCollection  = (function (_super) {
         /**
-         * @class 배열타입 컬렉션 클래스
+         * 배열타입 컬렉션 클래스
+         * @constructs _W.Collection.ArrayCollection
+         * @extends _W.Collection.BaseCollection
+         * @param {Object} p_onwer 소유객체
          */
         function ArrayCollection(p_onwer) {
-            _super.call(this, p_onwer); 
+            _super.call(this, p_onwer);
+
         }
         util.inherits(ArrayCollection, _super);
 
         /**
-         * @method __remove 배열속성 삭제 (내부처리)
+         * 배열속성 삭제 (내부처리)
+         * @protected
          * @param {*} p_idx 인덱스 번호
          */
         ArrayCollection.prototype._remove = function(p_idx) {
@@ -1462,7 +1708,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * @method add 배열속성 속성값 설정
+         * 배열속성 속성값 설정
          * @param {*} p_value [필수] 속성값
          * @returns {*} 입력 속성 참조값
          */
@@ -1491,7 +1737,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * @method clear 배열속성 전체삭제
+         * 배열속성 전체삭제
          */
         ArrayCollection.prototype.clear = function() {
             
@@ -1524,10 +1770,9 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Collection.PropertyCollection
+ * namespace _W.Collection.PropertyCollection
  */
 (function(global) {
-
     "use strict";
 
     //==============================================================
@@ -1561,14 +1806,18 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var PropertyCollection  = (function (_super) {
         /**
-         * @method 속성타입 컬렉션 클래스
+         * 속성타입 컬렉션 클래스
+         * @constructs _W.Collection.PropertyCollection
+         * @extends _W.Collection.BaseCollection
+         * @memberof _W
+         * @param {Object} p_onwer 소유자
          */
         function PropertyCollection(p_onwer) {
             _super.call(this, p_onwer); 
 
             var __properties = [];
 
-            /** @property {properties} */
+            /** @member {Array} _W.Collection.PropertyCollection#properties 속성들값 */
             Object.defineProperty(this, "properties", 
             {
                 get: function() { return __properties; },
@@ -1586,7 +1835,8 @@ if (typeof Array.isArray === "undefined") {
         util.inherits(PropertyCollection, _super);
 
         /**
-         * @method __remove 배열속성 삭제 (내부처리)
+         * 배열속성 삭제 (내부처리)
+         * @protected
          * @param {*} p_name 속성명
          * @returns {number} 삭제한 인덱스
          */
@@ -1617,7 +1867,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * @method add 배열속성 설정 및 속성값 등록
+         * 배열속성 설정 및 속성값 등록
          * @param {string} p_name [필수] 속성명
          * @param {?any} p_value 속성값
          * @returns {any} 입력 속성 참조값 REVIEW:: 필요성 검토
@@ -1666,7 +1916,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * @method clear 배열속성 전체삭제
+         * 배열속성 전체삭제
          */
         PropertyCollection.prototype.clear = function() {
             
@@ -1688,7 +1938,7 @@ if (typeof Array.isArray === "undefined") {
         };
         
         /**
-         * @method indexOfName 이름으로 index값 조회
+         * 이름으로 index값 조회
          * @param {string} p_name 
          */
         PropertyCollection.prototype.indexOfName = function(p_name) {
@@ -1703,7 +1953,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * @method propertyOf 배열속성 이름 찾기
+         * 배열속성 이름 찾기
          * @param {number} p_idx 인덱스
          * @returns {string}
          */
@@ -1726,7 +1976,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Collection.PropertyObjectCollection
+ * namespace _W.Collection.PropertyObjectCollection
  */
 (function(global) {
 
@@ -1798,7 +2048,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Collection.PropertyFunctionCollection
+ * namespace _W.Collection.PropertyFunctionCollection
  */
 (function(global) {
 
@@ -1870,7 +2120,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.MetaObject
+ * namespace _W.Meta.MetaObject
  */
 (function(global) {
 
@@ -1901,15 +2151,22 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var MetaObject  = (function () {
         /**
-         * @class 메타 최상위 클래스 (실체)
+         * 메타 최상위 클래스 (실체)
+         * @constructs _W.Meta.MetaObject
+         * @abstract
+         * @implements {_W.Interface.IObject}
          */
         function MetaObject() {
             
-            /** @implements IObject 인터페이스 구현 */
+            /** implements IObject 인터페이스 구현 */
             this._implements(IObject);
         }
         
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /**
+         * 객체 타입 얻기
+         * @virtual
+         * @returns {Array}
+         */
         MetaObject.prototype.getTypes  = function() {
             
             var type = ["MetaObject"];
@@ -1918,8 +2175,8 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * 상위 클래스 또는 인터페이스 구현 여부 
-         * @param {String} p_name 클래스, Function 이름
+         * 상위 클래스 또는 인터페이스 구현 여부 검사
+         * @param {String} p_name 클래스명
          * @returns {Boolean}
          */
         MetaObject.prototype.instanceOf  = function(p_name) {
@@ -1951,7 +2208,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.MetaElement
+ * namespace _W.Meta.MetaElement
  */
 (function(global) {
 
@@ -1991,25 +2248,37 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var MetaElement  = (function (_super) {
         /**
-         * IMarshal 인터페이스는 IObject를 상속함
-         * @abstract 추상클래스
-         * @class
+         * IMarshal 인터페이스 구현 및 ..
+         * @constructs _W.Meta.MetaElement
+         * @abstract
+         * @extends _W.Meta.MetaObject
+         * @implements {_W.Interface.IMarshal}
+         * @param {*} p_name 
          */
         function MetaElement(p_name) {
             _super.call(this);
             
             p_name = p_name || "";
             
+            /**
+             * GUID 값 
+             * @type {String}
+             * @private 
+             */
             this.__GUID = null;
 
+            /**
+             * 메타 이름
+             * @member {String}
+             */
             this.name = p_name;
             
-            /** @implements IMarshal 인터페이스 구현 */
+            /** implements IMarshal 인터페이스 구현 */
             this._implements(IMarshal);            
         }
         util.inherits(MetaElement, _super);
     
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         MetaElement.prototype.getTypes = function() {
             
             var type = ["MetaElement"];
@@ -2018,8 +2287,9 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
+         * GUID 생성
          * @private
-         * @method GUID 생성
+         * @returns {String}
          */
         MetaObject.prototype.__newGUID  = function() {
             return util.createGUID();
@@ -2027,7 +2297,8 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 조건 : GUID는 한번만 생성해야 함
-         * @method GUID 얻기
+         * GUID 얻기
+         * @returns {String}
          */
         MetaObject.prototype.getGUID  = function() {
             if (this.__GUID === null) {
@@ -2037,7 +2308,9 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * @method 객체 얻기 : 추상메소드 : REVIEW:: 공통 요소? 확인필요
+         * 객체 얻기 : 추상메소드 : REVIEW:: 공통 요소? 확인필요
+         * @virtual
+         * @returns {Object}
          */
         MetaElement.prototype.getObject  = function(p_context) {
 
@@ -2068,7 +2341,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.ComplexElement
+ * namespace _W.Meta.ComplexElement
  */
 (function(global) {
 
@@ -2106,15 +2379,20 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var ComplexElement  = (function (_super) {
         /**
-         * @class
+         * 복합요소
+         * @constructs _W.Meta.ComplexElement
+         * @abstract
+         * @extends _W.Meta.MetaElement
+         * @implements {_W.Interface.IPropertyCollection}
          */
         function ComplexElement() {
             _super.call(this);
 
             var __element = [];
+
             /**
-             * TODO::
-             * @implements
+             * 요소 갯수
+             * @member _W.Meta.ComplexElement#count
              */
             Object.defineProperty(this, "count", 
             {
@@ -2122,6 +2400,11 @@ if (typeof Array.isArray === "undefined") {
                 configurable: true,
                 enumerable: true
             });
+
+            /**
+             * 요소 목록
+             * @member _W.Meta.ComplexElement#list
+             */
             Object.defineProperty(this, "list", 
             {
                 get: function() { return __element; },
@@ -2129,12 +2412,12 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @implements IPropertyCollection 인터페이스 선언 */
+            /** implements IPropertyCollection 인터페이스 선언 */
             this._implements(IPropertyCollection);                
         }
         util.inherits(ComplexElement, _super);
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         ComplexElement.prototype.getTypes  = function() {
                             
             var type = ["ComplexElement"];
@@ -2166,9 +2449,9 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.Entity.Item
- * @namespace _W.Meta.Entity.ItemCollection
- * @namespace _W.Meta.Entity.ItemViewCollection
+ * namespace _W.Meta.Entity.Item
+ * namespace _W.Meta.Entity.ItemCollection
+ * namespace _W.Meta.Entity.ItemViewCollection
  */
 (function(global) {
 
@@ -2211,7 +2494,9 @@ if (typeof Array.isArray === "undefined") {
     //---------------------------------------
     var Item  = (function (_super) {
         /**
-         * @class 
+         * 아이템
+         * @constructs _W.Meta.Entity.Item
+         * @extends _W.Meta.MetaElement
          * @param {String} p_name 아이템명
          * @param {Entity} p_entity 소유 Entity
          */
@@ -2243,8 +2528,6 @@ if (typeof Array.isArray === "undefined") {
             /** @private */
             this.__event    = new Observer(this, this);
 
-
-            /** @property {__value} */
             Object.defineProperty(this, "__value", 
             {
                 get: function() { return __value; },
@@ -2257,7 +2540,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {entity} */
             Object.defineProperty(this, "entity", 
             {
                 get: function() { return __entity; },
@@ -2272,7 +2554,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {type} */
             Object.defineProperty(this, "type", 
             {
                 get: function() { return __type; },
@@ -2285,7 +2566,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {size} */
             Object.defineProperty(this, "size", 
             {
                 get: function() { return __size; },
@@ -2297,7 +2577,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {default} */
             Object.defineProperty(this, "default", 
             {
                 get: function() { return __default; },
@@ -2309,7 +2588,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {caption} */
             Object.defineProperty(this, "caption", 
             {
                 get: function() { return __caption; },
@@ -2321,7 +2599,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {isNotNull} */
             Object.defineProperty(this, "isNotNull", 
             {
                 // get: function() { 
@@ -2338,7 +2615,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {isNullPass} */
             Object.defineProperty(this, "isNullPass", 
             {
                 get: function() { return __isNullPass },
@@ -2350,7 +2626,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
             
-            /** @property {callback} */
             Object.defineProperty(this, "callback", 
             {
                 get: function() { return __callback; },
@@ -2362,7 +2637,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {constraints} */
             Object.defineProperty(this, "constraints", 
             {
                 get: function() { return __constraints; },
@@ -2385,7 +2659,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {codeType} */
             Object.defineProperty(this, "codeType", 
             {
                 get: function() { return __codeType; },
@@ -2394,7 +2667,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {order} */
             Object.defineProperty(this, "order", 
             {
                 get: function() { return __order; },
@@ -2406,7 +2678,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {increase} */
             Object.defineProperty(this, "increase", 
             {
                 get: function() { return __increase; },
@@ -2418,7 +2689,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
             
-            /** @property {value} */
             Object.defineProperty(this, "value", 
             {
                 get: function() { 
@@ -2447,7 +2717,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {getter} */
             Object.defineProperty(this, "getter", 
             {
                 get: function() { return __getter; },
@@ -2459,7 +2728,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {setter} */
             Object.defineProperty(this, "setter", 
             {
                 get: function() { return __setter; },
@@ -2471,7 +2739,7 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @event onChanged */
+            /** @event _W.Meta.Entity.Item#onChanged */
             Object.defineProperty(this, "onChanged", {
                 enumerable: true,
                 configurable: true,
@@ -2500,12 +2768,14 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(Item, _super);
 
-        /** @event */
+        /**
+         * @listens _W.Meta.Entity.Item#_onChanged
+         */
         Item.prototype._onChanged = function() {
             this.__event.publish("onChanged", this.value);
         };
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         Item.prototype.getTypes  = function() {
                     
             var type = ["Item"];
@@ -2547,7 +2817,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * @method
+         * 제약조건 설정
          */
         Item.prototype.setConstraint = function(p_regex, p_msg, p_code, p_return) {
             p_return = p_return || false;
@@ -2593,7 +2863,7 @@ if (typeof Array.isArray === "undefined") {
         // };
         
         /**
-         * 
+         * 검사
          * @param {string} p_value 
          * @param {object} r_result 메세지는 참조(객체)형 으로 전달
          * @param {number} p_option 1. isNotNull 참조 | 2: null검사 진행   |  3: null검사 무시
@@ -2666,7 +2936,10 @@ if (typeof Array.isArray === "undefined") {
     //---------------------------------------
     var ItemCollection  = (function (_super) {
         /**
-         * @class
+         * 아이템 컬렉션 (최상위)
+         * @constructs _W.Meta.Entity.ItemCollection
+         * @extends _W.Collection.PropertyCollection
+         * @abstract
          * @param {*} p_onwer 소유자 
          */
         function ItemCollection(p_onwer) {
@@ -2689,6 +2962,11 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(ItemCollection, _super);
         
+        /**
+         * 유무 검사
+         * @param {*} p_elem 
+         * @returns {*} 
+         */
         ItemCollection.prototype.contains = function(p_elem) {
 
             if (p_elem instanceof Item) {
@@ -2698,6 +2976,12 @@ if (typeof Array.isArray === "undefined") {
             }
         };
 
+        /**
+         * 아이템 추가 : 이름, 값
+         * @param {*} p_name 
+         * @param {*} p_value 
+         * @returns {*}
+         */
         ItemCollection.prototype.addValue  = function(p_name, p_value) {
 
             var item;
@@ -2723,8 +3007,9 @@ if (typeof Array.isArray === "undefined") {
     //---------------------------------------
     var ItemTableCollection  = (function (_super) {
         /**
-         * @class
-         * @constructor
+         * 테이블 아이템 컬렉션
+         * @constructs _W.Meta.Entity.ItemTableCollection
+         * @extends _W.Meta.Entity.ItemCollection
          * @param {*} p_onwer 소유자
          * @param {?ItemCollection} p_baseCollection 참조기본 컬렉션
          */
@@ -2767,8 +3052,8 @@ if (typeof Array.isArray === "undefined") {
     //---------------------------------------
     var ItemViewCollection  = (function (_super) {
         /**
-         * @class
-         * @constructor
+         * @constructs _W.Meta.Entity.ItemViewCollection
+         * @extends _W.Meta.Entity.ItemCollection
          * @param {*} p_onwer 소유자
          * @param {?ItemCollection} p_baseCollection 참조기본 컬렉션
          */
@@ -2799,7 +3084,7 @@ if (typeof Array.isArray === "undefined") {
          *  TODO:: filter 옵션 : 충돌방지에 이용
          *  TODO:: 객체 비교는 string 이 아니고 값과 타입을 비교해야함 (그래야 참조를 사용)
          * 
-         * @param {string, Item} p_object 
+         * @param {String | Item} p_object 
          * @param {?ItemCollection} p_baseCollection
          */
         ItemViewCollection.prototype.add  = function(p_object, p_baseCollection) {
@@ -2845,6 +3130,10 @@ if (typeof Array.isArray === "undefined") {
             return _super.prototype.add.call(this, i_name, i_value);
         };
 
+        /**
+         * 엔티티 추가
+         * @param {*} p_entity 
+         */
         ItemViewCollection.prototype.addEntity  = function(p_entity) {
             if (typeof p_entity === "undefined" && !(p_entity instanceof MetaElement && p_entity.instanceOf("Entity"))) {
                 throw new Error("Only [p_entity] type 'Entity' can be added");
@@ -2877,7 +3166,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.Entity.ItemDOM
+ * namespace _W.Meta.Entity.ItemDOM
  */
 (function(global) {
 
@@ -2915,7 +3204,8 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var ItemDOM  = (function (_super) {
         /**
-         * @class
+         * @constructs _W.Meta.Entity.ItemDOM
+         * @extends _W.Meta.Entity.Item
          */
         function ItemDOM(p_name, p_entity, p_option) {
             _super.call(this, p_name, p_entity, p_option);
@@ -2927,7 +3217,6 @@ if (typeof Array.isArray === "undefined") {
             var __filter        = null;
             var __selector      = null;
 
-            /** @property {domType} */
             Object.defineProperty(this, "domType", 
             {
                 get: function() { return __domType; },
@@ -2940,7 +3229,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
             
-            /** @property {isReadOnly} */
             Object.defineProperty(this, "isReadOnly", 
             {
                 get: function() { return __isReadOnly; },
@@ -2952,7 +3240,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
             
-            /** @property {isHide} */
             Object.defineProperty(this, "isHide", 
             {
                 get: function() { return __isHide; },
@@ -2964,7 +3251,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
             
-            /** @property {element} */
             Object.defineProperty(this, "element", 
             {
                 get: function() { return __element; },
@@ -2976,19 +3262,20 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {selector} */
+            /**
+             * 셀렉터
+             * type
+             *  - val | value   : 요소의 value 속성값
+             *  - text          : 요소의 텍스트값
+             *  - html          : 요소의 html값
+             *  - css.속성명    : css 의 속성값 (객체)
+             *  - prop.속성명   : 요소의 속성명값 (초기상태기준)
+             *  - attr.속성명   : 요소의 속성명값 (현재상태)
+             *  - none         : 아무일도 하지 않음, 표현의 목적
+             * @member _W.Meta.Entity.ItemDOM#selector
+             */
             Object.defineProperty(this, "selector", 
             {
-                /**
-                 * type
-                 *  - val | value   : 요소의 value 속성값
-                 *  - text          : 요소의 텍스트값
-                 *  - html          : 요소의 html값
-                 *  - css.속성명    : css 의 속성값 (객체)
-                 *  - prop.속성명   : 요소의 속성명값 (초기상태기준)
-                 *  - attr.속성명   : 요소의 속성명값 (현재상태)
-                 *  - none         : 아무일도 하지 않음, 표현의 목적
-                 */
                 get: function() { return __selector; },
                 set: function(newValue) { 
                     var selector = { key: "", type: "value" };
@@ -3006,7 +3293,7 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {value} 오버라이딩 */
+            /** property {value} 오버라이딩 */
             Object.defineProperty(this, "value", 
             {
                 get: function() { 
@@ -3109,7 +3396,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
             
-            /** @property {filter} */
             Object.defineProperty(this, "filter", 
             {
                 get: function() { return __filter; },
@@ -3137,7 +3423,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(ItemDOM, _super);
     
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         ItemDOM.prototype.getTypes  = function() {
                     
             var type = ["ItemDOM"];
@@ -3145,7 +3431,7 @@ if (typeof Array.isArray === "undefined") {
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         ItemDOM.prototype.clone  = function() {
                     
             var top = _super.prototype.clone.call(this);
@@ -3196,6 +3482,9 @@ if (typeof Array.isArray === "undefined") {
             // TODO::
         };
 
+        /**
+         * TODO:
+         */
         ItemDOM.prototype.toEntityColumn = function() {
             // TODO::
         };
@@ -3215,8 +3504,8 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.Entity.Row
- * @namespace _W.Meta.Entity.RowCollection
+ * namespace _W.Meta.Entity.Row
+ * namespace _W.Meta.Entity.RowCollection
  */
 (function(global) {
 
@@ -3258,7 +3547,9 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var Row  = (function (_super) {
         /**
-         * @abstract @class
+         * 로우
+         * @constructs _W.Meta.Enity.Row
+         * @extends _W.Collection.PropertyCollection
          */
         function Row(p_entity) {
             _super.call(this, p_entity);
@@ -3286,7 +3577,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(Row, _super);
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         Row.prototype.getTypes  = function() {
                     
             var type = ["Row"];
@@ -3295,6 +3586,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
+         * 복사
          * @param {Object} p_filter 필터객체
          */
         Row.prototype.copy = function(p_filter) {
@@ -3304,6 +3596,10 @@ if (typeof Array.isArray === "undefined") {
             if (this.value) clone["value"] = this.value;
         };
         
+        /**
+         * 복제
+         * @returns {*}
+         */
         Row.prototype.clone  = function() {
           
             var clone = new Row(this.entity);
@@ -3324,7 +3620,9 @@ if (typeof Array.isArray === "undefined") {
     //---------------------------------------
     var RowCollection  = (function (_super) {
         /**
-         * @class
+         * 로우 컬렉션
+         * @constructs _W.Meta.Entity.RowCollection
+         * @extends _W.Collection.ArrayCollection
          * @param {*} p_onwer 소유자 
          */
         function RowCollection(p_onwer) {
@@ -3335,7 +3633,7 @@ if (typeof Array.isArray === "undefined") {
         util.inherits(RowCollection, _super);
 
         /**
-         * 
+         * 추가
          * @param {String | Item} p_row 
          * @returns {Item} 등록한 아이템
          */
@@ -3370,7 +3668,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.Entity.Entity
+ * namespace _W.Meta.Entity.Entity
  */
 (function(global) {
 
@@ -3426,7 +3724,12 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var Entity  = (function (_super) {
         /**
-         * @abstract @class
+         * 엔티티
+         * @constructs _W.Meta.Entity.Entity
+         * @extends _W.Meta.MetaElement
+         * @implements {_W.Interface.IGroupControl}
+         * @implements {_W.Interface.IAllControl}
+         * @param {*} p_name 
          */
         function Entity(p_name) {
             _super.call(this, p_name);
@@ -3434,7 +3737,6 @@ if (typeof Array.isArray === "undefined") {
             var __items = null;     // 상속해서 생성해야함
             var __rows  = new RowCollection(this);
 
-            /** @property {first} */
             Object.defineProperty(this, "items", 
             {
                 get: function() { return __items; },
@@ -3446,7 +3748,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
             
-            /** @property {first} */
             Object.defineProperty(this, "rows", 
             {
                 get: function() { return __rows; },
@@ -3458,12 +3759,16 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @implements IGroupControlI 인터페이스 구현 */
-            /** @implements IAllControl 인터페이스 구현 */
             this._implements(IGroupControl, IAllControl);                
         }
         util.inherits(Entity, _super);
 
+        /**
+         * 아이템 추가 (내부)
+         * @Private
+         * @param {*} p_name 
+         * @param {*} p_property 
+         */
         Entity.prototype.__addItem  = function(p_name, p_property) {
             
             if(!this.items.contains(this.items[p_name])) this.items.add(p_name);
@@ -3493,6 +3798,12 @@ if (typeof Array.isArray === "undefined") {
             }            
         };
 
+        /**
+         * 로드 JSON
+         * @private 
+         * @param {*} p_object 
+         * @param {*} p_option 
+         */
         Entity.prototype.__loadJSON  = function(p_object, p_option) {
             p_option = p_option || 1;   // 기본값 덮어쓰기
             
@@ -3560,6 +3871,12 @@ if (typeof Array.isArray === "undefined") {
             }   
         };
 
+        /**
+         * 로드 Entity
+         * @private
+         * @param {*} p_object 
+         * @param {*} p_option 
+         */
         Entity.prototype.__loadEntity  = function(p_object, p_option) {
             p_option = p_option || 1;   // 기본값 덮어쓰기
 
@@ -3599,7 +3916,7 @@ if (typeof Array.isArray === "undefined") {
             if (p_option === 1) this.__fillRow(entity);
         };
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         Entity.prototype.getTypes = function() {
             
             var type = ["Entity"];
@@ -3612,10 +3929,17 @@ if (typeof Array.isArray === "undefined") {
             // TODO::
         };
 
+        /**
+         * 새로운 Row 추가
+         */
         Entity.prototype.newRow  = function() {
             return new Row(this);
         };
 
+        /**
+         * value 설정
+         * @param {*} p_row 
+         */
         Entity.prototype.setValue  = function(p_row) {
             
             if (!(p_row instanceof Row)) throw new Error("Only [p_row] type 'Row' can be added");
@@ -3625,6 +3949,9 @@ if (typeof Array.isArray === "undefined") {
             }
         };
 
+        /**
+         * value 얻기
+         */
         Entity.prototype.getValue  = function() {
             
             var row = this.newRow();
@@ -3726,7 +4053,12 @@ if (typeof Array.isArray === "undefined") {
             return entity;
         };
 
-        /**@abstract IGroupControl */
+        /**
+         * 복사
+         * @param {*} p_filter 
+         * @param {*} p_index 
+         * @param {*} p_end 
+         */
         Entity.prototype.copy  = function(p_filter, p_index, p_end) {
             
             var entity = this.select(p_filter, p_index, p_end);
@@ -3737,12 +4069,13 @@ if (typeof Array.isArray === "undefined") {
         /**
          * "구조를 구성하는게 주용도임"
          * 병합 : 컬렉션 순서에 따라 병한다.
-         * * @param {*} p_target 병합할 Entity
-         * @param {*} p_option {item: 1, row:2}
          * Item과 Row가 있는 경우
          * - 1 items, rows 병합 (기존유지) *기본값
          * - 2 items, rows 병합 (덮어쓰기)  
          * - 3 row 안가져오기    (기존유지)
+         * @param {*} p_target 병합할 Entity
+         * @param {*} p_option {item: 1, row:2}
+
          */
         Entity.prototype.merge  = function(p_target, p_option) {
             p_option = p_option || 1;    // 기본값
@@ -3824,7 +4157,7 @@ if (typeof Array.isArray === "undefined") {
             this.rows.clear();
         };
 
-        /** @abstract IAllControl */
+        /** @abstract */
         Entity.prototype.clone  = function() {
             throw new Error("[ clone() ] Abstract method definition, fail...");
         };
@@ -3844,8 +4177,8 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.Entity.EntityTable
- * @namespace _W.Meta.Entity.EntityTableCollection
+ * namespace _W.Meta.Entity.EntityTable
+ * namespace _W.Meta.Entity.EntityTableCollection
  */
 (function(global) {
 
@@ -3886,7 +4219,12 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var EntityTable  = (function (_super) {
-        /** @class */
+        /**
+         * 테이블 엔티티
+         * @constructs _W.Meta.Entity.EntityTable
+         * @extends _W.Meta.Entity.Entity
+         * @param {*} p_name 
+         */
         function EntityTable(p_name) {
             _super.call(this, p_name);
 
@@ -3894,7 +4232,7 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(EntityTable, _super);
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         EntityTable.prototype.getTypes  = function() {
             
             var type = ["EntityTable"];
@@ -3907,6 +4245,10 @@ if (typeof Array.isArray === "undefined") {
             // TODO::
         };
 
+        /**
+         * 복제
+         * @returns {*}
+         */
         EntityTable.prototype.clone  = function() {
             
             var clone = new EntityTable(this.name);
@@ -3932,7 +4274,9 @@ if (typeof Array.isArray === "undefined") {
      //---------------------------------------
      var EntityTableCollection  = (function (_super) {
         /**
-         * @class
+         * 테이블 엔티티 컬렉션
+         * @constructs _W.Meta.Entity.EntityTableCollection
+         * @extends _W.Collection.PropertyCollection
          * @param {*} p_onwer 소유자 
          */
         function EntityTableCollection(p_onwer) {
@@ -3943,7 +4287,7 @@ if (typeof Array.isArray === "undefined") {
         util.inherits(EntityTableCollection, _super);
 
         /**
-         * 
+         * 엔티티 추가
          * @param {String | Item} p_object 
          * @returns {Item} 등록한 아이템
          */
@@ -3985,8 +4329,8 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.Entity.EntityView
- * @namespace _W.Meta.Entity.EntityViewCollection
+ * namespace _W.Meta.Entity.EntityView
+ * namespace _W.Meta.Entity.EntityViewCollection
  */
 (function(global) {
 
@@ -4032,7 +4376,11 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var EntityView  = (function (_super) {
         /**
-         * @abstract @class
+         * 뷰 엔티티
+         * @constructs _W.Meta.Entity.EntityView
+         * @extends _W.Meta.Entity.Entity
+         * @param {*} p_name 
+         * @param {*} p_baseEntity 
          */
         function EntityView(p_name, p_baseEntity) {
             _super.call(this, p_name);
@@ -4060,7 +4408,7 @@ if (typeof Array.isArray === "undefined") {
             if (this._refEntities.indexOf(p_entity) < 0) this._refEntities.push(p_entity);
         };
         
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** @override **/
         EntityView.prototype.getTypes  = function() {
             
             var type = ["EntityView"];
@@ -4073,6 +4421,10 @@ if (typeof Array.isArray === "undefined") {
             // TODO::
         };
 
+        /**
+         * 복제
+         * @returns {*}
+         */
         EntityView.prototype.clone  = function() {
             
             var clone = new EntityView(this.name);  // 뷰를 복제하면 참조타입 >> 엔티티타입으로 변경
@@ -4100,7 +4452,9 @@ if (typeof Array.isArray === "undefined") {
     //---------------------------------------
     var EntityViewCollection  = (function (_super) {
         /**
-         * @class
+         * 뷰 엔티티 컬렉션
+         * @constructs _W.Meta.Entity.EntityViewCollection
+         * @extends _W.Meta.Entity.PropertyCollection
          * @param {*} p_onwer 소유자 
          */
         function EntityViewCollection(p_onwer) {
@@ -4157,7 +4511,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Entity.EntitySet
+ * namespace _W.Meta.Entity.EntitySet
  */
 (function(global) {
 
@@ -4198,7 +4552,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.Bind.BaseBind
+ * namespace _W.Meta.Bind.BaseBind
  */
 (function(global) {
 
@@ -4240,7 +4594,10 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var BaseBind  = (function (_super) {
         /**
-         * @abstract @class 추상클래스
+         * 기본 바인드 (최상위)
+         * @constructs _W.Meta.Bind.BaseBind
+         * @abstract
+         * @extends _W.Meta.MetaObject
          */
         function BaseBind() {
             _super.call(this);
@@ -4252,9 +4609,17 @@ if (typeof Array.isArray === "undefined") {
             this.__event    = new Observer(this, this);
 
             // Protected
+            /**
+             * 심볼 (내부 심볼 등록)
+             * @protected
+             */
             this._symbol        = [];
 
-            /** @property */
+            /**
+             * 기본 엔티티
+             * @member _W.Meta.Bind.BaseBind#_baseEntity
+             * @protected
+             */
             Object.defineProperty(this, "_baseEntity", 
             {
                 get: function() { return __baseEntity; },
@@ -4266,7 +4631,10 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });  
 
-            /** @property */
+            /**
+             * 실행전 이벤트
+             * @event _W.Meta.Bind.BaseBind#onExecute
+             */
             Object.defineProperty(this, "onExecute", {
                 enumerable: true,
                 configurable: true,
@@ -4275,7 +4643,10 @@ if (typeof Array.isArray === "undefined") {
                 }
             });
 
-            /** @property */
+            /**
+             * 실행후 이벤트
+             * @event _W.Meta.Bind.BaseBind#onExecuted
+             */
             Object.defineProperty(this, "onExecuted", {
                 enumerable: true,
                 configurable: true,
@@ -4292,7 +4663,10 @@ if (typeof Array.isArray === "undefined") {
         util.inherits(BaseBind, _super);
 
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** 
+         * 상속 클래스에서 오버라이딩 필요!!
+         * @override
+         */
         BaseBind.prototype.getTypes  = function() {
                     
             var type = ["BaseBind"];
@@ -4301,11 +4675,17 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /** @event */
+        /**
+         * @listens _W.Meta.Bind.BaseBind#_onExecute
+         */
         BaseBind.prototype._onExecute = function(p_bindCommand) {
             this.__event.publish("execute", p_bindCommand);
         };
 
         /** @event */
+        /**
+         * @listens _W.Meta.Bind.BaseBind#_onExecuted
+         */
         BaseBind.prototype._onExecuted = function(p_bindCommand, p_result) {
             this.__event.publish("executed", p_bindCommand, p_result); 
         };
@@ -4324,8 +4704,8 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.Bind.BindCommand
- */
+ * namespace _W.Meta.Bind.BindCommand
+ */ 
 (function(global) {
 
     "use strict";
@@ -4385,16 +4765,27 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var BindCommand  = (function (_super) {
         /**
-         * @abstract 바인드 명령 (상위)
-         * @class
+         * 바인드 명령 (상위)
+         * @constructs _W.Meta.Bind.BindCommand
+         * @abstract
+         * @extends _W.Meta.Bind.BaseBind
+         * @param {*} p_bindModel 
+         * @param {*} p_baseEntity 
          */
         function BindCommand(p_bindModel, p_baseEntity) {
             _super.call(this);
             
             p_baseEntity = p_baseEntity || p_bindModel._baseEntity;     // 기본값
 
-            /** @protected 소유자 */
+            /**
+             * 모델
+             * @protected  
+             */
             this._model = p_bindModel;          // 최상위 설정
+            /**
+             * 기본 요소
+             * @protected
+             */
             this._baseEntity = p_baseEntity;    // 최상위 설정
 
             this._output = new EntityViewCollection(this, this._baseEntity);
@@ -4421,7 +4812,7 @@ if (typeof Array.isArray === "undefined") {
             }
             
 
-            /** @property */
+            
             Object.defineProperty(this, "eventPropagation", {
                 enumerable: true,
                 configurable: true,
@@ -4432,7 +4823,6 @@ if (typeof Array.isArray === "undefined") {
                 get: function() { return __propagation; }
             }); 
             
-            /** @property {valid} */
             Object.defineProperty(this, "valid", 
             {
                 get: function() { return __valid; },
@@ -4444,7 +4834,7 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {bind} */
+
             Object.defineProperty(this, "bind", 
             {
                 get: function() { return __bind; },
@@ -4457,7 +4847,6 @@ if (typeof Array.isArray === "undefined") {
             });
             
 
-            /** @property {outputOption} */
             Object.defineProperty(this, "outputOption", 
             {
                 get: function() { return __outputOption; },
@@ -4470,7 +4859,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
             
-            /** @property {cbValid} */
             Object.defineProperty(this, "cbValid", 
             {
                 get: function() { return __cbValid; },
@@ -4482,7 +4870,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {cbBind} */
             Object.defineProperty(this, "cbBind", 
             {
                 get: function() { return __cbBind; },
@@ -4494,7 +4881,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {cbResult} */
             Object.defineProperty(this, "cbResult", 
             {
                 get: function() { return __cbResult; },
@@ -4506,7 +4892,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {cbOutput} */
             Object.defineProperty(this, "cbOutput", 
             {
                 get: function() { return __cbOutput; },
@@ -4518,7 +4903,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {vbEnd} */
             Object.defineProperty(this, "cbEnd", 
             {
                 get: function() { return __cbEnd; },
@@ -4529,7 +4913,6 @@ if (typeof Array.isArray === "undefined") {
                 configurable: true,
                 enumerable: true
             });    
-
 
             // 예약어 등록
             this._symbol = this._symbol.concat(["_model", "eventPropagation"]);
@@ -4551,8 +4934,8 @@ if (typeof Array.isArray === "undefined") {
 
         /** @override */
         BindCommand.prototype._onExecute = function(p_bindCommand) {
-            
             _super.prototype._onExecute.call(this, p_bindCommand);               // 자신에 이벤트 발생
+            
             if (this.eventPropagation) this._model._onExecute(p_bindCommand);    // 모델에 이벤트 추가 발생
         };
 
@@ -4562,7 +4945,10 @@ if (typeof Array.isArray === "undefined") {
             if (this.eventPropagation) this._model._onExecuted(p_bindCommand, p_result);
         };
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** 
+         * 상속 클래스에서 오버라이딩 필요!!
+         * @override  
+         */
         BindCommand.prototype.getTypes  = function() {
                     
             var type = ["BindCommand"];
@@ -4782,7 +5168,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.Bind.BindModel
+ * namespace _W.Meta.Bind.BindModel
  */
 (function(global) {
 
@@ -4847,8 +5233,10 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var BindModel  = (function (_super) {
         /**
-         * @abstract 추상클래스
-         * @class
+         * 바인드모델 추상클래스
+         * @constructs _W.Meta.Bind.BindModel
+         * @abstract
+         * @extends _W.Meta.Bind.BaseBind
          */
         function BindModel()  {
             _super.call(this);
@@ -4876,7 +5264,6 @@ if (typeof Array.isArray === "undefined") {
             //     throw new Error("Only [p_objectDI] type 'IBindModel' can be added");
             // }
             
-            /** @property {prop} */
             Object.defineProperty(this, "prop", 
             {
                 get: function() { return __prop; },
@@ -4888,7 +5275,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {fn} */
             Object.defineProperty(this, "fn", 
             {
                 get: function() { return __fn; },
@@ -4900,7 +5286,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {mapping} */
             Object.defineProperty(this, "mapping", 
             {
                 get: function() { return __mapping; },
@@ -4911,7 +5296,7 @@ if (typeof Array.isArray === "undefined") {
                 configurable: true,
                 enumerable: true
             });
-            /** @property {itemType} */
+
             Object.defineProperty(this, "itemType", 
             {
                 get: function() { return __itemType; },
@@ -4924,7 +5309,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {cbFail} */
             Object.defineProperty(this, "cbFail", 
             {
                 get: function() { return __cbFail; },
@@ -4936,7 +5320,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {cbError} */
             Object.defineProperty(this, "cbError", 
             {
                 get: function() { return __cbError; },
@@ -4948,7 +5331,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {cbBaseValid} */
             Object.defineProperty(this, "cbBaseValid", 
             {
                 get: function() { return __cbBaseValid; },
@@ -4960,7 +5342,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {cbBaseBind} */
             Object.defineProperty(this, "cbBaseBind", 
             {
                 get: function() { return __cbBaseBind; },
@@ -4972,7 +5353,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
             
-            /** @property {cbResult} */
             Object.defineProperty(this, "cbBaseResult", 
             {
                 get: function() { return __cbBaseResult; },
@@ -4984,7 +5364,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {cbBaseOutput} */
             Object.defineProperty(this, "cbBaseOutput", 
             {
                 get: function() { return __cbBaseOutput; },
@@ -4996,7 +5375,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {cbBaseEnd} */
             Object.defineProperty(this, "cbBaseEnd", 
             {
                 get: function() { return __cbBaseEnd; },
@@ -5018,12 +5396,16 @@ if (typeof Array.isArray === "undefined") {
             this._symbol = this._symbol.concat(["add", "addItem", "loadProp", "setMapping", "preReady", "addEntity"]);
             this._symbol = this._symbol.concat(["addCommand", "setService"]);
             
-            /** @implements IBindModel 인터페이스 구현 */
+            /** implements IBindModel 인터페이스 구현 */
+            // TODO: 삭제 하는제 맞을듯  
             this._implements(IBindModel);
         }
         util.inherits(BindModel, _super);
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /** 
+         * 상속 클래스에서 오버라이딩 필요!! 
+         * @override 
+         */
         BindModel.prototype.getTypes  = function() {
                     
             var type = ["BindModel"];
@@ -5031,7 +5413,7 @@ if (typeof Array.isArray === "undefined") {
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @method */
+        /** 초기화 */
         BindModel.prototype.init = function() {
             this.preRegister.call(this, this);
             if (this.preCheck.call(this, this)) {
@@ -5039,13 +5421,25 @@ if (typeof Array.isArray === "undefined") {
             }
         };
 
+        /**
+         * 전처리 등록
+         * @param {*} p_this 
+         */
         BindModel.prototype.preRegister = function(p_this) {
             return this.__preRegister.call(this, p_this);
         };
 
+        /**
+         * 전처리 검사
+         */
         BindModel.prototype.preCheck = function(p_this) {
             return this.__preCheck.call(this, p_this);
         };
+        
+        /**
+         * 전처리 준비
+         * @param {*} p_this 
+         */
         BindModel.prototype.preReady = function(p_this) {
             return this.__preReady.call(this, p_this);
         };
@@ -5273,11 +5667,23 @@ if (typeof Array.isArray === "undefined") {
             }
         };
 
+        /**
+         * 명령 추가
+         * @abstract
+         * @param {*} p_name 
+         * @param {*} p_option 
+         * @param {*} p_entities 
+         */
         BindModel.prototype.addCommand  = function(p_name, p_option, p_entities) {
 
             throw new Error("[ execute() ] Abstract method definition, fail...");
         };
 
+        /**
+         * 서비스 설정
+         * @param {*} p_service 
+         * @param {*} p_isLoadProp 
+         */
         BindModel.prototype.setService  = function(p_service, p_isLoadProp) {
 
             var propObject;
@@ -5421,7 +5827,7 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.Bind.BindCommandAjax
+ * namespace _W.Meta.Bind.BindCommandAjax
  */
 (function(global) {
 
@@ -5472,8 +5878,14 @@ if (typeof Array.isArray === "undefined") {
     //==============================================================
     // 4. 모듈 구현    
     var BindCommandAjax  = (function (_super) {
+        
         /**
-         * @class
+         * 바인드 명령 Ajax 
+         * @constructs _W.Meta.Bind.BindCommandAjax
+         * @extends _W.Meta.Bind.BindCommand
+         * @param {*} p_bindModel 
+         * @param {*} p_outputOption 
+         * @param {*} p_baseEntity 
          */
         function BindCommandAjax(p_bindModel, p_outputOption, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
@@ -5489,7 +5901,6 @@ if (typeof Array.isArray === "undefined") {
                 complete: null      // 완료 콜백
             };
 
-            /** @property {ajaxSetup} */
             Object.defineProperty(this, "ajaxSetup", 
             {
                 get: function() { return __ajaxSetup; },
@@ -5497,7 +5908,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {url} */
             Object.defineProperty(this, "url", 
             {
                 get: function() { return __ajaxSetup.url; },
@@ -5559,7 +5969,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * Ajax 바인딩 구현
-         * @method
+         * @protected
          */
         BindCommandAjax.prototype._execBind = function() {
             
@@ -5592,10 +6002,11 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * 
+         * 실행 성공
          * @param {*} p_result 
          * @param {*} p_status 
          * @param {*} p_xhr 
+         * @protected
          */
         BindCommandAjax.prototype._execSuccess = function(p_result, p_status, p_xhr) {
             
@@ -5655,6 +6066,7 @@ if (typeof Array.isArray === "undefined") {
          * @param {*} p_xhr 
          * @param {*} p_status 
          * @param {*} p_error 
+         * @protected
          */
         BindCommandAjax.prototype._execError = function(p_xhr, p_status, p_error) {
             
@@ -5668,6 +6080,7 @@ if (typeof Array.isArray === "undefined") {
          * (WEB & NodeJs 의 어뎁터 패턴)
          * node 에서는 비동기만 반영함 (테스트 용도) =>> 필요시 개발함
          * @param {Object} p_ajaxSetup 
+         * @protected
          */
         BindCommandAjax.prototype._ajaxAdapter = function(p_ajaxSetup) {
             
@@ -5721,7 +6134,10 @@ if (typeof Array.isArray === "undefined") {
             }
         };
 
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /**
+         * 상속 클래스에서 오버라이딩 필요!! 
+         * @override 
+         */
         BindCommandAjax.prototype.getTypes  = function() {
                     
             var type = ["BindCommandAjax"];
@@ -5730,7 +6146,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * @method 
+         * 실행 
          */
         BindCommandAjax.prototype.execute = function() {
             this._onExecute(this);  // "실행 시작" 이벤트 발생
@@ -5753,8 +6169,8 @@ if (typeof Array.isArray === "undefined") {
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
 /**
- * @namespace _W.Meta.Bind.BindModelAjax
- */
+ * namespace _W.Meta.Bind.BindModelAjax
+ */ 
 (function(global) {
 
     "use strict";
@@ -5804,7 +6220,10 @@ if (typeof Array.isArray === "undefined") {
     // 4. 모듈 구현    
     var BindModelAjax  = (function (_super) {
         /**
-         * @class
+         * 바인드모델 Ajax
+         * @constructs _W.Meta.Bind.BindModelAjax
+         * @extends _W.Meta.Bind.BindModel
+         * @param {*} p_service 
          */
         function BindModelAjax(p_service) {
             _super.call(this);
@@ -5819,7 +6238,6 @@ if (typeof Array.isArray === "undefined") {
             this._baseEntity.items.itemType = this.itemType;            // base 엔티티 타입 변경
             this.items                      = this._baseEntity.items;   // 참조 추가
 
-            /** @property {baseAjaxSetup} */
             Object.defineProperty(this, "baseAjaxSetup", 
             {
                 get: function() { return __baseAjaxSetup; },
@@ -5827,7 +6245,6 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            /** @property {baseUrl} */
             Object.defineProperty(this, "baseUrl", 
             {
                 get: function() { return __baseAjaxSetup.url; },
@@ -5848,7 +6265,10 @@ if (typeof Array.isArray === "undefined") {
         }
         util.inherits(BindModelAjax, _super);
     
-        /** @override 상속 클래스에서 오버라이딩 필요!! **/
+        /**
+         * 상속 클래스에서 오버라이딩 필요!! *
+         * @override
+         */
         BindModelAjax.prototype.getTypes  = function() {
                     
             var type = ["BindModelAjax"];
@@ -5856,6 +6276,10 @@ if (typeof Array.isArray === "undefined") {
             return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
+        /**
+         * 셀렉터 검사
+         * @param {*} p_collection 
+         */
         BindModelAjax.prototype.checkSelector  = function(p_collection) {
             
             var collection = p_collection || this.prop;
@@ -5903,6 +6327,10 @@ if (typeof Array.isArray === "undefined") {
             return true;
         };
 
+        /**
+         * 셀렉터 목록 얻기
+         * @param {*} p_isLog 
+         */
         BindModelAjax.prototype.listSelector  = function(p_isLog) {
             
             var collection = this.items;
@@ -5943,6 +6371,12 @@ if (typeof Array.isArray === "undefined") {
             return selectors;
         };
 
+        /**
+         * 명령 추가
+         * @param {*} p_name 
+         * @param {*} p_option 
+         * @param {*} p_entities 
+         */
         BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_entities) {
 
             // 유효성 검사
