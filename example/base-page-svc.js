@@ -9,12 +9,11 @@
     var util;
     var IBindModel;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        // util                = require("./utils");
-        // IBindModel    = require("./i-marshal");
-    } else {
+    if (typeof module !== "object") {                   // Web
         util                = global._W.Common.Util;
         IBindModel          = global._W.Interface.IBindModel;
+    } else if (typeof module.exports === "object"){     // node
+        // util                = require("./utils");
     }
 
     //==============================================================
@@ -110,7 +109,7 @@
             
             this.onExecute = function(p_bindCommand) {          // 실행시 이벤트 등록
                 console.log("onExecute 이벤트. ");
-                $('.mLoading').show();
+                $(".mLoading").show();
             };
 
             /**
@@ -120,7 +119,7 @@
              */
             this.onExecuted = function(p_bindCommand) {         // 실행끝 이벤트 등록
                 console.log("onExecuted 이벤트.. ");
-                $('.mLoading').hide();
+                $(".mLoading").hide();
             };
         }
         util.inherits(BaseService, _super);
@@ -316,12 +315,12 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        // module.exports = BaseService;
-    } else {
+    if (typeof module !== "object") {                   // Web
         global._W.Meta.Bind.BaseService = BaseService;
         global.BaseService = BaseService;
         global.PageView = PageView;
+    } else if (typeof module.exports === "object"){     // node
+        // module.exports = BaseService;
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));

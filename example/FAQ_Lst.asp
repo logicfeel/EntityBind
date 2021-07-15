@@ -206,12 +206,12 @@
 	
 	// 속성 설정
     faq.prop["__listUrl"] = "FAQ_Frm.asp";
-	faq.items['page_size'].value = 3;
-	faq.prop['__isGetLoad'] = false;
+	faq.items["page_size"].value = 3;
+	faq.prop["__isGetLoad"] = false;
 	// 이벤트 바인딩
-	$('#btn_Search').click(faq.fn.search);
-	$('#btn_Reset').click(faq.fn.reset);
-	$('#changePagesize').change(faq.fn.changePagesize);
+	$("#btn_Search").click(faq.fn.search);
+	$("#btn_Reset").click(faq.fn.reset);
+	$("#changePagesize").change(faq.fn.changePagesize);
     //--------------------------------------------------------------
 	$(document).ready(function () {
         faq.init();

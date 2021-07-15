@@ -113,7 +113,9 @@
              */
             this.command = {
                 create:         {
-                    onExecute: function(p_bindCommand) { _this.bindModel.items["cmd"].value = "CREATE"; },
+                    onExecute: function(p_bindCommand) { 
+                        _this.bindModel.items["cmd"].value = "CREATE"; 
+                    },
                     cbEnd: function(p_entity) {
                         if (p_entity["return"] < 0) return alert("등록 처리가 실패 하였습니다. Code : " + p_entity["return"]);
                         location.href = _this.bindModel.prop["__listUrl"];
@@ -121,13 +123,17 @@
                 },
                 read:           {
                     outputOption: 3,
-                    onExecute: function(p_bindCommand) { _this.bindModel.items["cmd"].value = "READ"; },
+                    onExecute: function(p_bindCommand) { 
+                        _this.bindModel.items["cmd"].value = "READ"; 
+                    },
                     cbEnd: function(p_entity) {
                         if (p_entity["return"] < 0) return alert("조회 처리가 실패 하였습니다. Code : " + p_entity["return"]);
                     }
                 },
                 update:         {
-                    onExecute: function(p_bindCommand) { _this.bindModel.items["cmd"].value = "UPDATE"; },
+                    onExecute: function(p_bindCommand) { 
+                        _this.bindModel.items["cmd"].value = "UPDATE"; 
+                    },
                     cbEnd: function(p_entity) {
                         if (p_entity["return"] < 0) return alert("수정 처리가 실패 하였습니다. Code : " + p_entity["return"]);
                         alert("수정 처리가 되었습니다.");
@@ -135,8 +141,12 @@
                     }
                 },
                 delete:         {
-                    onExecute: function(p_bindCommand) { p_this.bindModel.items["cmd"].value = "DELETE"; },
-                    cbValid: function(p_valid) { return confirm("삭제 하시겠습니까.?"); },
+                    onExecute: function(p_bindCommand) { 
+                        p_this.bindModel.items["cmd"].value = "DELETE"; 
+                    },
+                    cbValid: function(p_valid) { 
+                        return confirm("삭제 하시겠습니까.?"); 
+                    },
                     cbEnd: function(p_entity) {
                         if (p_entity["return"] < 0) return alert("삭제 처리가 실패 하였습니다. Result Code : " + p_entity["return"]);
                         location.href = _this.bindModel.prop["__listUrl"];
@@ -185,10 +195,22 @@
                 create_dt:      { read:     "output",   create:     "bind",            update:  "bind" },
             };
 
+            /**
+             * 공개 함수
+             * - searchList() : 목록 검색
+             * - changePagesize(e) : 목록 페이지 크기 변경
+             * - resetForm() : 폼 초기화
+             * - moveList() : 목록 화면 이동
+             * - moveForm() : 폼 화면 이동
+             * - procList() : 목록 조회 처리
+             * - procRead() : 조회 처리
+             * - procCreate() : 등록 처리
+             * - procUpdate() : 수정 처리
+             * - procDelete() : 삭제 처리
+             * - procList() : 목록 조회 처리
+             */
             this.fn = {
-                viewList: function () { 
-                    _this.bindModel.list.execute(); 
-                },
+                
                 searchList: function() {
                     page.page_count = 1;
                     _this.bindModel.list.execute();
@@ -223,6 +245,9 @@
                 },
                 procDelete: function () { 
                     _this.bindModel.delete.execute(); 
+                },
+                procList: function () { 
+                    _this.bindModel.list.execute(); 
                 },
             };
         }
@@ -284,11 +309,11 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
-
-    } else {
+    if (typeof module !== "object") {                   // Web
         global.BoardFaqService = BoardFaqService;
         global.page = page;
+    } else if (typeof module.exports === "object"){     // node
+        // module.exports = BaseService;
     }
 
 }(typeof module === "object" && typeof module.exports === "object" ? global : window));
