@@ -356,7 +356,7 @@
             if (this.increase) clone["increase"]        = this.increase;
             if (this.value) clone["value"]              = this.value;
             if (this.getter) clone["getter"]            = this.getter;
-            if (this.getter) clone["setter"]            = this.setter;
+            if (this.setter) clone["setter"]            = this.setter;
 
             return clone;
         };

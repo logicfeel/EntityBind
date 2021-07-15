@@ -86,8 +86,8 @@
 	            <p class="total">검색결과 <strong id="totalView">0</strong>건</p>
             </div>
 	        <div class="gRight">
-	            <select id="s-txt-pageSize" name="listCnt" class="fSelect">
-	                <option value="10" selected>10개씩보기</option>
+	            <select id="changePagesize" name="m-page_size" class="fSelect">
+					<option value="10" selected>10개씩보기</option>
 	                <option value="20">20개씩보기</option>
 	                <option value="30">30개씩보기</option>
 	                <option value="50">50개씩보기</option>
@@ -197,54 +197,27 @@
 
 </div>        
 <script src="/Common/js/handlebars.js"></script>
-<script src="/Common/js/page-view.js"></script> <!-- base 포함 대상 -->
 <script src="/Common/js/_w-meta-1.5.2.js?<%=g_iRandomID%>"></script>
 <script src="/Admin/adm_cmn/Service/base-page-svc.js?<%=g_iRandomID%>"></script>
 <script src="/Admin/adm_mod/BOD/Service/board-faq-svc.js?<%=g_iRandomID%>"></script>
 <script>
 	// #######################################################################################################
-	var faq = new BindModelAjax(new FAQ_EventService());
-	// var faq = new BindModelAjax({});
+	var faq = new BindModelAjax(new BoardFaqService());
 	
-	// var svc = new FAQ_EventService();
-	// faq.setService(svc);
-
-	// var Service = FAQ_EventService.bind(faq);
-	// var svc = new Service();
-	// faq.setService(svc);
-
-	// var svc = new FAQ_EventService();
-	// svc.bindModel = faq;
-	// faq.setService(svc);
-	
+	// 속성 설정
     faq.prop["__listUrl"] = "FAQ_Frm.asp";
+	faq.items['page_size'].value = 3;
+	faq.prop['__isGetLoad'] = false;
 	// 이벤트 바인딩
 	$('#btn_Search').click(faq.fn.search);
 	$('#btn_Reset').click(faq.fn.reset);
-	// $('#changePagesize').change(faq.fn.changePagesize);
+	$('#changePagesize').change(faq.fn.changePagesize);
     //--------------------------------------------------------------
 	$(document).ready(function () {
         faq.init();
-		faq.fn.list2();
+		faq.fn.viewList();
     });
-
-	var Aaa = function(ppp){
-		this.a = ppp;
-		this.b = 1;
-	}
-	Aaa.prototype.get= function() {
-		return abc.a * this.b;
-	}
-
-	// var obj = {b: 10};
-
-	// var Bbb = Aaa.bind(obj);
-
-	// var aaa = new Aaa(100);
-	// var bbb = new Bbb(100);
-
-	var abc = new Aaa(2);
-
+	 console.log("ready");
 </script>
 </body>
 </html>            

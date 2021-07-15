@@ -1,7 +1,7 @@
 /**
  * @namespace _W.Service
  */
-(function(global) {
+ (function(global) {
     "use strict";
    
     //==============================================================
@@ -27,39 +27,34 @@
 
     //==============================================================
     // 4. 모듈 구현    
-    var page = new PageView("page", 10);
+    var page = new PageView("page", 3);
 
-    var BoardFAQService  = (function (_super) {
+    var BoardFaqService  = (function (_super) {
         /**
-         * IMarshal 인터페이스는 IObject를 상속함
-         * @constructs _W.Service.BoardFAQService
+         * FAQ 게시판 서비스
+         * @constructs _W.Service.BoardFaqService
+         * @extends _W.Service.BaseServiceW
          * @param {String} p_suffix 셀렉터 접미사
          */
-        function BoardFAQService(p_suffix) {
+        function BoardFaqService(p_suffix) {
             _super.call(this);
             
             var _SUFF       = p_suffix || "";  // 접미사
             var _this       = this;
             var _template   = null;
 
-            this.bindModel  = null;     // 인터페이스에 정의됨
+            this.bindModel  = null;             // TODO: IBindModel 에 구현 해야함
 
             /**
-             * 기본 경로
+             * 기본 콜백 경로
              */
             this.baseUrl = "/Admin/adm_mod/BOD/Board_FAQ.C.asp";
 
             /**
-             * # _temp_list (기본셀렉터: #s-temp-list)
-             * - 템플릿 목록의 셀렉터 
-             * # keyword (기본셀렉터: #m-keyword)
-             * - 검색 키워드 
-             * # sort
-             * - 정력방식
-             * @example
-             * // 이벤트 바인딩
-             * $('#btn_Search').click(faq.fn.search);
-             * $('#btn_Reset').click(faq.fn.reset);
+             * 속성
+             * - innner 속성 : 
+             * - view 속성:
+             * - bind 속성 : 
              */
             this.prop = {
                 // inner
@@ -72,17 +67,16 @@
                 _area_list:     { selector: { key: "#s-area-list"+ _SUFF,        type: "html" } },
                 _area_page:     { selector: { key: "#s-area-page"+ _SUFF,        type: "html" } },
                 _txt_totalView: { selector: { key: "#s-txt-totalView"+ _SUFF,    type: "html" } },
-                _txt_pageSize:  { selector: { key: "#s-txt-pageSize"+ _SUFF,     type: "value" } },
                 // bind
                 cmd:            "",
                 keyword:        { selector: { key: "#m-keyword"+ _SUFF,          type: "value" } },
                 page_size:      {
-                    getter: function() { return page.page_size; },
-                    setter: function(val) { page.page_size = val; }
+                    setter:     function(val) { page.page_size = val; },
+                    selector:   { key: "select[name=m-page_size]"+ _SUFF,    type: "value" },
                 },
-                page_count:     {
+                page_count:     {   /** 값을 외부에서 관리함! */
                     getter: function() { return page.page_count; },
-                    setter: function(val) { page.page_count = val; }
+                    setter: function(val) { return page.page_count = val; }
                 },              
                 sort_cd:        "",
                 faq_idx:        "",
@@ -93,13 +87,13 @@
                 create_dt:      { selector: { key: "#m-create_dt"+ _SUFF,       type: "value" } },
             };
 
-            /** 
+            /**
              * 명령들
-             * # create : 등록
-             * - onExecute : 실행전
-             * - cbEnd: 실행종료
-             * # read : 조회
-             * - outputOption = 3 : 출력옵션
+             * - create :
+             * - read :
+             * - update :
+             * - delete :
+             * - list :
              */
             this.command = {
                 create:     {
@@ -159,14 +153,8 @@
             }
 
             /**
-             * @typedef PropertiesHash
-             * @type {object}
-             * @property {string} id - an ID.
-             * @property {string} name - your name.
-             * @property {number} age - your age.
+             * 속성의 매핑
              */
-
-            /** @type {PropertiesHash} */
             this.mapping = {
                 cmd:            { Array:    "bind" },
                 keyword:        { list:     "bind" },
@@ -181,89 +169,101 @@
                 create_dt:      { read:     "output",   create:     "bind",            update:  "bind" },
             };
 
-            /**
-             * ddd
-             * @member _W.Service.BoardFAQService#fn
-             * @type {list | search}
-             */
             this.fn = {
-                changePagesize: function(e) {
-                    page.page_size = _this.bindModel.items["_txt_pageSize"].value;
+                viewList: function () { _this.bindModel.list.execute(); },
+                searchList: function() {
                     page.page_count = 1;
                     _this.bindModel.list.execute();
                 },
-                search: function() {
+                changePagesize: function(e) {
+                    page.page_size = _this.bindModel.items["page_size"].value;
                     page.page_count = 1;
                     _this.bindModel.list.execute();
+                },
+                resetForm: function () { 
+                    $("form").each(function() {
+                        this.reset();
+                    });
                 },
                 moveList: function() {
                     var url = _this.bindModel.prop["__listUrl"];
                     location.href = url;
                 },
-                reset: function () { 
-                    $("form").each(function() {
-                        this.reset();
-                    });
+                moveForm: function(p_faq_idx) {
+                    var url = _this.bindModel.prop["__formUrl"];
+                    location.href = url +"?faq_idx="+ p_faq_idx;
                 },
-                create: function () { _this.bindModel.create.execute(); },
-                read: function () { 
+                procRead: function (p_faq_idx) { 
                     _this.bindModel.items["faq_idx"].value = ParamGet2JSON(location.href).faq_idx;
                     _this.bindModel.read.execute(); 
                 },
-                update: function () { _this.bindModel.update.execute(); },
-                delete: function () { _this.bindModel.delete.execute(); },
-                list2: function () { 
-                    // _this.bm.list.execute(); 
-                    _this.bindModel.list.execute(); 
-                    // bm.list.execute(); 
-                },
+                procCreate: function () { _this.bindModel.create.execute(); },
+                procUpdate: function () { _this.bindModel.update.execute(); },
+                procDelete: function () { _this.bindModel.delete.execute(); },
             };
         }
-        util.inherits(BoardFAQService, _super);
+        util.inherits(BoardFaqService, _super);
     
         /**
-         * 전처리 등록 (데코레이션 패턴)
-         * @param {*} p_bindModel 
+         * 전처리 :: 등록 
+         * 데코레이션 패턴 : 상위 메소드 호출함
+         * @param {BindModelAjax} p_bindModel 
          */
-        BoardFAQService.prototype.preRegister = function(p_bindModel) {
+        BoardFaqService.prototype.preRegister = function(p_bindModel) {
             BaseService.prototype.preRegister.call(this, p_bindModel);
             console.log("----------------------------------");
             
             // 초기값 설정 : 서버측 > 파라메터 > 내부(기본값)
             p_bindModel.items["keyword"].value = decodeURI(getArgs("", getParamsToJSON(location.href).keyword ));
-            page.page_count = Number( getArgs("", getParamsToJSON(location.href).page_count, page.page_count) );
+            p_bindModel.items["page_count"].value  = Number( getArgs("", getParamsToJSON(location.href).page_count, page.page_count) );
             
             // page 콜백 함수 설정 (방식)
             if (p_bindModel.prop["__isGetLoad"] === true) {
-                // page.callback = goPage;                                  // 2-1) GET 방식     
-                page.callback = page.goPage.bind(p_bindModel.list.bind);         // 2-2) GET 방식 (bind)    
+                /**
+                 * # 2가지 중 선택하여 사용
+                 * page.callback = goPage;                                      // 2-1) GET 방식
+                 * page.callback = page.goPage.bind(p_bindModel.list.bind);     // 2-2) GET 방식 (bind)    
+                 */
+                page.callback = page.goPage.bind(p_bindModel.list.bind);
             } else {
-                page.callback = p_this.bindModel.list.execute.bind(p_bindModel.list);      // 1) 콜백 방식
+                page.callback = p_bindModel.list.execute.bind(p_bindModel.list);      // 1) 콜백 방식
             }
-          
         };
 
-        BoardFAQService.prototype.preCheck = function(p_bindModel) {
+        /**
+         * 전치리 :: 검사
+         * 데코레이션 패턴 : 상위 메소드 호출함
+         * @param {BindModelAjax} p_bindModel 
+         * @returns {Boolean}
+         */
+        BoardFaqService.prototype.preCheck = function(p_bindModel) {
             if (BaseService.prototype.preCheck.call(this, p_bindModel)) {
                 if (true || p_bindModel.checkSelector()) console.log("preCheck : 선택자 검사 => 'Success' ");
             }
             return true;
         };
         
-        BoardFAQService.prototype.preReady = function(p_bindModel) {
+        /**
+         * 전처리 :: 준비
+         * 데코레이션 패턴 : 상위 메소드 호출함
+         * @param {BindModelAjax} p_bindModel 
+         */
+        BoardFaqService.prototype.preReady = function(p_bindModel) {
             BaseService.prototype.preReady.call(this, p_bindModel);
+            console.log("preReady");
         };
 
-        return BoardFAQService;
+        return BoardFaqService;
     
     }(BaseService));
+    
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
     if (typeof module === "object" && typeof module.exports === "object") {     
 
     } else {
-        global.BoardFAQService = BoardFAQService;
+        global.BoardFaqService = BoardFaqService;
         global.page = page;
     }
 
