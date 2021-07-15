@@ -1,7 +1,4 @@
-/**
- * @namespace _W.Service
- */
- (function(global) {
+(function(global) {
     "use strict";
    
     //==============================================================
@@ -22,7 +19,7 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BaseService === "undefined") throw new Error("[BaseService] module load fail...");
     if (typeof BindCommandAjax === "undefined") throw new Error("[BindCommandAjax] module load fail...");
-    if (typeof PageView === "undefined") throw new Error("[PageView] module load fail...");     // 전역에 선언됨
+    if (typeof PageView === "undefined") throw new Error("[PageView] module load fail...");     // basee에 선언됨
     if (typeof Handlebars === "undefined") throw new Error("[Handlebars] module load fail..."); // 전역에 선언됨
 
     //==============================================================
@@ -51,28 +48,47 @@
             this.baseUrl = "/Admin/adm_mod/BOD/Board_FAQ.C.asp";
 
             /**
-             * 속성
-             * - innner 속성 : 
-             * - view 속성:
-             * - bind 속성 : 
+             * prop 속성
+             * # innner 속성 
+             * - __isGetLoad : 페이징 이동방식 (GET, AJAX)
+             * - __listUrl : 목록 페이지 경로
+             * - __formUrl : 폼 페이지 경로
+             *
+             *  # view 속성
+             * - _temp_list : 목록 템플릿 
+             * - _area_list : 목록 템플릿 붙일 영역
+             * - _area_page : 페이지 템플릿 붙일 영역
+             * - _txt_totalCnt : 목록 전체 갯수
+             *
+             * # bind 속성 
+             * - cmd : 명령
+             * - keyword : 목록 검색 키워드
+             * - page_size : 목록 페이지 크기
+             * - page_count : 목록 페이지 번호
+             * - sort_cd : 정렬
+             * - faq_idx : 일련번호
+             * - question : 질문
+             * - answer : 답변
+             * - typeCode : 타입코드
+             * - rank_it : 순번
+             * - create_dt : 등록일자.
              */
             this.prop = {
                 // inner
                 __isGetLoad:    true,
                 __listUrl:      "",
                 __formUrl:      "",
-                __mode:         getParamsToJSON(location.href).mode,
                 // view
                 _temp_list:     { selector: { key: "#s-temp-list"+ _SUFF,        type: "html" } },
                 _area_list:     { selector: { key: "#s-area-list"+ _SUFF,        type: "html" } },
                 _area_page:     { selector: { key: "#s-area-page"+ _SUFF,        type: "html" } },
-                _txt_totalView: { selector: { key: "#s-txt-totalView"+ _SUFF,    type: "html" } },
+                _txt_totalCnt:  { selector: { key: "#s-txt-totalCnt"+ _SUFF,    type: "html" } },
                 // bind
                 cmd:            "",
                 keyword:        { selector: { key: "#m-keyword"+ _SUFF,          type: "value" } },
                 page_size:      {
-                    setter:     function(val) { page.page_size = val; },
-                    selector:   { key: "select[name=m-page_size]"+ _SUFF,    type: "value" },
+                    setter: function(val) { page.page_size = val; },
+                    selector: { key: "select[name=m-page_size]"+ _SUFF,    type: "value" },
                 },
                 page_count:     {   /** 값을 외부에서 관리함! */
                     getter: function() { return page.page_count; },
@@ -89,28 +105,28 @@
 
             /**
              * 명령들
-             * - create :
-             * - read :
-             * - update :
-             * - delete :
-             * - list :
+             * - create : 등록
+             * - read : 조회
+             * - update : 수정
+             * - delete : 삭제
+             * - list : 목록
              */
             this.command = {
-                create:     {
+                create:         {
                     onExecute: function(p_bindCommand) { _this.bindModel.items["cmd"].value = "CREATE"; },
                     cbEnd: function(p_entity) {
                         if (p_entity["return"] < 0) return alert("등록 처리가 실패 하였습니다. Code : " + p_entity["return"]);
                         location.href = _this.bindModel.prop["__listUrl"];
                     },
                 },
-                read:       {
+                read:           {
                     outputOption: 3,
                     onExecute: function(p_bindCommand) { _this.bindModel.items["cmd"].value = "READ"; },
                     cbEnd: function(p_entity) {
                         if (p_entity["return"] < 0) return alert("조회 처리가 실패 하였습니다. Code : " + p_entity["return"]);
                     }
                 },
-                update:     {
+                update:         {
                     onExecute: function(p_bindCommand) { _this.bindModel.items["cmd"].value = "UPDATE"; },
                     cbEnd: function(p_entity) {
                         if (p_entity["return"] < 0) return alert("수정 처리가 실패 하였습니다. Code : " + p_entity["return"]);
@@ -118,7 +134,7 @@
                         _this.bindModel.read.execute();
                     }
                 },
-                delete:     {
+                delete:         {
                     onExecute: function(p_bindCommand) { p_this.bindModel.items["cmd"].value = "DELETE"; },
                     cbValid: function(p_valid) { return confirm("삭제 하시겠습니까.?"); },
                     cbEnd: function(p_entity) {
@@ -126,7 +142,7 @@
                         location.href = _this.bindModel.prop["__listUrl"];
                     }
                 },
-                list:       {
+                list:           {
                     outputOption: 1,
                     onExecute: function(p_bindCommand) { 
                         _this.bindModel.items["cmd"].value = "LIST"; 
@@ -170,7 +186,9 @@
             };
 
             this.fn = {
-                viewList: function () { _this.bindModel.list.execute(); },
+                viewList: function () { 
+                    _this.bindModel.list.execute(); 
+                },
                 searchList: function() {
                     page.page_count = 1;
                     _this.bindModel.list.execute();
@@ -197,9 +215,15 @@
                     _this.bindModel.items["faq_idx"].value = ParamGet2JSON(location.href).faq_idx;
                     _this.bindModel.read.execute(); 
                 },
-                procCreate: function () { _this.bindModel.create.execute(); },
-                procUpdate: function () { _this.bindModel.update.execute(); },
-                procDelete: function () { _this.bindModel.delete.execute(); },
+                procCreate: function () { 
+                    _this.bindModel.create.execute(); 
+                },
+                procUpdate: function () { 
+                    _this.bindModel.update.execute(); 
+                },
+                procDelete: function () { 
+                    _this.bindModel.delete.execute(); 
+                },
             };
         }
         util.inherits(BoardFaqService, _super);
@@ -250,7 +274,7 @@
          */
         BoardFaqService.prototype.preReady = function(p_bindModel) {
             BaseService.prototype.preReady.call(this, p_bindModel);
-            console.log("preReady");
+            console.log("__________preReady__________");
         };
 
         return BoardFaqService;

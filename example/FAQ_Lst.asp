@@ -217,7 +217,7 @@
         faq.init();
 		faq.fn.viewList();
     });
-	 console.log("ready");
+	 console.log("__________init______________");
 </script>
 </body>
 </html>            
