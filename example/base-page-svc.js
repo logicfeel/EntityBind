@@ -35,7 +35,7 @@
             _super.call(this);
             
             /**
-             * 실패시 콜백
+             * 실패시 : 콘솔창 경고
              * @param {*} p_result 
              * @param {*} p_item 
              */
@@ -45,7 +45,7 @@
             };
             
             /**
-             * 오류 발생시 콜백
+             * 오류 발생시 : 콘솔창 경고
              * @param {*} p_msg 
              * @param {*} p_status 
              */
@@ -55,7 +55,7 @@
             };
             
             /**
-             * 공통 : 콜백 결과 처리
+             * 공통 : 콜백 결과 처리 => 수신자료형 변경 entity = { return, ... }
              * @param {*} p_result 
              * @returns {Object}
              */
@@ -102,7 +102,7 @@
             };
 
             /**
-             * 실행전 이벤트
+             * 실행전 이벤트 : 진행중 화면 표시
              * @event
              * @param {*} p_bindCommand 
              */
@@ -113,7 +113,7 @@
             };
 
             /**
-             * 실행끝 이벤트 등록
+             * 실행후 이벤트 : 진행중 화면 숨김
              * @event
              * @param {*} p_bindCommand 
              */

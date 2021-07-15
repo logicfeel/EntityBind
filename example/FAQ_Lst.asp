@@ -215,7 +215,7 @@
     //--------------------------------------------------------------
 	$(document).ready(function () {
         faq.init();
-		faq.fn.viewList();
+		faq.fn.procList();
     });
 	 console.log("__________init______________");
 </script>

@@ -30,8 +30,24 @@
         /**
          * FAQ 게시판 서비스
          * @constructs _W.Service.BoardFaqService
-         * @extends _W.Service.BaseServiceW
+         * @extends _W.Service.BaseService
          * @param {String} p_suffix 셀렉터 접미사
+         * @example
+         * var faq = new BindModelAjax(new BoardFaqService());
+         *    
+         * // 속성 설정
+         * faq.prop["__listUrl"] = "FAQ_Frm.asp";
+         * faq.items["page_size"].value = 3;
+         * faq.prop["__isGetLoad"] = false;
+         * // 이벤트 바인딩
+         * $("#btn_Search").click(faq.fn.search);
+         * $("#btn_Reset").click(faq.fn.reset);
+         * $("#changePagesize").change(faq.fn.changePagesize);
+         * // 초기화  
+         * $(document).ready(function () {
+         *  faq.init();
+         *  faq.fn.procList();
+         * });
          */
         function BoardFaqService(p_suffix) {
             _super.call(this);
@@ -44,34 +60,42 @@
 
             /**
              * 기본 콜백 경로
+             * @type {String}
              */
             this.baseUrl = "/Admin/adm_mod/BOD/Board_FAQ.C.asp";
 
             /**
              * prop 속성
-             * # innner 속성 
-             * - __isGetLoad : 페이징 이동방식 (GET, AJAX)
-             * - __listUrl : 목록 페이지 경로
-             * - __formUrl : 폼 페이지 경로
-             *
-             *  # view 속성
-             * - _temp_list : 목록 템플릿 
-             * - _area_list : 목록 템플릿 붙일 영역
-             * - _area_page : 페이지 템플릿 붙일 영역
-             * - _txt_totalCnt : 목록 전체 갯수
-             *
-             * # bind 속성 
-             * - cmd : 명령
-             * - keyword : 목록 검색 키워드
-             * - page_size : 목록 페이지 크기
-             * - page_count : 목록 페이지 번호
-             * - sort_cd : 정렬
-             * - faq_idx : 일련번호
-             * - question : 질문
-             * - answer : 답변
-             * - typeCode : 타입코드
-             * - rank_it : 순번
-             * - create_dt : 등록일자.
+             * @type {Object}
+             * @property {Boolean} __isGetLoad 페이징 이동방식 (GET, AJAX) = true
+             * @property {String} __listUrl 목록 페이지 경로
+             * @property {String} __formUrl 폼 페이지 경로
+             * @property {ItemDOM} _temp_list 목록 템플릿
+             * @property {Object} _temp_list.selector #s-temp-list : html
+             * @property {ItemDOM} _area_list 목록 템플릿 붙는 영역
+             * @property {Object} _area_list.selector #s-area-list : html
+             * @property {ItemDOM} _area_page 페이지 템플릿 붙는 영역
+             * @property {Object} _area_page.selector #s-area-page : html
+             * @property {ItemDOM} _txt_totalCnt 목록 전체 갯수
+             * @property {Object} _txt_totalCnt.selector #s-txt-totalCnt : html
+             * @property {ItemDOM} cmd 처리 명령 코드
+             * @property {ItemDOM} keyword 목록조회 검색 키워드
+             * @property {Object} keyword.selector #m-keyword : value
+             * @property {ItemDOM} page_size 목록조회 크기
+             * @property {Object} page_size.selector select[name=m-page_size] : value
+             * @property {ItemDOM} page_count 목록조회 페이지 번호
+             * @property {ItemDOM} sort_cd 목록조회 정렬 코드
+             * @property {ItemDOM} faq_idx 일련번호
+             * @property {ItemDOM} question 질문
+             * @property {Object} question.selector #m-question : value
+             * @property {ItemDOM} answer 답변
+             * @property {Object} answer.selector #m-answer : value
+             * @property {ItemDOM} typeCode 구분자
+             * @property {Object} typeCode.selector #m-typeCode : value
+             * @property {ItemDOM} rank_it 정렬 순서
+             * @property {Object} rank_it.selector #m-rank_it : value
+             * @property {ItemDOM} create_dt 등록일자
+             * @property {Object} create_dt.selector ##m-create_dt : value\
              */
             this.prop = {
                 // inner
@@ -79,16 +103,16 @@
                 __listUrl:      "",
                 __formUrl:      "",
                 // view
-                _temp_list:     { selector: { key: "#s-temp-list"+ _SUFF,        type: "html" } },
-                _area_list:     { selector: { key: "#s-area-list"+ _SUFF,        type: "html" } },
-                _area_page:     { selector: { key: "#s-area-page"+ _SUFF,        type: "html" } },
+                _temp_list:     { selector: { key: "#s-temp-list"+ _SUFF,       type: "html" } },
+                _area_list:     { selector: { key: "#s-area-list"+ _SUFF,       type: "html" } },
+                _area_page:     { selector: { key: "#s-area-page"+ _SUFF,       type: "html" } },
                 _txt_totalCnt:  { selector: { key: "#s-txt-totalCnt"+ _SUFF,    type: "html" } },
                 // bind
                 cmd:            "",
-                keyword:        { selector: { key: "#m-keyword"+ _SUFF,          type: "value" } },
+                keyword:        { selector: { key: "#m-keyword"+ _SUFF,         type: "value" } },
                 page_size:      {
                     setter: function(val) { page.page_size = val; },
-                    selector: { key: "select[name=m-page_size]"+ _SUFF,    type: "value" },
+                    selector: { key: "select[name=m-page_size]"+ _SUFF,         type: "value" },
                 },
                 page_count:     {   /** 값을 외부에서 관리함! */
                     getter: function() { return page.page_count; },
@@ -99,17 +123,32 @@
                 question:       { selector: { key: "#m-question"+ _SUFF,        type: "value" } },
                 answer:         { selector: { key: "#m-answer"+ _SUFF,          type: "value" } },
                 typeCode:       { selector: { key: "#m-typeCode"+ _SUFF,        type: "value" } },
-                rank_it:        { selector: { key: "#m-rank_it"+ _SUFF,        type: "value" } },
+                rank_it:        { selector: { key: "#m-rank_it"+ _SUFF,         type: "value" } },
                 create_dt:      { selector: { key: "#m-create_dt"+ _SUFF,       type: "value" } },
             };
 
             /**
              * 명령들
-             * - create : 등록
-             * - read : 조회
-             * - update : 수정
-             * - delete : 삭제
-             * - list : 목록
+             * @type {Object}
+             * @property {BindCommandAjax} create 등록 명령
+             * @property {Function} create.onExecute 등록 실행전 콜백
+             * @property {Function} create.cbEnd  등록 완료 콜백
+             * @property {BindCommandAjax} read 조회 명령
+             * @property {Number} read.outputOption 조회 출력 옵션 = 3
+             * @property {Function} read.onExecute 조회 실행전 콜백
+             * @property {Function} read.cbEnd 등록 완료 콜백
+             * @property {BindCommandAjax} update 수정 명령
+             * @property {Function} update.onExecute 수정 실행전 콜백
+             * @property {Function} update.cbEnd 수정 완료 콜백
+             * @property {BindCommandAjax} delete 삭제 명령
+             * @property {Function} delete.onExecute 삭제 실행전 콜랙
+             * @property {Function} delete.cbValid 삭제 검사 콜백
+             * @property {Function} delete.cbEnd 삭제 완료 콜백
+             * @property {BindCommandAjax} list 목록조회 명령
+             * @property {Number} list.outputOption 목록조회 옵션 = 1
+             * @property {Function} list.onExecute 목록조회 실행전 콜백 
+             * @property {Function} list.cbOutput 목록조회 출력 콜랙
+             * @property {Function} list.cbEnd 목록조회 완료 콜백
              */
             this.command = {
                 create:         {
@@ -180,6 +219,22 @@
 
             /**
              * 속성의 매핑
+             * @type {Object}
+             * @property {prop} cmd
+             * @property {bind} cmd.Array 전체
+             * @property {prop} keyword
+             * @property {prop} page_size
+             * @property {bind} page_size.list 목록
+             * @property {prop} page_count
+             * @property {bind} page_count.list 목록
+             * @property {prop} faq_idx
+             * @property {bind} faq_idx.read 조회
+             * @property {bind} faq_idx.delete 삭제
+             * @property {bind} faq_idx.update 수정
+             * @property {prop} question
+             * @property {output} question.read 조회
+             * @property {bind} question.delete 삭제
+             * @property {bind} question.update 수정
              */
             this.mapping = {
                 cmd:            { Array:    "bind" },
@@ -197,17 +252,18 @@
 
             /**
              * 공개 함수
-             * - searchList() : 목록 검색
-             * - changePagesize(e) : 목록 페이지 크기 변경
-             * - resetForm() : 폼 초기화
-             * - moveList() : 목록 화면 이동
-             * - moveForm() : 폼 화면 이동
-             * - procList() : 목록 조회 처리
-             * - procRead() : 조회 처리
-             * - procCreate() : 등록 처리
-             * - procUpdate() : 수정 처리
-             * - procDelete() : 삭제 처리
-             * - procList() : 목록 조회 처리
+             * @type {Object}
+             * @property {Function} searchList 목록 검색
+             * @property {Function} fnchangePagesize 목록 페이지 크기 변경
+             * @property {Param} fnchangePagesize.p_num 목록 크기(파라메터)
+             * @property {Function} resetForm 입력양식 초기화
+             * @property {Function} moveList 목록 화면 이동
+             * @property {Function} moveForm 입력폼 화면 이동
+             * @property {Function} procCreate 등록 처리
+             * @property {Function} procRead 조회 처리
+             * @property {Function} procUpdate 수정 처리
+             * @property {Function} procDelete 삭제 처리
+             * @property {Function} procList 목록 조회 처리
              */
             this.fn = {
                 
