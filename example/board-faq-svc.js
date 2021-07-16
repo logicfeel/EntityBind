@@ -33,6 +33,10 @@
          * @extends _W.Service.BaseService
          * @param {String} p_suffix 셀렉터 접미사
          * @example
+         * // 1단계 : 본문에 관련 스크립트 태그 삽입 (handlebars.js, _w-meta.*.js, base-svc.js, faq-svc.js)
+         * // 2단계 : 사용할 command 기준으로 items들을 셀렉터 설정 (mapping 참조)
+         * // 3단계 : 스크립트 로딩 (하단은 목록 예시)
+         * 
          * var faq = new BindModelAjax(new BoardFaqService());
          *    
          * // 속성 설정
@@ -50,7 +54,7 @@
          * });
          */
         function BoardFaqService(p_suffix) {
-            _super.call(this);
+            _super.call(this, p_suffix);
             
             var _SUFF       = p_suffix || "";  // 접미사
             var _this       = this;
@@ -95,7 +99,17 @@
              * @property {ItemDOM} rank_it 정렬 순서
              * @property {Object} rank_it.selector #m-rank_it : value
              * @property {ItemDOM} create_dt 등록일자
-             * @property {Object} create_dt.selector ##m-create_dt : value\
+             * @property {Object} create_dt.selector ##m-create_dt : value
+             * 
+             * @example
+             * // prop 속성에만 연결됨, 이름규칙 '__'
+             * faq.prop["__isGetLoad"] = false;
+             * faq.prop["__listUrl"] = "List.html";
+             * typeof faq.prop["faq_idx"] === "object"; // true
+             * 
+             * // items 속성에 연결됨
+             * faq.items["faq_idx"].value = 1;  // faq_idx에 1 설정
+             * faq.items["keyword"].selector.key === "#m-keyword"  // true
              */
             this.prop = {
                 // inner
@@ -149,6 +163,11 @@
              * @property {Function} list.onExecute 목록조회 실행전 콜백 
              * @property {Function} list.cbOutput 목록조회 출력 콜랙
              * @property {Function} list.cbEnd 목록조회 완료 콜백
+             * 
+             * @example
+             * faq.create.execute();        // 등록 명령 처리
+             * faq.create.bind.list         // 등록시 바인딩 목록
+             * faq.list.outputOption === 1  // true
              */
             this.command = {
                 create:         {
@@ -264,6 +283,12 @@
              * @property {Function} procUpdate 수정 처리
              * @property {Function} procDelete 삭제 처리
              * @property {Function} procList 목록 조회 처리
+             * @example
+             * var faq = new BindModelAjax(new BoardFaqService());
+             * ...
+             * $("#btn_Search").click(faq.fn.search);   // 검색 버튼 연결
+             * $("#btn_Reset").click(faq.fn.reset);     // 리셋 버튼 연결
+             * $("#changePagesize").change(faq.fn.changePagesize);  // 체크리스트 연결
              */
             this.fn = {
                 
