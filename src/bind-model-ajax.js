@@ -55,7 +55,15 @@
          * - bbb
          * @constructs _W.Meta.Bind.BindModelAjax
          * @extends _W.Meta.Bind.BindModel
-         * @param {*} p_service 
+         * @param {Object} p_service 
+         * @param {Object} p_service.baseAjaxSetup Ajax 설정 
+         * @param {String} p_service.baseAjaxSetup.url Ajax 설정 
+         * @param {String} p_service.baseAjaxSetup.type GET, POST
+         * @param {String} p_service.baseUrl 바인딩 경로 
+         * @param {Object} p_service.command 명령들
+         * @param {Object} p_service.command.name 사용자명령어
+         * @param {Function} p_service.command.name.onExecute 실행전 이벤트
+         * @param {Object}  p_service.command.name.onExecuted 실행후 이벤트 
          * @example
          * // returns 2
          * globalNS.method1(5, 10);

@@ -1,5 +1,5 @@
 /**
- * namespace _W.Meta.Bind.BaseService
+ * namespace _W.Service.Page
  */
  (function(global) {
     "use strict";
