@@ -26,6 +26,60 @@
          */
         function IBindModel() {
 
+            
+            /**
+             * @typedef {Object} IBindcommand
+             * @property {Number} outputOption 출력방식 0 ~ 3
+             * @property {Function} cbVaild 검사 콜백
+             * @property {Function} cbBind 바인드 전 콜백
+             * @property {Function} cbResult 결과 수신 콜백
+             * @property {Function} cbOutput 출력 콜백
+             * @property {Function} cbEnd 종료 콜백
+             */
+
+            /**
+             * 제약조건
+             * @typedef IConstraint
+             * @property {Regex} regex 정규표현식
+             * @property {String} msg 실패 메세지 
+             * @property {String} code  실패시 리턴 코드
+             * @property {Number} return 성공 조건
+             */
+
+            /**
+             * 아이템 타입
+             * @typedef {Object} IItem
+             * @property {Number} size 크기
+             * @property {Function} type
+             * @property {Function} default
+             * @property {Function} caption
+             * @property {Function} isNotNull
+             * @property {Function} isNullPass
+             * @property {Function} callback
+             * @property {Array | Function} constraints 제약조건
+             * @property {Array} constraints.regex 제약조건
+             * @property {Array} constraints.msg 제약조건
+             * @property {String} constraints.code 실패시 리턴 코드
+             * @property {Number} constraints.return 성공 조건
+             */
+
+            /**
+             * 대상속성과 명령의 엔티티(검사, 바인딩, 출력)에 매핑한다
+             * @typedef {Object} IMapping
+             * @property {String} {command} 매핑할 명령 (command에 지정한 명칭)
+             * @property {'Arrary'} {command} 전체 명령 (command에 지정한 명칭)
+             * @property {'valid'} {command:mapping} 검사대상에 매핑 한다.
+             * @property {'bind'} {command:mapping} 바인딩에 매핑한다.
+             * @property {'output'} {command:mapping} 출력에 매핑한다.
+             * @property {Arrary<'valid', 'output'>} {command:mapping} 검사와 출력에 매핑한다.
+             * @property {'Arrary' | '[]'} {command:mapping} 검사와 바인딩 출력 모든곳에 매핑한다.
+             * @example
+             * this.mapping = {
+             *      cmd:            { Array:    "bind" },
+             *      keyword:        { list:     "bind" },
+             *      faq_idx:        { read:     "bind",     delete:     "bind" }
+             * };
+             */
             /**
              * 속성(아이템)
              * @member
@@ -33,14 +87,39 @@
             this.prop       = {};
             
             /**
+             * 명령
+             * @member
+             * @type {Object.<String, IBindcommand>}
+             */
+             this.command       = {};
+
+            /**
              * 함수
              * @member
+             * @type {Object.<String, Function>}
              */
             this.fn         = {};
 
             /** 
-             * 매핑
+             * 속성명(prop)에 매핑을 설정한다.
              * @member  
+             * @type {Object.<String, Object>}  
+             * @property {String} prop 매핑할 속성이름
+             * @property {String} prop.command 매핑할 명령
+             * @property {'Arrary'} prop.command 전체 명령
+             * @property {Object} prop.command.mapping 매핑대상
+             * @property {'valid'} {prop.command.mapping} 검사(엔티티)에 매핑 한다.
+             * @property {'bind'} {prop.command.mapping} 바인딩(엔티티)에 매핑한다.
+             * @property {'output'} {prop.command.mapping} 출력(엔티티)에 매핑한다.
+             * @property {Arrary<'valid', 'output'>} {prop.command.mapping} 검사와 출력에 매핑한다.
+             * @property {'Arrary' | '[]'} {prop.command.mapping} 모든곳에 매핑한다.(검사와 바인딩 출력)
+             * @example
+             * this.mapping = {
+             *      cmd:            { Array:    "bind" },
+             *      keyword:        { list:     "bind" },
+             *      faq_idx:        { read:     "bind",     delete:     "bind" }
+             * };
+
              */
             this.mapping    = {};
 
@@ -59,6 +138,7 @@
             /**
              * 기본 결과 콜백
              * @member
+             * @type {Function}
              */
             this.cbBaseResult   = null;
             
