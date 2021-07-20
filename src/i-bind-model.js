@@ -94,9 +94,19 @@
              this.command       = {};
 
             /**
-             * 함수
+             * 공개 함수
              * @member
              * @type {Object.<String, Function>}
+             * @example
+             * this.fn = {
+             * searchList: function() {
+             *      page.page_count = 1;
+             *      _this.bindModel.list.execute();
+             *  },
+             * procList: function () { 
+             *       _this.bindModel.list.execute(); 
+             *  }
+             * };
              */
             this.fn         = {};
 
