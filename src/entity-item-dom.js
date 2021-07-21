@@ -161,9 +161,9 @@
                                     console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ");
                                 }
                                 
-                                if (typeof __val === 'undefined' || __val === null) {
-                                    console.warn("["+ key +"] 일치하는 selector가 없습니다. ");
-                                }
+                                // if (typeof __val === 'undefined' || __val === null) {
+                                //     console.warn("["+ key +"] 일치하는 selector가 없습니다. ");
+                                // }
                             }
                         }
                     }

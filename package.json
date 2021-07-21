@@ -1,6 +1,6 @@
 {
   "name": "entitybind",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "Meta.Entity, Meta.Bind 개발 위치",
   "main": "index.js",
   "scripts": {

@@ -118,12 +118,21 @@
              * @type {Object.<String, IBindcommand>}
              * @property {Number} outputOption 출력방식 0 ~ 3
              * @property {Function} cbVaild 검사 콜백
+             * @property {Entity} cbVaild.p_valid 검사 엔티티
              * @property {Function} cbBind 바인드 전 콜백
+             * @property {Entity} cbBind.p_ajaxSetup ajaxSetup 설정
              * @property {Function} cbResult 결과 수신 콜백
              * @property {Function} cbOutput 출력 콜백
+             * @property {Entity} cbOutput.p_entity 리턴 결과 엔티티
              * @property {Function} cbEnd 종료 콜백
+             * @property {Object} cbEnd.p_result 
+             * @property {Object} cbEnd.p_states 
+             * @property {Object} cbEnd.p_xhr 
              * @property {Function} onExecute 실행전 이벤트
+             * @property {Function} onExecute.p_bindCommand 대상 BindCommand
              * @property {Function} onExecuted 실행후 이벤트
+             * @property {Function} onExecuted.p_bindCommand 대상 BindCommand
+             * @property {Function} onExecuted.p_result 리턴 결과 
              * @example
              * this.command = {
              *   create:         {
@@ -138,23 +147,6 @@
              * };
              */
              this.command       = {};
-
-            /**
-             * 공개 함수
-             * @member
-             * @type {Object.<String, Function>}
-             * @example
-             * this.fn = {
-             *   searchList: function() {
-             *     page.page_count = 1;
-             *     _this.bindModel.list.execute();
-             *   },
-             *   procList: function () { 
-             *     _this.bindModel.list.execute(); 
-             *   }
-             * };
-             */
-            this.fn         = {};
 
             /** 
              * 속성명(prop)에 매핑을 설정한다.
@@ -176,9 +168,27 @@
             this.mapping    = {};
 
             /**
+             * 공개 함수
+             * @member
+             * @type {Object.<String, Function>}
+             * @example
+             * this.fn = {
+             *   searchList: function() {
+             *     page.page_count = 1;
+             *     _this.bindModel.list.execute();
+             *   },
+             *   procList: function () { 
+             *     _this.bindModel.list.execute(); 
+             *   }
+             * };
+             */
+             this.fn         = {};
+
+             /**
              * 기본 검사 콜백
              * @member
              * @type {Function}
+             * @property {Entity} p_valid 검사 엔티티
              */
             this.cbBaseValid    = null;
             
@@ -186,13 +196,15 @@
              * 기본 바인드 콜백
              * @member
              * @type {Function}
+             * @property {Entity} p_ajaxSetup ajaxSetup 설정
              */
             this.cbBaseBind     = null;
             
             /**
-             * 기본 결과 콜백
+             * 기본 결과 콜백 (수신결과를 가공한다.)
              * @member
              * @type {Function}
+             * @property {Entity} p_entity 리턴 결과 엔티티
              */
             this.cbBaseResult   = null;
             
@@ -200,6 +212,7 @@
              * 기본 출력 콜백
              * @member
              * @type {Function}
+             * @property {Entity} p_entity 리턴 결과 엔티티
              */
             this.cbBaseOutput   = null;
             
@@ -207,6 +220,9 @@
              * 기본 종료 콜백
              * @member
              * @type {Function}
+             * @property {Object} p_result 
+             * @property {Object} p_states 
+             * @property {Object} p_xhr 
              */
             this.cbBaseEnd      = null;
 
@@ -214,6 +230,7 @@
              * 실행전 이벤트
              * @member
              * @type {Function}
+             * @property {BindCommand} p_bindCommand 실행대상 BindCommand
              */
             this.onExecute  = null;
             
@@ -221,37 +238,44 @@
              * 실행후 이벤트
              * @member
              * @type {Function}
+             * @property {BindCommand} p_bindCommand 실행대상 BindCommand
+             * @property {Entity} p_entity 회신결과 Entity
              */
             this.onExecuted = null;
 
             /**
              * 실패 콜백
              * @member
-             * @type {Function}
+             * @property {*} p_result 실패 결과
+             * @property {*} p_item 실패한 대상 Item
              */
-            this.cbFail = function() {};
+            this.cbFail = function(p_result, p_item) {};
             
             /**
              * 에러 콜백
              * @member
-             * @type {Function}
+             * @property {*} p_msg 오류메세지 
+             * @property {*} p_status 상태 메세지
              */
-            this.cbError = function() {};
+            this.cbError = function(p_msg, p_status) {};
         }
         /**
          * 초기화시점에(init) 등록
+         * @param {BindModel} p_bindModel 대상 BindModel
          */
-        IBindModel.prototype.preRegister = function() {};
+        IBindModel.prototype.preRegister = function(p_bindModel) {};
         
         /**
          * 초기화시점에(init) 검사
+         * @param {BindModel} p_bindModel 대상 BindModel
          */
-        IBindModel.prototype.preCheck = function() { return true };
+        IBindModel.prototype.preCheck = function(p_bindModel) { return true };
 
         /**
          * 초기화시점에(init) 준비
+         * @param {BindModel} p_bindModel 대상 BindModel
          */
-        IBindModel.prototype.preReady = function() {};
+        IBindModel.prototype.preReady = function(p_bindModel) {};
 
         // IBindModel.prototype.cbFail = function() {};
         // IBindModel.prototype.cbError = function() {};

@@ -70,7 +70,7 @@
 
             /**
              * prop 속성
-             * @type {Object}
+             * @type {Object.<String, Item | String | Boolean | Number>}
              * @property {Boolean} __isGetLoad 페이징 이동방식 (GET, AJAX) = true
              * @property {String} __listUrl 목록 페이지 경로
              * @property {String} __formUrl 폼 페이지 경로
@@ -144,6 +144,7 @@
             /**
              * 명령들
              * @type {Object}
+             * @type {Object.<String, BindCommandAjax>}
              * @property {BindCommandAjax} create 등록 명령
              * @property {Function} create.onExecute 등록 실행전 콜백
              * @property {Function} create.cbEnd  등록 완료 콜백
@@ -271,7 +272,7 @@
 
             /**
              * 공개 함수
-             * @type {Object}
+             * @type {Object.<String, Function>}
              * @property {Function} searchList 목록 검색
              * @property {Function} fnchangePagesize 목록 페이지 크기 변경
              * @property {Param} fnchangePagesize.p_num 목록 크기(파라메터)
@@ -291,7 +292,6 @@
              * $("#changePagesize").change(faq.fn.changePagesize);  // 체크리스트 연결
              */
             this.fn = {
-                
                 searchList: function() {
                     page.page_count = 1;
                     _this.bindModel.list.execute();

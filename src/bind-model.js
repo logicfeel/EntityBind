@@ -227,9 +227,6 @@
             this._symbol = this._symbol.concat(["add", "addItem", "loadProp", "setMapping", "preReady", "addEntity"]);
             this._symbol = this._symbol.concat(["addCommand", "setService"]);
             
-            /** implements IBindModel 인터페이스 구현 */
-            // TODO: 삭제 하는제 맞을듯  
-            this._implements(IBindModel);
         }
         util.inherits(BindModel, _super);
 
@@ -640,7 +637,10 @@
             // 속성(prop)을 아이템으로 로딩 ("__"시작이름 제외)
             if (p_isLoadProp === true) {
                 this.loadProp();
-            }  
+            }
+
+            // 서비스에 onwer bindModel 설정
+            p_service.bindModel = this;
         };
 
         return BindModel;

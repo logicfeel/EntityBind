@@ -216,20 +216,72 @@
             return true;
         };
 
+
         /**
          * 셀렉터 목록 얻기
-         * @param {*} p_isLog 
+         * @param {String | Arrary<String>} p_cmdNames command 명칭들
+         * @param {?Boolean} p_isLog 
+         * @param {ItemCollecton} p_collection 지정된 컬렉션에서 검사한다.
          */
-        BindModelAjax.prototype.listSelector  = function(p_isLog) {
+         BindModelAjax.prototype.listSelector  = function(p_cmdNames, p_isLog, p_collection) {
             
-            var collection = this.items;
+            var collection = p_collection || this.items;    // TODO: import 및 검사 추가
             var obj;
             var selector;
             var selectors = [];
+            var cmds = [];
+            var bindCommand = null;
+            var items = [];
+            var item;
+
+            // 초기화
+            if (Array.isArray(p_cmdNames)) cmds = p_cmdNames;
+            else if (typeof p_cmdNames === "string") cmds.push(p_cmdNames);
+            
+            
+            // command의 valid, bind, output item 검색하여 중복 제거후 삽입
+            for (var i = 0; cmds.length > i; i++) {
+                
+                // 대상 bindCommand 설정
+                bindCommand = this[cmds[i]];
+
+                if (typeof bindCommand === "undefined") {
+                    console.warn("[%s] bindCommand가 없습니다.", bindCommand);
+                } else {
+                    // cmds.valid
+                    for (var ii = 0; bindCommand.valid.items.count > ii; ii++) {
+                        item = bindCommand.valid.items[ii];
+                        if (items.indexOf(item) < 0) { // 없으면 추가
+                            items.push(item);
+                        }
+                    }
+                    // cmds.bind
+                    for (var ii = 0; bindCommand.bind.items.count > ii; ii++) {
+                        item = bindCommand.bind.items[ii];
+                        if (items.indexOf(item) < 0) { // 없으면 추가
+                            items.push(item);
+                        }
+                    }
+                    //TODO: 전체 output[] 에서 비교해야함
+                    // cmds.output  
+                    for (var ii = 0; bindCommand.output.items.count > ii; ii++) {
+                        item = bindCommand.output.items[ii];
+                        if (items.indexOf(item) < 0) { // 없으면 추가
+                            items.push(item);
+                        }
+                    }
+                }
+            }
 
             for (var i = 0; collection.count > i; i++) {
-                selector = collection[i].selector;
-                if (typeof selector !== "undefined" && typeof selector.key === "string" && selector.key.length > 0) {
+                
+                if (cmds.length > 0) {
+                    selector = items.indexOf(collection[i]) > -1 ? collection[i].selector : null;   // 비교
+                } else {
+                    selector = collection[i].selector;  // 전체 포함
+                }
+                
+                if (selector !== null && typeof selector === "object" && typeof selector.key === "string" && selector.key.length > 0) {
                         obj = { 
                             item: collection[i].name, 
                             key: collection[i].selector.key, 
@@ -258,7 +310,7 @@
             }
             
             return selectors;
-        };
+        };        
 
         /**
          * 명령 추가
