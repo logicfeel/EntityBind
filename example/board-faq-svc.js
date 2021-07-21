@@ -74,7 +74,8 @@
              * @property {Boolean} __isGetLoad 페이징 이동방식 (GET, AJAX) = true
              * @property {String} __listUrl 목록 페이지 경로
              * @property {String} __formUrl 폼 페이지 경로
-             * @property {ItemDOM} _temp_list 목록 템플릿
+             * @property {ItemDOM} _temp_list 목록 템플릿 
+             * {{row_count}}, {{create_dt}}, {{question}}, {{answer}}, {{rank_it}}
              * @property {Object} _temp_list.selector #s-temp-list : html
              * @property {ItemDOM} _area_list 목록 템플릿 붙는 영역
              * @property {Object} _area_list.selector #s-area-list : html

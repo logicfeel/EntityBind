@@ -55,7 +55,7 @@
          * - bbb
          * @constructs _W.Meta.Bind.BindModelAjax
          * @extends _W.Meta.Bind.BindModel
-         * @param {Object} p_service 
+         * @param {IBindModel} p_service 
          * @param {Object} p_service.baseAjaxSetup Ajax 설정 
          * @param {String} p_service.baseAjaxSetup.url Ajax 설정 
          * @param {String} p_service.baseAjaxSetup.type GET, POST
@@ -167,7 +167,7 @@
 
         /**
          * 셀렉터 검사
-         * @param {*} p_collection 
+         * @param {?ItemCollecton} p_collection 
          */
         BindModelAjax.prototype.checkSelector  = function(p_collection) {
             
@@ -218,10 +218,20 @@
 
 
         /**
-         * 셀렉터 목록 얻기
-         * @param {String | Arrary<String>} p_cmdNames command 명칭들
+         * 셀렉터 검사 결과 얻기
+         * @param {?(String | Arrary<String>)} p_cmdNames command 명칭들
          * @param {?Boolean} p_isLog 
-         * @param {ItemCollecton} p_collection 지정된 컬렉션에서 검사한다.
+         * @param {?ItemCollecton} p_collection 지정된 컬렉션에서 검사한다.
+         * @return {Arrary<Selector>}
+         * @example
+         * var bm = new BindModelAjax();
+         * ...
+         * bm.listSelector();           // 전체 셀렉터 목록 리턴
+         * bm.listSelector([], true);   // 전체 셀렉터 목록 리턴 및 로그 출력
+         * bm.listSelector('list');     // 지정한 단일 command 셀렉터 검사
+         * bm.listSelector(['list', 'read'], true);         // 지정한 복수 command 셀렉터 검사
+         * bm.listSelector([], true, secondCollection);     // 검사 대상 컬렉션 변경 (this.items)
+         * 
          */
          BindModelAjax.prototype.listSelector  = function(p_cmdNames, p_isLog, p_collection) {
             
@@ -230,6 +240,7 @@
             var selector;
             var selectors = [];
             var cmds = [];
+            var cmdName = "";
             var bindCommand = null;
             var items = [];
             var item;
@@ -242,11 +253,11 @@
             // command의 valid, bind, output item 검색하여 중복 제거후 삽입
             for (var i = 0; cmds.length > i; i++) {
                 
-                // 대상 bindCommand 설정
-                bindCommand = this[cmds[i]];
+                cmdName = cmds[i];              // cmd 이름 얻기
+                bindCommand = this[cmdName];    // 대상 bindCommand 설정
 
                 if (typeof bindCommand === "undefined") {
-                    console.warn("[%s] bindCommand가 없습니다.", bindCommand);
+                    console.warn("[%s] bindCommand가 없습니다.", cmdName);
                 } else {
                     // cmds.valid
                     for (var ii = 0; bindCommand.valid.items.count > ii; ii++) {

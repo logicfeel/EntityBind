@@ -151,7 +151,7 @@
                         <td>{{create_dt}}</td>
                         <td>{{question}}</td>
                         <td>{{answer}}</td>
-                        <td>{{raink_it}}</td>
+                        <td>{{rank_it}}</td>
                         <td><a href="javascript:view('{{evt_idx}}');" class='btnNormal'><span> 조회</span></a></td>
                     </tr>
                     {{/rows}} 
@@ -209,9 +209,10 @@
 	faq.items["page_size"].value = 3;
 	faq.prop["__isGetLoad"] = false;
 	// 이벤트 바인딩
-	$("#btn_Search").click(faq.fn.search);
-	$("#btn_Reset").click(faq.fn.reset);
-	$("#changePagesize").change(faq.fn.changePagesize);
+	$("#btn_Search").click(faq.fn.searchList);			// 검색 버튼	
+	$("#btn_Reset").click(faq.fn.resetForm);			// 검색 폼 초기화
+	$("#changePagesize").change(faq.fn.changePagesize);	// 페이지크기 변경
+	$("#btn_Insert").click(faq.fn.moveForm);			// 등록 버튼
     //--------------------------------------------------------------
 	$(document).ready(function () {
         faq.init();

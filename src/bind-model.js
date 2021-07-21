@@ -299,7 +299,7 @@
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
          * @param {?array<string>} p_cmds <선택> 추가할 아이템 명령
-         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
+         * @param {?(array<string> | string)} p_entities <선택> 추가할 아이템 명령
          */
         BindModel.prototype.add = function(p_item, p_cmds, p_entities) {
 
@@ -352,7 +352,7 @@
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
          * @param {string} p_name
          * @param {object | String | number | boolean} p_obj 
-         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
+         * @param {?(array<string> | string)} p_entities <선택> 추가할 아이템 명령
          */
 // POINT::
         BindModel.prototype.addItem = function(p_name, p_obj, p_cmds, p_entities) {
@@ -395,7 +395,7 @@
 
         /**
          * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
-         * @param {?string | ?array<string>} p_prop 
+         * @param {?(string | array<string>)} p_prop 
          * @param {?string} p_entity 
          */
         BindModel.prototype.loadProp = function(p_prop, p_entity) {
@@ -496,7 +496,7 @@
         };
 
         /**
-         * 명령 추가
+         * 명령 추가 (추상클래스) 상속하여 구현해야 함
          * @abstract
          * @param {*} p_name 
          * @param {*} p_option 
