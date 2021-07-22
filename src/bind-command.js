@@ -90,6 +90,7 @@
 
             var __valid     = new EntityView("valid", this._baseEntity);
             var __bind      = new EntityView("bind", this._baseEntity);
+            var __etc       = new EntityView("etc", this._baseEntity);
 
             var __cbValid       = null;
             var __cbBind        = null;
@@ -136,6 +137,17 @@
                 set: function(newValue) { 
                     if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
                     __bind = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            Object.defineProperty(this, "etc", 
+            {
+                get: function() { return __etc; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityView)) throw new Error("Only [etc] type 'EntityView' can be added");
+                    __etc = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -254,7 +266,7 @@
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
+         * @param {?(Array<String> | string)} p_entities <선택> 추가할 아이템 명령
          */
         BindCommand.prototype.add = function(p_item, p_entities) {
 

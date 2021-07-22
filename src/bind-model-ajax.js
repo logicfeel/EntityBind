@@ -19,6 +19,7 @@
     var IBindModel;
     var ItemDOM;
     var BindCommandAjax;
+    var EntityView;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
         util                    = require("./utils");
@@ -27,7 +28,7 @@
         IBindModel              = require("./i-bind-model");        
         ItemDOM                 = require("./entity-item-dom");
         BindCommandAjax         = require("./bind-command-ajax");
-
+        EntityView              = require("./entity-view").EntityView;
     } else {
         util                    = global._W.Common.Util;
         BindModel               = global._W.Meta.Bind.BindModel;
@@ -35,6 +36,7 @@
         IBindModel              = global._W.Interface.IBindModel;        
         ItemDOM                 = global._W.Meta.Entity.ItemDOM;
         BindCommandAjax         = global._W.Meta.Bind.BindCommandAjax;
+        EntityView              = global._W.Meta.Entity.EntityView;
     }
 
     //==============================================================
@@ -45,6 +47,7 @@
     if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
     if (typeof ItemDOM === "undefined") throw new Error("[ItemDOM] module load fail...");
     if (typeof BindCommandAjax === "undefined") throw new Error("[BindCommandAjax] module load fail...");
+    if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -259,28 +262,52 @@
                 if (typeof bindCommand === "undefined") {
                     console.warn("[%s] bindCommand가 없습니다.", cmdName);
                 } else {
-                    // cmds.valid
-                    for (var ii = 0; bindCommand.valid.items.count > ii; ii++) {
-                        item = bindCommand.valid.items[ii];
-                        if (items.indexOf(item) < 0) { // 없으면 추가
-                            items.push(item);
+                    
+                    for (var prop in bindCommand) {
+                        if (bindCommand[prop] instanceof EntityView && 
+                                prop.substr(0, 1) !== "_" &&                        // 이름 제외 조건
+                                (['valid', 'bind', 'etc'].indexOf(prop) > -1 ||     // 기본 Entity
+                                1 < bindCommand.outputOption )) {                   // 확장 Entity(output)은 옵션 검사
+                            
+                            for (var ii = 0; bindCommand[prop].items.count > ii; ii++) {
+
+                                item = bindCommand[prop].items[ii];
+                                if (items.indexOf(item) < 0) { // 없으면 추가
+                                    items.push(item);
+                                }
+                            }
                         }
                     }
-                    // cmds.bind
-                    for (var ii = 0; bindCommand.bind.items.count > ii; ii++) {
-                        item = bindCommand.bind.items[ii];
-                        if (items.indexOf(item) < 0) { // 없으면 추가
-                            items.push(item);
-                        }
-                    }
-                    //TODO: 전체 output[] 에서 비교해야함
-                    // cmds.output  
-                    for (var ii = 0; bindCommand.output.items.count > ii; ii++) {
-                        item = bindCommand.output.items[ii];
-                        if (items.indexOf(item) < 0) { // 없으면 추가
-                            items.push(item);
-                        }
-                    }
+
+                    // // cmds.valid
+                    // for (var ii = 0; bindCommand.valid.items.count > ii; ii++) {
+                    //     item = bindCommand.valid.items[ii];
+                    //     if (items.indexOf(item) < 0) { // 없으면 추가
+                    //         items.push(item);
+                    //     }
+                    // }
+                    // // cmds.bind
+                    // for (var ii = 0; bindCommand.bind.items.count > ii; ii++) {
+                    //     item = bindCommand.bind.items[ii];
+                    //     if (items.indexOf(item) < 0) { // 없으면 추가
+                    //         items.push(item);
+                    //     }
+                    // }
+                    // // cmds.etc
+                    // for (var ii = 0; bindCommand.etc.items.count > ii; ii++) {
+                    //     item = bindCommand.etc.items[ii];
+                    //     if (items.indexOf(item) < 0) { // 없으면 추가
+                    //         items.push(item);
+                    //     }
+                    // }
+                    // //TODO: 전체 output[] 에서 비교해야함
+                    // // cmds.output  
+                    // for (var ii = 0; bindCommand.output.items.count > ii; ii++) {
+                    //     item = bindCommand.output.items[ii];
+                    //     if (items.indexOf(item) < 0) { // 없으면 추가
+                    //         items.push(item);
+                    //     }
+                    // }
                 }
             }
 

@@ -4959,6 +4959,7 @@ if (typeof Array.isArray === "undefined") {
 
             var __valid     = new EntityView("valid", this._baseEntity);
             var __bind      = new EntityView("bind", this._baseEntity);
+            var __etc       = new EntityView("etc", this._baseEntity);
 
             var __cbValid       = null;
             var __cbBind        = null;
@@ -5005,6 +5006,17 @@ if (typeof Array.isArray === "undefined") {
                 set: function(newValue) { 
                     if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
                     __bind = newValue;
+                },
+                configurable: true,
+                enumerable: true
+            });
+
+            Object.defineProperty(this, "etc", 
+            {
+                get: function() { return __etc; },
+                set: function(newValue) { 
+                    if (!(newValue instanceof EntityView)) throw new Error("Only [etc] type 'EntityView' can be added");
+                    __etc = newValue;
                 },
                 configurable: true,
                 enumerable: true
@@ -5123,7 +5135,7 @@ if (typeof Array.isArray === "undefined") {
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
+         * @param {?(Array<String> | string)} p_entities <선택> 추가할 아이템 명령
          */
         BindCommand.prototype.add = function(p_item, p_entities) {
 
@@ -5632,7 +5644,7 @@ if (typeof Array.isArray === "undefined") {
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
          * @param {?array<string>} p_cmds <선택> 추가할 아이템 명령
-         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
+         * @param {?(array<string> | string)} p_entities <선택> 추가할 아이템 명령
          */
         BindModel.prototype.add = function(p_item, p_cmds, p_entities) {
 
@@ -5685,7 +5697,7 @@ if (typeof Array.isArray === "undefined") {
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
          * @param {string} p_name
          * @param {object | String | number | boolean} p_obj 
-         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
+         * @param {?(array<string> | string)} p_entities <선택> 추가할 아이템 명령
          */
 // POINT::
         BindModel.prototype.addItem = function(p_name, p_obj, p_cmds, p_entities) {
@@ -5728,7 +5740,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
-         * @param {?string | ?array<string>} p_prop 
+         * @param {?(string | array<string>)} p_prop 
          * @param {?string} p_entity 
          */
         BindModel.prototype.loadProp = function(p_prop, p_entity) {
@@ -5829,7 +5841,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * 명령 추가
+         * 명령 추가 (추상클래스) 상속하여 구현해야 함
          * @abstract
          * @param {*} p_name 
          * @param {*} p_option 
@@ -6353,6 +6365,7 @@ if (typeof Array.isArray === "undefined") {
     var IBindModel;
     var ItemDOM;
     var BindCommandAjax;
+    var EntityView;
 
     if (typeof module === "object" && typeof module.exports === "object") {    
         util                    = require("./utils");
@@ -6361,7 +6374,7 @@ if (typeof Array.isArray === "undefined") {
         IBindModel              = require("./i-bind-model");        
         ItemDOM                 = require("./entity-item-dom");
         BindCommandAjax         = require("./bind-command-ajax");
-
+        EntityView              = require("./entity-view").EntityView;
     } else {
         util                    = global._W.Common.Util;
         BindModel               = global._W.Meta.Bind.BindModel;
@@ -6369,6 +6382,7 @@ if (typeof Array.isArray === "undefined") {
         IBindModel              = global._W.Interface.IBindModel;        
         ItemDOM                 = global._W.Meta.Entity.ItemDOM;
         BindCommandAjax         = global._W.Meta.Bind.BindCommandAjax;
+        EntityView              = global._W.Meta.Entity.EntityView;
     }
 
     //==============================================================
@@ -6379,6 +6393,7 @@ if (typeof Array.isArray === "undefined") {
     if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
     if (typeof ItemDOM === "undefined") throw new Error("[ItemDOM] module load fail...");
     if (typeof BindCommandAjax === "undefined") throw new Error("[BindCommandAjax] module load fail...");
+    if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
 
     //==============================================================
     // 4. 모듈 구현    
@@ -6389,7 +6404,7 @@ if (typeof Array.isArray === "undefined") {
          * - bbb
          * @constructs _W.Meta.Bind.BindModelAjax
          * @extends _W.Meta.Bind.BindModel
-         * @param {Object} p_service 
+         * @param {IBindModel} p_service 
          * @param {Object} p_service.baseAjaxSetup Ajax 설정 
          * @param {String} p_service.baseAjaxSetup.url Ajax 설정 
          * @param {String} p_service.baseAjaxSetup.type GET, POST
@@ -6501,7 +6516,7 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 셀렉터 검사
-         * @param {*} p_collection 
+         * @param {?ItemCollecton} p_collection 
          */
         BindModelAjax.prototype.checkSelector  = function(p_collection) {
             
@@ -6552,10 +6567,20 @@ if (typeof Array.isArray === "undefined") {
 
 
         /**
-         * 셀렉터 목록 얻기
-         * @param {String | Arrary<String>} p_cmdNames command 명칭들
+         * 셀렉터 검사 결과 얻기
+         * @param {?(String | Arrary<String>)} p_cmdNames command 명칭들
          * @param {?Boolean} p_isLog 
-         * @param {ItemCollecton} p_collection 지정된 컬렉션에서 검사한다.
+         * @param {?ItemCollecton} p_collection 지정된 컬렉션에서 검사한다.
+         * @return {Arrary<Selector>}
+         * @example
+         * var bm = new BindModelAjax();
+         * ...
+         * bm.listSelector();           // 전체 셀렉터 목록 리턴
+         * bm.listSelector([], true);   // 전체 셀렉터 목록 리턴 및 로그 출력
+         * bm.listSelector('list');     // 지정한 단일 command 셀렉터 검사
+         * bm.listSelector(['list', 'read'], true);         // 지정한 복수 command 셀렉터 검사
+         * bm.listSelector([], true, secondCollection);     // 검사 대상 컬렉션 변경 (this.items)
+         * 
          */
          BindModelAjax.prototype.listSelector  = function(p_cmdNames, p_isLog, p_collection) {
             
@@ -6564,6 +6589,7 @@ if (typeof Array.isArray === "undefined") {
             var selector;
             var selectors = [];
             var cmds = [];
+            var cmdName = "";
             var bindCommand = null;
             var items = [];
             var item;
@@ -6576,34 +6602,58 @@ if (typeof Array.isArray === "undefined") {
             // command의 valid, bind, output item 검색하여 중복 제거후 삽입
             for (var i = 0; cmds.length > i; i++) {
                 
-                // 대상 bindCommand 설정
-                bindCommand = this[cmds[i]];
+                cmdName = cmds[i];              // cmd 이름 얻기
+                bindCommand = this[cmdName];    // 대상 bindCommand 설정
 
                 if (typeof bindCommand === "undefined") {
-                    console.warn("[%s] bindCommand가 없습니다.", bindCommand);
+                    console.warn("[%s] bindCommand가 없습니다.", cmdName);
                 } else {
-                    // cmds.valid
-                    for (var ii = 0; bindCommand.valid.items.count > ii; ii++) {
-                        item = bindCommand.valid.items[ii];
-                        if (items.indexOf(item) < 0) { // 없으면 추가
-                            items.push(item);
+                    
+                    for (var prop in bindCommand) {
+                        if (bindCommand[prop] instanceof EntityView && 
+                                prop.substr(0, 1) !== "_" &&                        // 이름 제외 조건
+                                (['valid', 'bind', 'etc'].indexOf(prop) > -1 ||     // 기본 Entity
+                                1 < bindCommand.outputOption )) {                   // 확장 Entity(output)은 옵션 검사
+                            
+                            for (var ii = 0; bindCommand[prop].items.count > ii; ii++) {
+
+                                item = bindCommand[prop].items[ii];
+                                if (items.indexOf(item) < 0) { // 없으면 추가
+                                    items.push(item);
+                                }
+                            }
                         }
                     }
-                    // cmds.bind
-                    for (var ii = 0; bindCommand.bind.items.count > ii; ii++) {
-                        item = bindCommand.bind.items[ii];
-                        if (items.indexOf(item) < 0) { // 없으면 추가
-                            items.push(item);
-                        }
-                    }
-                    //TODO: 전체 output[] 에서 비교해야함
-                    // cmds.output  
-                    for (var ii = 0; bindCommand.output.items.count > ii; ii++) {
-                        item = bindCommand.output.items[ii];
-                        if (items.indexOf(item) < 0) { // 없으면 추가
-                            items.push(item);
-                        }
-                    }
+
+                    // // cmds.valid
+                    // for (var ii = 0; bindCommand.valid.items.count > ii; ii++) {
+                    //     item = bindCommand.valid.items[ii];
+                    //     if (items.indexOf(item) < 0) { // 없으면 추가
+                    //         items.push(item);
+                    //     }
+                    // }
+                    // // cmds.bind
+                    // for (var ii = 0; bindCommand.bind.items.count > ii; ii++) {
+                    //     item = bindCommand.bind.items[ii];
+                    //     if (items.indexOf(item) < 0) { // 없으면 추가
+                    //         items.push(item);
+                    //     }
+                    // }
+                    // // cmds.etc
+                    // for (var ii = 0; bindCommand.etc.items.count > ii; ii++) {
+                    //     item = bindCommand.etc.items[ii];
+                    //     if (items.indexOf(item) < 0) { // 없으면 추가
+                    //         items.push(item);
+                    //     }
+                    // }
+                    // //TODO: 전체 output[] 에서 비교해야함
+                    // // cmds.output  
+                    // for (var ii = 0; bindCommand.output.items.count > ii; ii++) {
+                    //     item = bindCommand.output.items[ii];
+                    //     if (items.indexOf(item) < 0) { // 없으면 추가
+                    //         items.push(item);
+                    //     }
+                    // }
                 }
             }
 
