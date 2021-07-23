@@ -34,6 +34,8 @@
         function BaseService(p_suffix) {
             _super.call(this);
             
+            this.isLog = false;
+
             /**
              * 실패시 : 콘솔창 경고
              * @param {*} p_result 
@@ -61,8 +63,10 @@
              */
             this.cbBaseResult = function(p_result) {
                 var entity = p_result["table"] || p_result["entity"] || p_result["tables"] || p_result["entities"];
-                if (typeof entity["return"] === "undefined") entity["return"] = -100;
-                return entity;
+
+                p_result['return'] = typeof entity['return'] === 'string' ? Number(entity['return']) : entity['return'];
+                if (typeof p_result['return'] !== "number") entity["return"] = -100;
+                return p_result;
             };
 
             /**
@@ -71,7 +75,7 @@
              * @returns {Boolean}
              */
             this.cbBaseValid = function(p_valid) {
-                console.log("cbBaseValid 콜백. ");
+                if (this.isLog) console.log("cbBaseValid 콜백. ");
                 return true;
             };
             
@@ -80,7 +84,7 @@
              * @param {*} p_ajaxSetup 
              */
             this.cbBaseBind = function(p_ajaxSetup) {
-                console.log("cbBaseBind 콜백. ");
+                if (this.isLog) console.log("cbBaseBind 콜백. ");
             };
             
             /**
@@ -90,7 +94,7 @@
              * @param {*} p_xhr 
              */
             this.cbBaseEnd = function(p_result, p_state, p_xhr) {
-                console.log("cbBaseEnd 콜백. ");
+                if (this.isLog) console.log("cbBaseEnd 콜백. ");
             };
             
             /**
@@ -98,7 +102,7 @@
              * @param {*} p_entity 
              */
             this.cbBaseOutput = function(p_entity) {
-                console.log("cbBaseOutput 콜백. ");
+                if (this.isLog) console.log("cbBaseOutput 콜백. ");
             };
 
             /**
@@ -108,7 +112,7 @@
              */
             
             this.onExecute = function(p_bindCommand) {          // 실행시 이벤트 등록
-                console.log("onExecute 이벤트. ");
+                if (this.isLog) console.log("onExecute 이벤트. ");
                 $(".mLoading").show();
             };
 
@@ -118,7 +122,7 @@
              * @param {*} p_bindCommand 
              */
             this.onExecuted = function(p_bindCommand) {         // 실행끝 이벤트 등록
-                console.log("onExecuted 이벤트.. ");
+                if (this.isLog) console.log("onExecuted 이벤트.. ");
                 $(".mLoading").hide();
             };
         }
@@ -129,7 +133,7 @@
          * @param {BindModelAjax} p_bindModel 
          */
         BaseService.prototype.preRegister = function(p_bindModel) {
-            console.log("preRegister : 이벤트 및 설정 등록 ");
+            if (this.isLog) console.log("preRegister : 이벤트 및 설정 등록 ");
         };
 
         /**
@@ -138,7 +142,7 @@
          * @returns {Boolean}
          */
         BaseService.prototype.preCheck = function(p_bindModel) {   // 2.검사
-            console.log("preCheck : 화면 유효성 검사 ");
+            if (this.isLog) console.log("preCheck : 화면 유효성 검사 ");
             return true;
         };
 
@@ -147,7 +151,7 @@
          * @param {BindModelAjax} p_bindModel 
          */
         BaseService.prototype.preReady = function(p_bindModel) {
-            console.log("preReady : 준비완료 ");
+            if (this.isLog) console.log("preReady : 준비완료 ");
         };
 
         return BaseService;

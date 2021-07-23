@@ -64,7 +64,7 @@
                     <tr>
                         <th scope="row">질문</th>
                         <td colspan="3">
-                            <input type="text" id="name_corp_tel_hp" name="name_corp_tel_hp" value="" class="fText" style="width:200px;" />
+                            <input type="text" id="m-keyword" name="name_corp_tel_hp" value="" class="fText" style="width:200px;" />
                         </td>
                     </tr>
                     </tbody>
@@ -83,7 +83,7 @@
 	<div class="section" id="QA_level2">
 	    <div class="mState">
 	        <div class="gLeft">
-	            <p class="total">검색결과 <strong id="totalView">0</strong>건</p>
+	            <p class="total">검색결과 <strong id="s-txt-totalView">0</strong>건</p>
             </div>
 	        <div class="gRight">
 	            <select id="changePagesize" name="m-page_size" class="fSelect">
@@ -151,8 +151,8 @@
                         <td>{{create_dt}}</td>
                         <td>{{question}}</td>
                         <td>{{answer}}</td>
-                        <td>{{rank_it}}</td>
-                        <td><a href="javascript:view('{{evt_idx}}');" class='btnNormal'><span> 조회</span></a></td>
+                        <td>{{raink_it}}</td>
+                        <td><a href="javascript:faq.fn.moveEdit('{{faq_idx}}');" class='btnNormal'><span> 조회</span></a></td>
                     </tr>
                     {{/rows}} 
                 </script>    
@@ -197,7 +197,7 @@
 
 </div>        
 <script src="/Common/js/handlebars.js"></script>
-<script src="/Common/js/_w-meta-1.5.2.js?<%=g_iRandomID%>"></script>
+<script src="/Common/js/_w-meta-1.6.0.js?<%=g_iRandomID%>"></script>
 <script src="/Admin/adm_cmn/Service/base-page-svc.js?<%=g_iRandomID%>"></script>
 <script src="/Admin/adm_mod/BOD/Service/board-faq-svc.js?<%=g_iRandomID%>"></script>
 <script>
@@ -205,20 +205,22 @@
 	var faq = new BindModelAjax(new BoardFaqService());
 	
 	// 속성 설정
-    faq.prop["__listUrl"] = "FAQ_Frm.asp";
-	faq.items["page_size"].value = 3;
-	faq.prop["__isGetLoad"] = false;
+	// faq.isLog = true;
+	// faq.items['page_size'].value = 3;
+	faq.prop["__formUrl"] = "FAQ_Frm.asp";
+	faq.prop['__isGetLoad'] = false;
+
 	// 이벤트 바인딩
-	$("#btn_Search").click(faq.fn.searchList);			// 검색 버튼	
-	$("#btn_Reset").click(faq.fn.resetForm);			// 검색 폼 초기화
-	$("#changePagesize").change(faq.fn.changePagesize);	// 페이지크기 변경
-	$("#btn_Insert").click(faq.fn.moveForm);			// 등록 버튼
+	$('#btn_Search').click(faq.fn.searchList);
+	$('#changePagesize').change(faq.fn.changePagesize);
+	$('#btn_Reset').click(faq.fn.resetForm);
+	$('#btn_Insert').click(faq.fn.moveForm);
     //--------------------------------------------------------------
 	$(document).ready(function () {
         faq.init();
 		faq.fn.procList();
     });
-	 console.log("__________init______________");
+	console.log("ready");
 </script>
 </body>
 </html>            
