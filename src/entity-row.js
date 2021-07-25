@@ -43,7 +43,7 @@
     var Row  = (function (_super) {
         /**
          * 로우
-         * @constructs _W.Meta.Enity.Row
+         * @constructs _W.Meta.Entity.Row
          * @extends _W.Collection.PropertyCollection
          */
         function Row(p_entity) {

@@ -33,7 +33,9 @@
      //---------------------------------------
      var PropertyObjectCollection  = (function (_super) {
         /**
-         * @class
+         * 객체 프로퍼티 컬렉션
+         * @constructs _W.Collection.PropertyObjectCollection
+         * @extends _W.Collection.ProperyCollection
          * @param {*} p_onwer 소유자 
          */
         function PropertyObjectCollection(p_onwer) {

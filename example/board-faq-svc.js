@@ -34,19 +34,21 @@
          * @param {String} p_suffix 셀렉터 접미사
          * @example
          * // 1단계 : 본문에 관련 스크립트 태그 삽입 (handlebars.js, _w-meta.*.js, base-svc.js, faq-svc.js)
-         * // 2단계 : 사용할 command 기준으로 items들을 셀렉터 설정 (mapping 참조)
+         * // 2단계 : 사용할 command 기준으로 items들을 셀렉터 설정 (mapping 참조, listSelector() 검사)
          * // 3단계 : 스크립트 로딩 (하단은 목록 예시)
          * 
          * var faq = new BindModelAjax(new BoardFaqService());
          *    
          * // 속성 설정
          * faq.prop["__listUrl"] = "FAQ_Frm.asp";
-         * faq.items["page_size"].value = 3;
          * faq.prop["__isGetLoad"] = false;
+         * faq.items["page_size"].value = 3;
+         * 
          * // 이벤트 바인딩
          * $("#btn_Search").click(faq.fn.search);
          * $("#btn_Reset").click(faq.fn.reset);
          * $("#changePagesize").change(faq.fn.changePagesize);
+         * 
          * // 초기화  
          * $(document).ready(function () {
          *  faq.init();
@@ -275,7 +277,7 @@
              * 공개 함수
              * @type {Object.<String, Function>}
              * @property {Function} searchList 목록 검색
-             * @property {Function} fnchangePagesize 목록 페이지 크기 변경
+             * @property {Function} changePagesize 목록 페이지 크기 변경
              * @property {Param} fnchangePagesize.p_num 목록 크기(파라메터)
              * @property {Function} resetForm 입력양식 초기화
              * @property {Function} moveList 목록 화면 이동

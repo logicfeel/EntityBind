@@ -33,8 +33,10 @@
      //---------------------------------------
      var PropertyFunctionCollection  = (function (_super) {
         /**
-         * @class
+         * 함수 프로퍼티 컬렉션
+         * @constructs _W.Collection.PropertyFunctionCollection
          * @param {*} p_onwer 소유자 
+         * @extends _W.Collection.ProperyCollection
          */
         function PropertyFunctionCollection(p_onwer) {
             _super.call(this, p_onwer);
