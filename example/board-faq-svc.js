@@ -61,9 +61,7 @@
             var _SUFF       = p_suffix || "";  // 접미사
             var _this       = this;
             var _template   = null;
-
-            this.bindModel  = null;             // TODO: IBindModel 에 구현 해야함
-
+            
             /**
              * 기본 콜백 경로
              * @type {String}

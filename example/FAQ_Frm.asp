@@ -156,6 +156,7 @@
 	$('#btn_Delete').click(faq.fn.procDelete);
 	$('#btn_List').click(faq.fn.moveList);
 	$('#btn_Reset').click(faq.fn.resetForm);
+
     //--------------------------------------------------------------
 	$(document).ready(function () {
         faq.init();
@@ -168,7 +169,7 @@
             setEditMode(false);
         }
     });
-	console.log("ready");
+	console.log("______________ready_______________");
 </script>
 
 </body>

@@ -83,6 +83,13 @@
 
 
             /**
+             * 서비스(svc)에서 bindModel에 접근 지시자
+             * @member
+             * @type {BindModel}
+             */
+            this.bindModel  = null;
+
+            /**
              * 속성(아이템)
              * @member
              * @type {Object.<String, IItem | String | Boolean | Number>}

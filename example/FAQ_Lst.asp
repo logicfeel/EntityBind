@@ -215,12 +215,13 @@
 	$('#changePagesize').change(faq.fn.changePagesize);
 	$('#btn_Reset').click(faq.fn.resetForm);
 	$('#btn_Insert').click(faq.fn.moveForm);
+
     //--------------------------------------------------------------
 	$(document).ready(function () {
         faq.init();
 		faq.fn.procList();
     });
-	console.log("ready");
+	console.log("______________ready_______________");
 </script>
 </body>
 </html>            
