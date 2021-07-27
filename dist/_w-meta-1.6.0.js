@@ -3,12 +3,12 @@
  * namespace Object.prototype.isImplementOf [protected] 구현 여부
  * namespace Object.prototype._implements 인터페이스(클래스 포함) 등록 *다중상속*
  */
-if ((typeof Object.prototype._implements === "undefined") ||
-    (typeof Object.prototype.isImplementOf === "undefined")) {
+if ((typeof Object.prototype._implements === 'undefined') ||
+    (typeof Object.prototype.isImplementOf === 'undefined')) {
 
     (function(global) {
 
-        "use strict";
+        'use strict';
 
         //==============================================================
         // 1. 모듈 네임스페이스 선언
@@ -48,23 +48,23 @@ if ((typeof Object.prototype._implements === "undefined") ||
             var obj;    
         
             for(var i = 0; i < arguments.length; i++) {
-                if (typeof arguments[i] === "function") {
+                if (typeof arguments[i] === 'function') {
                     // 중복 제거
                     if (this._interface.indexOf(arguments[i]) < 0) {
                         this._interface.push(arguments[i]);
                         this._interface[arguments[i].name] = arguments[i];    // 프로퍼티 접근자
                     }
                 } else {
-                    throw new Error("함수타입만 가능합니다.");
+                    throw new Error('함수타입만 가능합니다.');
                 }
                     
                 obj = new arguments[i];
         
                 for(var p in obj) {
-                    typeName = (typeof obj[p] === "function") ? "Method" : "Property";
+                    typeName = (typeof obj[p] === 'function') ? 'Method' : 'Property';
                     
                     if (!(p in this) && !Object.prototype.hasOwnProperty(p)) {
-                        console.warn("Warning!! 인터페이스 구현 해야함. " + arguments[i].name + " :: (" + typeName + ") " + p);
+                        console.warn('Warning!! 인터페이스 구현 해야함. ' + arguments[i].name + ' :: (' + typeName + ') ' + p);
                     }
                 }
             }
@@ -75,27 +75,27 @@ if ((typeof Object.prototype._implements === "undefined") ||
         // jquery 에서 오류 발생으로 대체함
         // Object.prototype._implements = _implements;
         // Object.prototype.isImplementOf = isImplementOf;
-		Object.defineProperty(Object.prototype, "_implements",
+		Object.defineProperty(Object.prototype, '_implements',
 	    {
 	        value: _implements,
 	        enumerable: false
 	    });
-	    Object.defineProperty(Object.prototype, "isImplementOf",
+	    Object.defineProperty(Object.prototype, 'isImplementOf',
 	    {
 	        value: isImplementOf,
 	        enumerable: false
         });
         
-    }(typeof module === "object" && typeof module.exports === "object" ? global : window));
+    }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 }
 /**
  * namespace Array.isArray : 배열 유무 (폴리필 웹전용)
  */
-if (typeof Array.isArray === "undefined") {
+if (typeof Array.isArray === 'undefined') {
 
     (function(global) {
-
-        "use strict";
+        
+        'use strict';
 
         //==============================================================
         // 1. 모듈 네임스페이스 선언
@@ -109,10 +109,10 @@ if (typeof Array.isArray === "undefined") {
         //==============================================================
         // 4. 모듈 구현    
         var isArray = function(pValue) {
-            if (typeof Array.isArray === "function") {
+            if (typeof Array.isArray === 'function') {
                 return Array.isArray(pValue);
             } else {
-                return Object.prototype.toString.call(pValue) === "[object Array]";
+                return Object.prototype.toString.call(pValue) === '[object Array]';
             }
         };
 
@@ -120,14 +120,14 @@ if (typeof Array.isArray === "undefined") {
         // 5. 모듈 내보내기 (node | web)
         Arrary.isArray = isArray;
 
-    }(typeof module === "object" && typeof module.exports === "object" ? global : window));
+    }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 }
 /**
  * namespace _W.Common.Util
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 의존 모듈 선언
@@ -206,8 +206,8 @@ if (typeof Array.isArray === "undefined") {
      */
     var createGUID = function() {
         function _p8(s) {  
-            var p = (Math.random().toString(16)+"000000000").substr(2,8);  
-            return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;  
+            var p = (Math.random().toString(16)+'000000000').substr(2,8);  
+            return s ? '-' + p.substr(0,4) + '-' + p.substr(4,4) : p ;  
         }
         return _p8() + _p8(true) + _p8(true) + _p8();
     };
@@ -224,10 +224,10 @@ if (typeof Array.isArray === "undefined") {
         var selectors = [];
 
         // 입력형식에 따른 배열에 삽입
-        if (typeof p_obj === "string") selectors.push(p_obj);
-        else if (typeof p_obj === "array") {
+        if (typeof p_obj === 'string') selectors.push(p_obj);
+        else if (typeof p_obj === 'array') {
             selectors = p_obj;
-        } else if (typeof p_obj === "object") {
+        } else if (typeof p_obj === 'object') {
             for(var prop in p_obj) {
                 if (p_obj.hasOwnProperty(prop)) {
                     if (Array.isArray(p_obj[prop])) {
@@ -239,10 +239,10 @@ if (typeof Array.isArray === "undefined") {
             }
         }
 
-        if (typeof document === "object" && typeof document.querySelector === "function") {     
+        if (typeof document === 'object' && typeof document.querySelector === 'function') {     
             // 유효성 검사
             for(var i = 0; selectors.length > i; i++) {
-                if (typeof selectors[i] !== "string") throw new Error("Only [selectors] type 'string' can be added");
+                if (typeof selectors[i] !== 'string') throw new Error('Only [selectors] type "string" can be added');
 
                 // if (document.querySelector(selectors[i]) === null) {
                 //     return selectors[i];
@@ -258,7 +258,7 @@ if (typeof Array.isArray === "undefined") {
                 }
             }
         } else {
-            throw new Error("[document.querySelector] module load fail...");
+            throw new Error('[document.querySelector] module load fail...');
         }
 
         return null;
@@ -266,7 +266,7 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports.inherits = inherits;
         module.exports.getArrayLevel = getArrayLevel;
         module.exports.createGUID = createGUID;
@@ -277,13 +277,13 @@ if (typeof Array.isArray === "undefined") {
         global._W.Common.Util.validSelector = validSelector;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Common.Observer
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -292,7 +292,7 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
     } else {
     }
 
@@ -348,22 +348,22 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * 구독 신청
-         * 이벤트 "p_code"를 입력하지 않으면 전역(any)에 등록 된다.
+         * 이벤트 'p_code'를 입력하지 않으면 전역(any)에 등록 된다.
          * @param {function} p_fn  구독 콜백 함수
-         * @param {?string} p_code 구독 코드명 : 기본값 "any"
+         * @param {?string} p_code 구독 코드명 : 기본값 'any'
          */
         Observer.prototype.subscribe = function(p_fn, p_code) {
             p_code = p_code || 'any';
 
             var subscribers = null;
 
-            if (typeof p_fn === "undefined") throw new Error("p_fn param request fail...");
-            if (typeof p_fn !== "function") throw new Error("Only [p_fn] type 'function' can be added");
+            if (typeof p_fn === 'undefined') throw new Error('p_fn param request fail...');
+            if (typeof p_fn !== 'function') throw new Error('Only [p_fn] type "function" can be added');
 
             // 싱글모드일 경우 기존내용 모두 제거
             if (!this.isMultiMode) this.unsubscribeAll(p_code);
 
-            if (typeof this.subscribers[p_code] === "undefined") {
+            if (typeof this.subscribers[p_code] === 'undefined') {
                 this.subscribers[p_code] = [];
             }
             subscribers = this.subscribers[p_code];
@@ -371,14 +371,14 @@ if (typeof Array.isArray === "undefined") {
         };
         
         /**
-         * @desc 이벤트 "p_code"를 입력하지 않으면 전역(any)에서 취소 된다.
+         * @desc 이벤트 'p_code'를 입력하지 않으면 전역(any)에서 취소 된다.
          * @param {function} p_fn [필수] 이벤트 콜백 함수
-         * @param {?string} p_code 이벤트 코드명 : 기본값 "any"
+         * @param {?string} p_code 이벤트 코드명 : 기본값 'any'
          */
         Observer.prototype.unsubscribe = function(p_fn, p_code) {
-            p_code = p_code || "any";
+            p_code = p_code || 'any';
 
-            if (typeof p_fn === "undefined") throw new Error("p_fn param request fail...");
+            if (typeof p_fn === 'undefined') throw new Error('p_fn param request fail...');
 
             if (this.subscribers[p_code]) {
                 for (var i = 0; i < this.subscribers[p_code].length; i++) {
@@ -398,7 +398,7 @@ if (typeof Array.isArray === "undefined") {
          */
         Observer.prototype.unsubscribeAll = function(p_code) {
 
-            if (typeof p_code === "undefined") {     // 전체 구독 삭제
+            if (typeof p_code === 'undefined') {     // 전체 구독 삭제
                 this.subscribers = {any: []};
             } else {                        // 코드명 구독(함수) 전체 삭제
                 delete this.subscribers[p_code];
@@ -407,10 +407,10 @@ if (typeof Array.isArray === "undefined") {
 
         /**
          * @desc 구독 함수 호출
-         * @param {?string} p_code 이벤트 코드명 : 기본값 "any"
+         * @param {?string} p_code 이벤트 코드명 : 기본값 'any'
          */
         Observer.prototype.publish = function(p_code) {
-            p_code = p_code || "any";
+            p_code = p_code || 'any';
             
             var args = Array.prototype.slice.call(arguments);
             var params = args.length >= 1 ? args.splice(1) : [];
@@ -419,7 +419,7 @@ if (typeof Array.isArray === "undefined") {
 
             if (p_code in this.subscribers) {
                 for (var i = 0; i < this.subscribers[p_code].length; i++) {
-                    if (typeof this.subscribers[p_code][i] === "function") {
+                    if (typeof this.subscribers[p_code][i] === 'function') {
                         // this.subscribers[p_code][i].call(this._this, this._onwer);  // REVIEW:: _onwer 인수 확인필요! >> 전달파라메터 
                         this.subscribers[p_code][i].apply(this._this, params);
                     }
@@ -427,7 +427,7 @@ if (typeof Array.isArray === "undefined") {
             }
             
             if (this.isDebug) {
-                console.log("publish() 이벤트 발생 [" + this._this.constructor.name + "] type:" + p_code);
+                console.log('publish() 이벤트 발생 [' + this._this.constructor.name + '] type:' + p_code);
             }
         };
 
@@ -441,19 +441,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = Observer;
     } else {
         global._W.Common.Observer = Observer;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Interface.IObject
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -481,7 +481,7 @@ if (typeof Array.isArray === "undefined") {
          * 객체타입 얻기
          */
         IObject.prototype.getTypes  = function() {
-            throw new Error("[ getTypes() ] Abstract method definition, fail...");
+            throw new Error('[ getTypes() ] Abstract method definition, fail...');
         };
         
         /**
@@ -489,7 +489,7 @@ if (typeof Array.isArray === "undefined") {
          * @returns {Boolean}
          */
         IObject.prototype.instanceOf  = function() {
-            throw new Error("[ instanceOf() ] Abstract method definition, fail...");
+            throw new Error('[ instanceOf() ] Abstract method definition, fail...');
         };
     
         return IObject;
@@ -497,19 +497,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IObject;
     } else {
         global._W.Interface.IObject = IObject;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Interface.IMarshal
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -521,9 +521,9 @@ if (typeof Array.isArray === "undefined") {
     var util;
     var IObject;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        IObject             = require("./i-object");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        IObject             = require('./i-object');
     } else {
         util                = global._W.Common.Util;
         IObject             = global._W.Interface.IObject;
@@ -531,8 +531,8 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof IObject === "undefined") throw new Error("[IObject] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof IObject === 'undefined') throw new Error('[IObject] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -553,7 +553,7 @@ if (typeof Array.isArray === "undefined") {
          * @returns {Object}
          */
         IMarshal.prototype.getObject  = function() {
-            throw new Error("[ getObject() ] Abstract method definition, fail...");
+            throw new Error('[ getObject() ] Abstract method definition, fail...');
         };
 
         /**
@@ -562,7 +562,7 @@ if (typeof Array.isArray === "undefined") {
          * @returns {Stirng}
          */
         IMarshal.prototype.getGUID  = function() {
-            throw new Error("[ getGUID() ] Abstract method definition, fail...");
+            throw new Error('[ getGUID() ] Abstract method definition, fail...');
 
         };
 
@@ -571,19 +571,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IMarshal;
     } else {
         global._W.Interface.IMarshal = IMarshal;
     }
     
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Interface.IAllControl
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -611,7 +611,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IAllControl.prototype.clone  = function() {
-            throw new Error("[ clone() ] Abstract method definition, fail...");
+            throw new Error('[ clone() ] Abstract method definition, fail...');
         };
 
         /**
@@ -619,7 +619,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IAllControl.prototype.load  = function() {
-            throw new Error("[ load() ] Abstract method definition, fail...");
+            throw new Error('[ load() ] Abstract method definition, fail...');
         };
 
         /**
@@ -627,7 +627,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IAllControl.prototype.clear  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
+            throw new Error('[ clear() ] Abstract method definition, fail...');
         };
     
         return IAllControl;
@@ -635,19 +635,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IAllControl;
     } else {
         global._W.Interface.IAllControl = IAllControl;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Interface.IExportControl
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -675,7 +675,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IExportControl.prototype.write  = function() {
-            throw new Error("[ write() ] Abstract method definition, fail...");
+            throw new Error('[ write() ] Abstract method definition, fail...');
         };
     
         return IExportControl;
@@ -683,19 +683,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IExportControl;
     } else {
         global._W.Interface.IExportControl = IExportControl;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Interface.IGroupControl
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -723,7 +723,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IGroupControl.prototype.merge  = function() {
-            throw new Error("[ merge() ] Abstract method definition, fail...");
+            throw new Error('[ merge() ] Abstract method definition, fail...');
         };
 
         /**
@@ -731,7 +731,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IGroupControl.prototype.copy  = function() {
-            throw new Error("[ copyTo() ] Abstract method definition, fail...");
+            throw new Error('[ copyTo() ] Abstract method definition, fail...');
         };
 
         return IGroupControl;
@@ -739,19 +739,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IGroupControl;
     } else {
         global._W.Interface.IGroupControl = IGroupControl;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Interface.IImportControl
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -779,7 +779,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IImportControl.prototype.read  = function() {
-            throw new Error("[ read() ] Abstract method definition, fail...");
+            throw new Error('[ read() ] Abstract method definition, fail...');
         };
     
         return IImportControl;
@@ -787,19 +787,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IImportControl;
     } else {
         global._W.Interface.IImportControl = IImportControl;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Interface.ILookupControl
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -827,7 +827,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         ILookupControl.prototype.contains  = function() {
-            throw new Error("[ contains() ] Abstract method definition, fail...");
+            throw new Error('[ contains() ] Abstract method definition, fail...');
         };
 
         return ILookupControl;
@@ -835,19 +835,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = ILookupControl;
     } else {
         global._W.Interface.ILookupControl = ILookupControl;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Interface.IPartControl
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -875,7 +875,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IPartControl.prototype.add  = function() {
-            throw new Error("[ add() ] Abstract method definition, fail...");
+            throw new Error('[ add() ] Abstract method definition, fail...');
         };
 
         /**
@@ -883,7 +883,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IPartControl.prototype.remove  = function() {
-            throw new Error("[ remove() ] Abstract method definition, fail...");
+            throw new Error('[ remove() ] Abstract method definition, fail...');
         };
     
         return IPartControl;
@@ -891,19 +891,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IPartControl;
     } else {
         global._W.Interface.IPartControl = IPartControl;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Interface.ICollection
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -915,9 +915,9 @@ if (typeof Array.isArray === "undefined") {
     var IPartControl;
     var ILookupControl;
     
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        IPartControl        = require("./i-control-part");
-        ILookupControl      = require("./i-control-lookup");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        IPartControl        = require('./i-control-part');
+        ILookupControl      = require('./i-control-lookup');
     } else {
         IPartControl        = global._W.Interface.IPartControl;
         ILookupControl      = global._W.Interface.ILookupControl;
@@ -960,7 +960,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         ICollection.prototype.add  = function() {
-            throw new Error("[ add() ] Abstract method definition, fail...");
+            throw new Error('[ add() ] Abstract method definition, fail...');
         };
 
         /**
@@ -968,7 +968,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         ICollection.prototype.remove  = function() {
-            throw new Error("[ remove() ] Abstract method definition, fail...");
+            throw new Error('[ remove() ] Abstract method definition, fail...');
         };
 
         /**
@@ -976,7 +976,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         ICollection.prototype.removeAt  = function() {
-            throw new Error("[ removeAt() ] Abstract method definition, fail...");
+            throw new Error('[ removeAt() ] Abstract method definition, fail...');
         };
 
         /**
@@ -984,7 +984,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         ICollection.prototype.clear  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
+            throw new Error('[ clear() ] Abstract method definition, fail...');
         };
 
         /**
@@ -992,7 +992,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         ICollection.prototype.contains  = function() {
-            throw new Error("[ contains() ] Abstract method definition, fail...");
+            throw new Error('[ contains() ] Abstract method definition, fail...');
         };
 
         /**
@@ -1000,7 +1000,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         ICollection.prototype.indexOf  = function() {
-            throw new Error("[ indexOf() ] Abstract method definition, fail...");
+            throw new Error('[ indexOf() ] Abstract method definition, fail...');
         };
     
         return ICollection;
@@ -1008,18 +1008,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = ICollection;
     } else {
         global._W.Interface.ICollection = ICollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Interface.IPropertyCollection
  */
 (function(global) {
-    "use strict";
+    
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -1031,9 +1032,9 @@ if (typeof Array.isArray === "undefined") {
     var util;
     var ICollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        ICollection         = require("./i-collection");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        ICollection         = require('./i-collection');
     } else {
         util                = global._W.Common.Util;
         ICollection         = global._W.Interface.ICollection;
@@ -1041,8 +1042,8 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof ICollection === "undefined") throw new Error("[ICollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof ICollection === 'undefined') throw new Error('[ICollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -1061,7 +1062,7 @@ if (typeof Array.isArray === "undefined") {
          * 조회 : idx 로 이름 조회
          */
         IPropertyCollection.prototype.propertyOf  = function() {
-            throw new Error("[ propertyOf() ] Abstract method definition, fail...");
+            throw new Error('[ propertyOf() ] Abstract method definition, fail...');
         };
     
         return IPropertyCollection;
@@ -1069,19 +1070,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IPropertyCollection;
     } else {
         global._W.Interface.IPropertyCollection = IPropertyCollection;
     }
     
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Interface.IControlCollection
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -1095,11 +1096,11 @@ if (typeof Array.isArray === "undefined") {
     var IGroupControl;
     var IAllControl;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        ICollection         = require("./i-collection");
-        IGroupControl        = require("./i-control-group");
-        IAllControl         = require("./i-control-all");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        ICollection         = require('./i-collection');
+        IGroupControl        = require('./i-control-group');
+        IAllControl         = require('./i-control-all');
     } else {
         util                = global._W.Common.Util;
         ICollection         = global._W.Interface.ICollection;
@@ -1109,10 +1110,10 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof ICollection === "undefined") throw new Error("[ICollection] module load fail...");
-    if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
-    if (typeof IAllControl === "undefined") throw new Error("[IAllControl] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof ICollection === 'undefined') throw new Error('[ICollection] module load fail...');
+    if (typeof IGroupControl === 'undefined') throw new Error('[IGroupControl] module load fail...');
+    if (typeof IAllControl === 'undefined') throw new Error('[IAllControl] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -1137,7 +1138,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IControlCollection.prototype.merge  = function() {
-            throw new Error("[ concat() ] Abstract method definition, fail...");
+            throw new Error('[ concat() ] Abstract method definition, fail...');
         };
 
         /**
@@ -1145,7 +1146,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IControlCollection.prototype.copyTo  = function() {
-            throw new Error("[ copyTo() ] Abstract method definition, fail...");
+            throw new Error('[ copyTo() ] Abstract method definition, fail...');
         };
 
         /**
@@ -1153,7 +1154,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IControlCollection.prototype.clone  = function() {
-            throw new Error("[ clone() ] Abstract method definition, fail...");
+            throw new Error('[ clone() ] Abstract method definition, fail...');
         };
 
         /**
@@ -1161,7 +1162,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IControlCollection.prototype.load  = function() {
-            throw new Error("[ load() ] Abstract method definition, fail...");
+            throw new Error('[ load() ] Abstract method definition, fail...');
         };
 
         /**
@@ -1169,7 +1170,7 @@ if (typeof Array.isArray === "undefined") {
          * @abstract
          */
         IControlCollection.prototype.clear  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
+            throw new Error('[ clear() ] Abstract method definition, fail...');
         };
     
         return IControlCollection;
@@ -1177,19 +1178,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IControlCollection;
     } else {
         global._W.Interface.IControlCollection = IControlCollection;
     }
     
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Interface.IBindModel
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -1261,9 +1262,9 @@ if (typeof Array.isArray === "undefined") {
              * @property {'Arrary' | '[]'} {command:mapping} 검사와 바인딩 출력 모든곳에 매핑한다.
              * @example
              * this.mapping = {
-             *      cmd:            { Array:    "bind" },
-             *      keyword:        { list:     "bind" },
-             *      faq_idx:        { read:     "bind",     delete:     "bind" }
+             *      cmd:            { Array:    'bind' },
+             *      keyword:        { list:     'bind' },
+             *      faq_idx:        { read:     'bind',     delete:     'bind' }
              * };
              */
 
@@ -1295,11 +1296,11 @@ if (typeof Array.isArray === "undefined") {
              * this.prop = {
              *   // inner
              *   __isGetLoad:    true,
-             *   __listUrl:      "",
-             *   keyword:        { selector: { key: "#m-keyword"+ _SUFF,         type: "value" } },
+             *   __listUrl:      '',
+             *   keyword:        { selector: { key: '#m-keyword'+ _SUFF,         type: 'value' } },
              *   page_size:      {
              *       setter: function(val) { page.page_size = val; },
-             *       selector: { key: "select[name=m-page_size]"+ _SUFF,         type: "value" },
+             *       selector: { key: 'select[name=m-page_size]'+ _SUFF,         type: 'value' },
              *   },
              * };
              */
@@ -1330,11 +1331,11 @@ if (typeof Array.isArray === "undefined") {
              * this.command = {
              *   create:         {
              *     onExecute: function(p_bindCommand) { 
-             *        _this.bindModel.items["cmd"].value = "CREATE"; 
+             *        _this.bindModel.items['cmd'].value = 'CREATE'; 
              *     },
              *     cbEnd: function(p_entity) {
-             *         if (p_entity["return"] < 0) return alert("등록 처리가 실패 하였습니다. Code : " + p_entity["return"]);
-             *         location.href = _this.bindModel.prop["__listUrl"];
+             *         if (p_entity['return'] < 0) return alert('등록 처리가 실패 하였습니다. Code : ' + p_entity['return']);
+             *         location.href = _this.bindModel.prop['__listUrl'];
              *     },
              *   },
              * };
@@ -1353,9 +1354,9 @@ if (typeof Array.isArray === "undefined") {
              * @property {'[]'} command.mapping 모든곳에 매핑한다.(검사와 바인딩 출력)
              * @example
              * this.mapping = {
-             *      cmd:            { Array:    "bind" },
-             *      keyword:        { list:     ["bind", "valid"] },
-             *      faq_idx:        { read:     "bind",     delete:     "bind" }
+             *      cmd:            { Array:    'bind' },
+             *      keyword:        { list:     ['bind', 'valid'] },
+             *      faq_idx:        { read:     'bind',     delete:     'bind' }
              * };
              */
             this.mapping    = {};
@@ -1478,18 +1479,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IBindModel;
     } else {
         global._W.Interface.IBindModel = IBindModel;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Collection.BaseCollection
  */
 (function(global) {
-    "use strict";
+    
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -1501,9 +1503,9 @@ if (typeof Array.isArray === "undefined") {
     var ICollection;
     var Observer;    
 
-    if (typeof module === "object" && typeof module.exports === "object") {
-        ICollection         = require("./i-collection");
-        Observer            = require("./observer");
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        ICollection         = require('./i-collection');
+        Observer            = require('./observer');
     } else {
         ICollection         = global._W.Interface.ICollection;
         Observer            = global._W.Common.Observer;
@@ -1511,8 +1513,8 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
-    if (typeof ICollection === "undefined") throw new Error("[ICollection] module load fail...");
+    if (typeof Observer === 'undefined') throw new Error('[Observer] module load fail...');
+    if (typeof ICollection === 'undefined') throw new Error('[ICollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현 
@@ -1553,16 +1555,16 @@ if (typeof Array.isArray === "undefined") {
             this._symbol        = [];
 
             /** @member {Observer}  _W.Collection.BaseCollection#elementType 요소타입 */
-            Object.defineProperty(this, "elementType", {
+            Object.defineProperty(this, 'elementType', {
                 enumerable: true,
                 configurable: true,
                 get: function() {
                     return __elementType;
                 },
                 set: function(newValue) {
-                    if(typeof newValue !== "function") throw new Error("Only [elementType] type 'function' can be added");
-                    if(typeof newValue === "function" && typeof ["number", "string", "boolean"].indexOf(newValue.name) > -1) {
-                        throw new Error("Only [elementType] type Not 'number', 'string', 'boolean' can be added");
+                    if(typeof newValue !== 'function') throw new Error('Only [elementType] type "function" can be added');
+                    if(typeof newValue === 'function' && typeof ['number', 'string', 'boolean'].indexOf(newValue.name) > -1) {
+                        throw new Error('Only [elementType] type Not "number, string, boolean" can be added');
                     }
                     __elementType = newValue;
                 }
@@ -1572,7 +1574,7 @@ if (typeof Array.isArray === "undefined") {
              * 컬렉션 목록 
              * @member {Array}  _W.Collection.BaseCollection#list  
              */
-            Object.defineProperty(this, "list", {
+            Object.defineProperty(this, 'list', {
                 enumerable: true,
                 configurable: true,
                 get: function() {
@@ -1584,7 +1586,7 @@ if (typeof Array.isArray === "undefined") {
              * 컬랙션 갯수 
              * @member {Number} _W.Collection.BaseCollection#count 
              */
-            Object.defineProperty(this, "count", {
+            Object.defineProperty(this, 'count', {
                 enumerable: true,
                 configurable: true,
                 get: function() {
@@ -1596,11 +1598,11 @@ if (typeof Array.isArray === "undefined") {
              * 변경(등록/삭제) 후 이벤트  
              * @event _W.Collection.BaseCollection#onAdd 
              */
-            Object.defineProperty(this, "onAdd", {
+            Object.defineProperty(this, 'onAdd', {
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "add");
+                    this.__event.subscribe(p_fn, 'add');
                 }
             });
 
@@ -1608,11 +1610,11 @@ if (typeof Array.isArray === "undefined") {
              * 제거 이벤트
              * @event _W.Collection.BaseCollection#onRemove
              */
-            Object.defineProperty(this, "onRemove", {
+            Object.defineProperty(this, 'onRemove', {
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "remove");
+                    this.__event.subscribe(p_fn, 'remove');
                 }
             });
 
@@ -1620,11 +1622,11 @@ if (typeof Array.isArray === "undefined") {
              * 전체 제거 이벤트
              * @event _W.Collection.BaseCollection#onClear
              */
-            Object.defineProperty(this, "onClear", {
+            Object.defineProperty(this, 'onClear', {
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "clear");
+                    this.__event.subscribe(p_fn, 'clear');
                 }
             });
 
@@ -1632,11 +1634,11 @@ if (typeof Array.isArray === "undefined") {
              * 변경(등록/삭제) 전 이벤트  
              * @event _W.Collection.BaseCollection#onChanging 
              */
-            Object.defineProperty(this, "onChanging", {
+            Object.defineProperty(this, 'onChanging', {
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "changing");
+                    this.__event.subscribe(p_fn, 'changing');
                 }
             });
 
@@ -1644,19 +1646,19 @@ if (typeof Array.isArray === "undefined") {
              * 변경(등록/삭제) 후 이벤트  
              * @event _W.Collection.BaseCollection#onChanged 
              */
-            Object.defineProperty(this, "onChanged", {
+            Object.defineProperty(this, 'onChanged', {
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "changed");
+                    this.__event.subscribe(p_fn, 'changed');
                 }
             });
 
             // 예약어 등록
-            this._symbol = this._symbol.concat(["__event", "_onwer", "_element", "_symbol", "elementType", "list", "count"]);
-            this._symbol = this._symbol.concat(["onAddr", "onRemove", "onClear", "onChanging", "onChanged"]);
-            this._symbol = this._symbol.concat(["_getPropDescriptor", "_onAdd", "_onRemove", "_onClear", "_onChanging", "_onChanged"]);
-            this._symbol = this._symbol.concat(["_remove", "add", "clear", "remove", "removeAt", "indexOf"]);
+            this._symbol = this._symbol.concat(['__event', '_onwer', '_element', '_symbol', 'elementType', 'list', 'count']);
+            this._symbol = this._symbol.concat(['onAddr', 'onRemove', 'onClear', 'onChanging', 'onChanged']);
+            this._symbol = this._symbol.concat(['_getPropDescriptor', '_onAdd', '_onRemove', '_onClear', '_onChanging', '_onChanged']);
+            this._symbol = this._symbol.concat(['_remove', 'add', 'clear', 'remove', 'removeAt', 'indexOf']);
 
             /** implements ICollection 인터페이스 구현 */
              this._implements(ICollection);
@@ -1677,7 +1679,7 @@ if (typeof Array.isArray === "undefined") {
                     if (this.elementType !== null && !(newValue instanceof this.elementType)) {
                         // typeName = this.elementType.constructor.name; // REVIEW::
                         typeName = this.elementType.name || this.elementType.constructor.name;
-                        throw new Error("Only [" + typeName + "] type instances can be added");
+                        throw new Error('Only [' + typeName + '] type instances can be added');
                     }
                     this._element[p_idx] = newValue; 
                 },
@@ -1690,14 +1692,14 @@ if (typeof Array.isArray === "undefined") {
          * @listens _W.Collection.BaseCollection#onClear
          */
         BaseCollection.prototype._onAdd = function(p_idx, p_value) {
-            this.__event.publish("add", p_idx, p_value); 
+            this.__event.publish('add', p_idx, p_value); 
         };
 
         /**
          * @listens _W.Collection.BaseCollection#onRemove
          */
         BaseCollection.prototype._onRemove = function(p_idx) {
-            this.__event.publish("remove", p_idx); 
+            this.__event.publish('remove', p_idx); 
         };
 
         /** 
@@ -1705,7 +1707,7 @@ if (typeof Array.isArray === "undefined") {
          * @listens _W.Collection.BaseCollection#onClear
          */
         BaseCollection.prototype._onClear = function() {
-            this.__event.publish("clear"); 
+            this.__event.publish('clear'); 
         };
 
         /** 
@@ -1713,7 +1715,7 @@ if (typeof Array.isArray === "undefined") {
          * @listens _W.Collection.BaseCollection#onChanging
          */
         BaseCollection.prototype._onChanging = function() {
-            this.__event.publish("changing"); 
+            this.__event.publish('changing'); 
         };
 
         /** 
@@ -1721,17 +1723,17 @@ if (typeof Array.isArray === "undefined") {
          * @listens _W.Collection.BaseCollection#onChanged
          */        
         BaseCollection.prototype._onChanged = function() {
-            this.__event.publish("changed"); 
+            this.__event.publish('changed'); 
         };
 
         /** @abstract */
         BaseCollection.prototype._remove  = function() {
-            throw new Error("[ _remove() ] Abstract method definition, fail...");
+            throw new Error('[ _remove() ] Abstract method definition, fail...');
         };
 
         /** @abstract */
         BaseCollection.prototype.add  = function() {
-            throw new Error("[ add() ] Abstract method definition, fail...");
+            throw new Error('[ add() ] Abstract method definition, fail...');
         };
         
         /** 
@@ -1740,7 +1742,7 @@ if (typeof Array.isArray === "undefined") {
          * @fires _W.Collection.BaseCollection#onClear 
          */
         BaseCollection.prototype.clear  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
+            throw new Error('[ clear() ] Abstract method definition, fail...');
         };
 
         /**
@@ -1775,7 +1777,7 @@ if (typeof Array.isArray === "undefined") {
             
             this._onChanging();                     // 이벤트 발생 : 변경전
             
-            if (typeof obj !== "undefined") this._remove(p_idx);
+            if (typeof obj !== 'undefined') this._remove(p_idx);
 
             this._onRemove();                       // 이벤트 발생 : 삭제
             this._onChanged();                      // 이벤트 발생 : 변경후
@@ -1805,18 +1807,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BaseCollection;
     } else {
         global._W.Collection.BaseCollection = BaseCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Collection.ArrayCollection
  */
 (function(global) {
-    "use strict";
+    
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -1828,9 +1831,9 @@ if (typeof Array.isArray === "undefined") {
     var util;
     var BaseCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        BaseCollection      = require("./collection-base");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        BaseCollection      = require('./collection-base');
     } else {
         util                = global._W.Common.Util;
         BaseCollection      = global._W.Collection.BaseCollection;
@@ -1838,8 +1841,8 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BaseCollection === "undefined") throw new Error("[BaseCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof BaseCollection === 'undefined') throw new Error('[BaseCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -1890,10 +1893,10 @@ if (typeof Array.isArray === "undefined") {
 
             this._onChanging();                     // 이벤트 발생 : 변경전
 
-            if (typeof p_value === "undefined") throw new Error("p_value param request fail...");
+            if (typeof p_value === 'undefined') throw new Error('p_value param request fail...');
             if (this.elementType !== null && !(p_value instanceof this.elementType)) {
                 typeName = this.elementType.constructor.name;
-                throw new Error("Only [" + typeName + "] type instances can be added");
+                throw new Error('Only [' + typeName + '] type instances can be added');
             }
         
             this._element.push(p_value);
@@ -1933,18 +1936,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = ArrayCollection;
     } else {
         global._W.Collection.ArrayCollection = ArrayCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Collection.PropertyCollection
  */
 (function(global) {
-    "use strict";
+    
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -1957,10 +1961,10 @@ if (typeof Array.isArray === "undefined") {
     var BaseCollection;
     var IPropertyCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        BaseCollection      = require("./collection-base");
-        IPropertyCollection = require("./i-collection-property");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        BaseCollection      = require('./collection-base');
+        IPropertyCollection = require('./i-collection-property');
     } else {
         util                = global._W.Common.Util;
         BaseCollection      = global._W.Collection.BaseCollection;
@@ -1969,9 +1973,9 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BaseCollection === "undefined") throw new Error("[BaseCollection] module load fail...");
-    if (typeof IPropertyCollection === "undefined") throw new Error("[IPropertyCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof BaseCollection === 'undefined') throw new Error('[BaseCollection] module load fail...');
+    if (typeof IPropertyCollection === 'undefined') throw new Error('[IPropertyCollection] module load fail...');
     
     //==============================================================
     // 4. 모듈 구현    
@@ -1989,7 +1993,7 @@ if (typeof Array.isArray === "undefined") {
             var __properties = [];
 
             /** @member {Array} _W.Collection.PropertyCollection#properties 속성들값 */
-            Object.defineProperty(this, "properties", 
+            Object.defineProperty(this, 'properties', 
             {
                 get: function() { return __properties; },
                 set: function(newValue) { __properties = newValue; },
@@ -1998,7 +2002,7 @@ if (typeof Array.isArray === "undefined") {
             });
 
             // 예약어 등록
-            this._symbol = this._symbol.concat(["properties", "indexOfName", "propertyOf"]);
+            this._symbol = this._symbol.concat(['properties', 'indexOfName', 'propertyOf']);
 
             /** @implements IPropertyCollection 인터페이스 구현 */
             this._implements(IPropertyCollection);            
@@ -2044,26 +2048,26 @@ if (typeof Array.isArray === "undefined") {
          * @returns {any} 입력 속성 참조값 REVIEW:: 필요성 검토
          */
         PropertyCollection.prototype.add = function(p_name, p_value, p_desc) {
-            p_value = p_value || "";
+            p_value = p_value || '';
             
             var typeName;
             var index   = -1;
 
             this._onChanging();                     // 이벤트 발생 : 변경전
         
-            if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
+            if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
             if (this.elementType !== null && !(p_value instanceof this.elementType)) {
                 typeName = this.elementType.constructor.name;
-                throw new Error("Only [" + typeName + "] type instances can be added");
+                throw new Error('Only [' + typeName + '] type instances can be added');
             }
 
             // 예약어 검사
             if (this._symbol.indexOf(p_name) > -1) {
-                throw new Error(" [" + p_name + "] is a Symbol word");   
+                throw new Error(' [' + p_name + '] is a Symbol word');   
             }
 
             if (this.indexOfName(p_name) > -1) {
-                console.warn("Warning:: 프로퍼티 이름 중복 !!");
+                console.warn('Warning:: 프로퍼티 이름 중복 !!');
                 return this[p_name];     // 중복 등록 방지
             }
 
@@ -2072,7 +2076,7 @@ if (typeof Array.isArray === "undefined") {
 
             index = (this._element.length === 1) ? 0 : this._element.length  - 1;
 
-            if (typeof p_desc === "object" && (typeof p_desc.get === "function" || typeof p_desc.set === "function")) {
+            if (typeof p_desc === 'object' && (typeof p_desc.get === 'function' || typeof p_desc.set === 'function')) {
                 Object.defineProperty(this, [index], p_desc);
                 Object.defineProperty(this, p_name, p_desc);
             } else {
@@ -2116,7 +2120,7 @@ if (typeof Array.isArray === "undefined") {
             
             var obj;
             
-            if (typeof p_name !== "string")  throw new Error("Only [p_name] type 'string' can be added");
+            if (typeof p_name !== 'string')  throw new Error('Only [p_name] type "string" can be added');
             
             obj = this[p_name];
 
@@ -2139,19 +2143,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = PropertyCollection;
     } else {
         global._W.Collection.PropertyCollection = PropertyCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Collection.PropertyObjectCollection
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -2163,9 +2167,9 @@ if (typeof Array.isArray === "undefined") {
     var util;
     var PropertyCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        PropertyCollection  = require("./collection-property");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        PropertyCollection  = require('./collection-property');
     } else {
         util                = global._W.Common.Util;
         PropertyCollection  = global._W.Collection.PropertyCollection;
@@ -2173,8 +2177,8 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
     
     //==============================================================
     // 4. 모듈 구현    
@@ -2200,8 +2204,8 @@ if (typeof Array.isArray === "undefined") {
          */
         PropertyObjectCollection.prototype.add  = function(p_name, p_value) {
 
-            if (typeof p_name === "undefined") throw new Error("p_name param request fail...");
-            if (!(p_value && typeof p_value !== "object")) throw new Error("p_name param request fail...");
+            if (typeof p_name === 'undefined') throw new Error('p_name param request fail...');
+            if (!(p_value && typeof p_value !== 'object')) throw new Error('p_name param request fail...');
 
             return _super.prototype.add.call(this, p_name, p_value);
         };
@@ -2213,19 +2217,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = PropertyObjectCollection;
     } else {
         global._W.Collection.PropertyObjectCollection = PropertyObjectCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Collection.PropertyFunctionCollection
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -2237,9 +2241,9 @@ if (typeof Array.isArray === "undefined") {
     var util;
     var PropertyCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        PropertyCollection  = require("./collection-property");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        PropertyCollection  = require('./collection-property');
     } else {
         util                = global._W.Common.Util;
         PropertyCollection  = global._W.Collection.PropertyCollection;
@@ -2247,8 +2251,8 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
     
     //==============================================================
     // 4. 모듈 구현    
@@ -2274,8 +2278,8 @@ if (typeof Array.isArray === "undefined") {
          */
         PropertyFunctionCollection.prototype.add  = function(p_name, p_value) {
 
-            if (typeof p_name === "undefined") throw new Error("p_name param request fail...");
-            if (typeof p_value !== "function") throw new Error("p_name param request fail...");
+            if (typeof p_name === 'undefined') throw new Error('p_name param request fail...');
+            if (typeof p_value !== 'function') throw new Error('p_name param request fail...');
 
             return _super.prototype.add.call(this, p_name, p_value);
         };
@@ -2287,19 +2291,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = PropertyFunctionCollection;
     } else {
         global._W.Collection.PropertyFunctionCollection = PropertyFunctionCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.MetaObject
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -2310,17 +2314,17 @@ if (typeof Array.isArray === "undefined") {
     // 2. 모듈 가져오기 (node | web)
     var IObject;
     
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        require("./object-implement"); // _implements() : 폴리필
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        require('./object-implement'); // _implements() : 폴리필
         
-        IObject             = require("./i-object");
+        IObject             = require('./i-object');
     } else {
         IObject             = global._W.Interface.IObject;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof IObject === "undefined") throw new Error("[IObject] module load fail...");
+    if (typeof IObject === 'undefined') throw new Error('[IObject] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -2344,9 +2348,9 @@ if (typeof Array.isArray === "undefined") {
          */
         MetaObject.prototype.getTypes  = function() {
             
-            var type = ["MetaObject"];
+            var type = ['MetaObject'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /**
@@ -2358,7 +2362,7 @@ if (typeof Array.isArray === "undefined") {
 
             var arr = this.getTypes();
     
-            if (typeof p_name !== "string") throw new Error("Only [p_name] type name 'string' can be added");
+            if (typeof p_name !== 'string') throw new Error('Only [p_name] type name "string" can be added');
         
             if (this._interface) {
                 for (var i = 0; i < this._interface.length; i++) {
@@ -2375,19 +2379,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = MetaObject;
     } else {
         global._W.Meta.MetaObject = MetaObject;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.MetaElement
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -2401,10 +2405,10 @@ if (typeof Array.isArray === "undefined") {
     var MetaObject;
     var IMarshal;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        MetaObject          = require("./meta-object");
-        IMarshal            = require("./i-marshal");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        MetaObject          = require('./meta-object');
+        IMarshal            = require('./i-marshal');
 
     } else {
         util                = global._W.Common.Util;
@@ -2415,9 +2419,9 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
-    if (typeof IMarshal === "undefined") throw new Error("[IMarshal] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
+    if (typeof IMarshal === 'undefined') throw new Error('[IMarshal] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -2433,7 +2437,7 @@ if (typeof Array.isArray === "undefined") {
         function MetaElement(p_name) {
             _super.call(this);
             
-            p_name = p_name || "";
+            p_name = p_name || '';
             
             /**
              * GUID 값 
@@ -2456,9 +2460,9 @@ if (typeof Array.isArray === "undefined") {
         /** @override **/
         MetaElement.prototype.getTypes = function() {
             
-            var type = ["MetaElement"];
+            var type = ['MetaElement'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /**
@@ -2494,7 +2498,7 @@ if (typeof Array.isArray === "undefined") {
             for (var prop in this) {
                 if (this[prop] instanceof MetaElement) {
                     obj[prop] = this[prop].getObject(p_context);
-                } else if (typeof this[prop] !== "function" && prop.substr(0, 1) !== "_") {
+                } else if (typeof this[prop] !== 'function' && prop.substr(0, 1) !== '_') {
                     obj[prop] = this[prop];
                 }
             }
@@ -2508,19 +2512,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = MetaElement;
     } else {
         global._W.Meta.MetaElement = MetaElement;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.ComplexElement
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -2533,10 +2537,10 @@ if (typeof Array.isArray === "undefined") {
     var MetaElement;
     var IPropertyCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                    = require("./utils");
-        MetaElement             = require("./meta-element");
-        IPropertyCollection     = require("./i-collection-property");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                    = require('./utils');
+        MetaElement             = require('./meta-element');
+        IPropertyCollection     = require('./i-collection-property');
 
     } else {
         util                    = global._W.Common.Util;
@@ -2546,9 +2550,9 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaElement === "undefined") throw new Error("[MetaElement] module load fail...");
-    if (typeof IPropertyCollection === "undefined") throw new Error("[IPropertyCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaElement === 'undefined') throw new Error('[MetaElement] module load fail...');
+    if (typeof IPropertyCollection === 'undefined') throw new Error('[IPropertyCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -2569,7 +2573,7 @@ if (typeof Array.isArray === "undefined") {
              * 요소 갯수
              * @member _W.Meta.ComplexElement#count
              */
-            Object.defineProperty(this, "count", 
+            Object.defineProperty(this, 'count', 
             {
                 get: function() { return __element.length; },
                 configurable: true,
@@ -2580,7 +2584,7 @@ if (typeof Array.isArray === "undefined") {
              * 요소 목록
              * @member _W.Meta.ComplexElement#list
              */
-            Object.defineProperty(this, "list", 
+            Object.defineProperty(this, 'list', 
             {
                 get: function() { return __element; },
                 configurable: true,
@@ -2595,9 +2599,9 @@ if (typeof Array.isArray === "undefined") {
         /** @override **/
         ComplexElement.prototype.getTypes  = function() {
                             
-            var type = ["ComplexElement"];
+            var type = ['ComplexElement'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };        
         
         // TODO::
@@ -2616,13 +2620,13 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = ComplexElement;
     } else {
         global._W.Meta.ComplexElement = ComplexElement;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.Entity.Item
  * namespace _W.Meta.Entity.ItemCollection
@@ -2630,7 +2634,7 @@ if (typeof Array.isArray === "undefined") {
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -2645,11 +2649,11 @@ if (typeof Array.isArray === "undefined") {
     var PropertyCollection;
     var Observer;
     
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("util");
-        MetaElement         = require("./meta-element");
-        PropertyCollection  = require("./collection-property");
-        Observer            = require("./observer");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('util');
+        MetaElement         = require('./meta-element');
+        PropertyCollection  = require('./collection-property');
+        Observer            = require('./observer');
     } else {
         util                = global._W.Common.Util;
         MetaElement         = global._W.Meta.MetaElement;
@@ -2659,10 +2663,10 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaElement === "undefined") throw new Error("[MetaElement] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaElement === 'undefined') throw new Error('[MetaElement] module load fail...');
+    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
+    if (typeof Observer === 'undefined') throw new Error('[Observer] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -2679,10 +2683,10 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this, p_name);
 
             var __entity        = null;
-            var __type          = "string";
+            var __type          = 'string';
             var __size          = 0;
             var __default       = null;
-            var __caption       = "";
+            var __caption       = '';
             var __isNotNull     = false;
             var __isNullPass    = false;
             var __callback      = null;
@@ -2695,7 +2699,7 @@ if (typeof Array.isArray === "undefined") {
             var __value         = null;
 
             // Entity 등록 & order(순서) 값 계산
-            if (p_entity && p_entity instanceof MetaElement && p_entity.instanceOf("Entity")) {
+            if (p_entity && p_entity instanceof MetaElement && p_entity.instanceOf('Entity')) {
                 __entity    = p_entity;
                 __order     = __entity.items.count === 0 ? __order : __entity.items[__entity.items.count - 1].order + __increase;
             }
@@ -2703,25 +2707,25 @@ if (typeof Array.isArray === "undefined") {
             /** @private */
             this.__event    = new Observer(this, this);
 
-            Object.defineProperty(this, "__value", 
+            Object.defineProperty(this, '__value', 
             {
                 get: function() { return __value; },
                 set: function(newValue) { 
                     // 직접 입력하면 안됨
-                    // throw new Error("Only getter !! ");
+                    // throw new Error('Only getter !! ');
                     __value = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "entity", 
+            Object.defineProperty(this, 'entity', 
             {
                 get: function() { return __entity; },
                 set: function(newValue) { 
                     // TODO:: 자료종류를 검사해야함
-                    if (newValue && !(newValue instanceof MetaElement && newValue.instanceOf("Entity"))) {
-                        throw new Error("Only [entity] type 'Entity' can be added");
+                    if (newValue && !(newValue instanceof MetaElement && newValue.instanceOf('Entity'))) {
+                        throw new Error('Only [entity] type "Entity" can be added');
                     }
                     __entity = newValue;
                 },
@@ -2729,52 +2733,52 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            Object.defineProperty(this, "type", 
+            Object.defineProperty(this, 'type', 
             {
                 get: function() { return __type; },
                 set: function(newValue) { 
                     // TODO:: 자료종류를 검사해야함
-                    if(typeof newValue !== "string") throw new Error("Only [type] type 'string' can be added");
+                    if(typeof newValue !== 'string') throw new Error('Only [type] type "string" can be added');
                     __type = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "size", 
+            Object.defineProperty(this, 'size', 
             {
                 get: function() { return __size; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "number") throw new Error("Only [size] type 'number' can be added");
+                    if(typeof newValue !== 'number') throw new Error('Only [size] type "number can be added');
                     __size = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "default", 
+            Object.defineProperty(this, 'default', 
             {
                 get: function() { return __default; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "undefined" && newValue !== null &&  ["string", "number", "boolean"].indexOf(typeof newValue) < 0) throw new Error("Only [default] type 'string | boolea | number' can be added");
+                    if(typeof newValue !== 'undefined' && newValue !== null &&  ['string', 'number', 'boolean'].indexOf(typeof newValue) < 0) throw new Error('Only [default] type "string | boolea | number" can be added');
                     __default = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "caption", 
+            Object.defineProperty(this, 'caption', 
             {
                 get: function() { return __caption; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "string") throw new Error("Only [caption] type 'string' can be added");
+                    if(typeof newValue !== 'string') throw new Error('Only [caption] type "string" can be added');
                     __caption = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "isNotNull", 
+            Object.defineProperty(this, 'isNotNull', 
             {
                 // get: function() { 
                 //     var isReturn;
@@ -2783,36 +2787,36 @@ if (typeof Array.isArray === "undefined") {
                 // },
                 get: function() { return __isNotNull },
                 set: function(newValue) { 
-                    if(typeof newValue !== "boolean") throw new Error("Only [isNotNull] type 'boolean' can be added");
+                    if(typeof newValue !== 'boolean') throw new Error('Only [isNotNull] type "boolean" can be added');
                     __isNotNull = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "isNullPass", 
+            Object.defineProperty(this, 'isNullPass', 
             {
                 get: function() { return __isNullPass },
                 set: function(newValue) { 
-                    if(typeof newValue !== "boolean") throw new Error("Only [isNullPass] type 'boolean' can be added");
+                    if(typeof newValue !== 'boolean') throw new Error('Only [isNullPass] type "boolean" can be added');
                     __isNullPass = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
             
-            Object.defineProperty(this, "callback", 
+            Object.defineProperty(this, 'callback', 
             {
                 get: function() { return __callback; },
                 set: function(newValue) { 
-                    if(newValue !== null && typeof newValue !== "function") throw new Error("Only [callback] type 'function' can be added");
+                    if(newValue !== null && typeof newValue !== 'function') throw new Error('Only [callback] type "function" can be added');
                     __callback = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "constraints", 
+            Object.defineProperty(this, 'constraints', 
             {
                 get: function() { return __constraints; },
                 set: function(newValue) { 
@@ -2824,8 +2828,8 @@ if (typeof Array.isArray === "undefined") {
 
                     // 유효성 검사
                     for(var i = 0; list.length > i; i++) {
-                        if (!(typeof list[i] === "function" || (typeof list[i].regex === "object" && typeof list[i].msg === "string"))) {
-                            throw new Error("Only [constraints] type 'function OR {regex:object, msg:string, ?code:number}' can be added");
+                        if (!(typeof list[i] === 'function' || (typeof list[i].regex === 'object' && typeof list[i].msg === 'string'))) {
+                            throw new Error('Only [constraints] type "function OR {regex:object, msg:string, ?code:number}" can be added');
                          }
                     }
                     __constraints = list;
@@ -2834,7 +2838,7 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            Object.defineProperty(this, "codeType", 
+            Object.defineProperty(this, 'codeType', 
             {
                 get: function() { return __codeType; },
                 set: function(newValue) { __codeType = newValue; },
@@ -2842,29 +2846,29 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            Object.defineProperty(this, "order", 
+            Object.defineProperty(this, 'order', 
             {
                 get: function() { return __order; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "number") throw new Error("Only [order] type 'number' can be added");
+                    if(typeof newValue !== 'number') throw new Error('Only [order] type "number" can be added');
                     __order = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "increase", 
+            Object.defineProperty(this, 'increase', 
             {
                 get: function() { return __increase; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "number") throw new Error("Only [increase] type 'number' can be added");
+                    if(typeof newValue !== 'number') throw new Error('Only [increase] type "number" can be added');
                     __increase = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
             
-            Object.defineProperty(this, "value", 
+            Object.defineProperty(this, 'value', 
             {
                 get: function() { 
                     var __val;
@@ -2881,8 +2885,8 @@ if (typeof Array.isArray === "undefined") {
                     else __val = val; 
 
                     __val = __val === null ? '' : __val;  // null 등록 오류 처리
-                    if(["number", "string", "boolean"].indexOf(typeof __val) < 0) {
-                        throw new Error("Only [value] type 'number, string, boolean' can be added");
+                    if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {
+                        throw new Error('Only [value] type "number, string, boolean" can be added');
                     }
                     this.__value = __val;
                     // 이벤트 발생
@@ -2892,22 +2896,22 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            Object.defineProperty(this, "getter", 
+            Object.defineProperty(this, 'getter', 
             {
                 get: function() { return __getter; },
                 set: function(val) { 
-                    if(val !== null && typeof val !== "function") throw new Error("Only [getter] type 'function' can be added");
+                    if(val !== null && typeof val !== 'function') throw new Error('Only [getter] type "function" can be added');
                     __getter = val;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "setter", 
+            Object.defineProperty(this, 'setter', 
             {
                 get: function() { return __setter; },
                 set: function(val) { 
-                    if(val !== null && typeof val !== "function") throw new Error("Only [setter] type 'function' can be added");
+                    if(val !== null && typeof val !== 'function') throw new Error('Only [setter] type "function" can be added');
                     __setter = val;
                 },
                 configurable: true,
@@ -2915,28 +2919,28 @@ if (typeof Array.isArray === "undefined") {
             });
 
             /** @event _W.Meta.Entity.Item#onChanged */
-            Object.defineProperty(this, "onChanged", {
+            Object.defineProperty(this, 'onChanged', {
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "onChanged");
+                    this.__event.subscribe(p_fn, 'onChanged');
                 }
             });
             
 
             //---------------------------------------------------
             // 아이템 옵션속성 추가
-            if (typeof p_property === "object" ) {
+            if (typeof p_property === 'object' ) {
                 for(var prop in p_property) {
                     if (p_property.hasOwnProperty(prop) &&
-                    [   "entity", "type", "size", "default", "caption", 
-                        "isNotNull", "isNullPass", "callback", "constraints", 
-                        "codeType", "order", "increase", "value", "getter", "setter" 
+                    [   'entity', 'type', 'size', 'default', 'caption', 
+                        'isNotNull', 'isNullPass', 'callback', 'constraints', 
+                        'codeType', 'order', 'increase', 'value', 'getter', 'setter' 
                     ].indexOf(prop) > -1) {
                         this[prop] = p_property[prop];
                     }
                 }
-            } else if (["number", "string", "boolean"].indexOf(typeof p_property) > -1) {
+            } else if (['number', 'string', 'boolean'].indexOf(typeof p_property) > -1) {
                 this['value'] = p_property;
             }
 
@@ -2947,15 +2951,15 @@ if (typeof Array.isArray === "undefined") {
          * @listens _W.Meta.Entity.Item#_onChanged
          */
         Item.prototype._onChanged = function() {
-            this.__event.publish("onChanged", this.value);
+            this.__event.publish('onChanged', this.value);
         };
 
         /** @override **/
         Item.prototype.getTypes  = function() {
                     
-            var type = ["Item"];
+            var type = ['Item'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
         
         /** @override */
@@ -2964,24 +2968,24 @@ if (typeof Array.isArray === "undefined") {
             var clone = new Item(this.name);
             var constraints = [];
 
-            if (this.entity) clone["entity"]            = this.entity;  // 참조값
-            if (this.type) clone["type"]                = this.type;
-            if (this.size) clone["size"]                = this.size;
-            if (this.default) clone["default"]          = this.default;
-            if (this.caption) clone["caption"]          = this.caption;
-            if (this.isNotNull) clone["isNotNull"]      = this.isNotNull;
-            if (this.isNullPass) clone["isNullPass"]     = this.isNullPass;
-            if (this.callback) clone["callback"]        = this.callback;
+            if (this.entity) clone['entity']            = this.entity;  // 참조값
+            if (this.type) clone['type']                = this.type;
+            if (this.size) clone['size']                = this.size;
+            if (this.default) clone['default']          = this.default;
+            if (this.caption) clone['caption']          = this.caption;
+            if (this.isNotNull) clone['isNotNull']      = this.isNotNull;
+            if (this.isNullPass) clone['isNullPass']     = this.isNullPass;
+            if (this.callback) clone['callback']        = this.callback;
             for (var i = 0; this.constraints.length > i; i++) {
                 constraints.push(this.constraints[i]);
             }
-            if (this.constraints) clone["constraints"]  = constraints;
-            if (this.codeType) clone["codeType"]        = this.codeType;  // 참조값
-            if (this.order) clone["order"]              = this.order;
-            if (this.increase) clone["increase"]        = this.increase;
-            if (this.value) clone["value"]              = this.value;
-            if (this.getter) clone["getter"]            = this.getter;
-            if (this.setter) clone["setter"]            = this.setter;
+            if (this.constraints) clone['constraints']  = constraints;
+            if (this.codeType) clone['codeType']        = this.codeType;  // 참조값
+            if (this.order) clone['order']              = this.order;
+            if (this.increase) clone['increase']        = this.increase;
+            if (this.value) clone['value']              = this.value;
+            if (this.getter) clone['getter']            = this.getter;
+            if (this.setter) clone['setter']            = this.setter;
 
             return clone;
         };
@@ -2999,8 +3003,8 @@ if (typeof Array.isArray === "undefined") {
 
             var constraint = {};
 
-            if (!(p_regex instanceof RegExp)) throw new Error("Only [p_regex] type 'RegExp' can be added");
-            if (!(typeof p_msg === "string")) throw new Error("Only [p_msg] type 'string' can be added");
+            if (!(p_regex instanceof RegExp)) throw new Error('Only [p_regex] type "RegExp" can be added');
+            if (!(typeof p_msg === 'string')) throw new Error('Only [p_msg] type "string" can be added');
 
             constraint.regex = p_regex;
             constraint.msg = p_msg;
@@ -3017,11 +3021,11 @@ if (typeof Array.isArray === "undefined") {
         // Item.prototype.defineValueProperty = function(p_getter, p_setter) {
 
         //     // 타입검사 
-        //     if(typeof p_getter !== "undefined" && typeof p_getter !== "function") {
-        //         throw new Error("Only [p_getter] type 'function' can be added");
+        //     if(typeof p_getter !== 'undefined' && typeof p_getter !== 'function') {
+        //         throw new Error('Only [p_getter] type 'function' can be added');
         //     }
-        //     if(typeof p_setter !== "undefined" && typeof p_setter !== "function") {
-        //         throw new Error("Only [p_getter] type 'function' can be added");
+        //     if(typeof p_setter !== 'undefined' && typeof p_setter !== 'function') {
+        //         throw new Error('Only [p_getter] type 'function' can be added');
         //     }
 
         //     // 기본값 설정
@@ -3029,7 +3033,7 @@ if (typeof Array.isArray === "undefined") {
         //     p_setter = p_setter || function(val) { this.__value = val; };
 
         //     /** @event */s
-        //     Object.defineProperty(this, "value", {
+        //     Object.defineProperty(this, 'value', {
         //         enumerable: true,
         //         configurable: true,
         //         get: p_getter,
@@ -3047,18 +3051,18 @@ if (typeof Array.isArray === "undefined") {
         Item.prototype.valid = function(p_value, r_result) {
             // p_option = p_option || 1;   
             r_result.value = p_value;
-            r_result.msg = "";
-            r_result.code = "";
-            p_value = p_value || "";
+            r_result.msg = '';
+            r_result.code = '';
+            p_value = p_value || '';
             
             var result;
             var value = null;
 
-            // if (!(typeof p_value === "string")) throw new Error("Only [p_value] type 'string' can be added");
-            p_value = typeof p_value === "number" ? String(p_value) : p_value;  // number 형 변환
+            // if (!(typeof p_value === 'string')) throw new Error('Only [p_value] type 'string' can be added');
+            p_value = typeof p_value === 'number' ? String(p_value) : p_value;  // number 형 변환
 
             // 1. 기본값 얻기
-            value = p_value === null || typeof p_value === "undefined" ? this.default : p_value;
+            value = p_value === null || typeof p_value === 'undefined' ? this.default : p_value;
             value = value.trim();
 
             // 2-1. 통과조건 검사
@@ -3071,7 +3075,7 @@ if (typeof Array.isArray === "undefined") {
             }
             // 2-2. 실패조건 검사
             if (this.isNotNull === true && this.constraints.length === 0 && value.length === 0) {
-                r_result.msg   = this.caption+"("+this.name+")은  공백을 입력할 수 없습니다.";
+                r_result.msg   = this.caption+'('+this.name+')은  공백을 입력할 수 없습니다.';
                 r_result.code  = 0;
                 return false;
             }
@@ -3079,7 +3083,7 @@ if (typeof Array.isArray === "undefined") {
             // 2-3. 제약조건 검사
             for(var i = 0; this.constraints.length > i; i++) {
 
-                if (typeof this.constraints[i] === "function") {
+                if (typeof this.constraints[i] === 'function') {
                     return this.constraints[i].call(this, this, p_value, r_result);     // 함수형 제약조건
                 } else {
                     result = p_value.match(this.constraints[i].regex);
@@ -3097,7 +3101,7 @@ if (typeof Array.isArray === "undefined") {
             // if ((p_option === 1 && this.isNotNull === true && p_value.trim().length <= 0) || 
             //     (p_option === 2 && p_value.trim().length <= 0)) {
                 
-            //     r_result.msg   = this.caption+"("+this.name+")은  공백을 입력할 수 없습니다.";
+            //     r_result.msg   = this.caption+'('+this.name+')은  공백을 입력할 수 없습니다.';
             //     r_result.code  = 0;
             //     return false;
             // }
@@ -3122,11 +3126,11 @@ if (typeof Array.isArray === "undefined") {
             
             this.elementType = Item;    // 기본 컬렉션 타입
             
-            Object.defineProperty(this, "itemType", 
+            Object.defineProperty(this, 'itemType', 
             {
                 get: function() { return this.elementType; },
                 set: function(newValue) { 
-                    if (!(new newValue() instanceof Item)) throw new Error("Only [Item] type 'Item' can be added");
+                    if (!(new newValue() instanceof Item)) throw new Error('Only [Item] type "Item" can be added');
                     this.elementType = newValue; 
                 },
                 configurable: true,
@@ -3162,9 +3166,9 @@ if (typeof Array.isArray === "undefined") {
             var item;
             var property = {};
 
-            if (typeof p_name !== "string") throw new Error("There is no required value [p_name].");
-            if(["number", "string", "boolean"].indexOf(typeof p_value) < 0) {
-                throw new Error("Only [value] type 'number, string, boolean' can be added");
+            if (typeof p_name !== 'string') throw new Error('There is no required value [p_name].');
+            if(['number', 'string', 'boolean'].indexOf(typeof p_value) < 0) {
+                throw new Error('Only [value] type "number, string, boolean" can be added');
             }
             
             property = { value: p_value };
@@ -3202,7 +3206,7 @@ if (typeof Array.isArray === "undefined") {
             var i_value;
             var i_name;
 
-            if (typeof p_object === "string") {      
+            if (typeof p_object === 'string') {      
                 i_name  = p_object;
                 i_value = new this.itemType(i_name, this._onwer);
             } else if (p_object instanceof this.itemType) {
@@ -3211,10 +3215,10 @@ if (typeof Array.isArray === "undefined") {
                 i_value = p_object.clone();
                 i_value.entity = this._onwer;
             } else {
-                throw new Error("string | Item object [p_object].");
+                throw new Error('string | Item object [p_object].');
             }
 
-            if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
+            if (typeof i_name === 'undefined') throw new Error('There is no required value [p_name].');
 
             return _super.prototype.add.call(this, i_name, i_value);
         };
@@ -3236,7 +3240,7 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this, p_onwer);
 
             if (p_baseCollection && !(p_baseCollection instanceof ItemCollection)) {
-                throw new Error("Error!! ItemCollection object [p_baseCollection].");
+                throw new Error('Error!! ItemCollection object [p_baseCollection].');
             }
             
             /** @protected */
@@ -3272,11 +3276,11 @@ if (typeof Array.isArray === "undefined") {
                 if (p_object.entity === null) p_object.entity = this._onwer;
                 i_name = p_object.name;
                 i_value = p_object;
-            } else if (typeof p_object === "string") {
+            } else if (typeof p_object === 'string') {
                 i_name = p_object;
                 i_value = new this.itemType(i_name, this._onwer);
             } else {
-                throw new Error("p_object string | Item instance param request fail...");
+                throw new Error('p_object string | Item instance param request fail...');
             }
 
             // TODO:: 이름 충돌검사
@@ -3310,8 +3314,8 @@ if (typeof Array.isArray === "undefined") {
          * @param {*} p_entity 
          */
         ItemViewCollection.prototype.addEntity  = function(p_entity) {
-            if (typeof p_entity === "undefined" && !(p_entity instanceof MetaElement && p_entity.instanceOf("Entity"))) {
-                throw new Error("Only [p_entity] type 'Entity' can be added");
+            if (typeof p_entity === 'undefined' && !(p_entity instanceof MetaElement && p_entity.instanceOf('Entity'))) {
+                throw new Error('Only [p_entity] type "Entity" can be added');
             }
 
             for (var i = 0; p_entity.items.count > i; i++) {
@@ -3326,7 +3330,7 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports.Item                         = Item;
         module.exports.ItemCollection               = ItemCollection;
         module.exports.ItemViewCollection           = ItemViewCollection;
@@ -3339,13 +3343,13 @@ if (typeof Array.isArray === "undefined") {
         global._W.Meta.Entity.ItemTableCollection   = ItemTableCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.Entity.ItemDOM
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -3360,9 +3364,9 @@ if (typeof Array.isArray === "undefined") {
     var jquery;
     var ajax;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                    = require("./utils");
-        Item                    = require("./entity-item").Item;
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                    = require('./utils');
+        Item                    = require('./entity-item').Item;
     } else {
         util                    = global._W.Common.Util;
         Item                    = global._W.Meta.Entity.Item;
@@ -3371,9 +3375,9 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
-    if (typeof jquery === "undefined" && typeof module !== "object") throw new Error("[jquery] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof Item === 'undefined') throw new Error('[Item] module load fail...');
+    if (typeof jquery === 'undefined' && typeof module !== 'object') throw new Error('[jquery] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -3392,45 +3396,45 @@ if (typeof Array.isArray === "undefined") {
             var __filter        = null;
             var __selector      = null;
 
-            Object.defineProperty(this, "domType", 
+            Object.defineProperty(this, 'domType', 
             {
                 get: function() { return __domType; },
                 set: function(newValue) { 
-                    // TODO:: 자료종류 {input: {type: "text"...}} 만들어야함
-                    if(typeof newValue !== "object") throw new Error("Only [domType] type 'object' can be added");
+                    // TODO:: 자료종류 {input: {type: 'text'...}} 만들어야함
+                    if(typeof newValue !== 'object') throw new Error('Only [domType] type "object" can be added');
                     __domType = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
             
-            Object.defineProperty(this, "isReadOnly", 
+            Object.defineProperty(this, 'isReadOnly', 
             {
                 get: function() { return __isReadOnly; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "boolean") throw new Error("Only [isReadOnly] type 'boolean' can be added");
+                    if(typeof newValue !== 'boolean') throw new Error('Only [isReadOnly] type "boolean" can be added');
                     __isReadOnly = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
             
-            Object.defineProperty(this, "isHide", 
+            Object.defineProperty(this, 'isHide', 
             {
                 get: function() { return __isHide; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "boolean") throw new Error("Only [isHide] type 'boolean' can be added");
+                    if(typeof newValue !== 'boolean') throw new Error('Only [isHide] type "boolean" can be added');
                     __isHide = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
             
-            Object.defineProperty(this, "element", 
+            Object.defineProperty(this, 'element', 
             {
                 get: function() { return __element; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "object") throw new Error("Only [element] type 'object' can be added");
+                    if(typeof newValue !== 'object') throw new Error('Only [element] type "object" can be added');
                     __element = newValue;
                 },
                 configurable: true,
@@ -3449,18 +3453,18 @@ if (typeof Array.isArray === "undefined") {
              *  - none         : 아무일도 하지 않음, 표현의 목적
              * @member _W.Meta.Entity.ItemDOM#selector
              */
-            Object.defineProperty(this, "selector", 
+            Object.defineProperty(this, 'selector', 
             {
                 get: function() { return __selector; },
                 set: function(newValue) { 
-                    var selector = { key: "", type: "value" };
+                    var selector = { key: '', type: 'value' };
 
-                    if (typeof newValue === "string") {
+                    if (typeof newValue === 'string') {
                         selector.key = newValue;
-                    } else if (typeof newValue === "object" && typeof newValue.key !== "undefined") {
+                    } else if (typeof newValue === 'object' && typeof newValue.key !== 'undefined') {
                         selector = newValue;
                     } else {
-                        throw new Error("Only [selector] type 'string | object.key' can be added");
+                        throw new Error('Only [selector] type "string | object.key" can be added');
                     }
                     __selector = selector;
                 },
@@ -3469,7 +3473,7 @@ if (typeof Array.isArray === "undefined") {
             });
 
             /** property {value} 오버라이딩 */
-            Object.defineProperty(this, "value", 
+            Object.defineProperty(this, 'value', 
             {
                 get: function() { 
                     var __val;
@@ -3480,31 +3484,31 @@ if (typeof Array.isArray === "undefined") {
                     } else if (__selector !== null && __filter === null) {
 
                         // node 에서는 강제 종료함
-                        if (typeof module !== "object") {
+                        if (typeof module !== 'object') {
 
                             key = this.selector.key;
                             type = this.selector.type;
-                            option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
+                            option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
                             
                             if (type !== 'none' &&  type !== ''){
-                                if (type === "value" || type === "val") {
+                                if (type === 'value' || type === 'val') {
                                     __val = jQuery(key).val();
-                                } else if (type === "text") {
+                                } else if (type === 'text') {
                                     __val = jQuery(key).text();
-                                } else if (type === "html") {
+                                } else if (type === 'html') {
                                     __val = jQuery(key).html();
-                                } else if (type.indexOf("prop") > -1) {
+                                } else if (type.indexOf('prop') > -1) {
                                     __val = jQuery(key).prop(option);
-                                } else if (type.indexOf("attr") > -1) {
+                                } else if (type.indexOf('attr') > -1) {
                                     __val = jQuery(key).attr(option);
-                                } else if (type.indexOf("css") > -1) {
+                                } else if (type.indexOf('css') > -1) {
                                     __val = jQuery(key).css(option);
                                 } else {
-                                    console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ");
+                                    console.warn('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
                                 }
                                 
                                 // if (typeof __val === 'undefined' || __val === null) {
-                                //     console.warn("["+ key +"] 일치하는 selector가 없습니다. ");
+                                //     console.warn('['+ key +'] 일치하는 selector가 없습니다. ');
                                 // }
                             }
                         }
@@ -3527,38 +3531,38 @@ if (typeof Array.isArray === "undefined") {
                     else __val = val; 
 
                     __val = __val === null ? '' : __val;  // null 등록 오류 처리
-                    if(["number", "string", "boolean"].indexOf(typeof __val) < 0) {
-                        throw new Error("Only [value] type 'number, string, boolean' can be added");
+                    if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {
+                        throw new Error('Only [value] type "number, string, boolean" can be added');
                     }
                     this.__value = __val;   // 내부에 저장
 
                     if (__selector !== null) {
 
                         // node 에서는 강제 종료함
-                        if (typeof module !== "object") {
+                        if (typeof module !== 'object') {
 
                             // 필터 적용
                             if (typeof __filter === 'function') __val = __filter.call(this, __val);
 
                             key = this.selector.key;
                             type = this.selector.type;
-                            option = type.indexOf(".") > -1 ? type.substr(type.indexOf(".") + 1) : "";
+                            option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
 
                             if (type !== 'none' && type !== ''){
-                                if (type === "value" || type === "val") {
+                                if (type === 'value' || type === 'val') {
                                     jQuery(key).val(__val);
-                                } else if (type === "text") {
+                                } else if (type === 'text') {
                                     jQuery(key).text(__val);
-                                } else if (type === "html") {
+                                } else if (type === 'html') {
                                     jQuery(key).html(__val);
-                                } else if (type.indexOf("prop") > -1) {
+                                } else if (type.indexOf('prop') > -1) {
                                     jQuery(key).prop(option, __val);
-                                } else if (type.indexOf("attr") > -1) {
+                                } else if (type.indexOf('attr') > -1) {
                                     jQuery(key).attr(option, __val);
-                                } else if (type.indexOf("css") > -1) {
+                                } else if (type.indexOf('css') > -1) {
                                     jQuery(key).css(option, __val);
                                 } else {
-                                    console.warn("["+ key +"] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ");
+                                    console.warn('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
                                 }
                             }
                         }
@@ -3571,11 +3575,11 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
             
-            Object.defineProperty(this, "filter", 
+            Object.defineProperty(this, 'filter', 
             {
                 get: function() { return __filter; },
                 set: function(val) { 
-                    if(val !== null && typeof val !== "function") throw new Error("Only [filter] type 'function' can be added");
+                    if(val !== null && typeof val !== 'function') throw new Error('Only [filter] type "function" can be added');
                     __filter = val;
                 },
                 configurable: true,
@@ -3585,10 +3589,10 @@ if (typeof Array.isArray === "undefined") {
 
             //---------------------------------------------------
             // 아이템 옵션속성 추가
-            if (typeof p_option === "object" ) {
+            if (typeof p_option === 'object' ) {
                 for(var prop in p_option) {
                     if (p_option.hasOwnProperty(prop) && 
-                        ["domType", "isReadOnly", "isHide", "element", "selector"].indexOf(prop) > -1) {
+                        ['domType', 'isReadOnly', 'isHide', 'element', 'selector'].indexOf(prop) > -1) {
                         this[prop] = p_option[prop];
                     }
                 }
@@ -3601,9 +3605,9 @@ if (typeof Array.isArray === "undefined") {
         /** @override **/
         ItemDOM.prototype.getTypes  = function() {
                     
-            var type = ["ItemDOM"];
+            var type = ['ItemDOM'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /** @override **/
@@ -3618,12 +3622,12 @@ if (typeof Array.isArray === "undefined") {
                 }
             }
 
-            if (this.domType) clone["domType"]          = this.domType;     // 참조값
-            if (this.isReadOnly) clone["isReadOnly"]    = this.isReadOnly;
-            if (this.isHide) clone["isHide"]            = this.isHide;
-            if (this.element) clone["element"]          = this.element;
+            if (this.domType) clone['domType']          = this.domType;     // 참조값
+            if (this.isReadOnly) clone['isReadOnly']    = this.isReadOnly;
+            if (this.isHide) clone['isHide']            = this.isHide;
+            if (this.element) clone['element']          = this.element;
             
-            if (this.selector) clone["selector"]        = this.selector;
+            if (this.selector) clone['selector']        = this.selector;
             // if (this.selector) clone.__selector        = this.__selector.concat([]); // 배열 + 함수형
             
             return clone;
@@ -3640,10 +3644,10 @@ if (typeof Array.isArray === "undefined") {
         //     p_setter = p_setter || function(val) { this.value = val };
 
         //     // 유효성 검사
-        //     if (typeof p_getter !== "function") throw new Error("Only [p_getter] type 'function' can be added");
-        //     if (typeof p_setter !== "function") throw new Error("Only [p_setter] type 'function' can be added");
+        //     if (typeof p_getter !== 'function') throw new Error('Only [p_getter] type 'function' can be added');
+        //     if (typeof p_setter !== 'function') throw new Error('Only [p_setter] type 'function' can be added');
 
-        //     Object.defineProperty(this, "value", 
+        //     Object.defineProperty(this, 'value', 
         //     {
         //         get: p_getter,
         //         set: p_setter,
@@ -3670,21 +3674,21 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = ItemDOM;
     } else {
         global._W.Meta.Entity.ItemDOM = ItemDOM;
         global.ItemDOM = ItemDOM;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.Entity.Row
  * namespace _W.Meta.Entity.RowCollection
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -3699,11 +3703,11 @@ if (typeof Array.isArray === "undefined") {
     var PropertyCollection;
     var ArrayCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        MetaObject          = require("./meta-object");
-        PropertyCollection  = require("./collection-property");
-        ArrayCollection     = require("./collection-array");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        MetaObject          = require('./meta-object');
+        PropertyCollection  = require('./collection-property');
+        ArrayCollection     = require('./collection-array');
     } else {
         util                = global._W.Common.Util;
         MetaObject          = global._W.Meta.MetaObject;
@@ -3713,10 +3717,10 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof ArrayCollection === "undefined") throw new Error("[ArrayCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
+    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
+    if (typeof ArrayCollection === 'undefined') throw new Error('[ArrayCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -3733,7 +3737,7 @@ if (typeof Array.isArray === "undefined") {
             var itemName;
 
             // Entity 등록 & order(순서) 값 계산
-            if (p_entity && p_entity instanceof MetaObject && p_entity.instanceOf("Entity")) {
+            if (p_entity && p_entity instanceof MetaObject && p_entity.instanceOf('Entity')) {
                 __entity    = p_entity;
 
                 for (var i = 0; i < __entity.items.count; i++) {
@@ -3743,7 +3747,7 @@ if (typeof Array.isArray === "undefined") {
             }
 
             /** @property {entity} */
-            Object.defineProperty(this, "entity", 
+            Object.defineProperty(this, 'entity', 
             {
                 get: function() { return __entity; },
                 configurable: true,
@@ -3755,9 +3759,9 @@ if (typeof Array.isArray === "undefined") {
         /** @override **/
         Row.prototype.getTypes  = function() {
                     
-            var type = ["Row"];
+            var type = ['Row'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /**
@@ -3768,7 +3772,7 @@ if (typeof Array.isArray === "undefined") {
           
             var clone = new Row(this.entity);
             
-            if (this.value) clone["value"] = this.value;
+            if (this.value) clone['value'] = this.value;
         };
         
         /**
@@ -3816,12 +3820,12 @@ if (typeof Array.isArray === "undefined") {
 
             var i_value;
 
-            if (typeof p_row === "undefined") {      
+            if (typeof p_row === 'undefined') {      
                 i_value = new Row(this._onwer);
             } else if (p_row instanceof Row) {
                 i_value = p_row;
             } else {
-                throw new Error("Row | Row object [p_row].");
+                throw new Error('Row | Row object [p_row].');
             }
 
             return _super.prototype.add.call(this, i_value);
@@ -3833,7 +3837,7 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports.Row = Row;
         module.exports.RowCollection = RowCollection;
     } else {
@@ -3841,13 +3845,13 @@ if (typeof Array.isArray === "undefined") {
         global._W.Meta.Entity.RowCollection = RowCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.Entity.Entity
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -3866,14 +3870,14 @@ if (typeof Array.isArray === "undefined") {
     var Row;
     var ItemCollection;
     
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                    = require("./utils");
-        MetaElement             = require("./meta-element");
-        IGroupControl           = require("./i-control-group");
-        IAllControl             = require("./i-control-all");
-        RowCollection           = require("./entity-row").RowCollection;
-        Row                     = require("./entity-row").Row;
-        ItemCollection          = require("./entity-item").ItemCollection;
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                    = require('./utils');
+        MetaElement             = require('./meta-element');
+        IGroupControl           = require('./i-control-group');
+        IAllControl             = require('./i-control-all');
+        RowCollection           = require('./entity-row').RowCollection;
+        Row                     = require('./entity-row').Row;
+        ItemCollection          = require('./entity-item').ItemCollection;
     } else {
         util                    = global._W.Common.Util;
         MetaElement             = global._W.Meta.MetaElement;
@@ -3886,13 +3890,13 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaElement === "undefined") throw new Error("[MetaElement] module load fail...");
-    if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
-    if (typeof IAllControl === "undefined") throw new Error("[IAllControl] module load fail...");
-    if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
-    if (typeof Row === "undefined") throw new Error("[Row] module load fail...");
-    if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaElement === 'undefined') throw new Error('[MetaElement] module load fail...');
+    if (typeof IGroupControl === 'undefined') throw new Error('[IGroupControl] module load fail...');
+    if (typeof IAllControl === 'undefined') throw new Error('[IAllControl] module load fail...');
+    if (typeof RowCollection === 'undefined') throw new Error('[RowCollection] module load fail...');
+    if (typeof Row === 'undefined') throw new Error('[Row] module load fail...');
+    if (typeof ItemCollection === 'undefined') throw new Error('[ItemCollection] module load fail...');
 
 
     //==============================================================
@@ -3912,22 +3916,22 @@ if (typeof Array.isArray === "undefined") {
             var __items = null;     // 상속해서 생성해야함
             var __rows  = new RowCollection(this);
 
-            Object.defineProperty(this, "items", 
+            Object.defineProperty(this, 'items', 
             {
                 get: function() { return __items; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof ItemCollection)) throw new Error("Only [items] type 'ItemCollection' can be added");
+                    if (!(newValue instanceof ItemCollection)) throw new Error('Only [items] type "ItemCollection" can be added');
                     __items = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
             
-            Object.defineProperty(this, "rows", 
+            Object.defineProperty(this, 'rows', 
             {
                 get: function() { return __rows; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof RowCollection)) throw new Error("Only [rows] type 'RowCollection' can be added");
+                    if (!(newValue instanceof RowCollection)) throw new Error('Only [rows] type "RowCollection" can be added');
                     __rows = newValue;
                 },
                 configurable: true,
@@ -3948,7 +3952,7 @@ if (typeof Array.isArray === "undefined") {
             
             if(!this.items.contains(this.items[p_name])) this.items.add(p_name);
             
-            if (typeof p_property === "object" ) {
+            if (typeof p_property === 'object' ) {
                 for(var prop in p_property) {
                     this.items[p_name][prop] = p_property[prop];
                 }
@@ -3966,8 +3970,8 @@ if (typeof Array.isArray === "undefined") {
             for (var i = 0 ; i < this.rows.count; i++) {
                 for (var ii = 0; ii < p_target.items.count; ii++) {
                     itemName = p_target.items[ii].name;
-                    if (typeof this.rows[i][itemName] === "undefined") {
-                        this.rows[i].add(itemName, "");
+                    if (typeof this.rows[i][itemName] === 'undefined') {
+                        this.rows[i].add(itemName, '');
                     }
                 }
             }            
@@ -3986,11 +3990,11 @@ if (typeof Array.isArray === "undefined") {
             var row;
             var itemName;
 
-            if (typeof p_object === "undefined") throw new Error("Only [p_object] type 'object' can be added");
+            if (typeof p_object === 'undefined') throw new Error('Only [p_object] type "object" can be added');
             
-            entity = p_object["entity"]  || p_object["table"] || undefined;
+            entity = p_object['entity']  || p_object['table'] || undefined;
             
-            if (typeof entity === "undefined") throw new Error("Only [p_object] type 'entity | table' can be added");
+            if (typeof entity === 'undefined') throw new Error('Only [p_object] type "entity | table" can be added');
             
 
             // 1.itmes, rows 배열로 구조 변경
@@ -4015,7 +4019,7 @@ if (typeof Array.isArray === "undefined") {
                 if (entity.rows && entity.rows[0]) {
                     for (var prop in entity.rows[0]) {
                         if (entity.rows[0].hasOwnProperty(prop)) {
-                            this.__addItem(prop, "");
+                            this.__addItem(prop, '');
                         }
                     }
                 }
@@ -4027,7 +4031,7 @@ if (typeof Array.isArray === "undefined") {
                     
                     row = this.newRow();
                     for (var prop in entity.rows[i]) {
-                        if (entity.rows[i].hasOwnProperty(prop) && typeof row[prop] !== "undefined") {
+                        if (entity.rows[i].hasOwnProperty(prop) && typeof row[prop] !== 'undefined') {
                             row[prop] = entity.rows[i][prop];
                         }
                     }
@@ -4039,8 +4043,8 @@ if (typeof Array.isArray === "undefined") {
             for (var i = 0 ; i < this.rows.count; i++) {
                 for (var ii = 0; ii < this.items.count; ii++) {
                     itemName = this.items[ii].name;
-                    if (typeof this.rows[i][itemName] === "undefined") {
-                        this.rows[i].add(itemName, "");
+                    if (typeof this.rows[i][itemName] === 'undefined') {
+                        this.rows[i].add(itemName, '');
                     }
                 }
             }   
@@ -4064,7 +4068,7 @@ if (typeof Array.isArray === "undefined") {
                 // Item 기준으로 아이템 가져오기
                 for(var i = 0; entity.items.count > i; i++) {
                     itemName = entity.items[i].name;
-                    if (typeof this.items[itemName] === "undefined") this.items.add(entity.items[i]);
+                    if (typeof this.items[itemName] === 'undefined') this.items.add(entity.items[i]);
                 }
             }
             
@@ -4076,12 +4080,12 @@ if (typeof Array.isArray === "undefined") {
                 for (var ii = 0; ii < this.items.count; ii++) {
                     itemName = this.items[ii].name;
                     
-                    // row[itemName] = typeof entity.rows[i][itemName] !== "undefined" ? entity.rows[i][itemName] : "";
+                    // row[itemName] = typeof entity.rows[i][itemName] !== 'undefined' ? entity.rows[i][itemName] : '';
                     // 이해하기 쉽게 코드 변경
-                    if (typeof entity.rows[i][itemName] !== "undefined") {
+                    if (typeof entity.rows[i][itemName] !== 'undefined') {
                         row[itemName] = entity.rows[i][itemName];    
                     } else {
-                        row[itemName] = "";
+                        row[itemName] = '';
                     }
                 }
                 this.rows.add(row);
@@ -4094,9 +4098,9 @@ if (typeof Array.isArray === "undefined") {
         /** @override **/
         Entity.prototype.getTypes = function() {
             
-            var type = ["Entity"];
+            var type = ['Entity'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /** @override */
@@ -4117,7 +4121,7 @@ if (typeof Array.isArray === "undefined") {
          */
         Entity.prototype.setValue  = function(p_row) {
             
-            if (!(p_row instanceof Row)) throw new Error("Only [p_row] type 'Row' can be added");
+            if (!(p_row instanceof Row)) throw new Error('Only [p_row] type "Row" can be added');
 
             for(var i = 0; this.items.count > i; i++) {
                 this.items[i].value = p_row[i];
@@ -4139,7 +4143,7 @@ if (typeof Array.isArray === "undefined") {
 
         /** 
          * filter = {
-         *  __except : ["name"...],        // 제외 아이템 (1방법)
+         *  __except : ['name'...],        // 제외 아이템 (1방법)
          *  아이템명: { __except: true }    // 아이템 제외 (2방법)
          *  아이템명: { order: 100 }        // 속성 오버라이딩
          * }
@@ -4169,7 +4173,7 @@ if (typeof Array.isArray === "undefined") {
 
                 for (var i = 0; entity.items.count > i ; i++) {
                     i_name = entity.items[i].name;
-                    if (typeof row[i_name] !== "undefined" && typeof orgEntity.rows[rowIdx][i_name] !== "undefined") {
+                    if (typeof row[i_name] !== 'undefined' && typeof orgEntity.rows[rowIdx][i_name] !== 'undefined') {
                         row[i_name] = orgEntity.rows[rowIdx][i_name];
                     }
                 }
@@ -4179,7 +4183,7 @@ if (typeof Array.isArray === "undefined") {
             // 1.제외 아이템 조회
             if (p_filter && p_filter[EXECEPT]) {
                 if (Array.isArray(p_filter[EXECEPT])) excepts = p_filter[EXECEPT];
-                else if (typeof p_filter[EXECEPT] === "string") excepts.push(p_filter[EXECEPT]);
+                else if (typeof p_filter[EXECEPT] === 'string') excepts.push(p_filter[EXECEPT]);
             } 
             for (var i = 0; this.items.count > i; i++) {
                 if (excepts.indexOf(this.items[i].name) < 0)  {
@@ -4209,16 +4213,16 @@ if (typeof Array.isArray === "undefined") {
             }
             
             // 4.리턴 Entity 의 Row 구성 : 참조형
-            if (typeof p_index === "number") {
+            if (typeof p_index === 'number') {
                 for(var i = p_index; i < this.rows.count; i++) {
                     // entity.rows.add(this.rows[idx]);
                     entity.rows.add(__createRow(i, this));
-                    if (typeof p_end === "number" && i === p_end) break;
+                    if (typeof p_end === 'number' && i === p_end) break;
                 }
             } else if (Array.isArray(p_index)) {
                 for(var i = 0; i < p_index.length; i++) {
                     idx = p_index[i];
-                    if (typeof idx === "number" && typeof this.rows[idx] !== "undefined") {
+                    if (typeof idx === 'number' && typeof this.rows[idx] !== 'undefined') {
                         // entity.rows.add(this.rows[idx]);
                         entity.rows.add(__createRow(idx, this));
                     }
@@ -4242,7 +4246,7 @@ if (typeof Array.isArray === "undefined") {
         };
 
         /**
-         * "구조를 구성하는게 주용도임"
+         * '구조를 구성하는게 주용도임'
          * 병합 : 컬렉션 순서에 따라 병한다.
          * Item과 Row가 있는 경우
          * - 1 items, rows 병합 (기존유지) *기본값
@@ -4259,19 +4263,19 @@ if (typeof Array.isArray === "undefined") {
             var itemName;
 
             // 1.유효성 검사
-            if (!(p_target instanceof Entity)) throw new Error("Only [p_target] type 'Entity' can be added");
+            if (!(p_target instanceof Entity)) throw new Error('Only [p_target] type "Entity" can be added');
 
             // 2.병합 : Item 기준으로 아이템 가져오기
             for(var i = 0; p_target.items.count > i; i++) {
                 itemName = p_target.items[i].name;
                 
                 // 없으면 생성
-                if (typeof this.items[itemName] === "undefined") {
+                if (typeof this.items[itemName] === 'undefined') {
                     this.items.add(p_target.items[i]);
                 }
                 
                 // option = 2: 기존 item 덮어쓰기
-                if (p_option === 2 && typeof this.items[itemName] !== "undefined") {
+                if (p_option === 2 && typeof this.items[itemName] !== 'undefined') {
                     this.items[itemName] = p_target.items[itemName];
                 }
             }
@@ -4280,13 +4284,13 @@ if (typeof Array.isArray === "undefined") {
             if (p_option !== 3) {
                 for(var i = 0; p_target.rows.count > i; i++) {
                     // this.rows 있는 경우
-                    if (typeof this.rows[i] !== "undefined") {  
+                    if (typeof this.rows[i] !== 'undefined') {  
                         row = this.rows[i];
                         for (var ii = 0; ii < p_target.items.count; ii++) {
                             itemName = p_target.items[ii].name;
-                            if (typeof this.rows[i][itemName] === "undefined") {    // 이름이 없는 경우
+                            if (typeof this.rows[i][itemName] === 'undefined') {    // 이름이 없는 경우
                                 row.add(itemName, p_target.rows[i][itemName]);
-                            } else if (p_option === 2 && typeof this.rows[i][itemName] !== "undefined") {   // 덮어쓰기
+                            } else if (p_option === 2 && typeof this.rows[i][itemName] !== 'undefined') {   // 덮어쓰기
                                 row[itemName] = p_target.rows[i][itemName];     
                             }
                         }
@@ -4308,7 +4312,7 @@ if (typeof Array.isArray === "undefined") {
         };
         
         /**
-         * "데이터를 가져오는게 주용도임"
+         * '데이터를 가져오는게 주용도임'
          * 불러오기/가져오기 (!! 병합용도가 아님)
          * 기존에 row 가 존재하면 newRow 부터 가져오고, 기존item 은 공백이 들어감
          * @param {*} p_object Entity 는 item과 row 는 쌍으로 존재함, JSON 은 row만 존재할 수 있음
@@ -4334,7 +4338,7 @@ if (typeof Array.isArray === "undefined") {
 
         /** @abstract */
         Entity.prototype.clone  = function() {
-            throw new Error("[ clone() ] Abstract method definition, fail...");
+            throw new Error('[ clone() ] Abstract method definition, fail...');
         };
 
         return Entity;
@@ -4344,20 +4348,20 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = Entity;
     } else {
         global._W.Meta.Entity.Entity = Entity;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.Entity.EntityTable
  * namespace _W.Meta.Entity.EntityTableCollection
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -4372,11 +4376,11 @@ if (typeof Array.isArray === "undefined") {
     var PropertyCollection;
     var ItemTableCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("util");
-        Entity              = require("./entity-base");
-        PropertyCollection  = require("./collection-property");
-        ItemTableCollection      = require("./entity-item").ItemTableCollection;
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('util');
+        Entity              = require('./entity-base');
+        PropertyCollection  = require('./collection-property');
+        ItemTableCollection      = require('./entity-item').ItemTableCollection;
     } else {
         util                = global._W.Common.Util;
         Entity              = global._W.Meta.Entity.Entity;
@@ -4386,10 +4390,10 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof ItemTableCollection === "undefined") throw new Error("[ItemTableCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof Entity === 'undefined') throw new Error('[Entity] module load fail...');
+    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
+    if (typeof ItemTableCollection === 'undefined') throw new Error('[ItemTableCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -4410,9 +4414,9 @@ if (typeof Array.isArray === "undefined") {
         /** @override **/
         EntityTable.prototype.getTypes  = function() {
             
-            var type = ["EntityTable"];
+            var type = ['EntityTable'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /** @override */
@@ -4471,17 +4475,17 @@ if (typeof Array.isArray === "undefined") {
             var i_value;
             var i_name;
 
-            if (typeof p_object === "string") {      
+            if (typeof p_object === 'string') {      
                 i_name  = p_object;
                 i_value = new EntityTable(i_name);
             } else if (p_object instanceof EntityTable) {
                 i_name  = p_object.name;
                 i_value = p_object;
             } else {
-                throw new Error("string | EntityTable object [p_object].");
+                throw new Error('string | EntityTable object [p_object].');
             }
 
-            if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
+            if (typeof i_name === 'undefined') throw new Error('There is no required value [p_name].');
 
             _super.prototype.add.call(this, i_name, i_value);
 
@@ -4494,7 +4498,7 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports.EntityTable = EntityTable;
         module.exports.EntityTableCollection = EntityTableCollection;
     } else {
@@ -4502,14 +4506,14 @@ if (typeof Array.isArray === "undefined") {
         global._W.Meta.Entity.EntityTableCollection = EntityTableCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.Entity.EntityView
  * namespace _W.Meta.Entity.EntityViewCollection
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -4525,12 +4529,12 @@ if (typeof Array.isArray === "undefined") {
     var ItemViewCollection;
     var PropertyCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("util");
-        MetaObject          = require("./meta-object");
-        Entity              = require("./entity-base");
-        ItemViewCollection   = require("./entity-item").ItemViewCollection;
-        PropertyCollection  = require("./collection-property");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('util');
+        MetaObject          = require('./meta-object');
+        Entity              = require('./entity-base');
+        ItemViewCollection   = require('./entity-item').ItemViewCollection;
+        PropertyCollection  = require('./collection-property');
     } else {
         util                = global._W.Common.Util;
         MetaObject          = global._W.Meta.MetaObject;
@@ -4541,11 +4545,11 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
-    if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
-    if (typeof ItemViewCollection === "undefined") throw new Error("[ItemViewCollection] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
+    if (typeof Entity === 'undefined') throw new Error('[Entity] module load fail...');
+    if (typeof ItemViewCollection === 'undefined') throw new Error('[ItemViewCollection] module load fail...');
+    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -4562,7 +4566,7 @@ if (typeof Array.isArray === "undefined") {
 
             var refCollection;
 
-            if (p_baseEntity && p_baseEntity instanceof MetaObject && p_baseEntity.instanceOf("Entity")) {
+            if (p_baseEntity && p_baseEntity instanceof MetaObject && p_baseEntity.instanceOf('Entity')) {
                 refCollection = p_baseEntity.items;
             }
             
@@ -4579,16 +4583,16 @@ if (typeof Array.isArray === "undefined") {
          * @param {Entity} p_entity 
          */
         EntityView.prototype._regRefer  = function(p_entity) {
-            if (!(p_entity instanceof Entity)) throw new Error("Only [p_entity] type 'Entity' can be added");
+            if (!(p_entity instanceof Entity)) throw new Error('Only [p_entity] type "Entity" can be added');
             if (this._refEntities.indexOf(p_entity) < 0) this._refEntities.push(p_entity);
         };
         
         /** @override **/
         EntityView.prototype.getTypes  = function() {
             
-            var type = ["EntityView"];
+            var type = ['EntityView'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
         
         /** @override */
@@ -4654,18 +4658,18 @@ if (typeof Array.isArray === "undefined") {
             var i_value;
             var i_name;
 
-            if (typeof p_object === "string") {      
+            if (typeof p_object === 'string') {      
                 i_name  = p_object;
                 i_value = new EntityView(i_name, p_baseEntity);
             } else if (p_object instanceof EntityView) {
-                if (p_baseEntity) throw new Error(" EntityView객체와 refEntity객체를 동시에 입력할 수 없습니다. !!");
+                if (p_baseEntity) throw new Error(' EntityView객체와 refEntity객체를 동시에 입력할 수 없습니다. !!');
                 i_name  = p_object.name;
                 i_value = p_object;
             } else {
-                throw new Error("string | EntityView object [p_object].");
+                throw new Error('string | EntityView object [p_object].');
             }
 
-            if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
+            if (typeof i_name === 'undefined') throw new Error('There is no required value [p_name].');
 
             return _super.prototype.add.call(this, i_name, i_value);
         };
@@ -4676,7 +4680,7 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports.EntityView = EntityView;
         module.exports.EntityViewCollection = EntityViewCollection;
     } else {
@@ -4684,13 +4688,13 @@ if (typeof Array.isArray === "undefined") {
         global._W.Meta.Entity.EntityViewCollection = EntityViewCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.Entity.EntitySet
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 의존 모듈 선언
@@ -4699,8 +4703,8 @@ if (typeof Array.isArray === "undefined") {
     // 2. 모듈 가져오기 (node | web)
     // var util;
     
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        // util = require("util");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        // util = require('util');
     } else {
         // global._W = global._W || {};
         // util = global._W.util || {};
@@ -4708,7 +4712,7 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 의존성 검사
-    // if (typeof util === "undefined") throw new Error("[XXX] module  load fail...");
+    // if (typeof util === 'undefined') throw new Error('[XXX] module  load fail...');
 
 
     //==============================================================
@@ -4719,19 +4723,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    // if (typeof module === "object" && typeof module.exports === "object") {     
+    // if (typeof module === 'object' && typeof module.exports === 'object') {     
     //     module.exports = namespace;
     // } else {
     //     global._W.namespace = namespace;
     // }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.Bind.BaseBind
  */
 (function(global) {
-
-    "use strict";
+    
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -4746,11 +4750,11 @@ if (typeof Array.isArray === "undefined") {
     var MetaObject;
     var Entity;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        Observer            = require("./observer");
-        MetaObject          = require("./meta-object");
-        Entity              = require("./entity-base");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        Observer            = require('./observer');
+        MetaObject          = require('./meta-object');
+        Entity              = require('./entity-base');
     } else {
         util                = global._W.Common.Util;
         Observer            = global._W.Common.Observer;
@@ -4760,10 +4764,10 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
-    if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
-    if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
+    if (typeof Observer === 'undefined') throw new Error('[Observer] module load fail...');
+    if (typeof Entity === 'undefined') throw new Error('[Entity] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -4795,11 +4799,11 @@ if (typeof Array.isArray === "undefined") {
              * @member _W.Meta.Bind.BaseBind#_baseEntity
              * @protected
              */
-            Object.defineProperty(this, "_baseEntity", 
+            Object.defineProperty(this, '_baseEntity', 
             {
                 get: function() { return __baseEntity; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Entity)) throw new Error("Only [baseEntity] type 'Entity' can be added");
+                    if (!(newValue instanceof Entity)) throw new Error('Only [baseEntity] type "Entity" can be added');
                     __baseEntity = newValue;
                 },
                 configurable: true,
@@ -4810,11 +4814,11 @@ if (typeof Array.isArray === "undefined") {
              * 실행전 이벤트
              * @event _W.Meta.Bind.BaseBind#onExecute
              */
-            Object.defineProperty(this, "onExecute", {
+            Object.defineProperty(this, 'onExecute', {
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "execute");
+                    this.__event.subscribe(p_fn, 'execute');
                 }
             });
 
@@ -4822,18 +4826,18 @@ if (typeof Array.isArray === "undefined") {
              * 실행후 이벤트
              * @event _W.Meta.Bind.BaseBind#onExecuted
              */
-            Object.defineProperty(this, "onExecuted", {
+            Object.defineProperty(this, 'onExecuted', {
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "executed");
+                    this.__event.subscribe(p_fn, 'executed');
                 }
             });
 
             // 예약어 등록
-            this._symbol = this._symbol.concat(["__event", "_symbol", "_baseEntity"]);
-            this._symbol = this._symbol.concat(["onExecute", "onExecuted"]);
-            this._symbol = this._symbol.concat(["getTypes", "_onExecute", "_onExecuted"]);
+            this._symbol = this._symbol.concat(['__event', '_symbol', '_baseEntity']);
+            this._symbol = this._symbol.concat(['onExecute', 'onExecuted']);
+            this._symbol = this._symbol.concat(['getTypes', '_onExecute', '_onExecuted']);
         }
         util.inherits(BaseBind, _super);
 
@@ -4844,9 +4848,9 @@ if (typeof Array.isArray === "undefined") {
          */
         BaseBind.prototype.getTypes  = function() {
                     
-            var type = ["BaseBind"];
+            var type = ['BaseBind'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /** @event */
@@ -4854,7 +4858,7 @@ if (typeof Array.isArray === "undefined") {
          * @listens _W.Meta.Bind.BaseBind#_onExecute
          */
         BaseBind.prototype._onExecute = function(p_bindCommand) {
-            this.__event.publish("execute", p_bindCommand);
+            this.__event.publish('execute', p_bindCommand);
         };
 
         /** @event */
@@ -4862,7 +4866,7 @@ if (typeof Array.isArray === "undefined") {
          * @listens _W.Meta.Bind.BaseBind#_onExecuted
          */
         BaseBind.prototype._onExecuted = function(p_bindCommand, p_result) {
-            this.__event.publish("executed", p_bindCommand, p_result); 
+            this.__event.publish('executed', p_bindCommand, p_result); 
         };
 
         return BaseBind;
@@ -4871,19 +4875,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BaseBind;
     } else {
         global._W.Meta.Bind.BaseBind = BaseBind;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.Bind.BindCommand
  */ 
 (function(global) {
-
-    "use strict";
+    
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -4904,14 +4908,14 @@ if (typeof Array.isArray === "undefined") {
     var EntityViewCollection;
 
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                    = require("./utils");
-        MetaObject              = require("./meta-object");
-        BaseCollection          = require("./collection-base");
-        BaseBind                = require("./bind-base");
-        Item                    = require("./entity-item").Item;
-        Entity                  = require("./entity-base");
-        entityView              = require("./entity-view");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                    = require('./utils');
+        MetaObject              = require('./meta-object');
+        BaseCollection          = require('./collection-base');
+        BaseBind                = require('./bind-base');
+        Item                    = require('./entity-item').Item;
+        Entity                  = require('./entity-base');
+        entityView              = require('./entity-view');
         EntityView              = entityView.EntityView;
         EntityViewCollection    = entityView.EntityViewCollection;
     } else {
@@ -4927,14 +4931,14 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
-    if (typeof BaseCollection === "undefined") throw new Error("[BaseCollection] module load fail...");
-    if (typeof BaseBind === "undefined") throw new Error("[BaseBind] module load fail...");
-    if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
-    if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
-    if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
-    if (typeof EntityViewCollection === "undefined") throw new Error("[EntityViewCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
+    if (typeof BaseCollection === 'undefined') throw new Error('[BaseCollection] module load fail...');
+    if (typeof BaseBind === 'undefined') throw new Error('[BaseBind] module load fail...');
+    if (typeof Entity === 'undefined') throw new Error('[Entity] module load fail...');
+    if (typeof Item === 'undefined') throw new Error('[Item] module load fail...');
+    if (typeof EntityView === 'undefined') throw new Error('[EntityView] module load fail...');
+    if (typeof EntityViewCollection === 'undefined') throw new Error('[EntityViewCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -4964,13 +4968,13 @@ if (typeof Array.isArray === "undefined") {
             this._baseEntity = p_baseEntity;    // 최상위 설정
 
             this._output = new EntityViewCollection(this, this._baseEntity);
-            this.addOutput("output");
+            this.addOutput('output');
 
             var __propagation   = true;
 
-            var __valid     = new EntityView("valid", this._baseEntity);
-            var __bind      = new EntityView("bind", this._baseEntity);
-            var __etc       = new EntityView("etc", this._baseEntity);
+            var __valid     = new EntityView('valid', this._baseEntity);
+            var __bind      = new EntityView('bind', this._baseEntity);
+            var __etc       = new EntityView('etc', this._baseEntity);
 
             var __cbValid       = null;
             var __cbBind        = null;
@@ -4980,30 +4984,30 @@ if (typeof Array.isArray === "undefined") {
             var __outputOption  = 0;     // 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만          
 
             
-            if (p_bindModel && !(p_bindModel instanceof MetaObject && p_bindModel.instanceOf("BindModel"))) {
-                throw new Error("Only [p_bindModel] type 'BindModel' can be added");
+            if (p_bindModel && !(p_bindModel instanceof MetaObject && p_bindModel.instanceOf('BindModel'))) {
+                throw new Error('Only [p_bindModel] type "BindModel" can be added');
             }
-            if (p_baseEntity && !(p_bindModel instanceof MetaObject && p_baseEntity.instanceOf("Entity"))) {
-                throw new Error("Only [p_baseEntity] type 'Entity' can be added");
+            if (p_baseEntity && !(p_bindModel instanceof MetaObject && p_baseEntity.instanceOf('Entity'))) {
+                throw new Error('Only [p_baseEntity] type "Entity" can be added');
             }
             
 
             
-            Object.defineProperty(this, "eventPropagation", {
+            Object.defineProperty(this, 'eventPropagation', {
                 enumerable: true,
                 configurable: true,
                 set: function(p_bool) {
-                    if (typeof p_bool !== "boolean") throw new Error("Only [p_bool] type 'Boolean' can be added");
+                    if (typeof p_bool !== 'boolean') throw new Error('Only [p_bool] type "Boolean" can be added');
                     __propagation = p_bool;
                 },
                 get: function() { return __propagation; }
             }); 
             
-            Object.defineProperty(this, "valid", 
+            Object.defineProperty(this, 'valid', 
             {
                 get: function() { return __valid; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
+                    if (!(newValue instanceof EntityView)) throw new Error('Only [valid] type "EntityView" can be added');
                     __valid = newValue;
                 },
                 configurable: true,
@@ -5011,22 +5015,22 @@ if (typeof Array.isArray === "undefined") {
             });
 
 
-            Object.defineProperty(this, "bind", 
+            Object.defineProperty(this, 'bind', 
             {
                 get: function() { return __bind; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof EntityView)) throw new Error("Only [valid] type 'EntityView' can be added");
+                    if (!(newValue instanceof EntityView)) throw new Error('Only [valid] type "EntityView" can be added');
                     __bind = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "etc", 
+            Object.defineProperty(this, 'etc', 
             {
                 get: function() { return __etc; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof EntityView)) throw new Error("Only [etc] type 'EntityView' can be added");
+                    if (!(newValue instanceof EntityView)) throw new Error('Only [etc] type "EntityView" can be added');
                     __etc = newValue;
                 },
                 configurable: true,
@@ -5034,11 +5038,11 @@ if (typeof Array.isArray === "undefined") {
             });
             
 
-            Object.defineProperty(this, "outputOption", 
+            Object.defineProperty(this, 'outputOption', 
             {
                 get: function() { return __outputOption; },
                 set: function(newValue) { 
-                    if (!(typeof newValue === "number")) throw new Error("Only [outputOption] type 'number' can be added");
+                    if (!(typeof newValue === 'number')) throw new Error('Only [outputOption] type "number" can be added');
                     __outputOption = newValue;
                 },
 
@@ -5046,55 +5050,55 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
             
-            Object.defineProperty(this, "cbValid", 
+            Object.defineProperty(this, 'cbValid', 
             {
                 get: function() { return __cbValid; },
                 set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbValid] type 'Function' can be added");
+                    if (typeof newValue !== 'function') throw new Error('Only [cbValid] type "Function" can be added');
                     __cbValid = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "cbBind", 
+            Object.defineProperty(this, 'cbBind', 
             {
                 get: function() { return __cbBind; },
                 set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbBind] type 'Function' can be added");
+                    if (typeof newValue !== 'function') throw new Error('Only [cbBind] type "Function" can be added');
                     __cbBind = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "cbResult", 
+            Object.defineProperty(this, 'cbResult', 
             {
                 get: function() { return __cbResult; },
                 set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbResult] type 'Function' can be added");
+                    if (typeof newValue !== 'function') throw new Error('Only [cbResult] type "Function" can be added');
                     __cbResult = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "cbOutput", 
+            Object.defineProperty(this, 'cbOutput', 
             {
                 get: function() { return __cbOutput; },
                 set: function(newValue) { 
-                    if (typeof newValue  !== "function") throw new Error("Only [cbOutput] type 'Function' can be added");
+                    if (typeof newValue  !== 'function') throw new Error('Only [cbOutput] type "Function" can be added');
                     __cbOutput = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "cbEnd", 
+            Object.defineProperty(this, 'cbEnd', 
             {
                 get: function() { return __cbEnd; },
                 set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbEnd] type 'Function' can be added");
+                    if (typeof newValue !== 'function') throw new Error('Only [cbEnd] type "Function" can be added');
                     __cbEnd = newValue;
                 },
                 configurable: true,
@@ -5102,12 +5106,12 @@ if (typeof Array.isArray === "undefined") {
             });    
 
             // 예약어 등록
-            this._symbol = this._symbol.concat(["_model", "eventPropagation"]);
-            this._symbol = this._symbol.concat(["valid", "bind"]);
-            this._symbol = this._symbol.concat(["cbValid", "cbBind", "cbResult", "cbOutput", "cbEnd"]);
-            this._symbol = this._symbol.concat(["_output", "outputOption", "cbOutput"]);
-            this._symbol = this._symbol.concat(["execute", "_onExecute", "_onExecuted", "getTypes", "add", "addItem", "setItem"]);
-            this._symbol = this._symbol.concat(["addOutput"]);
+            this._symbol = this._symbol.concat(['_model', 'eventPropagation']);
+            this._symbol = this._symbol.concat(['valid', 'bind']);
+            this._symbol = this._symbol.concat(['cbValid', 'cbBind', 'cbResult', 'cbOutput', 'cbEnd']);
+            this._symbol = this._symbol.concat(['_output', 'outputOption', 'cbOutput']);
+            this._symbol = this._symbol.concat(['execute', '_onExecute', '_onExecuted', 'getTypes', 'add', 'addItem', 'setItem']);
+            this._symbol = this._symbol.concat(['addOutput']);
 
 
         }
@@ -5116,7 +5120,7 @@ if (typeof Array.isArray === "undefined") {
 
         /** @virtual */
         BindCommand.prototype.execute = function() {
-            throw new Error("[ execute() ] Abstract method definition, fail...");
+            throw new Error('[ execute() ] Abstract method definition, fail...');
         };
 
         /** @override */
@@ -5138,9 +5142,9 @@ if (typeof Array.isArray === "undefined") {
          */
         BindCommand.prototype.getTypes  = function() {
                     
-            var type = ["BindCommand"];
+            var type = ['BindCommand'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
         
         /**
@@ -5156,15 +5160,15 @@ if (typeof Array.isArray === "undefined") {
 
             // 1.유효성 검사
             if (!(p_item instanceof Item)) {
-                throw new Error("Only [p_item] type 'Item' can be added");
+                throw new Error('Only [p_item] type "Item" can be added');
             }
-            if (typeof p_entities !== "undefined" && (!(Array.isArray(p_entities) || typeof p_entities === "string"))) {
-                throw new Error("Only [p_entities] type 'Array | string' can be added");
+            if (typeof p_entities !== 'undefined' && (!(Array.isArray(p_entities) || typeof p_entities === 'string'))) {
+                throw new Error('Only [p_entities] type "Array | string" can be added');
             } 
 
             // 2.초기화 설정
             if (Array.isArray(p_entities)) entities = p_entities;
-            else if (typeof p_entities === "string") entities.push(p_entities);
+            else if (typeof p_entities === 'string') entities.push(p_entities);
             
             // baseEntity 에 아이템 없으면 등록
             if (!this._baseEntity.items.contains(p_item))  {
@@ -5175,19 +5179,19 @@ if (typeof Array.isArray === "undefined") {
             if (entities.length > 0) {
                 for (var i = 0; i < entities.length; i++) {
                     
-                    if (typeof entities[i] !== "string") throw new Error("Only [String] type instances can be added");
+                    if (typeof entities[i] !== 'string') throw new Error('Only [String] type instances can be added');
                    
                     // 속성 유무 검사
                     if (this[entities[i]]) {
                         property.push(entities[i]);
                     } else {
-                        console.warn("Warning!! Param p_entities 에 [" + entities[i] + "]가 없습니다. ");
+                        console.warn('Warning!! Param p_entities 에 [' + entities[i] + ']가 없습니다. ');
                     }
                 }
             } else {
                 // 공개(public) Entity 프로퍼티 검사
                 for (var prop in this) {
-                    if (this[prop] instanceof Entity && prop.substr(0, 1) !== "_") {
+                    if (this[prop] instanceof Entity && prop.substr(0, 1) !== '_') {
                         property.push(prop.toString());
                     }
                 }
@@ -5198,7 +5202,7 @@ if (typeof Array.isArray === "undefined") {
                 if (this[property[i]] instanceof Entity ){
                     collection = this[property[i]].items;
                 } else {
-                    console.warn("Warning!! [" + property[i] + "]속성이 this 에 없습니다. ");
+                    console.warn('Warning!! [' + property[i] + ']속성이 this 에 없습니다. ');
                 }
                 collection.add(p_item);
             }
@@ -5215,8 +5219,8 @@ if (typeof Array.isArray === "undefined") {
             var item;
             
             // 유효성 검사
-            if (typeof p_name !== "string") {
-                throw new Error("Only [p_name] type 'string' can be added");
+            if (typeof p_name !== 'string') {
+                throw new Error('Only [p_name] type "string" can be added');
             }
 
             item = this._baseEntity.items.addValue(p_name, p_value);
@@ -5238,19 +5242,19 @@ if (typeof Array.isArray === "undefined") {
 
             // 초기화
             if (Array.isArray(p_names)) names = p_names;
-            else if (typeof p_names === "string") names.push(p_names);
+            else if (typeof p_names === 'string') names.push(p_names);
 
             // 유효성 검사
-            if (names.length === 0) throw new Error("Only [p_names] type 'Array | string' can be added");
+            if (names.length === 0) throw new Error('Only [p_names] type "Array | string" can be added');
 
             // 아이템 검사 및 등록 함수 this.add(..) 호출
             for(var i = 0; names.length > i; i++) {
                 itemName = names[i]; 
                 item = this._model._baseEntity.items[itemName];
-                if (typeof item !== "undefined") {
+                if (typeof item !== 'undefined') {
                     this.add(item, p_entities);
                 } else {
-                    console.warn("baseEntity에 [" + itemName + "] 아이템이 없습니다.");
+                    console.warn('baseEntity에 [' + itemName + '] 아이템이 없습니다.');
                 }
             }
         };
@@ -5272,35 +5276,35 @@ if (typeof Array.isArray === "undefined") {
 
             // 초기화
             if (Array.isArray(p_names)) names = p_names;
-            else if (typeof p_names === "string") names.push(p_names);
+            else if (typeof p_names === 'string') names.push(p_names);
 
             // 1. 유효성 검사
-            if (names.length === 0) throw new Error("Only [p_names] type 'Array | string' can be added");
-            if (typeof p_entities !== "undefined" && (!(Array.isArray(p_entities) || typeof p_entities === "string"))) {
-                throw new Error("Only [p_entities] type 'Array | string' can be added");
+            if (names.length === 0) throw new Error('Only [p_names] type "Array | string" can be added');
+            if (typeof p_entities !== 'undefined' && (!(Array.isArray(p_entities) || typeof p_entities === 'string'))) {
+                throw new Error('Only [p_entities] type "Array | string" can be added');
             } 
 
             // 2.초기화 설정
             if (Array.isArray(p_entities)) entities = p_entities;
-            else if (typeof p_entities === "string") entities.push(p_entities);
+            else if (typeof p_entities === 'string') entities.push(p_entities);
             
             // 3.설정 대상 가져오기
             if (entities.length > 0) {
                 for (var i = 0; i < entities.length; i++) {
                     
-                    if (typeof entities[i] !== "string") throw new Error("Only [String] type instances can be added");
+                    if (typeof entities[i] !== 'string') throw new Error('Only [String] type instances can be added');
                    
                     // 속성 유무 검사
                     if (this[entities[i]]) {
                         property.push(entities[i]);
                     } else {
-                        console.warn("Warning!! Param p_entities 에 [" + entities[i] + "]가 없습니다. ");
+                        console.warn('Warning!! Param p_entities 에 [' + entities[i] + ']가 없습니다. ');
                     }
                 }
             } else {
                 // 공개(public) Entity 프로퍼티 검사
                 for (var prop in this) {
-                    if (this[prop] instanceof Entity && prop.substr(0, 1) !== "_") {
+                    if (this[prop] instanceof Entity && prop.substr(0, 1) !== '_') {
                         property.push(prop.toString());
                     }
                 }
@@ -5311,13 +5315,13 @@ if (typeof Array.isArray === "undefined") {
                 itemName = names[i]; 
                 item = this._model._baseEntity.items[itemName];
 
-                if (typeof item !== "undefined") {
+                if (typeof item !== 'undefined') {
                     for (var ii = 0; property.length > ii; ii++) {
                         this[property[ii]].items.remove(item);
                     }
 
                 } else {
-                    console.warn("baseEntity에 [" + itemName + "] 아이템이 없습니다.");
+                    console.warn('baseEntity에 [' + itemName + '] 아이템이 없습니다.');
                 }
             }
         };
@@ -5325,17 +5329,17 @@ if (typeof Array.isArray === "undefined") {
         BindCommand.prototype.addOutput = function(p_name) {
 
             // 유효성 검사
-            if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
+            if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
             
             // 예약어 검사
             if (this._symbol.indexOf(p_name) > -1) {
-                throw new Error(" [" + p_name + "] is a Symbol word");   
+                throw new Error(' [' + p_name + '] is a Symbol word');   
             }            
 
             // 이름 중복 검사
-            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
+            if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
 
-            // this._output.add("default", this._baseEntity);            // 등록방법 2
+            // this._output.add('default', this._baseEntity);            // 등록방법 2
             this._output.add(new EntityView(p_name, this._baseEntity));  // 등록방법 1
             this[p_name] = this._output[p_name];
         };
@@ -5347,19 +5351,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BindCommand;
     } else {
         global._W.Meta.Bind.BindCommand = BindCommand;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.Bind.BindModel
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -5380,17 +5384,17 @@ if (typeof Array.isArray === "undefined") {
     var Item;
     var MetaObject;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                        = require("./utils");
-        BaseBind                    = require("./bind-base");
-        ItemCollection              = require("./entity-item").ItemCollection;
-        PropertyCollection          = require("./collection-property");
-        PropertyFunctionCollection  = require("./collection-property-function");        
-        IBindModel                  = require("./i-bind-model");        
-        Entity                      = require("./entity-base");
-        EntityTable                 = require("./entity-table").EntityTable;
-        Item                        = require("./entity-item").Item;
-        MetaObject                  = require("./meta-object");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                        = require('./utils');
+        BaseBind                    = require('./bind-base');
+        ItemCollection              = require('./entity-item').ItemCollection;
+        PropertyCollection          = require('./collection-property');
+        PropertyFunctionCollection  = require('./collection-property-function');        
+        IBindModel                  = require('./i-bind-model');        
+        Entity                      = require('./entity-base');
+        EntityTable                 = require('./entity-table').EntityTable;
+        Item                        = require('./entity-item').Item;
+        MetaObject                  = require('./meta-object');
     } else {
         util                        = global._W.Common.Util;
         BaseBind                    = global._W.Meta.Bind.BaseBind;
@@ -5406,15 +5410,15 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BaseBind === "undefined") throw new Error("[BaseBind] module load fail...");
-    if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof PropertyFunctionCollection === "undefined") throw new Error("[PropertyFunctionCollection] module load fail...");
-    if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
-    if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
-    if (typeof EntityTable === "undefined") throw new Error("[EntityTable] module load fail...");
-    if (typeof Item === "undefined") throw new Error("[Item] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof BaseBind === 'undefined') throw new Error('[BaseBind] module load fail...');
+    if (typeof ItemCollection === 'undefined') throw new Error('[ItemCollection] module load fail...');
+    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
+    if (typeof PropertyFunctionCollection === 'undefined') throw new Error('[PropertyFunctionCollection] module load fail...');
+    if (typeof IBindModel === 'undefined') throw new Error('[IBindModel] module load fail...');
+    if (typeof Entity === 'undefined') throw new Error('[Entity] module load fail...');
+    if (typeof EntityTable === 'undefined') throw new Error('[EntityTable] module load fail...');
+    if (typeof Item === 'undefined') throw new Error('[Item] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -5432,8 +5436,8 @@ if (typeof Array.isArray === "undefined") {
             var __fn            = new PropertyFunctionCollection(this);
             var __mapping       = new PropertyCollection(this);
             
-            var __cbFail        = function() { console.warn("바인딩 실패하였습니다."); };
-            var __cbError       = function() { console.error("바인딩 오류가 발생 하였습니다."); };
+            var __cbFail        = function() { console.warn('바인딩 실패하였습니다.'); };
+            var __cbError       = function() { console.error('바인딩 오류가 발생 하였습니다.'); };
             var __cbBaseValid   = null;
             var __cbBaseBind    = null;
             var __cbBaseResult  = null;
@@ -5447,48 +5451,48 @@ if (typeof Array.isArray === "undefined") {
             this.__preReady       = function() {};
 
             // DI 인터페이스 구현 검사
-            // if(typeof p_objectDI !== "undefined" && !(p_objectDI instanceof IBindModel))  {
-            //     throw new Error("Only [p_objectDI] type 'IBindModel' can be added");
+            // if(typeof p_objectDI !== 'undefined' && !(p_objectDI instanceof IBindModel))  {
+            //     throw new Error('Only [p_objectDI] type "IBindModel" can be added');
             // }
             
-            Object.defineProperty(this, "prop", 
+            Object.defineProperty(this, 'prop', 
             {
                 get: function() { return __prop; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof PropertyCollection)) throw new Error("Only [prop] type 'PropertyCollection' can be added");
+                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [prop] type "PropertyCollection" can be added');
                     __prop = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "fn", 
+            Object.defineProperty(this, 'fn', 
             {
                 get: function() { return __fn; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof PropertyFunctionCollection)) throw new Error("Only [fn] type 'PropertyFunctionCollection' can be added");
+                    if (!(newValue instanceof PropertyFunctionCollection)) throw new Error('Only [fn] type "PropertyFunctionCollection" can be added');
                     __fn = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "mapping", 
+            Object.defineProperty(this, 'mapping', 
             {
                 get: function() { return __mapping; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof PropertyCollection)) throw new Error("Only [mapping] type 'PropertyCollection' can be added");
+                    if (!(newValue instanceof PropertyCollection)) throw new Error('Only [mapping] type "PropertyCollection" can be added');
                     __mapping = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "itemType", 
+            Object.defineProperty(this, 'itemType', 
             {
                 get: function() { return __itemType; },
                 set: function(newValue) { 
-                    if (!(new newValue() instanceof Item)) throw new Error("Only [itemType] type 'Item' can be added");
+                    if (!(new newValue() instanceof Item)) throw new Error('Only [itemType] type "Item" can be added');
                     __itemType = newValue;
                     this._baseEntity.items.itemType = newValue;
                 },
@@ -5496,77 +5500,77 @@ if (typeof Array.isArray === "undefined") {
                 enumerable: true
             });
 
-            Object.defineProperty(this, "cbFail", 
+            Object.defineProperty(this, 'cbFail', 
             {
                 get: function() { return __cbFail; },
                 set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbFail] type 'Function' can be added");
+                    if (typeof newValue !== 'function') throw new Error('Only [cbFail] type "Function" can be added');
                     __cbFail = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "cbError", 
+            Object.defineProperty(this, 'cbError', 
             {
                 get: function() { return __cbError; },
                 set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbError] type 'Function' can be added");
+                    if (typeof newValue !== 'function') throw new Error('Only [cbError] type "Function" can be added');
                     __cbError = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "cbBaseValid", 
+            Object.defineProperty(this, 'cbBaseValid', 
             {
                 get: function() { return __cbBaseValid; },
                 set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbBaseValid] type 'Function' can be added");
+                    if (typeof newValue !== 'function') throw new Error('Only [cbBaseValid] type "Function" can be added');
                     __cbBaseValid = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "cbBaseBind", 
+            Object.defineProperty(this, 'cbBaseBind', 
             {
                 get: function() { return __cbBaseBind; },
                 set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbBaseBind] type 'Function' can be added");
+                    if (typeof newValue !== 'function') throw new Error('Only [cbBaseBind] type "Function" can be added');
                     __cbBaseBind = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
             
-            Object.defineProperty(this, "cbBaseResult", 
+            Object.defineProperty(this, 'cbBaseResult', 
             {
                 get: function() { return __cbBaseResult; },
                 set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbBaseResult] type 'Function' can be added");
+                    if (typeof newValue !== 'function') throw new Error('Only [cbBaseResult] type "Function" can be added');
                     __cbBaseResult = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "cbBaseOutput", 
+            Object.defineProperty(this, 'cbBaseOutput', 
             {
                 get: function() { return __cbBaseOutput; },
                 set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbBaseOutput] type 'Function' can be added");
+                    if (typeof newValue !== 'function') throw new Error('Only [cbBaseOutput] type "Function" can be added');
                     __cbBaseOutput = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "cbBaseEnd", 
+            Object.defineProperty(this, 'cbBaseEnd', 
             {
                 get: function() { return __cbBaseEnd; },
                 set: function(newValue) { 
-                    if (typeof newValue !== "function") throw new Error("Only [cbBaseEnd] type 'Function' can be added");
+                    if (typeof newValue !== 'function') throw new Error('Only [cbBaseEnd] type "Function" can be added');
                     __cbBaseEnd = newValue;
                 },
                 configurable: true,
@@ -5575,13 +5579,13 @@ if (typeof Array.isArray === "undefined") {
 
 
             // 예약어 등록
-            this._symbol = this._symbol.concat(["__preRegister", "__preCheck", "__preReady"]);
-            this._symbol = this._symbol.concat(["prop", "mode", "mapping"]);
-            this._symbol = this._symbol.concat(["itemType", "cbFail", "cbError"]);
-            this._symbol = this._symbol.concat(["cbBaseResult", "cbBaseValid", "cbBaseBind", "cbBaseOutput", "cbBaseEnd"]);
-            this._symbol = this._symbol.concat(["getTypes", "init", "preRegister", "preCheck", "preReady", "addEntity"]);
-            this._symbol = this._symbol.concat(["add", "addItem", "loadProp", "setMapping", "preReady", "addEntity"]);
-            this._symbol = this._symbol.concat(["addCommand", "setService"]);
+            this._symbol = this._symbol.concat(['__preRegister', '__preCheck', '__preReady']);
+            this._symbol = this._symbol.concat(['prop', 'mode', 'mapping']);
+            this._symbol = this._symbol.concat(['itemType', 'cbFail', 'cbError']);
+            this._symbol = this._symbol.concat(['cbBaseResult', 'cbBaseValid', 'cbBaseBind', 'cbBaseOutput', 'cbBaseEnd']);
+            this._symbol = this._symbol.concat(['getTypes', 'init', 'preRegister', 'preCheck', 'preReady', 'addEntity']);
+            this._symbol = this._symbol.concat(['add', 'addItem', 'loadProp', 'setMapping', 'preReady', 'addEntity']);
+            this._symbol = this._symbol.concat(['addCommand', 'setService']);
             
         }
         util.inherits(BindModel, _super);
@@ -5592,14 +5596,14 @@ if (typeof Array.isArray === "undefined") {
          */
         BindModel.prototype.getTypes  = function() {
                     
-            var type = ["BindModel"];
+            var type = ['BindModel'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /** 초기화 */
         BindModel.prototype.init = function() {
-            if (this.isLog) console.log("call :: BindModel.init()");
+            if (this.isLog) console.log('call :: BindModel.init()');
             
             this.preRegister.call(this, this);
             if (this.preCheck.call(this, this)) {
@@ -5635,15 +5639,15 @@ if (typeof Array.isArray === "undefined") {
             var entity;
 
             // 유효성 검사
-            if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
+            if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
             
             // 예약어 검사
             if (this._symbol.indexOf(p_name) > -1) {
-                throw new Error(" [" + p_name + "] is a Symbol word");   
+                throw new Error(' [' + p_name + '] is a Symbol word');   
             }            
 
             // 이름 중복 검사
-            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
+            if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
 
             entity = new EntityTable(p_name);
             entity.items.itemType = this.itemType;    // 아이템타입 설정
@@ -5666,38 +5670,38 @@ if (typeof Array.isArray === "undefined") {
 
             // 1.유효성 검사
             if (!(p_item instanceof Item)) {
-                throw new Error("Only [Item] type 'Item' can be added");
+                throw new Error('Only [Item] type "Item" can be added');
             }
-            if (typeof p_cmds !== "undefined" && p_cmds !== null && (!(Array.isArray(p_cmds) || typeof p_cmds === "string"))) {
-                throw new Error("Only [a_cmd] type 'Array | string' can be added");
+            if (typeof p_cmds !== 'undefined' && p_cmds !== null && (!(Array.isArray(p_cmds) || typeof p_cmds === 'string'))) {
+                throw new Error('Only [a_cmd] type "Array | string" can be added');
             }
             
             // 2.초기화 설정
             if (Array.isArray(p_cmds)) cmds = p_cmds;
-            else if (typeof p_cmds === "string" && p_cmds.length > 0) cmds.push(p_cmds);
+            else if (typeof p_cmds === 'string' && p_cmds.length > 0) cmds.push(p_cmds);
             
             // 3.설정 대상 가져오기
             if (cmds.length > 0) {
                 for (var i = 0; i< cmds.length; i++) {
                     
-                    if (typeof cmds[i] !== "string") throw new Error("Only [String] type instances can be added");
+                    if (typeof cmds[i] !== 'string') throw new Error('Only [String] type instances can be added');
                     
                     if (this[cmds[i]]) {
                         property.push(cmds[i]);
                     } else {
-                        console.warn("Warning!! Param p_cmds 에 [" + cmds[i] + "]가 없습니다. ");
+                        console.warn('Warning!! Param p_cmds 에 [' + cmds[i] + ']가 없습니다. ');
                     }
                 }
             } else {
                 // public ItemCollection 프로퍼티 검사
                 for (var prop in this) {
-                    if (this[prop] instanceof MetaObject && this[prop].instanceOf("BindCommand") && prop.substr(0, 1) !== "_") {
+                    if (this[prop] instanceof MetaObject && this[prop].instanceOf('BindCommand') && prop.substr(0, 1) !== '_') {
                         property.push(prop.toString());
                     }
                 }
             }
             // 4.설정(등록) OR item 등록
-            if (typeof p_cmds === "undefined") {
+            if (typeof p_cmds === 'undefined') {
                 this._baseEntity.items.add(p_item); // 기본(_baseEntity)엔티티만 등록
             } else {
                 for (var i = 0; i < property.length; i++) {
@@ -5719,8 +5723,8 @@ if (typeof Array.isArray === "undefined") {
             var property = {};
 
             // 유효성 검사
-            if (typeof p_name !== "string") {
-                throw new Error("Only [p_name] type 'string' can be added");
+            if (typeof p_name !== 'string') {
+                throw new Error('Only [p_name] type "string" can be added');
             }
 
             if (typeof p_obj === 'object') {
@@ -5740,8 +5744,8 @@ if (typeof Array.isArray === "undefined") {
         //     var property = {};
 
         //     // 유효성 검사
-        //     if (typeof p_name !== "string") {
-        //         throw new Error("Only [p_name] type 'string' can be added");
+        //     if (typeof p_name !== 'string') {
+        //         throw new Error('Only [p_name] type "string" can be added');
         //     }
 
         //     item = this._baseEntity.items.addValue(p_name, p_value);
@@ -5764,18 +5768,18 @@ if (typeof Array.isArray === "undefined") {
 
             // 1.초기화
             if (Array.isArray(p_prop)) prop = prop.concat(p_prop);      // Array의 경우
-            else if (typeof p_prop === "string") prop.push(p_prop);       // String의 경우
+            else if (typeof p_prop === 'string') prop.push(p_prop);       // String의 경우
             else prop = this.prop.properties;                             // 없을 경우 (전체 가져옴)
 
             // 2.유효성 검사
-            if (typeof p_prop !== "undefined" && (!Array.isArray(p_prop) || typeof p_prop === "string")) {
-                throw new Error("Only [p_entities] type 'Array | string' can be added");
+            if (typeof p_prop !== 'undefined' && (!Array.isArray(p_prop) || typeof p_prop === 'string')) {
+                throw new Error('Only [p_entities] type "Array | string" can be added');
             }
-            if (typeof p_entity !== "undefined" && typeof p_entity !== "string") {
-                throw new Error("Only [p_entity] type 'string' can be added");
+            if (typeof p_entity !== 'undefined' && typeof p_entity !== 'string') {
+                throw new Error('Only [p_entity] type "string" can be added');
             }
-            if (typeof p_entity !== "undefined" && typeof this[p_entity] === "undefined") {
-                throw new Error(" BindModel에 ["+ p_entity +"]의 Entity가 없습니다. ");
+            if (typeof p_entity !== 'undefined' && typeof this[p_entity] === 'undefined') {
+                throw new Error(' BindModel에 ['+ p_entity +']의 Entity가 없습니다. ');
             }
 
             entity = this[p_entity] || this._baseEntity;
@@ -5783,11 +5787,11 @@ if (typeof Array.isArray === "undefined") {
             // 3.속성정보 등록
             for(var i = 0; prop.length > i; i++) {
                 propName = prop[i];
-                if (typeof propName === "string" && typeof this.prop[propName] !== "undefined"
-                    && propName.indexOf("__") < 0 ) {  // __이름으로 제외 조건 추가
-                    if(["number", "string", "boolean"].indexOf(typeof this.prop[propName]) > -1) {
+                if (typeof propName === 'string' && typeof this.prop[propName] !== 'undefined'
+                    && propName.indexOf('__') < 0 ) {  // __이름으로 제외 조건 추가
+                    if(['number', 'string', 'boolean'].indexOf(typeof this.prop[propName]) > -1) {
                         entity.items.addValue(propName, this.prop[propName]);
-                    } else if (this.prop[propName]  !== null && typeof this.prop[propName] === "object"){
+                    } else if (this.prop[propName]  !== null && typeof this.prop[propName] === 'object'){
                         entity.items.add(new this.itemType(propName, entity, this.prop[propName]))
                     }
                 }
@@ -5811,14 +5815,14 @@ if (typeof Array.isArray === "undefined") {
             
 
             // 1.유효성 검사
-            if (!(p_mapping instanceof PropertyCollection || typeof p_mapping === "object")) {
-                throw new Error("Only [p_mapping] type 'PropertyCollection | object' can be added");
+            if (!(p_mapping instanceof PropertyCollection || typeof p_mapping === 'object')) {
+                throw new Error('Only [p_mapping] type "PropertyCollection | object" can be added');
             }
-            if (typeof p_entity !== "undefined" && typeof p_entity !== "string") {
-                throw new Error("Only [p_entity] type 'string' can be added");
+            if (typeof p_entity !== 'undefined' && typeof p_entity !== 'string') {
+                throw new Error('Only [p_entity] type "string" can be added');
             }
-            if (typeof p_entity !== "undefined" && typeof this[p_entity] === "undefined") {
-                throw new Error(" BindModel에 ["+ p_entity +"]의 Entity가 없습니다. ");
+            if (typeof p_entity !== 'undefined' && typeof this[p_entity] === 'undefined') {
+                throw new Error(' BindModel에 ['+ p_entity +']의 Entity가 없습니다. ');
             }
 
             entity = this[p_entity] || this._baseEntity;
@@ -5826,10 +5830,10 @@ if (typeof Array.isArray === "undefined") {
             // 2. 임시 매핑 컬렉션에 등록
             if (p_mapping instanceof PropertyCollection) {
                 mappingCollection = p_mapping;
-            } else if (typeof p_mapping === "object") {
+            } else if (typeof p_mapping === 'object') {
                 mappingCollection = new PropertyCollection();
                 for(var prop in p_mapping) {
-                    if (p_mapping.hasOwnProperty(prop) && typeof p_mapping[prop] !== "undefined") {
+                    if (p_mapping.hasOwnProperty(prop) && typeof p_mapping[prop] !== 'undefined') {
                         mappingCollection.add(prop, p_mapping[prop]);
                     }
                 }
@@ -5839,16 +5843,16 @@ if (typeof Array.isArray === "undefined") {
             for(var i = 0; mappingCollection.count > i; i++) {
                 propName = mappingCollection.propertyOf(i);
                 item = entity.items[propName];
-                if (typeof item !== "undefined") {
+                if (typeof item !== 'undefined') {
                     for (var prop in mappingCollection[i]) {    // command 조회
-                        if (prop === "Array") {          // 'Array' 전체 등록 속성 추가
+                        if (prop === 'Array') {          // 'Array' 전체 등록 속성 추가
                             this.add(item, [], mappingCollection[i][prop]);
                         } else if (mappingCollection[i].hasOwnProperty(prop)) {
                             this.add(item, prop, mappingCollection[i][prop]);
                         }
                     }
                 } else {
-                    console.warn("entity에 지정된 [%s] BindCommand 가 없습니다. ");
+                    console.warn('entity에 지정된 [%s] BindCommand 가 없습니다. ');
                 }
             }
         };
@@ -5862,7 +5866,7 @@ if (typeof Array.isArray === "undefined") {
          */
         BindModel.prototype.addCommand  = function(p_name, p_option, p_entities) {
 
-            throw new Error("[ execute() ] Abstract method definition, fail...");
+            throw new Error('[ execute() ] Abstract method definition, fail...');
         };
 
         /**
@@ -5879,46 +5883,46 @@ if (typeof Array.isArray === "undefined") {
             p_isLoadProp = p_isLoadProp || true;       // 기본값
 
             // 유효성 검사
-            if (typeof p_service !== 'object') throw new Error("Only [p_service] type 'object' can be added");
+            if (typeof p_service !== 'object') throw new Error('Only [p_service] type "object" can be added');
 
             // command 등록
-            if (typeof p_service["command"] !== "undefined" && p_service["prop"] !== null) {
-                propObject = p_service["command"];
+            if (typeof p_service['command'] !== 'undefined' && p_service['prop'] !== null) {
+                propObject = p_service['command'];
                 for(var prop in propObject) {
-                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
 
                         // 예약어 검사
                         if (this._symbol.indexOf(prop) > -1) {
-                            throw new Error(" [" + prop + "] is a Symbol word");   
+                            throw new Error(' [' + prop + '] is a Symbol word');   
                         }            
 
                         // 중복 검사
-                        if (typeof this[prop] !== "undefined") throw new Error("에러!! command 이름 중복 : " + prop);
+                        if (typeof this[prop] !== 'undefined') throw new Error('에러!! command 이름 중복 : ' + prop);
 
                         // command 등록 및 설정
                         command = this.addCommand(prop);
-                        if (typeof propObject[prop]["outputOption"] === "number") command.outputOption = propObject[prop]["outputOption"];
-                        if (typeof propObject[prop]["onExecute"] === "function")  command.onExecute = propObject[prop]["onExecute"];
-                        if (typeof propObject[prop]["onExecuted"] === "function") command.onExecuted = propObject[prop]["onExecuted"];
-                        if (typeof propObject[prop]["cbValid"] === "function")    command.cbValid = propObject[prop]["cbValid"];
-                        if (typeof propObject[prop]["cbBind"] === "function")     command.cbBind = propObject[prop]["cbBind"];
-                        if (typeof propObject[prop]["cbResult"] === "function")   command.cbResult = propObject[prop]["cbResult"];
-                        if (typeof propObject[prop]["cbOutput"] === "function")   command.cbOutput = propObject[prop]["cbOutput"];
-                        if (typeof propObject[prop]["cbEnd"] === "function")      command.cbEnd = propObject[prop]["cbEnd"];
+                        if (typeof propObject[prop]['outputOption'] === 'number') command.outputOption = propObject[prop]['outputOption'];
+                        if (typeof propObject[prop]['onExecute'] === 'function')  command.onExecute = propObject[prop]['onExecute'];
+                        if (typeof propObject[prop]['onExecuted'] === 'function') command.onExecuted = propObject[prop]['onExecuted'];
+                        if (typeof propObject[prop]['cbValid'] === 'function')    command.cbValid = propObject[prop]['cbValid'];
+                        if (typeof propObject[prop]['cbBind'] === 'function')     command.cbBind = propObject[prop]['cbBind'];
+                        if (typeof propObject[prop]['cbResult'] === 'function')   command.cbResult = propObject[prop]['cbResult'];
+                        if (typeof propObject[prop]['cbOutput'] === 'function')   command.cbOutput = propObject[prop]['cbOutput'];
+                        if (typeof propObject[prop]['cbEnd'] === 'function')      command.cbEnd = propObject[prop]['cbEnd'];
                     }
                 }
             }
             
             // prop 등록
-            if (typeof p_service["prop"] !== "undefined" && p_service["prop"] !== null) {
-                propObject = p_service["prop"];
+            if (typeof p_service['prop'] !== 'undefined' && p_service['prop'] !== null) {
+                propObject = p_service['prop'];
                 for(var prop in propObject) {
-                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
                         //__prop.add(prop, propObject[prop]);
                         // get/sett 형식의 기능 추가        REVIEW:: 확인필요 get/set 의 필요성, 중복 및 혼선의 이슈
-                        if (typeof propObject[prop] === "object" 
-                            && (typeof propObject[prop].get === "function" || typeof propObject[prop].set === "function")) {
-                            this.prop.add(prop, "", propObject[prop]);    
+                        if (typeof propObject[prop] === 'object' 
+                            && (typeof propObject[prop].get === 'function' || typeof propObject[prop].set === 'function')) {
+                            this.prop.add(prop, '', propObject[prop]);    
                         } else {
                             this.prop.add(prop, propObject[prop]);
                         }
@@ -5927,80 +5931,80 @@ if (typeof Array.isArray === "undefined") {
             }
             
             // fn 등록
-            if (typeof p_service["fn"] !== "undefined" && p_service["fn"] !== null) {
-                propObject = p_service["fn"];
+            if (typeof p_service['fn'] !== 'undefined' && p_service['fn'] !== null) {
+                propObject = p_service['fn'];
                 for(var prop in propObject) {
-                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
                         this.fn.add(prop, propObject[prop]);
                     }
                 }
             }
 
-            if (typeof p_service["mapping"] !== "undefined" && p_service["mapping"] !== null) {
-                propObject = p_service["mapping"];
+            if (typeof p_service['mapping'] !== 'undefined' && p_service['mapping'] !== null) {
+                propObject = p_service['mapping'];
                 for(var prop in propObject) {
-                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== "undefined") {
+                    if (propObject.hasOwnProperty(prop) && typeof propObject[prop] !== 'undefined') {
                         this.mapping.add(prop, propObject[prop]);
                     }
                 }
             }
             
             // pre 메소드 등록
-            if (typeof p_service["preRegister"] === "function") {
-                // __preRegister = p_service["preRegister"];
-                this.preRegister = p_service["preRegister"];
+            if (typeof p_service['preRegister'] === 'function') {
+                // __preRegister = p_service['preRegister'];
+                this.preRegister = p_service['preRegister'];
             }
-            if (typeof p_service["preCheck"] === "function") {
-                // __preCheck = p_service["preCheck"];
-                this.preCheck = p_service["preCheck"];
+            if (typeof p_service['preCheck'] === 'function') {
+                // __preCheck = p_service['preCheck'];
+                this.preCheck = p_service['preCheck'];
             }
-            if (typeof p_service["preReady"] === "function") {
-                // __preReady = p_service["preReady"];
-                this.preReady = p_service["preReady"];
+            if (typeof p_service['preReady'] === 'function') {
+                // __preReady = p_service['preReady'];
+                this.preReady = p_service['preReady'];
             }
             
             // fail, error 등록
-            if (typeof p_service["cbFail"] === "function") {
-                this.cbFail = p_service["cbFail"];
+            if (typeof p_service['cbFail'] === 'function') {
+                this.cbFail = p_service['cbFail'];
             }
-            if (typeof p_service["cbError"] === "function") {
-                this.cbError = p_service["cbError"];
+            if (typeof p_service['cbError'] === 'function') {
+                this.cbError = p_service['cbError'];
             }
             
             // base 등록
-            if (typeof p_service["cbBaseValid"] === "function") {
-                this.cbBaseValid = p_service["cbBaseValid"];
+            if (typeof p_service['cbBaseValid'] === 'function') {
+                this.cbBaseValid = p_service['cbBaseValid'];
             }
-            if (typeof p_service["cbBaseBind"] === "function") {
-                this.cbBaseBind = p_service["cbBaseBind"];
+            if (typeof p_service['cbBaseBind'] === 'function') {
+                this.cbBaseBind = p_service['cbBaseBind'];
             }
-            if (typeof p_service["cbBaseResult"] === "function") {
-                this.cbBaseResult = p_service["cbBaseResult"];
+            if (typeof p_service['cbBaseResult'] === 'function') {
+                this.cbBaseResult = p_service['cbBaseResult'];
             }
-            if (typeof p_service["cbBaseOutput"] === "function") {
-                this.cbBaseOutput = p_service["cbBaseOutput"];
+            if (typeof p_service['cbBaseOutput'] === 'function') {
+                this.cbBaseOutput = p_service['cbBaseOutput'];
             }
-            if (typeof p_service["cbBaseEnd"] === "function") {
-                this.cbBaseEnd = p_service["cbBaseEnd"];
+            if (typeof p_service['cbBaseEnd'] === 'function') {
+                this.cbBaseEnd = p_service['cbBaseEnd'];
             }
 
             // execute 이벤트 등록
-            if (typeof p_service["onExecute"] === "function") {
-                this.onExecute = p_service["onExecute"];    // 복수 등록
+            if (typeof p_service['onExecute'] === 'function') {
+                this.onExecute = p_service['onExecute'];    // 복수 등록
             }
-            if (typeof p_service["onExecuted"] === "function") {
-                this.onExecuted = p_service["onExecuted"];  // 복수 등록
+            if (typeof p_service['onExecuted'] === 'function') {
+                this.onExecuted = p_service['onExecuted'];  // 복수 등록
             }
             
             // service  등록
-            if (typeof p_service["service"] === "object") {
-                this.service = p_service["service"];
+            if (typeof p_service['service'] === 'object') {
+                this.service = p_service['service'];
             }
 
             // 서비스에 onwer bindModel 설정
             p_service.bindModel = this;
 
-            // 속성(prop)을 아이템으로 로딩 ("__"시작이름 제외)
+            // 속성(prop)을 아이템으로 로딩 ('__'시작이름 제외)
             if (p_isLoadProp === true) {
                 this.loadProp();
             }
@@ -6013,19 +6017,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BindModel;
     } else {
         global._W.Meta.Bind.BindModel = BindModel;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.Bind.BindCommandAjax
  */
 (function(global) {
-
-    "use strict";
+    
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -6045,14 +6049,14 @@ if (typeof Array.isArray === "undefined") {
     var jquery;
     var ajax;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                    = require("util");
-        BindCommand             = require("./bind-command");
-        entityView              = require("./entity-view");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                    = require('util');
+        BindCommand             = require('./bind-command');
+        entityView              = require('./entity-view');
         EntityView              = entityView.EntityView;
         EntityViewCollection    = entityView.EntityViewCollection;
-        request                 = require("request");
-        sync_request            = require("sync-request");
+        request                 = require('request');
+        sync_request            = require('sync-request');
     } else {
         util                    = global._W.Common.Util;
         BindCommand             = global._W.Meta.Bind.BindCommand;
@@ -6064,10 +6068,10 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BindCommand === "undefined") throw new Error("[BindCommand] module load fail...");
-    if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
-    if (typeof EntityViewCollection === "undefined") throw new Error("[EntityViewCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof BindCommand === 'undefined') throw new Error('[BindCommand] module load fail...');
+    if (typeof EntityView === 'undefined') throw new Error('[EntityView] module load fail...');
+    if (typeof EntityViewCollection === 'undefined') throw new Error('[EntityViewCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -6095,18 +6099,18 @@ if (typeof Array.isArray === "undefined") {
                 complete: null      // 완료 콜백
             };
 
-            Object.defineProperty(this, "ajaxSetup", 
+            Object.defineProperty(this, 'ajaxSetup', 
             {
                 get: function() { return __ajaxSetup; },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "url", 
+            Object.defineProperty(this, 'url', 
             {
                 get: function() { return __ajaxSetup.url; },
                 set: function(newValue) { 
-                    if (!(typeof newValue === "string")) throw new Error("Only [url] type 'string' can be added");
+                    if (!(typeof newValue === 'string')) throw new Error('Only [url] type "string" can be added');
                     __ajaxSetup.url = newValue;
                 },
                 configurable: true,
@@ -6118,8 +6122,8 @@ if (typeof Array.isArray === "undefined") {
 
             // 예약어 등록
 
-            this._symbol = this._symbol.concat(["ajaxSetup", "url"]);
-            this._symbol = this._symbol.concat(["_execValid", "_execBind", "_execSuccess", "_execError", "_ajaxAdapter"]);
+            this._symbol = this._symbol.concat(['ajaxSetup', 'url']);
+            this._symbol = this._symbol.concat(['_execValid', '_execBind', '_execSuccess', '_execError', '_ajaxAdapter']);
         }
         util.inherits(BindCommandAjax, _super);
 
@@ -6131,12 +6135,12 @@ if (typeof Array.isArray === "undefined") {
             var bReturn = true;
 
             // 콜백 검사 (valid)
-            if (typeof this.cbValid  === "function") bReturn = this.cbValid(this.valid);
-            else if (typeof this._model.cbBaseValid  === "function") bReturn= this._model.cbBaseValid(this.valid);
+            if (typeof this.cbValid  === 'function') bReturn = this.cbValid(this.valid);
+            else if (typeof this._model.cbBaseValid  === 'function') bReturn= this._model.cbBaseValid(this.valid);
 
             // valid 검사 결과
             if (!bReturn) {
-                this._onExecuted(this);     // "실행 종료" 이벤트 발생
+                this._onExecuted(this);     // '실행 종료' 이벤트 발생
                 return false;
             }
 
@@ -6153,7 +6157,7 @@ if (typeof Array.isArray === "undefined") {
                 // if (value.length > 0 || this.valid.items[i].isNotNull) {
                     if (!(this.valid.items[i].valid(value, result, 2))) {
                         this._model.cbFail(result, this.valid.items[i]);
-                        this._onExecuted(this);     // "실행 종료" 이벤트 발생
+                        this._onExecuted(this);     // '실행 종료' 이벤트 발생
                         return false;
                     }
                 // }
@@ -6173,24 +6177,24 @@ if (typeof Array.isArray === "undefined") {
             var complete = this.ajaxSetup.complete || this._model.baseAjaxSetup.complete || null;
             
             ajaxSetup.url           = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type || "GET";
-            ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType || "json";
+            ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type || 'GET';
+            ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType || 'json';
             ajaxSetup.async         = this.ajaxSetup.async || this._model.baseAjaxSetup.async || true;
             ajaxSetup.crossDomain   = this.ajaxSetup.crossDomain || this._model.baseAjaxSetup.crossDomain || false;
-            ajaxSetup.complete      = (typeof complete === "function") ? complete.bind(this) : null;
+            ajaxSetup.complete      = (typeof complete === 'function') ? complete.bind(this) : null;
             ajaxSetup.success       = this._execSuccess.bind(this);
             ajaxSetup.error         = this._execError.bind(this);
 
             for(var i = 0; i < this.bind.items.count; i++) {
-                if(typeof ajaxSetup.data !== "object") ajaxSetup.data = {};
+                if(typeof ajaxSetup.data !== 'object') ajaxSetup.data = {};
                 item = this.bind.items[i];
                 value = item.value || item.default;     // 값이 없으면 기본값 설정
                 ajaxSetup.data[item.name] = value;
             }
             
             // 콜백 검사 (bind)
-            if (typeof this.cbBind === "function") this.cbBind(ajaxSetup, this);
-            else if (typeof this._model.cbBaseBind === "function") this._model.cbBaseBind(ajaxSetup, this);
+            if (typeof this.cbBind === 'function') this.cbBind(ajaxSetup, this);
+            else if (typeof this._model.cbBaseBind === 'function') this._model.cbBaseBind(ajaxSetup, this);
             
             this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
@@ -6206,11 +6210,11 @@ if (typeof Array.isArray === "undefined") {
             
             var loadOption = this.outputOption === 3 ? 2  : this.outputOption;
 
-            var result = typeof p_result === "object" ? p_result : JSON.parse(JSON.stringify(p_result));
+            var result = typeof p_result === 'object' ? p_result : JSON.parse(JSON.stringify(p_result));
 
             // 콜백 검사 (Result)
-            if (typeof this.cbResult === "function" ) result = this.cbResult(result);
-            else if (typeof this._model.cbBaseResult === "function" ) result = this._model.cbBaseResult(result);
+            if (typeof this.cbResult === 'function' ) result = this.cbResult(result);
+            else if (typeof this._model.cbBaseResult === 'function' ) result = this._model.cbBaseResult(result);
 
             // ouputOption = 1,2,3  : 출력모드의 경우
             if (this.outputOption > 0) {
@@ -6222,15 +6226,15 @@ if (typeof Array.isArray === "undefined") {
                 }
                 
                 // 결과 EntityView에 로딩
-                if(typeof result["entity"] !== "undefined" || typeof result["table"] !== "undefined" ) {
+                if(typeof result['entity'] !== 'undefined' || typeof result['table'] !== 'undefined' ) {
 
-                    this._output[0].load(result, loadOption); // this["output"]
+                    this._output[0].load(result, loadOption); // this['output']
                 
-                } else if (Array.isArray(result["entities"])) {
+                } else if (Array.isArray(result['entities'])) {
 
-                    for(var i = 0; result["entities"].length > i && typeof this._output[i] !== "undefined"; i++) {
+                    for(var i = 0; result['entities'].length > i && typeof this._output[i] !== 'undefined'; i++) {
                         this._output[i].clear();
-                        this._output[i].load(result["entities"][i], loadOption);
+                        this._output[i].load(result['entities'][i], loadOption);
                     }
                 }
                 
@@ -6243,15 +6247,15 @@ if (typeof Array.isArray === "undefined") {
                 }
 
                 // 콜백 검사 (Output)
-                if (typeof this.cbOutput === "function" ) this.cbOutput(result);
-                else if (typeof this._model.cbBaseOutput === "function" ) this._model.cbBaseOutput(result);
+                if (typeof this.cbOutput === 'function' ) this.cbOutput(result);
+                else if (typeof this._model.cbBaseOutput === 'function' ) this._model.cbBaseOutput(result);
             }
 
             // 콜백 검사 (End)
-            if (typeof this.cbEnd === "function" ) this.cbEnd(result, p_status, p_xhr);
-            else if (typeof this._model.cbBaseEnd === "function") this._model.cbBaseEnd(result, p_status, p_xhr);
+            if (typeof this.cbEnd === 'function' ) this.cbEnd(result, p_status, p_xhr);
+            else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd(result, p_status, p_xhr);
             
-            this._onExecuted(this, result);  // "실행 종료" 이벤트 발생
+            this._onExecuted(this, result);  // '실행 종료' 이벤트 발생
         };
 
         /**
@@ -6267,7 +6271,7 @@ if (typeof Array.isArray === "undefined") {
             var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;
 
             this._model.cbError(msg, p_status);
-            this._onExecuted(this);     // "실행 종료" 이벤트 발생
+            this._onExecuted(this);     // '실행 종료' 이벤트 발생
         };
 
         /**
@@ -6285,24 +6289,24 @@ if (typeof Array.isArray === "undefined") {
             function callback(error, response, body) {
 
                 var status = response ? response.statusCode : null;
-                var msg    = response ? response.statusMessage : "";
+                var msg    = response ? response.statusMessage : '';
 
                 // (xhr,status) : 완료콜백
-                if (p_ajaxSetup && typeof p_ajaxSetup.complete === "function") p_ajaxSetup.complete(response, status);
+                if (p_ajaxSetup && typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(response, status);
 
                 if (error || response.statusCode !== 200) {    // 실패시
-                    msg = error ? (msg + " " + error) : msg;
+                    msg = error ? (msg + ' ' + error) : msg;
                     // (xhr,status,error)
                     p_ajaxSetup.error(response, status, msg);
                 } else {                                        // 성공시
-                    if (p_ajaxSetup.dataType === "json") result = JSON.parse(body);
+                    if (p_ajaxSetup.dataType === 'json') result = JSON.parse(body);
                     result = result || body;
                     // (result,status,xhr)
                     p_ajaxSetup.success(result, error, response);
                 }                
             }
 
-            if (ajax && typeof ajax === "function") {
+            if (ajax && typeof ajax === 'function') {
 
                 // REVIEW:: Jquery.ajax 사용
                 ajax(p_ajaxSetup);
@@ -6313,12 +6317,12 @@ if (typeof Array.isArray === "undefined") {
 
                 if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리
 
-                if (p_ajaxSetup.type === "GET") {
-                    option.method = "POST";
+                if (p_ajaxSetup.type === 'GET') {
+                    option.method = 'POST';
                     option.qs = p_ajaxSetup.data;
                     request.get(option, callback);
-                } else if (p_ajaxSetup.type === "POST") {
-                    option.method = "POST";
+                } else if (p_ajaxSetup.type === 'POST') {
+                    option.method = 'POST';
                     option.form = p_ajaxSetup.data;
                     request.post(option, callback);
                 } else {
@@ -6334,18 +6338,18 @@ if (typeof Array.isArray === "undefined") {
          */
         BindCommandAjax.prototype.getTypes  = function() {
                     
-            var type = ["BindCommandAjax"];
+            var type = ['BindCommandAjax'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /**
          * 실행 
          */
         BindCommandAjax.prototype.execute = function() {
-            if (this._model.isLog) console.log("run : BindCommandAjax.execute()");
+            if (this._model.isLog) console.log('call : BindCommandAjax.execute()');
 
-            this._onExecute(this);  // "실행 시작" 이벤트 발생
+            this._onExecute(this);  // '실행 시작' 이벤트 발생
             if (this._execValid()) this._execBind();
         };
         
@@ -6357,19 +6361,19 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BindCommandAjax;
     } else {
         global._W.Meta.Bind.BindCommandAjax = BindCommandAjax;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 /**
  * namespace _W.Meta.Bind.BindModelAjax
  */ 
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -6387,14 +6391,14 @@ if (typeof Array.isArray === "undefined") {
     var BindCommandAjax;
     var EntityView;
 
-    if (typeof module === "object" && typeof module.exports === "object") {    
-        util                    = require("./utils");
-        BindModel               = require("./bind-model");
-        PropertyCollection      = require("./collection-property");
-        IBindModel              = require("./i-bind-model");        
-        ItemDOM                 = require("./entity-item-dom");
-        BindCommandAjax         = require("./bind-command-ajax");
-        EntityView              = require("./entity-view").EntityView;
+    if (typeof module === 'object' && typeof module.exports === 'object') {    
+        util                    = require('./utils');
+        BindModel               = require('./bind-model');
+        PropertyCollection      = require('./collection-property');
+        IBindModel              = require('./i-bind-model');        
+        ItemDOM                 = require('./entity-item-dom');
+        BindCommandAjax         = require('./bind-command-ajax');
+        EntityView              = require('./entity-view').EntityView;
     } else {
         util                    = global._W.Common.Util;
         BindModel               = global._W.Meta.Bind.BindModel;
@@ -6407,13 +6411,13 @@ if (typeof Array.isArray === "undefined") {
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
-    if (typeof ItemDOM === "undefined") throw new Error("[ItemDOM] module load fail...");
-    if (typeof BindCommandAjax === "undefined") throw new Error("[BindCommandAjax] module load fail...");
-    if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof BindModel === 'undefined') throw new Error('[BindModel] module load fail...');
+    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
+    if (typeof IBindModel === 'undefined') throw new Error('[IBindModel] module load fail...');
+    if (typeof ItemDOM === 'undefined') throw new Error('[ItemDOM] module load fail...');
+    if (typeof BindCommandAjax === 'undefined') throw new Error('[BindCommandAjax] module load fail...');
+    if (typeof EntityView === 'undefined') throw new Error('[EntityView] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -6466,7 +6470,7 @@ if (typeof Array.isArray === "undefined") {
          *  + 2222
          * 
          * ```javascript
-         * var s = "JavaScript syntax highlighting";
+         * var s = 'JavaScript syntax highlighting';
          * alert(s);
          * ``
          * @todo 할것 목록
@@ -6477,8 +6481,8 @@ if (typeof Array.isArray === "undefined") {
             _super.call(this);
             
             var __baseAjaxSetup = {
-                url: "",
-                type: "GET"
+                url: '',
+                type: 'GET'
             };
             
             this._baseEntity                = this.addEntity('first');   // Entity 추가 및 baseEntity 설정
@@ -6486,18 +6490,18 @@ if (typeof Array.isArray === "undefined") {
             this._baseEntity.items.itemType = this.itemType;            // base 엔티티 타입 변경
             this.items                      = this._baseEntity.items;   // 참조 추가
 
-            Object.defineProperty(this, "baseAjaxSetup", 
+            Object.defineProperty(this, 'baseAjaxSetup', 
             {
                 get: function() { return __baseAjaxSetup; },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "baseUrl", 
+            Object.defineProperty(this, 'baseUrl', 
             {
                 get: function() { return __baseAjaxSetup.url; },
                 set: function(newValue) { 
-                    if (!(typeof newValue === "string")) throw new Error("Only [baseUrl] type 'string' can be added");
+                    if (!(typeof newValue === 'string')) throw new Error('Only [baseUrl] type "string" can be added');
                     __baseAjaxSetup.url = newValue;
                 },
                 configurable: true,
@@ -6509,17 +6513,17 @@ if (typeof Array.isArray === "undefined") {
                 // 서비스 설정
                 this.setService(p_service);
                 // 속성 설정
-                if (typeof p_service["baseUrl"] === "string") {
-                    this.baseUrl = p_service["baseUrl"];
+                if (typeof p_service['baseUrl'] === 'string') {
+                    this.baseUrl = p_service['baseUrl'];
                 }
-                if (typeof p_service["baseAjaxSetup"] === "object") {
-                    this.baseAjaxSetup = p_service["baseAjaxSetup"];
+                if (typeof p_service['baseAjaxSetup'] === 'object') {
+                    this.baseAjaxSetup = p_service['baseAjaxSetup'];
                 }
             }
 
             // 예약어 등록
-            this._symbol = this._symbol.concat(["items", "baseAjaxSetup", "baseUrl"]);
-            this._symbol = this._symbol.concat(["getTypes", "checkSelector", "setService"]);
+            this._symbol = this._symbol.concat(['items', 'baseAjaxSetup', 'baseUrl']);
+            this._symbol = this._symbol.concat(['getTypes', 'checkSelector', 'setService']);
         }
         util.inherits(BindModelAjax, _super);
     
@@ -6529,9 +6533,9 @@ if (typeof Array.isArray === "undefined") {
          */
         BindModelAjax.prototype.getTypes  = function() {
                     
-            var type = ["BindModelAjax"];
+            var type = ['BindModelAjax'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /**
@@ -6543,14 +6547,14 @@ if (typeof Array.isArray === "undefined") {
             var collection = p_collection || this.prop;
             var failSelector = null;
             var selectors = [];
-            var selector = "";
+            var selector = '';
 
             // 유효성 검사
-            if (!(collection instanceof PropertyCollection)) throw new Error("Only [p_collection] type 'PropertyCollection' can be added");
+            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added');
 
             // 검사
             // for (var i = 0; collection.count > i; i++) {
-            //     if (typeof collection[i].selector !== "undefined") {
+            //     if (typeof collection[i].selector !== 'undefined') {
             //         selectors = [];
             //         if (Array.isArray(collection[i].selector)) 
             //             selectors = collection[i].selector;
@@ -6558,25 +6562,25 @@ if (typeof Array.isArray === "undefined") {
             //             selectors.push(collection[i].selector)
                     
             //         for (var ii = 0; ii < selectors.length; ii++) {
-            //             selector  = typeof selectors[ii] === "function" ? selectors[ii].call(this) : selectors[ii];
+            //             selector  = typeof selectors[ii] === 'function' ? selectors[ii].call(this) : selectors[ii];
 
-            //             if (typeof selector === "string" && selector.length > 0) failSelector = util.validSelector(selector);
+            //             if (typeof selector === 'string' && selector.length > 0) failSelector = util.validSelector(selector);
                         
             //             if (failSelector !== null) {
-            //                 console.warn("selector 검사 실패 : %s ", failSelector);
+            //                 console.warn('selector 검사 실패 : %s ', failSelector);
             //                 return false;
             //             }
             //         }
             //     }
             // }            
             for (var i = 0; collection.count > i; i++) {
-                if (typeof collection[i].selector !== "undefined") {
+                if (typeof collection[i].selector !== 'undefined') {
                         selector = collection[i].selector.key;
 
-                        if (typeof selector === "string" && selector.length > 0) failSelector = util.validSelector(selector, true);
+                        if (typeof selector === 'string' && selector.length > 0) failSelector = util.validSelector(selector, true);
                         
                         if (failSelector !== null) {
-                            console.warn("selector 검사 실패 : %s ", failSelector);
+                            console.warn('selector 검사 실패 : %s ', failSelector);
                             return false;
                         }
                 }
@@ -6609,14 +6613,14 @@ if (typeof Array.isArray === "undefined") {
             var selector;
             var selectors = [];
             var cmds = [];
-            var cmdName = "";
+            var cmdName = '';
             var bindCommand = null;
             var items = [];
             var item;
 
             // 초기화
             if (Array.isArray(p_cmdNames)) cmds = p_cmdNames;
-            else if (typeof p_cmdNames === "string") cmds.push(p_cmdNames);
+            else if (typeof p_cmdNames === 'string') cmds.push(p_cmdNames);
             
             
             // command의 valid, bind, output item 검색하여 중복 제거후 삽입
@@ -6625,13 +6629,13 @@ if (typeof Array.isArray === "undefined") {
                 cmdName = cmds[i];              // cmd 이름 얻기
                 bindCommand = this[cmdName];    // 대상 bindCommand 설정
 
-                if (typeof bindCommand === "undefined") {
-                    console.warn("[%s] bindCommand가 없습니다.", cmdName);
+                if (typeof bindCommand === 'undefined') {
+                    console.warn('[%s] bindCommand가 없습니다.', cmdName);
                 } else {
                     
                     for (var prop in bindCommand) {
                         if (bindCommand[prop] instanceof EntityView && 
-                                prop.substr(0, 1) !== "_" &&                        // 이름 제외 조건
+                                prop.substr(0, 1) !== '_' &&                        // 이름 제외 조건
                                 (['valid', 'bind', 'etc'].indexOf(prop) > -1 ||     // 기본 Entity
                                 1 < bindCommand.outputOption )) {                   // 확장 Entity(output)은 옵션 검사
                             
@@ -6685,7 +6689,7 @@ if (typeof Array.isArray === "undefined") {
                     selector = collection[i].selector;  // 전체 포함
                 }
                 
-                if (selector !== null && typeof selector === "object" && typeof selector.key === "string" && selector.key.length > 0) {
+                if (selector !== null && typeof selector === 'object' && typeof selector.key === 'string' && selector.key.length > 0) {
                         obj = { 
                             item: collection[i].name, 
                             key: collection[i].selector.key, 
@@ -6706,9 +6710,9 @@ if (typeof Array.isArray === "undefined") {
             if (p_isLog === true) {
                 for (var i = 0; i < selectors.length > 0; i++ ) {
                     if (selectors[i].check === true) {
-                        console.log("item: %s, key: %s, type: %s ", selectors[i].item, selectors[i].key, selectors[i].type);
+                        console.log('item: %s, key: %s, type: %s ', selectors[i].item, selectors[i].key, selectors[i].type);
                     } else {
-                        console.warn("item: %s, key: %s, type: %s [Fail]", selectors[i].item, selectors[i].key, selectors[i].type);
+                        console.warn('item: %s, key: %s, type: %s [Fail]', selectors[i].item, selectors[i].key, selectors[i].type);
                     }
                 }
             }
@@ -6725,17 +6729,17 @@ if (typeof Array.isArray === "undefined") {
         BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_entities) {
 
             // 유효성 검사
-            if (typeof p_name !== "string") {
-                throw new Error("Only [p_name] type 'string' can be added");
+            if (typeof p_name !== 'string') {
+                throw new Error('Only [p_name] type "string" can be added');
             }
 
             // 예약어 검사
             if (this._symbol.indexOf(p_name) > -1) {
-                throw new Error(" [" + p_name + "] is a Symbol word");   
+                throw new Error(' [' + p_name + '] is a Symbol word');   
             }            
             
             // 중복 검사
-            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
+            if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
 
             // 생성
             this[p_name] = new BindCommandAjax(this, p_option, p_entities);
@@ -6749,11 +6753,11 @@ if (typeof Array.isArray === "undefined") {
     
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BindModelAjax;
     } else {
         global._W.Meta.Bind.BindModelAjax = BindModelAjax;
         global.BindModelAjax = BindModelAjax;        // 힌트
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
