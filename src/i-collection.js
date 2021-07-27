@@ -3,7 +3,7 @@
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -15,9 +15,9 @@
     var IPartControl;
     var ILookupControl;
     
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        IPartControl        = require("./i-control-part");
-        ILookupControl      = require("./i-control-lookup");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        IPartControl        = require('./i-control-part');
+        ILookupControl      = require('./i-control-lookup');
     } else {
         IPartControl        = global._W.Interface.IPartControl;
         ILookupControl      = global._W.Interface.ILookupControl;
@@ -60,7 +60,7 @@
          * @abstract
          */
         ICollection.prototype.add  = function() {
-            throw new Error("[ add() ] Abstract method definition, fail...");
+            throw new Error('[ add() ] Abstract method definition, fail...');
         };
 
         /**
@@ -68,7 +68,7 @@
          * @abstract
          */
         ICollection.prototype.remove  = function() {
-            throw new Error("[ remove() ] Abstract method definition, fail...");
+            throw new Error('[ remove() ] Abstract method definition, fail...');
         };
 
         /**
@@ -76,7 +76,7 @@
          * @abstract
          */
         ICollection.prototype.removeAt  = function() {
-            throw new Error("[ removeAt() ] Abstract method definition, fail...");
+            throw new Error('[ removeAt() ] Abstract method definition, fail...');
         };
 
         /**
@@ -84,7 +84,7 @@
          * @abstract
          */
         ICollection.prototype.clear  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
+            throw new Error('[ clear() ] Abstract method definition, fail...');
         };
 
         /**
@@ -92,7 +92,7 @@
          * @abstract
          */
         ICollection.prototype.contains  = function() {
-            throw new Error("[ contains() ] Abstract method definition, fail...");
+            throw new Error('[ contains() ] Abstract method definition, fail...');
         };
 
         /**
@@ -100,7 +100,7 @@
          * @abstract
          */
         ICollection.prototype.indexOf  = function() {
-            throw new Error("[ indexOf() ] Abstract method definition, fail...");
+            throw new Error('[ indexOf() ] Abstract method definition, fail...');
         };
     
         return ICollection;
@@ -108,10 +108,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = ICollection;
     } else {
         global._W.Interface.ICollection = ICollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

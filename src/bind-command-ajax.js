@@ -2,8 +2,8 @@
  * namespace _W.Meta.Bind.BindCommandAjax
  */
 (function(global) {
-
-    "use strict";
+    
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -23,14 +23,14 @@
     var jquery;
     var ajax;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                    = require("util");
-        BindCommand             = require("./bind-command");
-        entityView              = require("./entity-view");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                    = require('util');
+        BindCommand             = require('./bind-command');
+        entityView              = require('./entity-view');
         EntityView              = entityView.EntityView;
         EntityViewCollection    = entityView.EntityViewCollection;
-        request                 = require("request");
-        sync_request            = require("sync-request");
+        request                 = require('request');
+        sync_request            = require('sync-request');
     } else {
         util                    = global._W.Common.Util;
         BindCommand             = global._W.Meta.Bind.BindCommand;
@@ -42,10 +42,10 @@
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BindCommand === "undefined") throw new Error("[BindCommand] module load fail...");
-    if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
-    if (typeof EntityViewCollection === "undefined") throw new Error("[EntityViewCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof BindCommand === 'undefined') throw new Error('[BindCommand] module load fail...');
+    if (typeof EntityView === 'undefined') throw new Error('[EntityView] module load fail...');
+    if (typeof EntityViewCollection === 'undefined') throw new Error('[EntityViewCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -73,18 +73,18 @@
                 complete: null      // 완료 콜백
             };
 
-            Object.defineProperty(this, "ajaxSetup", 
+            Object.defineProperty(this, 'ajaxSetup', 
             {
                 get: function() { return __ajaxSetup; },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "url", 
+            Object.defineProperty(this, 'url', 
             {
                 get: function() { return __ajaxSetup.url; },
                 set: function(newValue) { 
-                    if (!(typeof newValue === "string")) throw new Error("Only [url] type 'string' can be added");
+                    if (!(typeof newValue === 'string')) throw new Error('Only [url] type "string" can be added');
                     __ajaxSetup.url = newValue;
                 },
                 configurable: true,
@@ -96,8 +96,8 @@
 
             // 예약어 등록
 
-            this._symbol = this._symbol.concat(["ajaxSetup", "url"]);
-            this._symbol = this._symbol.concat(["_execValid", "_execBind", "_execSuccess", "_execError", "_ajaxAdapter"]);
+            this._symbol = this._symbol.concat(['ajaxSetup', 'url']);
+            this._symbol = this._symbol.concat(['_execValid', '_execBind', '_execSuccess', '_execError', '_ajaxAdapter']);
         }
         util.inherits(BindCommandAjax, _super);
 
@@ -109,12 +109,12 @@
             var bReturn = true;
 
             // 콜백 검사 (valid)
-            if (typeof this.cbValid  === "function") bReturn = this.cbValid(this.valid);
-            else if (typeof this._model.cbBaseValid  === "function") bReturn= this._model.cbBaseValid(this.valid);
+            if (typeof this.cbValid  === 'function') bReturn = this.cbValid(this.valid);
+            else if (typeof this._model.cbBaseValid  === 'function') bReturn= this._model.cbBaseValid(this.valid);
 
             // valid 검사 결과
             if (!bReturn) {
-                this._onExecuted(this);     // "실행 종료" 이벤트 발생
+                this._onExecuted(this);     // '실행 종료' 이벤트 발생
                 return false;
             }
 
@@ -131,7 +131,7 @@
                 // if (value.length > 0 || this.valid.items[i].isNotNull) {
                     if (!(this.valid.items[i].valid(value, result, 2))) {
                         this._model.cbFail(result, this.valid.items[i]);
-                        this._onExecuted(this);     // "실행 종료" 이벤트 발생
+                        this._onExecuted(this);     // '실행 종료' 이벤트 발생
                         return false;
                     }
                 // }
@@ -151,24 +151,24 @@
             var complete = this.ajaxSetup.complete || this._model.baseAjaxSetup.complete || null;
             
             ajaxSetup.url           = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
-            ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type || "GET";
-            ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType || "json";
+            ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type || 'GET';
+            ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType || 'json';
             ajaxSetup.async         = this.ajaxSetup.async || this._model.baseAjaxSetup.async || true;
             ajaxSetup.crossDomain   = this.ajaxSetup.crossDomain || this._model.baseAjaxSetup.crossDomain || false;
-            ajaxSetup.complete      = (typeof complete === "function") ? complete.bind(this) : null;
+            ajaxSetup.complete      = (typeof complete === 'function') ? complete.bind(this) : null;
             ajaxSetup.success       = this._execSuccess.bind(this);
             ajaxSetup.error         = this._execError.bind(this);
 
             for(var i = 0; i < this.bind.items.count; i++) {
-                if(typeof ajaxSetup.data !== "object") ajaxSetup.data = {};
+                if(typeof ajaxSetup.data !== 'object') ajaxSetup.data = {};
                 item = this.bind.items[i];
                 value = item.value || item.default;     // 값이 없으면 기본값 설정
                 ajaxSetup.data[item.name] = value;
             }
             
             // 콜백 검사 (bind)
-            if (typeof this.cbBind === "function") this.cbBind(ajaxSetup, this);
-            else if (typeof this._model.cbBaseBind === "function") this._model.cbBaseBind(ajaxSetup, this);
+            if (typeof this.cbBind === 'function') this.cbBind(ajaxSetup, this);
+            else if (typeof this._model.cbBaseBind === 'function') this._model.cbBaseBind(ajaxSetup, this);
             
             this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
@@ -184,11 +184,11 @@
             
             var loadOption = this.outputOption === 3 ? 2  : this.outputOption;
 
-            var result = typeof p_result === "object" ? p_result : JSON.parse(JSON.stringify(p_result));
+            var result = typeof p_result === 'object' ? p_result : JSON.parse(JSON.stringify(p_result));
 
             // 콜백 검사 (Result)
-            if (typeof this.cbResult === "function" ) result = this.cbResult(result);
-            else if (typeof this._model.cbBaseResult === "function" ) result = this._model.cbBaseResult(result);
+            if (typeof this.cbResult === 'function' ) result = this.cbResult(result);
+            else if (typeof this._model.cbBaseResult === 'function' ) result = this._model.cbBaseResult(result);
 
             // ouputOption = 1,2,3  : 출력모드의 경우
             if (this.outputOption > 0) {
@@ -200,15 +200,15 @@
                 }
                 
                 // 결과 EntityView에 로딩
-                if(typeof result["entity"] !== "undefined" || typeof result["table"] !== "undefined" ) {
+                if(typeof result['entity'] !== 'undefined' || typeof result['table'] !== 'undefined' ) {
 
-                    this._output[0].load(result, loadOption); // this["output"]
+                    this._output[0].load(result, loadOption); // this['output']
                 
-                } else if (Array.isArray(result["entities"])) {
+                } else if (Array.isArray(result['entities'])) {
 
-                    for(var i = 0; result["entities"].length > i && typeof this._output[i] !== "undefined"; i++) {
+                    for(var i = 0; result['entities'].length > i && typeof this._output[i] !== 'undefined'; i++) {
                         this._output[i].clear();
-                        this._output[i].load(result["entities"][i], loadOption);
+                        this._output[i].load(result['entities'][i], loadOption);
                     }
                 }
                 
@@ -221,15 +221,15 @@
                 }
 
                 // 콜백 검사 (Output)
-                if (typeof this.cbOutput === "function" ) this.cbOutput(result);
-                else if (typeof this._model.cbBaseOutput === "function" ) this._model.cbBaseOutput(result);
+                if (typeof this.cbOutput === 'function' ) this.cbOutput(result);
+                else if (typeof this._model.cbBaseOutput === 'function' ) this._model.cbBaseOutput(result);
             }
 
             // 콜백 검사 (End)
-            if (typeof this.cbEnd === "function" ) this.cbEnd(result, p_status, p_xhr);
-            else if (typeof this._model.cbBaseEnd === "function") this._model.cbBaseEnd(result, p_status, p_xhr);
+            if (typeof this.cbEnd === 'function' ) this.cbEnd(result, p_status, p_xhr);
+            else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd(result, p_status, p_xhr);
             
-            this._onExecuted(this, result);  // "실행 종료" 이벤트 발생
+            this._onExecuted(this, result);  // '실행 종료' 이벤트 발생
         };
 
         /**
@@ -245,7 +245,7 @@
             var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;
 
             this._model.cbError(msg, p_status);
-            this._onExecuted(this);     // "실행 종료" 이벤트 발생
+            this._onExecuted(this);     // '실행 종료' 이벤트 발생
         };
 
         /**
@@ -263,24 +263,24 @@
             function callback(error, response, body) {
 
                 var status = response ? response.statusCode : null;
-                var msg    = response ? response.statusMessage : "";
+                var msg    = response ? response.statusMessage : '';
 
                 // (xhr,status) : 완료콜백
-                if (p_ajaxSetup && typeof p_ajaxSetup.complete === "function") p_ajaxSetup.complete(response, status);
+                if (p_ajaxSetup && typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(response, status);
 
                 if (error || response.statusCode !== 200) {    // 실패시
-                    msg = error ? (msg + " " + error) : msg;
+                    msg = error ? (msg + ' ' + error) : msg;
                     // (xhr,status,error)
                     p_ajaxSetup.error(response, status, msg);
                 } else {                                        // 성공시
-                    if (p_ajaxSetup.dataType === "json") result = JSON.parse(body);
+                    if (p_ajaxSetup.dataType === 'json') result = JSON.parse(body);
                     result = result || body;
                     // (result,status,xhr)
                     p_ajaxSetup.success(result, error, response);
                 }                
             }
 
-            if (ajax && typeof ajax === "function") {
+            if (ajax && typeof ajax === 'function') {
 
                 // REVIEW:: Jquery.ajax 사용
                 ajax(p_ajaxSetup);
@@ -291,12 +291,12 @@
 
                 if (p_ajaxSetup.async === false) request = sync_request;    // 동기화 처리
 
-                if (p_ajaxSetup.type === "GET") {
-                    option.method = "POST";
+                if (p_ajaxSetup.type === 'GET') {
+                    option.method = 'POST';
                     option.qs = p_ajaxSetup.data;
                     request.get(option, callback);
-                } else if (p_ajaxSetup.type === "POST") {
-                    option.method = "POST";
+                } else if (p_ajaxSetup.type === 'POST') {
+                    option.method = 'POST';
                     option.form = p_ajaxSetup.data;
                     request.post(option, callback);
                 } else {
@@ -312,16 +312,18 @@
          */
         BindCommandAjax.prototype.getTypes  = function() {
                     
-            var type = ["BindCommandAjax"];
+            var type = ['BindCommandAjax'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /**
          * 실행 
          */
         BindCommandAjax.prototype.execute = function() {
-            this._onExecute(this);  // "실행 시작" 이벤트 발생
+            if (this._model.isLog) console.log('call : BindCommandAjax.execute()');
+
+            this._onExecute(this);  // '실행 시작' 이벤트 발생
             if (this._execValid()) this._execBind();
         };
         
@@ -333,10 +335,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BindCommandAjax;
     } else {
         global._W.Meta.Bind.BindCommandAjax = BindCommandAjax;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

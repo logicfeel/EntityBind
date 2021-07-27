@@ -1,11 +1,11 @@
 /**
  * namespace Array.isArray : 배열 유무 (폴리필 웹전용)
  */
-if (typeof Array.isArray === "undefined") {
+if (typeof Array.isArray === 'undefined') {
 
     (function(global) {
-
-        "use strict";
+        
+        'use strict';
 
         //==============================================================
         // 1. 모듈 네임스페이스 선언
@@ -19,10 +19,10 @@ if (typeof Array.isArray === "undefined") {
         //==============================================================
         // 4. 모듈 구현    
         var isArray = function(pValue) {
-            if (typeof Array.isArray === "function") {
+            if (typeof Array.isArray === 'function') {
                 return Array.isArray(pValue);
             } else {
-                return Object.prototype.toString.call(pValue) === "[object Array]";
+                return Object.prototype.toString.call(pValue) === '[object Array]';
             }
         };
 
@@ -30,5 +30,5 @@ if (typeof Array.isArray === "undefined") {
         // 5. 모듈 내보내기 (node | web)
         Arrary.isArray = isArray;
 
-    }(typeof module === "object" && typeof module.exports === "object" ? global : window));
+    }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 }

@@ -3,7 +3,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -22,14 +22,14 @@
     var Row;
     var ItemCollection;
     
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                    = require("./utils");
-        MetaElement             = require("./meta-element");
-        IGroupControl           = require("./i-control-group");
-        IAllControl             = require("./i-control-all");
-        RowCollection           = require("./entity-row").RowCollection;
-        Row                     = require("./entity-row").Row;
-        ItemCollection          = require("./entity-item").ItemCollection;
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                    = require('./utils');
+        MetaElement             = require('./meta-element');
+        IGroupControl           = require('./i-control-group');
+        IAllControl             = require('./i-control-all');
+        RowCollection           = require('./entity-row').RowCollection;
+        Row                     = require('./entity-row').Row;
+        ItemCollection          = require('./entity-item').ItemCollection;
     } else {
         util                    = global._W.Common.Util;
         MetaElement             = global._W.Meta.MetaElement;
@@ -42,13 +42,13 @@
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaElement === "undefined") throw new Error("[MetaElement] module load fail...");
-    if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
-    if (typeof IAllControl === "undefined") throw new Error("[IAllControl] module load fail...");
-    if (typeof RowCollection === "undefined") throw new Error("[RowCollection] module load fail...");
-    if (typeof Row === "undefined") throw new Error("[Row] module load fail...");
-    if (typeof ItemCollection === "undefined") throw new Error("[ItemCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaElement === 'undefined') throw new Error('[MetaElement] module load fail...');
+    if (typeof IGroupControl === 'undefined') throw new Error('[IGroupControl] module load fail...');
+    if (typeof IAllControl === 'undefined') throw new Error('[IAllControl] module load fail...');
+    if (typeof RowCollection === 'undefined') throw new Error('[RowCollection] module load fail...');
+    if (typeof Row === 'undefined') throw new Error('[Row] module load fail...');
+    if (typeof ItemCollection === 'undefined') throw new Error('[ItemCollection] module load fail...');
 
 
     //==============================================================
@@ -68,22 +68,22 @@
             var __items = null;     // 상속해서 생성해야함
             var __rows  = new RowCollection(this);
 
-            Object.defineProperty(this, "items", 
+            Object.defineProperty(this, 'items', 
             {
                 get: function() { return __items; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof ItemCollection)) throw new Error("Only [items] type 'ItemCollection' can be added");
+                    if (!(newValue instanceof ItemCollection)) throw new Error('Only [items] type "ItemCollection" can be added');
                     __items = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
             
-            Object.defineProperty(this, "rows", 
+            Object.defineProperty(this, 'rows', 
             {
                 get: function() { return __rows; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof RowCollection)) throw new Error("Only [rows] type 'RowCollection' can be added");
+                    if (!(newValue instanceof RowCollection)) throw new Error('Only [rows] type "RowCollection" can be added');
                     __rows = newValue;
                 },
                 configurable: true,
@@ -104,7 +104,7 @@
             
             if(!this.items.contains(this.items[p_name])) this.items.add(p_name);
             
-            if (typeof p_property === "object" ) {
+            if (typeof p_property === 'object' ) {
                 for(var prop in p_property) {
                     this.items[p_name][prop] = p_property[prop];
                 }
@@ -122,8 +122,8 @@
             for (var i = 0 ; i < this.rows.count; i++) {
                 for (var ii = 0; ii < p_target.items.count; ii++) {
                     itemName = p_target.items[ii].name;
-                    if (typeof this.rows[i][itemName] === "undefined") {
-                        this.rows[i].add(itemName, "");
+                    if (typeof this.rows[i][itemName] === 'undefined') {
+                        this.rows[i].add(itemName, '');
                     }
                 }
             }            
@@ -142,11 +142,11 @@
             var row;
             var itemName;
 
-            if (typeof p_object === "undefined") throw new Error("Only [p_object] type 'object' can be added");
+            if (typeof p_object === 'undefined') throw new Error('Only [p_object] type "object" can be added');
             
-            entity = p_object["entity"]  || p_object["table"] || undefined;
+            entity = p_object['entity']  || p_object['table'] || undefined;
             
-            if (typeof entity === "undefined") throw new Error("Only [p_object] type 'entity | table' can be added");
+            if (typeof entity === 'undefined') throw new Error('Only [p_object] type "entity | table" can be added');
             
 
             // 1.itmes, rows 배열로 구조 변경
@@ -171,7 +171,7 @@
                 if (entity.rows && entity.rows[0]) {
                     for (var prop in entity.rows[0]) {
                         if (entity.rows[0].hasOwnProperty(prop)) {
-                            this.__addItem(prop, "");
+                            this.__addItem(prop, '');
                         }
                     }
                 }
@@ -183,7 +183,7 @@
                     
                     row = this.newRow();
                     for (var prop in entity.rows[i]) {
-                        if (entity.rows[i].hasOwnProperty(prop) && typeof row[prop] !== "undefined") {
+                        if (entity.rows[i].hasOwnProperty(prop) && typeof row[prop] !== 'undefined') {
                             row[prop] = entity.rows[i][prop];
                         }
                     }
@@ -195,8 +195,8 @@
             for (var i = 0 ; i < this.rows.count; i++) {
                 for (var ii = 0; ii < this.items.count; ii++) {
                     itemName = this.items[ii].name;
-                    if (typeof this.rows[i][itemName] === "undefined") {
-                        this.rows[i].add(itemName, "");
+                    if (typeof this.rows[i][itemName] === 'undefined') {
+                        this.rows[i].add(itemName, '');
                     }
                 }
             }   
@@ -220,7 +220,7 @@
                 // Item 기준으로 아이템 가져오기
                 for(var i = 0; entity.items.count > i; i++) {
                     itemName = entity.items[i].name;
-                    if (typeof this.items[itemName] === "undefined") this.items.add(entity.items[i]);
+                    if (typeof this.items[itemName] === 'undefined') this.items.add(entity.items[i]);
                 }
             }
             
@@ -232,12 +232,12 @@
                 for (var ii = 0; ii < this.items.count; ii++) {
                     itemName = this.items[ii].name;
                     
-                    // row[itemName] = typeof entity.rows[i][itemName] !== "undefined" ? entity.rows[i][itemName] : "";
+                    // row[itemName] = typeof entity.rows[i][itemName] !== 'undefined' ? entity.rows[i][itemName] : '';
                     // 이해하기 쉽게 코드 변경
-                    if (typeof entity.rows[i][itemName] !== "undefined") {
+                    if (typeof entity.rows[i][itemName] !== 'undefined') {
                         row[itemName] = entity.rows[i][itemName];    
                     } else {
-                        row[itemName] = "";
+                        row[itemName] = '';
                     }
                 }
                 this.rows.add(row);
@@ -250,9 +250,9 @@
         /** @override **/
         Entity.prototype.getTypes = function() {
             
-            var type = ["Entity"];
+            var type = ['Entity'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /** @override */
@@ -273,7 +273,7 @@
          */
         Entity.prototype.setValue  = function(p_row) {
             
-            if (!(p_row instanceof Row)) throw new Error("Only [p_row] type 'Row' can be added");
+            if (!(p_row instanceof Row)) throw new Error('Only [p_row] type "Row" can be added');
 
             for(var i = 0; this.items.count > i; i++) {
                 this.items[i].value = p_row[i];
@@ -295,7 +295,7 @@
 
         /** 
          * filter = {
-         *  __except : ["name"...],        // 제외 아이템 (1방법)
+         *  __except : ['name'...],        // 제외 아이템 (1방법)
          *  아이템명: { __except: true }    // 아이템 제외 (2방법)
          *  아이템명: { order: 100 }        // 속성 오버라이딩
          * }
@@ -325,7 +325,7 @@
 
                 for (var i = 0; entity.items.count > i ; i++) {
                     i_name = entity.items[i].name;
-                    if (typeof row[i_name] !== "undefined" && typeof orgEntity.rows[rowIdx][i_name] !== "undefined") {
+                    if (typeof row[i_name] !== 'undefined' && typeof orgEntity.rows[rowIdx][i_name] !== 'undefined') {
                         row[i_name] = orgEntity.rows[rowIdx][i_name];
                     }
                 }
@@ -335,7 +335,7 @@
             // 1.제외 아이템 조회
             if (p_filter && p_filter[EXECEPT]) {
                 if (Array.isArray(p_filter[EXECEPT])) excepts = p_filter[EXECEPT];
-                else if (typeof p_filter[EXECEPT] === "string") excepts.push(p_filter[EXECEPT]);
+                else if (typeof p_filter[EXECEPT] === 'string') excepts.push(p_filter[EXECEPT]);
             } 
             for (var i = 0; this.items.count > i; i++) {
                 if (excepts.indexOf(this.items[i].name) < 0)  {
@@ -365,16 +365,16 @@
             }
             
             // 4.리턴 Entity 의 Row 구성 : 참조형
-            if (typeof p_index === "number") {
+            if (typeof p_index === 'number') {
                 for(var i = p_index; i < this.rows.count; i++) {
                     // entity.rows.add(this.rows[idx]);
                     entity.rows.add(__createRow(i, this));
-                    if (typeof p_end === "number" && i === p_end) break;
+                    if (typeof p_end === 'number' && i === p_end) break;
                 }
             } else if (Array.isArray(p_index)) {
                 for(var i = 0; i < p_index.length; i++) {
                     idx = p_index[i];
-                    if (typeof idx === "number" && typeof this.rows[idx] !== "undefined") {
+                    if (typeof idx === 'number' && typeof this.rows[idx] !== 'undefined') {
                         // entity.rows.add(this.rows[idx]);
                         entity.rows.add(__createRow(idx, this));
                     }
@@ -398,7 +398,7 @@
         };
 
         /**
-         * "구조를 구성하는게 주용도임"
+         * '구조를 구성하는게 주용도임'
          * 병합 : 컬렉션 순서에 따라 병한다.
          * Item과 Row가 있는 경우
          * - 1 items, rows 병합 (기존유지) *기본값
@@ -415,19 +415,19 @@
             var itemName;
 
             // 1.유효성 검사
-            if (!(p_target instanceof Entity)) throw new Error("Only [p_target] type 'Entity' can be added");
+            if (!(p_target instanceof Entity)) throw new Error('Only [p_target] type "Entity" can be added');
 
             // 2.병합 : Item 기준으로 아이템 가져오기
             for(var i = 0; p_target.items.count > i; i++) {
                 itemName = p_target.items[i].name;
                 
                 // 없으면 생성
-                if (typeof this.items[itemName] === "undefined") {
+                if (typeof this.items[itemName] === 'undefined') {
                     this.items.add(p_target.items[i]);
                 }
                 
                 // option = 2: 기존 item 덮어쓰기
-                if (p_option === 2 && typeof this.items[itemName] !== "undefined") {
+                if (p_option === 2 && typeof this.items[itemName] !== 'undefined') {
                     this.items[itemName] = p_target.items[itemName];
                 }
             }
@@ -436,13 +436,13 @@
             if (p_option !== 3) {
                 for(var i = 0; p_target.rows.count > i; i++) {
                     // this.rows 있는 경우
-                    if (typeof this.rows[i] !== "undefined") {  
+                    if (typeof this.rows[i] !== 'undefined') {  
                         row = this.rows[i];
                         for (var ii = 0; ii < p_target.items.count; ii++) {
                             itemName = p_target.items[ii].name;
-                            if (typeof this.rows[i][itemName] === "undefined") {    // 이름이 없는 경우
+                            if (typeof this.rows[i][itemName] === 'undefined') {    // 이름이 없는 경우
                                 row.add(itemName, p_target.rows[i][itemName]);
-                            } else if (p_option === 2 && typeof this.rows[i][itemName] !== "undefined") {   // 덮어쓰기
+                            } else if (p_option === 2 && typeof this.rows[i][itemName] !== 'undefined') {   // 덮어쓰기
                                 row[itemName] = p_target.rows[i][itemName];     
                             }
                         }
@@ -464,7 +464,7 @@
         };
         
         /**
-         * "데이터를 가져오는게 주용도임"
+         * '데이터를 가져오는게 주용도임'
          * 불러오기/가져오기 (!! 병합용도가 아님)
          * 기존에 row 가 존재하면 newRow 부터 가져오고, 기존item 은 공백이 들어감
          * @param {*} p_object Entity 는 item과 row 는 쌍으로 존재함, JSON 은 row만 존재할 수 있음
@@ -490,7 +490,7 @@
 
         /** @abstract */
         Entity.prototype.clone  = function() {
-            throw new Error("[ clone() ] Abstract method definition, fail...");
+            throw new Error('[ clone() ] Abstract method definition, fail...');
         };
 
         return Entity;
@@ -500,10 +500,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = Entity;
     } else {
         global._W.Meta.Entity.Entity = Entity;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

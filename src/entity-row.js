@@ -4,7 +4,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -19,11 +19,11 @@
     var PropertyCollection;
     var ArrayCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        MetaObject          = require("./meta-object");
-        PropertyCollection  = require("./collection-property");
-        ArrayCollection     = require("./collection-array");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        MetaObject          = require('./meta-object');
+        PropertyCollection  = require('./collection-property');
+        ArrayCollection     = require('./collection-array');
     } else {
         util                = global._W.Common.Util;
         MetaObject          = global._W.Meta.MetaObject;
@@ -33,10 +33,10 @@
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof ArrayCollection === "undefined") throw new Error("[ArrayCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
+    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
+    if (typeof ArrayCollection === 'undefined') throw new Error('[ArrayCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -53,7 +53,7 @@
             var itemName;
 
             // Entity 등록 & order(순서) 값 계산
-            if (p_entity && p_entity instanceof MetaObject && p_entity.instanceOf("Entity")) {
+            if (p_entity && p_entity instanceof MetaObject && p_entity.instanceOf('Entity')) {
                 __entity    = p_entity;
 
                 for (var i = 0; i < __entity.items.count; i++) {
@@ -63,7 +63,7 @@
             }
 
             /** @property {entity} */
-            Object.defineProperty(this, "entity", 
+            Object.defineProperty(this, 'entity', 
             {
                 get: function() { return __entity; },
                 configurable: true,
@@ -75,9 +75,9 @@
         /** @override **/
         Row.prototype.getTypes  = function() {
                     
-            var type = ["Row"];
+            var type = ['Row'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /**
@@ -88,7 +88,7 @@
           
             var clone = new Row(this.entity);
             
-            if (this.value) clone["value"] = this.value;
+            if (this.value) clone['value'] = this.value;
         };
         
         /**
@@ -136,12 +136,12 @@
 
             var i_value;
 
-            if (typeof p_row === "undefined") {      
+            if (typeof p_row === 'undefined') {      
                 i_value = new Row(this._onwer);
             } else if (p_row instanceof Row) {
                 i_value = p_row;
             } else {
-                throw new Error("Row | Row object [p_row].");
+                throw new Error('Row | Row object [p_row].');
             }
 
             return _super.prototype.add.call(this, i_value);
@@ -153,7 +153,7 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports.Row = Row;
         module.exports.RowCollection = RowCollection;
     } else {
@@ -161,4 +161,4 @@
         global._W.Meta.Entity.RowCollection = RowCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

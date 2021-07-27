@@ -3,7 +3,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 의존 모듈 선언
@@ -82,8 +82,8 @@
      */
     var createGUID = function() {
         function _p8(s) {  
-            var p = (Math.random().toString(16)+"000000000").substr(2,8);  
-            return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;  
+            var p = (Math.random().toString(16)+'000000000').substr(2,8);  
+            return s ? '-' + p.substr(0,4) + '-' + p.substr(4,4) : p ;  
         }
         return _p8() + _p8(true) + _p8(true) + _p8();
     };
@@ -100,10 +100,10 @@
         var selectors = [];
 
         // 입력형식에 따른 배열에 삽입
-        if (typeof p_obj === "string") selectors.push(p_obj);
-        else if (typeof p_obj === "array") {
+        if (typeof p_obj === 'string') selectors.push(p_obj);
+        else if (typeof p_obj === 'array') {
             selectors = p_obj;
-        } else if (typeof p_obj === "object") {
+        } else if (typeof p_obj === 'object') {
             for(var prop in p_obj) {
                 if (p_obj.hasOwnProperty(prop)) {
                     if (Array.isArray(p_obj[prop])) {
@@ -115,10 +115,10 @@
             }
         }
 
-        if (typeof document === "object" && typeof document.querySelector === "function") {     
+        if (typeof document === 'object' && typeof document.querySelector === 'function') {     
             // 유효성 검사
             for(var i = 0; selectors.length > i; i++) {
-                if (typeof selectors[i] !== "string") throw new Error("Only [selectors] type 'string' can be added");
+                if (typeof selectors[i] !== 'string') throw new Error('Only [selectors] type "string" can be added');
 
                 // if (document.querySelector(selectors[i]) === null) {
                 //     return selectors[i];
@@ -134,7 +134,7 @@
                 }
             }
         } else {
-            throw new Error("[document.querySelector] module load fail...");
+            throw new Error('[document.querySelector] module load fail...');
         }
 
         return null;
@@ -142,7 +142,7 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports.inherits = inherits;
         module.exports.getArrayLevel = getArrayLevel;
         module.exports.createGUID = createGUID;
@@ -153,4 +153,4 @@
         global._W.Common.Util.validSelector = validSelector;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

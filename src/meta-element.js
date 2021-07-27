@@ -3,7 +3,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -17,10 +17,10 @@
     var MetaObject;
     var IMarshal;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        MetaObject          = require("./meta-object");
-        IMarshal            = require("./i-marshal");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        MetaObject          = require('./meta-object');
+        IMarshal            = require('./i-marshal');
 
     } else {
         util                = global._W.Common.Util;
@@ -31,9 +31,9 @@
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
-    if (typeof IMarshal === "undefined") throw new Error("[IMarshal] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
+    if (typeof IMarshal === 'undefined') throw new Error('[IMarshal] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -49,7 +49,7 @@
         function MetaElement(p_name) {
             _super.call(this);
             
-            p_name = p_name || "";
+            p_name = p_name || '';
             
             /**
              * GUID 값 
@@ -72,9 +72,9 @@
         /** @override **/
         MetaElement.prototype.getTypes = function() {
             
-            var type = ["MetaElement"];
+            var type = ['MetaElement'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /**
@@ -110,7 +110,7 @@
             for (var prop in this) {
                 if (this[prop] instanceof MetaElement) {
                     obj[prop] = this[prop].getObject(p_context);
-                } else if (typeof this[prop] !== "function" && prop.substr(0, 1) !== "_") {
+                } else if (typeof this[prop] !== 'function' && prop.substr(0, 1) !== '_') {
                     obj[prop] = this[prop];
                 }
             }
@@ -124,10 +124,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = MetaElement;
     } else {
         global._W.Meta.MetaElement = MetaElement;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

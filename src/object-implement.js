@@ -3,12 +3,12 @@
  * namespace Object.prototype.isImplementOf [protected] 구현 여부
  * namespace Object.prototype._implements 인터페이스(클래스 포함) 등록 *다중상속*
  */
-if ((typeof Object.prototype._implements === "undefined") ||
-    (typeof Object.prototype.isImplementOf === "undefined")) {
+if ((typeof Object.prototype._implements === 'undefined') ||
+    (typeof Object.prototype.isImplementOf === 'undefined')) {
 
     (function(global) {
 
-        "use strict";
+        'use strict';
 
         //==============================================================
         // 1. 모듈 네임스페이스 선언
@@ -48,23 +48,23 @@ if ((typeof Object.prototype._implements === "undefined") ||
             var obj;    
         
             for(var i = 0; i < arguments.length; i++) {
-                if (typeof arguments[i] === "function") {
+                if (typeof arguments[i] === 'function') {
                     // 중복 제거
                     if (this._interface.indexOf(arguments[i]) < 0) {
                         this._interface.push(arguments[i]);
                         this._interface[arguments[i].name] = arguments[i];    // 프로퍼티 접근자
                     }
                 } else {
-                    throw new Error("함수타입만 가능합니다.");
+                    throw new Error('함수타입만 가능합니다.');
                 }
                     
                 obj = new arguments[i];
         
                 for(var p in obj) {
-                    typeName = (typeof obj[p] === "function") ? "Method" : "Property";
+                    typeName = (typeof obj[p] === 'function') ? 'Method' : 'Property';
                     
                     if (!(p in this) && !Object.prototype.hasOwnProperty(p)) {
-                        console.warn("Warning!! 인터페이스 구현 해야함. " + arguments[i].name + " :: (" + typeName + ") " + p);
+                        console.warn('Warning!! 인터페이스 구현 해야함. ' + arguments[i].name + ' :: (' + typeName + ') ' + p);
                     }
                 }
             }
@@ -75,16 +75,16 @@ if ((typeof Object.prototype._implements === "undefined") ||
         // jquery 에서 오류 발생으로 대체함
         // Object.prototype._implements = _implements;
         // Object.prototype.isImplementOf = isImplementOf;
-		Object.defineProperty(Object.prototype, "_implements",
+		Object.defineProperty(Object.prototype, '_implements',
 	    {
 	        value: _implements,
 	        enumerable: false
 	    });
-	    Object.defineProperty(Object.prototype, "isImplementOf",
+	    Object.defineProperty(Object.prototype, 'isImplementOf',
 	    {
 	        value: isImplementOf,
 	        enumerable: false
         });
         
-    }(typeof module === "object" && typeof module.exports === "object" ? global : window));
+    }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
 }

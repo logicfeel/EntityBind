@@ -3,7 +3,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -12,7 +12,7 @@
 
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
     } else {
     }
 
@@ -68,22 +68,22 @@
 
         /**
          * 구독 신청
-         * 이벤트 "p_code"를 입력하지 않으면 전역(any)에 등록 된다.
+         * 이벤트 'p_code'를 입력하지 않으면 전역(any)에 등록 된다.
          * @param {function} p_fn  구독 콜백 함수
-         * @param {?string} p_code 구독 코드명 : 기본값 "any"
+         * @param {?string} p_code 구독 코드명 : 기본값 'any'
          */
         Observer.prototype.subscribe = function(p_fn, p_code) {
             p_code = p_code || 'any';
 
             var subscribers = null;
 
-            if (typeof p_fn === "undefined") throw new Error("p_fn param request fail...");
-            if (typeof p_fn !== "function") throw new Error("Only [p_fn] type 'function' can be added");
+            if (typeof p_fn === 'undefined') throw new Error('p_fn param request fail...');
+            if (typeof p_fn !== 'function') throw new Error('Only [p_fn] type "function" can be added');
 
             // 싱글모드일 경우 기존내용 모두 제거
             if (!this.isMultiMode) this.unsubscribeAll(p_code);
 
-            if (typeof this.subscribers[p_code] === "undefined") {
+            if (typeof this.subscribers[p_code] === 'undefined') {
                 this.subscribers[p_code] = [];
             }
             subscribers = this.subscribers[p_code];
@@ -91,14 +91,14 @@
         };
         
         /**
-         * @desc 이벤트 "p_code"를 입력하지 않으면 전역(any)에서 취소 된다.
+         * @desc 이벤트 'p_code'를 입력하지 않으면 전역(any)에서 취소 된다.
          * @param {function} p_fn [필수] 이벤트 콜백 함수
-         * @param {?string} p_code 이벤트 코드명 : 기본값 "any"
+         * @param {?string} p_code 이벤트 코드명 : 기본값 'any'
          */
         Observer.prototype.unsubscribe = function(p_fn, p_code) {
-            p_code = p_code || "any";
+            p_code = p_code || 'any';
 
-            if (typeof p_fn === "undefined") throw new Error("p_fn param request fail...");
+            if (typeof p_fn === 'undefined') throw new Error('p_fn param request fail...');
 
             if (this.subscribers[p_code]) {
                 for (var i = 0; i < this.subscribers[p_code].length; i++) {
@@ -118,7 +118,7 @@
          */
         Observer.prototype.unsubscribeAll = function(p_code) {
 
-            if (typeof p_code === "undefined") {     // 전체 구독 삭제
+            if (typeof p_code === 'undefined') {     // 전체 구독 삭제
                 this.subscribers = {any: []};
             } else {                        // 코드명 구독(함수) 전체 삭제
                 delete this.subscribers[p_code];
@@ -127,10 +127,10 @@
 
         /**
          * @desc 구독 함수 호출
-         * @param {?string} p_code 이벤트 코드명 : 기본값 "any"
+         * @param {?string} p_code 이벤트 코드명 : 기본값 'any'
          */
         Observer.prototype.publish = function(p_code) {
-            p_code = p_code || "any";
+            p_code = p_code || 'any';
             
             var args = Array.prototype.slice.call(arguments);
             var params = args.length >= 1 ? args.splice(1) : [];
@@ -139,7 +139,7 @@
 
             if (p_code in this.subscribers) {
                 for (var i = 0; i < this.subscribers[p_code].length; i++) {
-                    if (typeof this.subscribers[p_code][i] === "function") {
+                    if (typeof this.subscribers[p_code][i] === 'function') {
                         // this.subscribers[p_code][i].call(this._this, this._onwer);  // REVIEW:: _onwer 인수 확인필요! >> 전달파라메터 
                         this.subscribers[p_code][i].apply(this._this, params);
                     }
@@ -147,7 +147,7 @@
             }
             
             if (this.isDebug) {
-                console.log("publish() 이벤트 발생 [" + this._this.constructor.name + "] type:" + p_code);
+                console.log('publish() 이벤트 발생 [' + this._this.constructor.name + '] type:' + p_code);
             }
         };
 
@@ -161,10 +161,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = Observer;
     } else {
         global._W.Common.Observer = Observer;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

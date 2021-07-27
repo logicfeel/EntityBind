@@ -2,8 +2,8 @@
  * namespace _W.Meta.Bind.BaseBind
  */
 (function(global) {
-
-    "use strict";
+    
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -18,11 +18,11 @@
     var MetaObject;
     var Entity;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        Observer            = require("./observer");
-        MetaObject          = require("./meta-object");
-        Entity              = require("./entity-base");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        Observer            = require('./observer');
+        MetaObject          = require('./meta-object');
+        Entity              = require('./entity-base');
     } else {
         util                = global._W.Common.Util;
         Observer            = global._W.Common.Observer;
@@ -32,10 +32,10 @@
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
-    if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
-    if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
+    if (typeof Observer === 'undefined') throw new Error('[Observer] module load fail...');
+    if (typeof Entity === 'undefined') throw new Error('[Entity] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -67,11 +67,11 @@
              * @member _W.Meta.Bind.BaseBind#_baseEntity
              * @protected
              */
-            Object.defineProperty(this, "_baseEntity", 
+            Object.defineProperty(this, '_baseEntity', 
             {
                 get: function() { return __baseEntity; },
                 set: function(newValue) { 
-                    if (!(newValue instanceof Entity)) throw new Error("Only [baseEntity] type 'Entity' can be added");
+                    if (!(newValue instanceof Entity)) throw new Error('Only [baseEntity] type "Entity" can be added');
                     __baseEntity = newValue;
                 },
                 configurable: true,
@@ -82,11 +82,11 @@
              * 실행전 이벤트
              * @event _W.Meta.Bind.BaseBind#onExecute
              */
-            Object.defineProperty(this, "onExecute", {
+            Object.defineProperty(this, 'onExecute', {
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "execute");
+                    this.__event.subscribe(p_fn, 'execute');
                 }
             });
 
@@ -94,18 +94,18 @@
              * 실행후 이벤트
              * @event _W.Meta.Bind.BaseBind#onExecuted
              */
-            Object.defineProperty(this, "onExecuted", {
+            Object.defineProperty(this, 'onExecuted', {
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "executed");
+                    this.__event.subscribe(p_fn, 'executed');
                 }
             });
 
             // 예약어 등록
-            this._symbol = this._symbol.concat(["__event", "_symbol", "_baseEntity"]);
-            this._symbol = this._symbol.concat(["onExecute", "onExecuted"]);
-            this._symbol = this._symbol.concat(["getTypes", "_onExecute", "_onExecuted"]);
+            this._symbol = this._symbol.concat(['__event', '_symbol', '_baseEntity']);
+            this._symbol = this._symbol.concat(['onExecute', 'onExecuted']);
+            this._symbol = this._symbol.concat(['getTypes', '_onExecute', '_onExecuted']);
         }
         util.inherits(BaseBind, _super);
 
@@ -116,9 +116,9 @@
          */
         BaseBind.prototype.getTypes  = function() {
                     
-            var type = ["BaseBind"];
+            var type = ['BaseBind'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /** @event */
@@ -126,7 +126,7 @@
          * @listens _W.Meta.Bind.BaseBind#_onExecute
          */
         BaseBind.prototype._onExecute = function(p_bindCommand) {
-            this.__event.publish("execute", p_bindCommand);
+            this.__event.publish('execute', p_bindCommand);
         };
 
         /** @event */
@@ -134,7 +134,7 @@
          * @listens _W.Meta.Bind.BaseBind#_onExecuted
          */
         BaseBind.prototype._onExecuted = function(p_bindCommand, p_result) {
-            this.__event.publish("executed", p_bindCommand, p_result); 
+            this.__event.publish('executed', p_bindCommand, p_result); 
         };
 
         return BaseBind;
@@ -143,10 +143,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BaseBind;
     } else {
         global._W.Meta.Bind.BaseBind = BaseBind;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

@@ -4,7 +4,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -19,11 +19,11 @@
     var PropertyCollection;
     var ItemTableCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("util");
-        Entity              = require("./entity-base");
-        PropertyCollection  = require("./collection-property");
-        ItemTableCollection      = require("./entity-item").ItemTableCollection;
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('util');
+        Entity              = require('./entity-base');
+        PropertyCollection  = require('./collection-property');
+        ItemTableCollection      = require('./entity-item').ItemTableCollection;
     } else {
         util                = global._W.Common.Util;
         Entity              = global._W.Meta.Entity.Entity;
@@ -33,10 +33,10 @@
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof ItemTableCollection === "undefined") throw new Error("[ItemTableCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof Entity === 'undefined') throw new Error('[Entity] module load fail...');
+    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
+    if (typeof ItemTableCollection === 'undefined') throw new Error('[ItemTableCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -57,9 +57,9 @@
         /** @override **/
         EntityTable.prototype.getTypes  = function() {
             
-            var type = ["EntityTable"];
+            var type = ['EntityTable'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /** @override */
@@ -118,17 +118,17 @@
             var i_value;
             var i_name;
 
-            if (typeof p_object === "string") {      
+            if (typeof p_object === 'string') {      
                 i_name  = p_object;
                 i_value = new EntityTable(i_name);
             } else if (p_object instanceof EntityTable) {
                 i_name  = p_object.name;
                 i_value = p_object;
             } else {
-                throw new Error("string | EntityTable object [p_object].");
+                throw new Error('string | EntityTable object [p_object].');
             }
 
-            if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
+            if (typeof i_name === 'undefined') throw new Error('There is no required value [p_name].');
 
             _super.prototype.add.call(this, i_name, i_value);
 
@@ -141,7 +141,7 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports.EntityTable = EntityTable;
         module.exports.EntityTableCollection = EntityTableCollection;
     } else {
@@ -149,4 +149,4 @@
         global._W.Meta.Entity.EntityTableCollection = EntityTableCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

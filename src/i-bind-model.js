@@ -3,7 +3,7 @@
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -75,9 +75,9 @@
              * @property {'Arrary' | '[]'} {command:mapping} 검사와 바인딩 출력 모든곳에 매핑한다.
              * @example
              * this.mapping = {
-             *      cmd:            { Array:    "bind" },
-             *      keyword:        { list:     "bind" },
-             *      faq_idx:        { read:     "bind",     delete:     "bind" }
+             *      cmd:            { Array:    'bind' },
+             *      keyword:        { list:     'bind' },
+             *      faq_idx:        { read:     'bind',     delete:     'bind' }
              * };
              */
 
@@ -109,11 +109,11 @@
              * this.prop = {
              *   // inner
              *   __isGetLoad:    true,
-             *   __listUrl:      "",
-             *   keyword:        { selector: { key: "#m-keyword"+ _SUFF,         type: "value" } },
+             *   __listUrl:      '',
+             *   keyword:        { selector: { key: '#m-keyword'+ _SUFF,         type: 'value' } },
              *   page_size:      {
              *       setter: function(val) { page.page_size = val; },
-             *       selector: { key: "select[name=m-page_size]"+ _SUFF,         type: "value" },
+             *       selector: { key: 'select[name=m-page_size]'+ _SUFF,         type: 'value' },
              *   },
              * };
              */
@@ -144,11 +144,11 @@
              * this.command = {
              *   create:         {
              *     onExecute: function(p_bindCommand) { 
-             *        _this.bindModel.items["cmd"].value = "CREATE"; 
+             *        _this.bindModel.items['cmd'].value = 'CREATE'; 
              *     },
              *     cbEnd: function(p_entity) {
-             *         if (p_entity["return"] < 0) return alert("등록 처리가 실패 하였습니다. Code : " + p_entity["return"]);
-             *         location.href = _this.bindModel.prop["__listUrl"];
+             *         if (p_entity['return'] < 0) return alert('등록 처리가 실패 하였습니다. Code : ' + p_entity['return']);
+             *         location.href = _this.bindModel.prop['__listUrl'];
              *     },
              *   },
              * };
@@ -167,9 +167,9 @@
              * @property {'[]'} command.mapping 모든곳에 매핑한다.(검사와 바인딩 출력)
              * @example
              * this.mapping = {
-             *      cmd:            { Array:    "bind" },
-             *      keyword:        { list:     ["bind", "valid"] },
-             *      faq_idx:        { read:     "bind",     delete:     "bind" }
+             *      cmd:            { Array:    'bind' },
+             *      keyword:        { list:     ['bind', 'valid'] },
+             *      faq_idx:        { read:     'bind',     delete:     'bind' }
              * };
              */
             this.mapping    = {};
@@ -292,10 +292,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IBindModel;
     } else {
         global._W.Interface.IBindModel = IBindModel;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

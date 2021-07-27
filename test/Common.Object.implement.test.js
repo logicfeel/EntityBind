@@ -3,7 +3,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -17,9 +17,9 @@
 
     var util;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        require("../src/object-implement"); // _implements() : 폴리필
-        util                = require("../src/utils");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        require('../src/object-implement'); // _implements() : 폴리필
+        util                = require('../src/utils');
     } else {
         util                = global._W.Common.Util;
     }
@@ -28,35 +28,35 @@
     // 3. 테스트 본문
     function run() {
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("this._implements(interface) :: 인터페이스 선언 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('this._implements(interface) :: 인터페이스 선언 ');
         var ISuper  = (function (_super) {
             function ISuper() {
-                this.m1 = function() { return "I1"; };
+                this.m1 = function() { return 'I1'; };
             }
             return ISuper;
         }());
 
         var i = new ISuper();
-        if (i.m1() === "I1" && 
+        if (i.m1() === 'I1' && 
             true) {
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("this._implements(interface) :: 다중 인터페이스 선언 <- 클래스 구현 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('this._implements(interface) :: 다중 인터페이스 선언 <- 클래스 구현 ');
         var ISuper  = (function (_super) {
             function ISuper() {
-                this.m1 = function() { return "I1"; };
+                this.m1 = function() { return 'I1'; };
             }
             return ISuper;
         }());
         var ISuper2  = (function (_super) {
             function ISuper2() {
-                this.m2 = function() { return "I2"; };
+                this.m2 = function() { return 'I2'; };
             }
             return ISuper2;
         }());
@@ -65,36 +65,36 @@
                 /** @implements */
                 this._implements(ISuper, ISuper2);    
             }
-            CoClass.prototype.m1 = function() { return "C1"; }
-            CoClass.prototype.m2 = function() { return "C2"; }
+            CoClass.prototype.m1 = function() { return 'C1'; }
+            CoClass.prototype.m2 = function() { return 'C2'; }
             return CoClass;
         }());
 
         var c = new CoClass();
-        if (c.m1() === "C1" &&
-            c.m2() === "C2" && 
+        if (c.m1() === 'C1' &&
+            c.m2() === 'C2' && 
             c._interface.length === 2 &&
             c.isImplementOf(ISuper) === true &&
             c.isImplementOf(ISuper2) === true &&
             true) {
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("this._implements(interface) :: 인터페이스 선언 <- 클래스 구현 + 클래스 상속 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('this._implements(interface) :: 인터페이스 선언 <- 클래스 구현 + 클래스 상속 ');
         var ISuper  = (function (_super) {
             function ISuper() {
-                this.m1 = function() { return "I1"; };
+                this.m1 = function() { return 'I1'; };
             }
             return ISuper;
         }());
         var Super  = (function (_super) {
             function Super() {
             }
-            Super.prototype.m2 = function() { return "C2"; };
+            Super.prototype.m2 = function() { return 'C2'; };
             return Super;
         }());
         var CoClass  = (function (_super) {
@@ -105,40 +105,40 @@
                 this._implements(ISuper);    
             }
             util.inherits(CoClass, _super); 
-            CoClass.prototype.m1 = function() { return "C1"; }
+            CoClass.prototype.m1 = function() { return 'C1'; }
             return CoClass;
         }(Super));
 
         var c = new CoClass();
-        if (c.m1() === "C1" &&
-            c.m2() === "C2" && 
+        if (c.m1() === 'C1' &&
+            c.m2() === 'C2' && 
             c._interface.length === 1 &&
             c.isImplementOf(ISuper) === true &&
             c.isImplementOf(ISuper2) === false &&
             true) {
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("this._implements(interface) :: 인터페이스 선언 <- 인터페이스 선언 <- 클래스 구현 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('this._implements(interface) :: 인터페이스 선언 <- 인터페이스 선언 <- 클래스 구현 ');
         var ISuper  = (function (_super) {
             function ISuper() {
-                // this.m1 = function() { return "I1"; };
+                // this.m1 = function() { return 'I1'; };
             }
-            ISuper.prototype.m1 = function() { return "I1"; };
+            ISuper.prototype.m1 = function() { return 'I1'; };
             return ISuper;
         }());
         var ISub  = (function (_super) {
             function ISub() {
-                // this.m2 = function() { return "I2"; };
+                // this.m2 = function() { return 'I2'; };
                 /** @implements */
                 this._implements(ISuper);
             }
-            ISub.prototype.m1 = function() { return "I1"; };
-            ISub.prototype.m2 = function() { return "I2"; };
+            ISub.prototype.m1 = function() { return 'I1'; };
+            ISub.prototype.m2 = function() { return 'I2'; };
             return ISub;
         }());
 
@@ -147,37 +147,37 @@
                 /** @implements */
                 this._implements(ISub);    
             }
-            CoClass.prototype.m1 = function() { return "C1"; }
-            CoClass.prototype.m2 = function() { return "C2"; }
+            CoClass.prototype.m1 = function() { return 'C1'; }
+            CoClass.prototype.m2 = function() { return 'C2'; }
             return CoClass;
         }());
 
         var c = new CoClass();
-        if (c.m1() === "C1" &&
-            c.m2() === "C2" && 
+        if (c.m1() === 'C1' &&
+            c.m2() === 'C2' && 
             c._interface.length === 1 &&
             c.isImplementOf(ISuper) === false &&
             c.isImplementOf(ISub) === true &&
             true) {
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("this._implements(interface) :: 인터페이스 선언 <- 인터페이스 상속 <- 클래스 구현 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('this._implements(interface) :: 인터페이스 선언 <- 인터페이스 상속 <- 클래스 구현 ');
         var ISuper  = (function (_super) {
             function ISuper() {
             }
-            ISuper.prototype.m1 = function() { return "I1"; };
+            ISuper.prototype.m1 = function() { return 'I1'; };
             return ISuper;
         }());
         var ISub  = (function (_super) {
             function ISub() {
             }
             util.inherits(ISub, _super);   
-            ISub.prototype.m2 = function() { return "I2"; };
+            ISub.prototype.m2 = function() { return 'I2'; };
             return ISub;
         }(ISuper));
 
@@ -186,30 +186,30 @@
                 /** @implements */
                 this._implements(ISub);    
             }
-            CoClass.prototype.m1 = function() { return "C1"; }
-            CoClass.prototype.m2 = function() { return "C2"; }
+            CoClass.prototype.m1 = function() { return 'C1'; }
+            CoClass.prototype.m2 = function() { return 'C2'; }
             return CoClass;
         }());
 
         var c = new CoClass();
-        if (c.m1() === "C1" &&
-            c.m2() === "C2" && 
+        if (c.m1() === 'C1' &&
+            c.m2() === 'C2' && 
             c._interface.length === 1 &&
             c.isImplementOf(ISuper) === false &&
             c.isImplementOf(ISub) === true &&
             true) {
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
 
         //#################################################
         if (errorCount > 0) {
-            console.warn("Error Sub SUM : %dEA", errorCount);    
+            console.warn('Error Sub SUM : %dEA', errorCount);    
         } else {
-            console.log("===========================================================================");
-            console.log("단위 테스트 : OK");
+            console.log('===========================================================================');
+            console.log('단위 테스트 : OK');
         }
         
         return errorCount;
@@ -217,10 +217,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = run();
     } else {
         global._W.Test.Object_implement = {run: run};
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

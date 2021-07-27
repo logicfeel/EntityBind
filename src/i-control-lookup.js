@@ -3,7 +3,7 @@
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -31,7 +31,7 @@
          * @abstract
          */
         ILookupControl.prototype.contains  = function() {
-            throw new Error("[ contains() ] Abstract method definition, fail...");
+            throw new Error('[ contains() ] Abstract method definition, fail...');
         };
 
         return ILookupControl;
@@ -39,10 +39,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = ILookupControl;
     } else {
         global._W.Interface.ILookupControl = ILookupControl;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

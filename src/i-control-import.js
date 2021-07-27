@@ -3,7 +3,7 @@
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -31,7 +31,7 @@
          * @abstract
          */
         IImportControl.prototype.read  = function() {
-            throw new Error("[ read() ] Abstract method definition, fail...");
+            throw new Error('[ read() ] Abstract method definition, fail...');
         };
     
         return IImportControl;
@@ -39,10 +39,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IImportControl;
     } else {
         global._W.Interface.IImportControl = IImportControl;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

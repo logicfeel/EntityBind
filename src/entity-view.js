@@ -4,7 +4,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -20,12 +20,12 @@
     var ItemViewCollection;
     var PropertyCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("util");
-        MetaObject          = require("./meta-object");
-        Entity              = require("./entity-base");
-        ItemViewCollection   = require("./entity-item").ItemViewCollection;
-        PropertyCollection  = require("./collection-property");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('util');
+        MetaObject          = require('./meta-object');
+        Entity              = require('./entity-base');
+        ItemViewCollection   = require('./entity-item').ItemViewCollection;
+        PropertyCollection  = require('./collection-property');
     } else {
         util                = global._W.Common.Util;
         MetaObject          = global._W.Meta.MetaObject;
@@ -36,11 +36,11 @@
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaObject === "undefined") throw new Error("[MetaObject] module load fail...");
-    if (typeof Entity === "undefined") throw new Error("[Entity] module load fail...");
-    if (typeof ItemViewCollection === "undefined") throw new Error("[ItemViewCollection] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaObject === 'undefined') throw new Error('[MetaObject] module load fail...');
+    if (typeof Entity === 'undefined') throw new Error('[Entity] module load fail...');
+    if (typeof ItemViewCollection === 'undefined') throw new Error('[ItemViewCollection] module load fail...');
+    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -57,7 +57,7 @@
 
             var refCollection;
 
-            if (p_baseEntity && p_baseEntity instanceof MetaObject && p_baseEntity.instanceOf("Entity")) {
+            if (p_baseEntity && p_baseEntity instanceof MetaObject && p_baseEntity.instanceOf('Entity')) {
                 refCollection = p_baseEntity.items;
             }
             
@@ -74,16 +74,16 @@
          * @param {Entity} p_entity 
          */
         EntityView.prototype._regRefer  = function(p_entity) {
-            if (!(p_entity instanceof Entity)) throw new Error("Only [p_entity] type 'Entity' can be added");
+            if (!(p_entity instanceof Entity)) throw new Error('Only [p_entity] type "Entity" can be added');
             if (this._refEntities.indexOf(p_entity) < 0) this._refEntities.push(p_entity);
         };
         
         /** @override **/
         EntityView.prototype.getTypes  = function() {
             
-            var type = ["EntityView"];
+            var type = ['EntityView'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
         
         /** @override */
@@ -149,18 +149,18 @@
             var i_value;
             var i_name;
 
-            if (typeof p_object === "string") {      
+            if (typeof p_object === 'string') {      
                 i_name  = p_object;
                 i_value = new EntityView(i_name, p_baseEntity);
             } else if (p_object instanceof EntityView) {
-                if (p_baseEntity) throw new Error(" EntityView객체와 refEntity객체를 동시에 입력할 수 없습니다. !!");
+                if (p_baseEntity) throw new Error(' EntityView객체와 refEntity객체를 동시에 입력할 수 없습니다. !!');
                 i_name  = p_object.name;
                 i_value = p_object;
             } else {
-                throw new Error("string | EntityView object [p_object].");
+                throw new Error('string | EntityView object [p_object].');
             }
 
-            if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
+            if (typeof i_name === 'undefined') throw new Error('There is no required value [p_name].');
 
             return _super.prototype.add.call(this, i_name, i_value);
         };
@@ -171,7 +171,7 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports.EntityView = EntityView;
         module.exports.EntityViewCollection = EntityViewCollection;
     } else {
@@ -179,4 +179,4 @@
         global._W.Meta.Entity.EntityViewCollection = EntityViewCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

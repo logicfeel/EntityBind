@@ -2,7 +2,8 @@
  * namespace _W.Interface.IPropertyCollection
  */
 (function(global) {
-    "use strict";
+    
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -14,9 +15,9 @@
     var util;
     var ICollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        ICollection         = require("./i-collection");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        ICollection         = require('./i-collection');
     } else {
         util                = global._W.Common.Util;
         ICollection         = global._W.Interface.ICollection;
@@ -24,8 +25,8 @@
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof ICollection === "undefined") throw new Error("[ICollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof ICollection === 'undefined') throw new Error('[ICollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -44,7 +45,7 @@
          * 조회 : idx 로 이름 조회
          */
         IPropertyCollection.prototype.propertyOf  = function() {
-            throw new Error("[ propertyOf() ] Abstract method definition, fail...");
+            throw new Error('[ propertyOf() ] Abstract method definition, fail...');
         };
     
         return IPropertyCollection;
@@ -52,10 +53,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IPropertyCollection;
     } else {
         global._W.Interface.IPropertyCollection = IPropertyCollection;
     }
     
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

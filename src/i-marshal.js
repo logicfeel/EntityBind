@@ -3,7 +3,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -15,9 +15,9 @@
     var util;
     var IObject;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        IObject             = require("./i-object");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        IObject             = require('./i-object');
     } else {
         util                = global._W.Common.Util;
         IObject             = global._W.Interface.IObject;
@@ -25,8 +25,8 @@
 
     //==============================================================
     // 3. 모듈의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof IObject === "undefined") throw new Error("[IObject] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof IObject === 'undefined') throw new Error('[IObject] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -47,7 +47,7 @@
          * @returns {Object}
          */
         IMarshal.prototype.getObject  = function() {
-            throw new Error("[ getObject() ] Abstract method definition, fail...");
+            throw new Error('[ getObject() ] Abstract method definition, fail...');
         };
 
         /**
@@ -56,7 +56,7 @@
          * @returns {Stirng}
          */
         IMarshal.prototype.getGUID  = function() {
-            throw new Error("[ getGUID() ] Abstract method definition, fail...");
+            throw new Error('[ getGUID() ] Abstract method definition, fail...');
 
         };
 
@@ -65,10 +65,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IMarshal;
     } else {
         global._W.Interface.IMarshal = IMarshal;
     }
     
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

@@ -3,7 +3,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -14,17 +14,17 @@
     // 2. 모듈 가져오기 (node | web)
     var IObject;
     
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        require("./object-implement"); // _implements() : 폴리필
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        require('./object-implement'); // _implements() : 폴리필
         
-        IObject             = require("./i-object");
+        IObject             = require('./i-object');
     } else {
         IObject             = global._W.Interface.IObject;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof IObject === "undefined") throw new Error("[IObject] module load fail...");
+    if (typeof IObject === 'undefined') throw new Error('[IObject] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -48,9 +48,9 @@
          */
         MetaObject.prototype.getTypes  = function() {
             
-            var type = ["MetaObject"];
+            var type = ['MetaObject'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /**
@@ -62,7 +62,7 @@
 
             var arr = this.getTypes();
     
-            if (typeof p_name !== "string") throw new Error("Only [p_name] type name 'string' can be added");
+            if (typeof p_name !== 'string') throw new Error('Only [p_name] type name "string" can be added');
         
             if (this._interface) {
                 for (var i = 0; i < this._interface.length; i++) {
@@ -79,10 +79,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = MetaObject;
     } else {
         global._W.Meta.MetaObject = MetaObject;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

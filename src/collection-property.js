@@ -2,7 +2,8 @@
  * namespace _W.Collection.PropertyCollection
  */
 (function(global) {
-    "use strict";
+    
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -15,10 +16,10 @@
     var BaseCollection;
     var IPropertyCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        BaseCollection      = require("./collection-base");
-        IPropertyCollection = require("./i-collection-property");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        BaseCollection      = require('./collection-base');
+        IPropertyCollection = require('./i-collection-property');
     } else {
         util                = global._W.Common.Util;
         BaseCollection      = global._W.Collection.BaseCollection;
@@ -27,9 +28,9 @@
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BaseCollection === "undefined") throw new Error("[BaseCollection] module load fail...");
-    if (typeof IPropertyCollection === "undefined") throw new Error("[IPropertyCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof BaseCollection === 'undefined') throw new Error('[BaseCollection] module load fail...');
+    if (typeof IPropertyCollection === 'undefined') throw new Error('[IPropertyCollection] module load fail...');
     
     //==============================================================
     // 4. 모듈 구현    
@@ -47,7 +48,7 @@
             var __properties = [];
 
             /** @member {Array} _W.Collection.PropertyCollection#properties 속성들값 */
-            Object.defineProperty(this, "properties", 
+            Object.defineProperty(this, 'properties', 
             {
                 get: function() { return __properties; },
                 set: function(newValue) { __properties = newValue; },
@@ -56,7 +57,7 @@
             });
 
             // 예약어 등록
-            this._symbol = this._symbol.concat(["properties", "indexOfName", "propertyOf"]);
+            this._symbol = this._symbol.concat(['properties', 'indexOfName', 'propertyOf']);
 
             /** @implements IPropertyCollection 인터페이스 구현 */
             this._implements(IPropertyCollection);            
@@ -102,26 +103,26 @@
          * @returns {any} 입력 속성 참조값 REVIEW:: 필요성 검토
          */
         PropertyCollection.prototype.add = function(p_name, p_value, p_desc) {
-            p_value = p_value || "";
+            p_value = p_value || '';
             
             var typeName;
             var index   = -1;
 
             this._onChanging();                     // 이벤트 발생 : 변경전
         
-            if (typeof p_name !== "string") throw new Error("Only [p_name] type 'string' can be added");
+            if (typeof p_name !== 'string') throw new Error('Only [p_name] type "string" can be added');
             if (this.elementType !== null && !(p_value instanceof this.elementType)) {
                 typeName = this.elementType.constructor.name;
-                throw new Error("Only [" + typeName + "] type instances can be added");
+                throw new Error('Only [' + typeName + '] type instances can be added');
             }
 
             // 예약어 검사
             if (this._symbol.indexOf(p_name) > -1) {
-                throw new Error(" [" + p_name + "] is a Symbol word");   
+                throw new Error(' [' + p_name + '] is a Symbol word');   
             }
 
             if (this.indexOfName(p_name) > -1) {
-                console.warn("Warning:: 프로퍼티 이름 중복 !!");
+                console.warn('Warning:: 프로퍼티 이름 중복 !!');
                 return this[p_name];     // 중복 등록 방지
             }
 
@@ -130,7 +131,7 @@
 
             index = (this._element.length === 1) ? 0 : this._element.length  - 1;
 
-            if (typeof p_desc === "object" && (typeof p_desc.get === "function" || typeof p_desc.set === "function")) {
+            if (typeof p_desc === 'object' && (typeof p_desc.get === 'function' || typeof p_desc.set === 'function')) {
                 Object.defineProperty(this, [index], p_desc);
                 Object.defineProperty(this, p_name, p_desc);
             } else {
@@ -174,7 +175,7 @@
             
             var obj;
             
-            if (typeof p_name !== "string")  throw new Error("Only [p_name] type 'string' can be added");
+            if (typeof p_name !== 'string')  throw new Error('Only [p_name] type "string" can be added');
             
             obj = this[p_name];
 
@@ -197,10 +198,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = PropertyCollection;
     } else {
         global._W.Collection.PropertyCollection = PropertyCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

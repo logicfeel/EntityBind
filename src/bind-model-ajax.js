@@ -3,7 +3,7 @@
  */ 
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -21,14 +21,14 @@
     var BindCommandAjax;
     var EntityView;
 
-    if (typeof module === "object" && typeof module.exports === "object") {    
-        util                    = require("./utils");
-        BindModel               = require("./bind-model");
-        PropertyCollection      = require("./collection-property");
-        IBindModel              = require("./i-bind-model");        
-        ItemDOM                 = require("./entity-item-dom");
-        BindCommandAjax         = require("./bind-command-ajax");
-        EntityView              = require("./entity-view").EntityView;
+    if (typeof module === 'object' && typeof module.exports === 'object') {    
+        util                    = require('./utils');
+        BindModel               = require('./bind-model');
+        PropertyCollection      = require('./collection-property');
+        IBindModel              = require('./i-bind-model');        
+        ItemDOM                 = require('./entity-item-dom');
+        BindCommandAjax         = require('./bind-command-ajax');
+        EntityView              = require('./entity-view').EntityView;
     } else {
         util                    = global._W.Common.Util;
         BindModel               = global._W.Meta.Bind.BindModel;
@@ -41,13 +41,13 @@
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BindModel === "undefined") throw new Error("[BindModel] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof IBindModel === "undefined") throw new Error("[IBindModel] module load fail...");
-    if (typeof ItemDOM === "undefined") throw new Error("[ItemDOM] module load fail...");
-    if (typeof BindCommandAjax === "undefined") throw new Error("[BindCommandAjax] module load fail...");
-    if (typeof EntityView === "undefined") throw new Error("[EntityView] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof BindModel === 'undefined') throw new Error('[BindModel] module load fail...');
+    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
+    if (typeof IBindModel === 'undefined') throw new Error('[IBindModel] module load fail...');
+    if (typeof ItemDOM === 'undefined') throw new Error('[ItemDOM] module load fail...');
+    if (typeof BindCommandAjax === 'undefined') throw new Error('[BindCommandAjax] module load fail...');
+    if (typeof EntityView === 'undefined') throw new Error('[EntityView] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -100,7 +100,7 @@
          *  + 2222
          * 
          * ```javascript
-         * var s = "JavaScript syntax highlighting";
+         * var s = 'JavaScript syntax highlighting';
          * alert(s);
          * ``
          * @todo 할것 목록
@@ -111,8 +111,8 @@
             _super.call(this);
             
             var __baseAjaxSetup = {
-                url: "",
-                type: "GET"
+                url: '',
+                type: 'GET'
             };
             
             this._baseEntity                = this.addEntity('first');   // Entity 추가 및 baseEntity 설정
@@ -120,18 +120,18 @@
             this._baseEntity.items.itemType = this.itemType;            // base 엔티티 타입 변경
             this.items                      = this._baseEntity.items;   // 참조 추가
 
-            Object.defineProperty(this, "baseAjaxSetup", 
+            Object.defineProperty(this, 'baseAjaxSetup', 
             {
                 get: function() { return __baseAjaxSetup; },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "baseUrl", 
+            Object.defineProperty(this, 'baseUrl', 
             {
                 get: function() { return __baseAjaxSetup.url; },
                 set: function(newValue) { 
-                    if (!(typeof newValue === "string")) throw new Error("Only [baseUrl] type 'string' can be added");
+                    if (!(typeof newValue === 'string')) throw new Error('Only [baseUrl] type "string" can be added');
                     __baseAjaxSetup.url = newValue;
                 },
                 configurable: true,
@@ -143,17 +143,17 @@
                 // 서비스 설정
                 this.setService(p_service);
                 // 속성 설정
-                if (typeof p_service["baseUrl"] === "string") {
-                    this.baseUrl = p_service["baseUrl"];
+                if (typeof p_service['baseUrl'] === 'string') {
+                    this.baseUrl = p_service['baseUrl'];
                 }
-                if (typeof p_service["baseAjaxSetup"] === "object") {
-                    this.baseAjaxSetup = p_service["baseAjaxSetup"];
+                if (typeof p_service['baseAjaxSetup'] === 'object') {
+                    this.baseAjaxSetup = p_service['baseAjaxSetup'];
                 }
             }
 
             // 예약어 등록
-            this._symbol = this._symbol.concat(["items", "baseAjaxSetup", "baseUrl"]);
-            this._symbol = this._symbol.concat(["getTypes", "checkSelector", "setService"]);
+            this._symbol = this._symbol.concat(['items', 'baseAjaxSetup', 'baseUrl']);
+            this._symbol = this._symbol.concat(['getTypes', 'checkSelector', 'setService']);
         }
         util.inherits(BindModelAjax, _super);
     
@@ -163,9 +163,9 @@
          */
         BindModelAjax.prototype.getTypes  = function() {
                     
-            var type = ["BindModelAjax"];
+            var type = ['BindModelAjax'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
         /**
@@ -177,14 +177,14 @@
             var collection = p_collection || this.prop;
             var failSelector = null;
             var selectors = [];
-            var selector = "";
+            var selector = '';
 
             // 유효성 검사
-            if (!(collection instanceof PropertyCollection)) throw new Error("Only [p_collection] type 'PropertyCollection' can be added");
+            if (!(collection instanceof PropertyCollection)) throw new Error('Only [p_collection] type "PropertyCollection" can be added');
 
             // 검사
             // for (var i = 0; collection.count > i; i++) {
-            //     if (typeof collection[i].selector !== "undefined") {
+            //     if (typeof collection[i].selector !== 'undefined') {
             //         selectors = [];
             //         if (Array.isArray(collection[i].selector)) 
             //             selectors = collection[i].selector;
@@ -192,25 +192,25 @@
             //             selectors.push(collection[i].selector)
                     
             //         for (var ii = 0; ii < selectors.length; ii++) {
-            //             selector  = typeof selectors[ii] === "function" ? selectors[ii].call(this) : selectors[ii];
+            //             selector  = typeof selectors[ii] === 'function' ? selectors[ii].call(this) : selectors[ii];
 
-            //             if (typeof selector === "string" && selector.length > 0) failSelector = util.validSelector(selector);
+            //             if (typeof selector === 'string' && selector.length > 0) failSelector = util.validSelector(selector);
                         
             //             if (failSelector !== null) {
-            //                 console.warn("selector 검사 실패 : %s ", failSelector);
+            //                 console.warn('selector 검사 실패 : %s ', failSelector);
             //                 return false;
             //             }
             //         }
             //     }
             // }            
             for (var i = 0; collection.count > i; i++) {
-                if (typeof collection[i].selector !== "undefined") {
+                if (typeof collection[i].selector !== 'undefined') {
                         selector = collection[i].selector.key;
 
-                        if (typeof selector === "string" && selector.length > 0) failSelector = util.validSelector(selector, true);
+                        if (typeof selector === 'string' && selector.length > 0) failSelector = util.validSelector(selector, true);
                         
                         if (failSelector !== null) {
-                            console.warn("selector 검사 실패 : %s ", failSelector);
+                            console.warn('selector 검사 실패 : %s ', failSelector);
                             return false;
                         }
                 }
@@ -243,14 +243,14 @@
             var selector;
             var selectors = [];
             var cmds = [];
-            var cmdName = "";
+            var cmdName = '';
             var bindCommand = null;
             var items = [];
             var item;
 
             // 초기화
             if (Array.isArray(p_cmdNames)) cmds = p_cmdNames;
-            else if (typeof p_cmdNames === "string") cmds.push(p_cmdNames);
+            else if (typeof p_cmdNames === 'string') cmds.push(p_cmdNames);
             
             
             // command의 valid, bind, output item 검색하여 중복 제거후 삽입
@@ -259,13 +259,13 @@
                 cmdName = cmds[i];              // cmd 이름 얻기
                 bindCommand = this[cmdName];    // 대상 bindCommand 설정
 
-                if (typeof bindCommand === "undefined") {
-                    console.warn("[%s] bindCommand가 없습니다.", cmdName);
+                if (typeof bindCommand === 'undefined') {
+                    console.warn('[%s] bindCommand가 없습니다.', cmdName);
                 } else {
                     
                     for (var prop in bindCommand) {
                         if (bindCommand[prop] instanceof EntityView && 
-                                prop.substr(0, 1) !== "_" &&                        // 이름 제외 조건
+                                prop.substr(0, 1) !== '_' &&                        // 이름 제외 조건
                                 (['valid', 'bind', 'etc'].indexOf(prop) > -1 ||     // 기본 Entity
                                 1 < bindCommand.outputOption )) {                   // 확장 Entity(output)은 옵션 검사
                             
@@ -319,7 +319,7 @@
                     selector = collection[i].selector;  // 전체 포함
                 }
                 
-                if (selector !== null && typeof selector === "object" && typeof selector.key === "string" && selector.key.length > 0) {
+                if (selector !== null && typeof selector === 'object' && typeof selector.key === 'string' && selector.key.length > 0) {
                         obj = { 
                             item: collection[i].name, 
                             key: collection[i].selector.key, 
@@ -340,9 +340,9 @@
             if (p_isLog === true) {
                 for (var i = 0; i < selectors.length > 0; i++ ) {
                     if (selectors[i].check === true) {
-                        console.log("item: %s, key: %s, type: %s ", selectors[i].item, selectors[i].key, selectors[i].type);
+                        console.log('item: %s, key: %s, type: %s ', selectors[i].item, selectors[i].key, selectors[i].type);
                     } else {
-                        console.warn("item: %s, key: %s, type: %s [Fail]", selectors[i].item, selectors[i].key, selectors[i].type);
+                        console.warn('item: %s, key: %s, type: %s [Fail]', selectors[i].item, selectors[i].key, selectors[i].type);
                     }
                 }
             }
@@ -359,17 +359,17 @@
         BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_entities) {
 
             // 유효성 검사
-            if (typeof p_name !== "string") {
-                throw new Error("Only [p_name] type 'string' can be added");
+            if (typeof p_name !== 'string') {
+                throw new Error('Only [p_name] type "string" can be added');
             }
 
             // 예약어 검사
             if (this._symbol.indexOf(p_name) > -1) {
-                throw new Error(" [" + p_name + "] is a Symbol word");   
+                throw new Error(' [' + p_name + '] is a Symbol word');   
             }            
             
             // 중복 검사
-            if (typeof this[p_name] !== "undefined") throw new Error("에러!! 이름 중복 : " + p_name);
+            if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
 
             // 생성
             this[p_name] = new BindCommandAjax(this, p_option, p_entities);
@@ -383,11 +383,11 @@
     
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = BindModelAjax;
     } else {
         global._W.Meta.Bind.BindModelAjax = BindModelAjax;
         global.BindModelAjax = BindModelAjax;        // 힌트
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

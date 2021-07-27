@@ -3,7 +3,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -17,11 +17,11 @@
     var IGroupControl;
     var IAllControl;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        ICollection         = require("./i-collection");
-        IGroupControl        = require("./i-control-group");
-        IAllControl         = require("./i-control-all");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        ICollection         = require('./i-collection');
+        IGroupControl        = require('./i-control-group');
+        IAllControl         = require('./i-control-all');
     } else {
         util                = global._W.Common.Util;
         ICollection         = global._W.Interface.ICollection;
@@ -31,10 +31,10 @@
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof ICollection === "undefined") throw new Error("[ICollection] module load fail...");
-    if (typeof IGroupControl === "undefined") throw new Error("[IGroupControl] module load fail...");
-    if (typeof IAllControl === "undefined") throw new Error("[IAllControl] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof ICollection === 'undefined') throw new Error('[ICollection] module load fail...');
+    if (typeof IGroupControl === 'undefined') throw new Error('[IGroupControl] module load fail...');
+    if (typeof IAllControl === 'undefined') throw new Error('[IAllControl] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -59,7 +59,7 @@
          * @abstract
          */
         IControlCollection.prototype.merge  = function() {
-            throw new Error("[ concat() ] Abstract method definition, fail...");
+            throw new Error('[ concat() ] Abstract method definition, fail...');
         };
 
         /**
@@ -67,7 +67,7 @@
          * @abstract
          */
         IControlCollection.prototype.copyTo  = function() {
-            throw new Error("[ copyTo() ] Abstract method definition, fail...");
+            throw new Error('[ copyTo() ] Abstract method definition, fail...');
         };
 
         /**
@@ -75,7 +75,7 @@
          * @abstract
          */
         IControlCollection.prototype.clone  = function() {
-            throw new Error("[ clone() ] Abstract method definition, fail...");
+            throw new Error('[ clone() ] Abstract method definition, fail...');
         };
 
         /**
@@ -83,7 +83,7 @@
          * @abstract
          */
         IControlCollection.prototype.load  = function() {
-            throw new Error("[ load() ] Abstract method definition, fail...");
+            throw new Error('[ load() ] Abstract method definition, fail...');
         };
 
         /**
@@ -91,7 +91,7 @@
          * @abstract
          */
         IControlCollection.prototype.clear  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
+            throw new Error('[ clear() ] Abstract method definition, fail...');
         };
     
         return IControlCollection;
@@ -99,10 +99,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IControlCollection;
     } else {
         global._W.Interface.IControlCollection = IControlCollection;
     }
     
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

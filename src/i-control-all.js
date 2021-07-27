@@ -3,7 +3,7 @@
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -31,7 +31,7 @@
          * @abstract
          */
         IAllControl.prototype.clone  = function() {
-            throw new Error("[ clone() ] Abstract method definition, fail...");
+            throw new Error('[ clone() ] Abstract method definition, fail...');
         };
 
         /**
@@ -39,7 +39,7 @@
          * @abstract
          */
         IAllControl.prototype.load  = function() {
-            throw new Error("[ load() ] Abstract method definition, fail...");
+            throw new Error('[ load() ] Abstract method definition, fail...');
         };
 
         /**
@@ -47,7 +47,7 @@
          * @abstract
          */
         IAllControl.prototype.clear  = function() {
-            throw new Error("[ clear() ] Abstract method definition, fail...");
+            throw new Error('[ clear() ] Abstract method definition, fail...');
         };
     
         return IAllControl;
@@ -55,10 +55,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IAllControl;
     } else {
         global._W.Interface.IAllControl = IAllControl;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

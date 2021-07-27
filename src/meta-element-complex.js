@@ -3,7 +3,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -16,10 +16,10 @@
     var MetaElement;
     var IPropertyCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                    = require("./utils");
-        MetaElement             = require("./meta-element");
-        IPropertyCollection     = require("./i-collection-property");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                    = require('./utils');
+        MetaElement             = require('./meta-element');
+        IPropertyCollection     = require('./i-collection-property');
 
     } else {
         util                    = global._W.Common.Util;
@@ -29,9 +29,9 @@
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaElement === "undefined") throw new Error("[MetaElement] module load fail...");
-    if (typeof IPropertyCollection === "undefined") throw new Error("[IPropertyCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaElement === 'undefined') throw new Error('[MetaElement] module load fail...');
+    if (typeof IPropertyCollection === 'undefined') throw new Error('[IPropertyCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -52,7 +52,7 @@
              * 요소 갯수
              * @member _W.Meta.ComplexElement#count
              */
-            Object.defineProperty(this, "count", 
+            Object.defineProperty(this, 'count', 
             {
                 get: function() { return __element.length; },
                 configurable: true,
@@ -63,7 +63,7 @@
              * 요소 목록
              * @member _W.Meta.ComplexElement#list
              */
-            Object.defineProperty(this, "list", 
+            Object.defineProperty(this, 'list', 
             {
                 get: function() { return __element; },
                 configurable: true,
@@ -78,9 +78,9 @@
         /** @override **/
         ComplexElement.prototype.getTypes  = function() {
                             
-            var type = ["ComplexElement"];
+            var type = ['ComplexElement'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };        
         
         // TODO::
@@ -99,10 +99,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = ComplexElement;
     } else {
         global._W.Meta.ComplexElement = ComplexElement;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

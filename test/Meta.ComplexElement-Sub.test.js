@@ -3,7 +3,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -16,9 +16,9 @@
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        require("../src/object-implement"); // _implements() : 폴리필
-        // util                = require("../src/utils");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        require('../src/object-implement'); // _implements() : 폴리필
+        // util                = require('../src/utils');
     } else {
         // util                = global._W.Common.Util;
     }
@@ -27,21 +27,21 @@
     // 3. 테스트 본문
     function run() {
     
-        console.log("---------------------------------------------------------------------------");
-        console.log("ComplexElement_Sub :: 설명 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('ComplexElement_Sub :: 설명 ');
         if (true) {
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
         
         //#################################################
         if (errorCount > 0) {
-            console.warn("Error Sub SUM : %dEA", errorCount);    
+            console.warn('Error Sub SUM : %dEA', errorCount);    
         } else {
-            console.log("===========================================================================");
-            console.log("단위 테스트 : OK");
+            console.log('===========================================================================');
+            console.log('단위 테스트 : OK');
         }
         
         return errorCount;
@@ -49,10 +49,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = run();
     } else {
         global._W.Test.ComplexElement_Sub = {run: run};
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

@@ -5,7 +5,7 @@
  */
 (function(global) {
 
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -20,11 +20,11 @@
     var PropertyCollection;
     var Observer;
     
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("util");
-        MetaElement         = require("./meta-element");
-        PropertyCollection  = require("./collection-property");
-        Observer            = require("./observer");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('util');
+        MetaElement         = require('./meta-element');
+        PropertyCollection  = require('./collection-property');
+        Observer            = require('./observer');
     } else {
         util                = global._W.Common.Util;
         MetaElement         = global._W.Meta.MetaElement;
@@ -34,10 +34,10 @@
 
     //==============================================================
     // 3. 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof MetaElement === "undefined") throw new Error("[MetaElement] module load fail...");
-    if (typeof PropertyCollection === "undefined") throw new Error("[PropertyCollection] module load fail...");
-    if (typeof Observer === "undefined") throw new Error("[Observer] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof MetaElement === 'undefined') throw new Error('[MetaElement] module load fail...');
+    if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
+    if (typeof Observer === 'undefined') throw new Error('[Observer] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -54,10 +54,10 @@
             _super.call(this, p_name);
 
             var __entity        = null;
-            var __type          = "string";
+            var __type          = 'string';
             var __size          = 0;
             var __default       = null;
-            var __caption       = "";
+            var __caption       = '';
             var __isNotNull     = false;
             var __isNullPass    = false;
             var __callback      = null;
@@ -70,7 +70,7 @@
             var __value         = null;
 
             // Entity 등록 & order(순서) 값 계산
-            if (p_entity && p_entity instanceof MetaElement && p_entity.instanceOf("Entity")) {
+            if (p_entity && p_entity instanceof MetaElement && p_entity.instanceOf('Entity')) {
                 __entity    = p_entity;
                 __order     = __entity.items.count === 0 ? __order : __entity.items[__entity.items.count - 1].order + __increase;
             }
@@ -78,25 +78,25 @@
             /** @private */
             this.__event    = new Observer(this, this);
 
-            Object.defineProperty(this, "__value", 
+            Object.defineProperty(this, '__value', 
             {
                 get: function() { return __value; },
                 set: function(newValue) { 
                     // 직접 입력하면 안됨
-                    // throw new Error("Only getter !! ");
+                    // throw new Error('Only getter !! ');
                     __value = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "entity", 
+            Object.defineProperty(this, 'entity', 
             {
                 get: function() { return __entity; },
                 set: function(newValue) { 
                     // TODO:: 자료종류를 검사해야함
-                    if (newValue && !(newValue instanceof MetaElement && newValue.instanceOf("Entity"))) {
-                        throw new Error("Only [entity] type 'Entity' can be added");
+                    if (newValue && !(newValue instanceof MetaElement && newValue.instanceOf('Entity'))) {
+                        throw new Error('Only [entity] type "Entity" can be added');
                     }
                     __entity = newValue;
                 },
@@ -104,52 +104,52 @@
                 enumerable: true
             });
 
-            Object.defineProperty(this, "type", 
+            Object.defineProperty(this, 'type', 
             {
                 get: function() { return __type; },
                 set: function(newValue) { 
                     // TODO:: 자료종류를 검사해야함
-                    if(typeof newValue !== "string") throw new Error("Only [type] type 'string' can be added");
+                    if(typeof newValue !== 'string') throw new Error('Only [type] type "string" can be added');
                     __type = newValue;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "size", 
+            Object.defineProperty(this, 'size', 
             {
                 get: function() { return __size; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "number") throw new Error("Only [size] type 'number' can be added");
+                    if(typeof newValue !== 'number') throw new Error('Only [size] type "number can be added');
                     __size = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "default", 
+            Object.defineProperty(this, 'default', 
             {
                 get: function() { return __default; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "undefined" && newValue !== null &&  ["string", "number", "boolean"].indexOf(typeof newValue) < 0) throw new Error("Only [default] type 'string | boolea | number' can be added");
+                    if(typeof newValue !== 'undefined' && newValue !== null &&  ['string', 'number', 'boolean'].indexOf(typeof newValue) < 0) throw new Error('Only [default] type "string | boolea | number" can be added');
                     __default = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "caption", 
+            Object.defineProperty(this, 'caption', 
             {
                 get: function() { return __caption; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "string") throw new Error("Only [caption] type 'string' can be added");
+                    if(typeof newValue !== 'string') throw new Error('Only [caption] type "string" can be added');
                     __caption = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "isNotNull", 
+            Object.defineProperty(this, 'isNotNull', 
             {
                 // get: function() { 
                 //     var isReturn;
@@ -158,36 +158,36 @@
                 // },
                 get: function() { return __isNotNull },
                 set: function(newValue) { 
-                    if(typeof newValue !== "boolean") throw new Error("Only [isNotNull] type 'boolean' can be added");
+                    if(typeof newValue !== 'boolean') throw new Error('Only [isNotNull] type "boolean" can be added');
                     __isNotNull = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "isNullPass", 
+            Object.defineProperty(this, 'isNullPass', 
             {
                 get: function() { return __isNullPass },
                 set: function(newValue) { 
-                    if(typeof newValue !== "boolean") throw new Error("Only [isNullPass] type 'boolean' can be added");
+                    if(typeof newValue !== 'boolean') throw new Error('Only [isNullPass] type "boolean" can be added');
                     __isNullPass = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
             
-            Object.defineProperty(this, "callback", 
+            Object.defineProperty(this, 'callback', 
             {
                 get: function() { return __callback; },
                 set: function(newValue) { 
-                    if(newValue !== null && typeof newValue !== "function") throw new Error("Only [callback] type 'function' can be added");
+                    if(newValue !== null && typeof newValue !== 'function') throw new Error('Only [callback] type "function" can be added');
                     __callback = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "constraints", 
+            Object.defineProperty(this, 'constraints', 
             {
                 get: function() { return __constraints; },
                 set: function(newValue) { 
@@ -199,8 +199,8 @@
 
                     // 유효성 검사
                     for(var i = 0; list.length > i; i++) {
-                        if (!(typeof list[i] === "function" || (typeof list[i].regex === "object" && typeof list[i].msg === "string"))) {
-                            throw new Error("Only [constraints] type 'function OR {regex:object, msg:string, ?code:number}' can be added");
+                        if (!(typeof list[i] === 'function' || (typeof list[i].regex === 'object' && typeof list[i].msg === 'string'))) {
+                            throw new Error('Only [constraints] type "function OR {regex:object, msg:string, ?code:number}" can be added');
                          }
                     }
                     __constraints = list;
@@ -209,7 +209,7 @@
                 enumerable: true
             });
 
-            Object.defineProperty(this, "codeType", 
+            Object.defineProperty(this, 'codeType', 
             {
                 get: function() { return __codeType; },
                 set: function(newValue) { __codeType = newValue; },
@@ -217,29 +217,29 @@
                 enumerable: true
             });
 
-            Object.defineProperty(this, "order", 
+            Object.defineProperty(this, 'order', 
             {
                 get: function() { return __order; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "number") throw new Error("Only [order] type 'number' can be added");
+                    if(typeof newValue !== 'number') throw new Error('Only [order] type "number" can be added');
                     __order = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "increase", 
+            Object.defineProperty(this, 'increase', 
             {
                 get: function() { return __increase; },
                 set: function(newValue) { 
-                    if(typeof newValue !== "number") throw new Error("Only [increase] type 'number' can be added");
+                    if(typeof newValue !== 'number') throw new Error('Only [increase] type "number" can be added');
                     __increase = newValue; 
                 },
                 configurable: true,
                 enumerable: true
             });
             
-            Object.defineProperty(this, "value", 
+            Object.defineProperty(this, 'value', 
             {
                 get: function() { 
                     var __val;
@@ -256,8 +256,8 @@
                     else __val = val; 
 
                     __val = __val === null ? '' : __val;  // null 등록 오류 처리
-                    if(["number", "string", "boolean"].indexOf(typeof __val) < 0) {
-                        throw new Error("Only [value] type 'number, string, boolean' can be added");
+                    if(['number', 'string', 'boolean'].indexOf(typeof __val) < 0) {
+                        throw new Error('Only [value] type "number, string, boolean" can be added');
                     }
                     this.__value = __val;
                     // 이벤트 발생
@@ -267,22 +267,22 @@
                 enumerable: true
             });
 
-            Object.defineProperty(this, "getter", 
+            Object.defineProperty(this, 'getter', 
             {
                 get: function() { return __getter; },
                 set: function(val) { 
-                    if(val !== null && typeof val !== "function") throw new Error("Only [getter] type 'function' can be added");
+                    if(val !== null && typeof val !== 'function') throw new Error('Only [getter] type "function" can be added');
                     __getter = val;
                 },
                 configurable: true,
                 enumerable: true
             });
 
-            Object.defineProperty(this, "setter", 
+            Object.defineProperty(this, 'setter', 
             {
                 get: function() { return __setter; },
                 set: function(val) { 
-                    if(val !== null && typeof val !== "function") throw new Error("Only [setter] type 'function' can be added");
+                    if(val !== null && typeof val !== 'function') throw new Error('Only [setter] type "function" can be added');
                     __setter = val;
                 },
                 configurable: true,
@@ -290,28 +290,28 @@
             });
 
             /** @event _W.Meta.Entity.Item#onChanged */
-            Object.defineProperty(this, "onChanged", {
+            Object.defineProperty(this, 'onChanged', {
                 enumerable: true,
                 configurable: true,
                 set: function(p_fn) {
-                    this.__event.subscribe(p_fn, "onChanged");
+                    this.__event.subscribe(p_fn, 'onChanged');
                 }
             });
             
 
             //---------------------------------------------------
             // 아이템 옵션속성 추가
-            if (typeof p_property === "object" ) {
+            if (typeof p_property === 'object' ) {
                 for(var prop in p_property) {
                     if (p_property.hasOwnProperty(prop) &&
-                    [   "entity", "type", "size", "default", "caption", 
-                        "isNotNull", "isNullPass", "callback", "constraints", 
-                        "codeType", "order", "increase", "value", "getter", "setter" 
+                    [   'entity', 'type', 'size', 'default', 'caption', 
+                        'isNotNull', 'isNullPass', 'callback', 'constraints', 
+                        'codeType', 'order', 'increase', 'value', 'getter', 'setter' 
                     ].indexOf(prop) > -1) {
                         this[prop] = p_property[prop];
                     }
                 }
-            } else if (["number", "string", "boolean"].indexOf(typeof p_property) > -1) {
+            } else if (['number', 'string', 'boolean'].indexOf(typeof p_property) > -1) {
                 this['value'] = p_property;
             }
 
@@ -322,15 +322,15 @@
          * @listens _W.Meta.Entity.Item#_onChanged
          */
         Item.prototype._onChanged = function() {
-            this.__event.publish("onChanged", this.value);
+            this.__event.publish('onChanged', this.value);
         };
 
         /** @override **/
         Item.prototype.getTypes  = function() {
                     
-            var type = ["Item"];
+            var type = ['Item'];
             
-            return type.concat(typeof _super !== "undefined" && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
+            return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
         
         /** @override */
@@ -339,24 +339,24 @@
             var clone = new Item(this.name);
             var constraints = [];
 
-            if (this.entity) clone["entity"]            = this.entity;  // 참조값
-            if (this.type) clone["type"]                = this.type;
-            if (this.size) clone["size"]                = this.size;
-            if (this.default) clone["default"]          = this.default;
-            if (this.caption) clone["caption"]          = this.caption;
-            if (this.isNotNull) clone["isNotNull"]      = this.isNotNull;
-            if (this.isNullPass) clone["isNullPass"]     = this.isNullPass;
-            if (this.callback) clone["callback"]        = this.callback;
+            if (this.entity) clone['entity']            = this.entity;  // 참조값
+            if (this.type) clone['type']                = this.type;
+            if (this.size) clone['size']                = this.size;
+            if (this.default) clone['default']          = this.default;
+            if (this.caption) clone['caption']          = this.caption;
+            if (this.isNotNull) clone['isNotNull']      = this.isNotNull;
+            if (this.isNullPass) clone['isNullPass']     = this.isNullPass;
+            if (this.callback) clone['callback']        = this.callback;
             for (var i = 0; this.constraints.length > i; i++) {
                 constraints.push(this.constraints[i]);
             }
-            if (this.constraints) clone["constraints"]  = constraints;
-            if (this.codeType) clone["codeType"]        = this.codeType;  // 참조값
-            if (this.order) clone["order"]              = this.order;
-            if (this.increase) clone["increase"]        = this.increase;
-            if (this.value) clone["value"]              = this.value;
-            if (this.getter) clone["getter"]            = this.getter;
-            if (this.setter) clone["setter"]            = this.setter;
+            if (this.constraints) clone['constraints']  = constraints;
+            if (this.codeType) clone['codeType']        = this.codeType;  // 참조값
+            if (this.order) clone['order']              = this.order;
+            if (this.increase) clone['increase']        = this.increase;
+            if (this.value) clone['value']              = this.value;
+            if (this.getter) clone['getter']            = this.getter;
+            if (this.setter) clone['setter']            = this.setter;
 
             return clone;
         };
@@ -374,8 +374,8 @@
 
             var constraint = {};
 
-            if (!(p_regex instanceof RegExp)) throw new Error("Only [p_regex] type 'RegExp' can be added");
-            if (!(typeof p_msg === "string")) throw new Error("Only [p_msg] type 'string' can be added");
+            if (!(p_regex instanceof RegExp)) throw new Error('Only [p_regex] type "RegExp" can be added');
+            if (!(typeof p_msg === 'string')) throw new Error('Only [p_msg] type "string" can be added');
 
             constraint.regex = p_regex;
             constraint.msg = p_msg;
@@ -392,11 +392,11 @@
         // Item.prototype.defineValueProperty = function(p_getter, p_setter) {
 
         //     // 타입검사 
-        //     if(typeof p_getter !== "undefined" && typeof p_getter !== "function") {
-        //         throw new Error("Only [p_getter] type 'function' can be added");
+        //     if(typeof p_getter !== 'undefined' && typeof p_getter !== 'function') {
+        //         throw new Error('Only [p_getter] type 'function' can be added');
         //     }
-        //     if(typeof p_setter !== "undefined" && typeof p_setter !== "function") {
-        //         throw new Error("Only [p_getter] type 'function' can be added");
+        //     if(typeof p_setter !== 'undefined' && typeof p_setter !== 'function') {
+        //         throw new Error('Only [p_getter] type 'function' can be added');
         //     }
 
         //     // 기본값 설정
@@ -404,7 +404,7 @@
         //     p_setter = p_setter || function(val) { this.__value = val; };
 
         //     /** @event */s
-        //     Object.defineProperty(this, "value", {
+        //     Object.defineProperty(this, 'value', {
         //         enumerable: true,
         //         configurable: true,
         //         get: p_getter,
@@ -422,18 +422,18 @@
         Item.prototype.valid = function(p_value, r_result) {
             // p_option = p_option || 1;   
             r_result.value = p_value;
-            r_result.msg = "";
-            r_result.code = "";
-            p_value = p_value || "";
+            r_result.msg = '';
+            r_result.code = '';
+            p_value = p_value || '';
             
             var result;
             var value = null;
 
-            // if (!(typeof p_value === "string")) throw new Error("Only [p_value] type 'string' can be added");
-            p_value = typeof p_value === "number" ? String(p_value) : p_value;  // number 형 변환
+            // if (!(typeof p_value === 'string')) throw new Error('Only [p_value] type 'string' can be added');
+            p_value = typeof p_value === 'number' ? String(p_value) : p_value;  // number 형 변환
 
             // 1. 기본값 얻기
-            value = p_value === null || typeof p_value === "undefined" ? this.default : p_value;
+            value = p_value === null || typeof p_value === 'undefined' ? this.default : p_value;
             value = value.trim();
 
             // 2-1. 통과조건 검사
@@ -446,7 +446,7 @@
             }
             // 2-2. 실패조건 검사
             if (this.isNotNull === true && this.constraints.length === 0 && value.length === 0) {
-                r_result.msg   = this.caption+"("+this.name+")은  공백을 입력할 수 없습니다.";
+                r_result.msg   = this.caption+'('+this.name+')은  공백을 입력할 수 없습니다.';
                 r_result.code  = 0;
                 return false;
             }
@@ -454,7 +454,7 @@
             // 2-3. 제약조건 검사
             for(var i = 0; this.constraints.length > i; i++) {
 
-                if (typeof this.constraints[i] === "function") {
+                if (typeof this.constraints[i] === 'function') {
                     return this.constraints[i].call(this, this, p_value, r_result);     // 함수형 제약조건
                 } else {
                     result = p_value.match(this.constraints[i].regex);
@@ -472,7 +472,7 @@
             // if ((p_option === 1 && this.isNotNull === true && p_value.trim().length <= 0) || 
             //     (p_option === 2 && p_value.trim().length <= 0)) {
                 
-            //     r_result.msg   = this.caption+"("+this.name+")은  공백을 입력할 수 없습니다.";
+            //     r_result.msg   = this.caption+'('+this.name+')은  공백을 입력할 수 없습니다.';
             //     r_result.code  = 0;
             //     return false;
             // }
@@ -497,11 +497,11 @@
             
             this.elementType = Item;    // 기본 컬렉션 타입
             
-            Object.defineProperty(this, "itemType", 
+            Object.defineProperty(this, 'itemType', 
             {
                 get: function() { return this.elementType; },
                 set: function(newValue) { 
-                    if (!(new newValue() instanceof Item)) throw new Error("Only [Item] type 'Item' can be added");
+                    if (!(new newValue() instanceof Item)) throw new Error('Only [Item] type "Item" can be added');
                     this.elementType = newValue; 
                 },
                 configurable: true,
@@ -537,9 +537,9 @@
             var item;
             var property = {};
 
-            if (typeof p_name !== "string") throw new Error("There is no required value [p_name].");
-            if(["number", "string", "boolean"].indexOf(typeof p_value) < 0) {
-                throw new Error("Only [value] type 'number, string, boolean' can be added");
+            if (typeof p_name !== 'string') throw new Error('There is no required value [p_name].');
+            if(['number', 'string', 'boolean'].indexOf(typeof p_value) < 0) {
+                throw new Error('Only [value] type "number, string, boolean" can be added');
             }
             
             property = { value: p_value };
@@ -577,7 +577,7 @@
             var i_value;
             var i_name;
 
-            if (typeof p_object === "string") {      
+            if (typeof p_object === 'string') {      
                 i_name  = p_object;
                 i_value = new this.itemType(i_name, this._onwer);
             } else if (p_object instanceof this.itemType) {
@@ -586,10 +586,10 @@
                 i_value = p_object.clone();
                 i_value.entity = this._onwer;
             } else {
-                throw new Error("string | Item object [p_object].");
+                throw new Error('string | Item object [p_object].');
             }
 
-            if (typeof i_name === "undefined") throw new Error("There is no required value [p_name].");
+            if (typeof i_name === 'undefined') throw new Error('There is no required value [p_name].');
 
             return _super.prototype.add.call(this, i_name, i_value);
         };
@@ -611,7 +611,7 @@
             _super.call(this, p_onwer);
 
             if (p_baseCollection && !(p_baseCollection instanceof ItemCollection)) {
-                throw new Error("Error!! ItemCollection object [p_baseCollection].");
+                throw new Error('Error!! ItemCollection object [p_baseCollection].');
             }
             
             /** @protected */
@@ -647,11 +647,11 @@
                 if (p_object.entity === null) p_object.entity = this._onwer;
                 i_name = p_object.name;
                 i_value = p_object;
-            } else if (typeof p_object === "string") {
+            } else if (typeof p_object === 'string') {
                 i_name = p_object;
                 i_value = new this.itemType(i_name, this._onwer);
             } else {
-                throw new Error("p_object string | Item instance param request fail...");
+                throw new Error('p_object string | Item instance param request fail...');
             }
 
             // TODO:: 이름 충돌검사
@@ -685,8 +685,8 @@
          * @param {*} p_entity 
          */
         ItemViewCollection.prototype.addEntity  = function(p_entity) {
-            if (typeof p_entity === "undefined" && !(p_entity instanceof MetaElement && p_entity.instanceOf("Entity"))) {
-                throw new Error("Only [p_entity] type 'Entity' can be added");
+            if (typeof p_entity === 'undefined' && !(p_entity instanceof MetaElement && p_entity.instanceOf('Entity'))) {
+                throw new Error('Only [p_entity] type "Entity" can be added');
             }
 
             for (var i = 0; p_entity.items.count > i; i++) {
@@ -701,7 +701,7 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports.Item                         = Item;
         module.exports.ItemCollection               = ItemCollection;
         module.exports.ItemViewCollection           = ItemViewCollection;
@@ -714,4 +714,4 @@
         global._W.Meta.Entity.ItemTableCollection   = ItemTableCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

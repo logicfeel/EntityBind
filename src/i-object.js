@@ -3,7 +3,7 @@
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -31,7 +31,7 @@
          * 객체타입 얻기
          */
         IObject.prototype.getTypes  = function() {
-            throw new Error("[ getTypes() ] Abstract method definition, fail...");
+            throw new Error('[ getTypes() ] Abstract method definition, fail...');
         };
         
         /**
@@ -39,7 +39,7 @@
          * @returns {Boolean}
          */
         IObject.prototype.instanceOf  = function() {
-            throw new Error("[ instanceOf() ] Abstract method definition, fail...");
+            throw new Error('[ instanceOf() ] Abstract method definition, fail...');
         };
     
         return IObject;
@@ -47,10 +47,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IObject;
     } else {
         global._W.Interface.IObject = IObject;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

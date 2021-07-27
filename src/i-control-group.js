@@ -3,7 +3,7 @@
  */
 (function(global) {
     
-    "use strict";
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -31,7 +31,7 @@
          * @abstract
          */
         IGroupControl.prototype.merge  = function() {
-            throw new Error("[ merge() ] Abstract method definition, fail...");
+            throw new Error('[ merge() ] Abstract method definition, fail...');
         };
 
         /**
@@ -39,7 +39,7 @@
          * @abstract
          */
         IGroupControl.prototype.copy  = function() {
-            throw new Error("[ copyTo() ] Abstract method definition, fail...");
+            throw new Error('[ copyTo() ] Abstract method definition, fail...');
         };
 
         return IGroupControl;
@@ -47,10 +47,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = IGroupControl;
     } else {
         global._W.Interface.IGroupControl = IGroupControl;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

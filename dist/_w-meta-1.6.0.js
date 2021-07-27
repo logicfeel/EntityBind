@@ -1269,6 +1269,13 @@ if (typeof Array.isArray === "undefined") {
 
 
             /**
+             * 서비스(svc)에서 bindModel에 접근 지시자
+             * @member
+             * @type {BindModel}
+             */
+            this.bindModel  = null;
+
+            /**
              * 속성(아이템)
              * @member
              * @type {Object.<String, IItem | String | Boolean | Number>}
@@ -2174,7 +2181,9 @@ if (typeof Array.isArray === "undefined") {
      //---------------------------------------
      var PropertyObjectCollection  = (function (_super) {
         /**
-         * @class
+         * 객체 프로퍼티 컬렉션
+         * @constructs _W.Collection.PropertyObjectCollection
+         * @extends _W.Collection.ProperyCollection
          * @param {*} p_onwer 소유자 
          */
         function PropertyObjectCollection(p_onwer) {
@@ -2246,8 +2255,10 @@ if (typeof Array.isArray === "undefined") {
      //---------------------------------------
      var PropertyFunctionCollection  = (function (_super) {
         /**
-         * @class
+         * 함수 프로퍼티 컬렉션
+         * @constructs _W.Collection.PropertyFunctionCollection
          * @param {*} p_onwer 소유자 
+         * @extends _W.Collection.ProperyCollection
          */
         function PropertyFunctionCollection(p_onwer) {
             _super.call(this, p_onwer);
@@ -3712,7 +3723,7 @@ if (typeof Array.isArray === "undefined") {
     var Row  = (function (_super) {
         /**
          * 로우
-         * @constructs _W.Meta.Enity.Row
+         * @constructs _W.Meta.Entity.Row
          * @extends _W.Collection.PropertyCollection
          */
         function Row(p_entity) {
@@ -5588,6 +5599,8 @@ if (typeof Array.isArray === "undefined") {
 
         /** 초기화 */
         BindModel.prototype.init = function() {
+            if (this.isLog) console.log("call :: BindModel.init()");
+            
             this.preRegister.call(this, this);
             if (this.preCheck.call(this, this)) {
                 this.preReady.call(this, this)
@@ -5979,13 +5992,18 @@ if (typeof Array.isArray === "undefined") {
                 this.onExecuted = p_service["onExecuted"];  // 복수 등록
             }
             
-            // 속성(prop)을 아이템으로 로딩 ("__"시작이름 제외)
-            if (p_isLoadProp === true) {
-                this.loadProp();
+            // service  등록
+            if (typeof p_service["service"] === "object") {
+                this.service = p_service["service"];
             }
 
             // 서비스에 onwer bindModel 설정
             p_service.bindModel = this;
+
+            // 속성(prop)을 아이템으로 로딩 ("__"시작이름 제외)
+            if (p_isLoadProp === true) {
+                this.loadProp();
+            }
         };
 
         return BindModel;
@@ -6325,6 +6343,8 @@ if (typeof Array.isArray === "undefined") {
          * 실행 
          */
         BindCommandAjax.prototype.execute = function() {
+            if (this._model.isLog) console.log("run : BindCommandAjax.execute()");
+
             this._onExecute(this);  // "실행 시작" 이벤트 발생
             if (this._execValid()) this._execBind();
         };

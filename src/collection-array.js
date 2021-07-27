@@ -2,7 +2,8 @@
  * namespace _W.Collection.ArrayCollection
  */
 (function(global) {
-    "use strict";
+    
+    'use strict';
 
     //==============================================================
     // 1. 모듈 네임스페이스 선언
@@ -14,9 +15,9 @@
     var util;
     var BaseCollection;
 
-    if (typeof module === "object" && typeof module.exports === "object") {     
-        util                = require("./utils");
-        BaseCollection      = require("./collection-base");
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
+        util                = require('./utils');
+        BaseCollection      = require('./collection-base');
     } else {
         util                = global._W.Common.Util;
         BaseCollection      = global._W.Collection.BaseCollection;
@@ -24,8 +25,8 @@
 
     //==============================================================
     // 3. 모듈 의존성 검사
-    if (typeof util === "undefined") throw new Error("[util] module load fail...");
-    if (typeof BaseCollection === "undefined") throw new Error("[BaseCollection] module load fail...");
+    if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof BaseCollection === 'undefined') throw new Error('[BaseCollection] module load fail...');
 
     //==============================================================
     // 4. 모듈 구현    
@@ -76,10 +77,10 @@
 
             this._onChanging();                     // 이벤트 발생 : 변경전
 
-            if (typeof p_value === "undefined") throw new Error("p_value param request fail...");
+            if (typeof p_value === 'undefined') throw new Error('p_value param request fail...');
             if (this.elementType !== null && !(p_value instanceof this.elementType)) {
                 typeName = this.elementType.constructor.name;
-                throw new Error("Only [" + typeName + "] type instances can be added");
+                throw new Error('Only [' + typeName + '] type instances can be added');
             }
         
             this._element.push(p_value);
@@ -119,10 +120,10 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
-    if (typeof module === "object" && typeof module.exports === "object") {     
+    if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports = ArrayCollection;
     } else {
         global._W.Collection.ArrayCollection = ArrayCollection;
     }
 
-}(typeof module === "object" && typeof module.exports === "object" ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
