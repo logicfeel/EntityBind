@@ -6575,14 +6575,14 @@ if (typeof Array.isArray === "undefined") {
          * @example
          * var bm = new BindModelAjax();
          * ...
-         * bm.listSelector();           // 전체 셀렉터 목록 리턴
-         * bm.listSelector([], true);   // 전체 셀렉터 목록 리턴 및 로그 출력
-         * bm.listSelector('list');     // 지정한 단일 command 셀렉터 검사
-         * bm.listSelector(['list', 'read'], true);         // 지정한 복수 command 셀렉터 검사
-         * bm.listSelector([], true, secondCollection);     // 검사 대상 컬렉션 변경 (this.items)
+         * bm.validSelector();           // 전체 셀렉터 목록 리턴
+         * bm.validSelector([], true);   // 전체 셀렉터 목록 리턴 및 로그 출력
+         * bm.validSelector('list');     // 지정한 단일 command 셀렉터 검사
+         * bm.validSelector(['list', 'read'], true);         // 지정한 복수 command 셀렉터 검사
+         * bm.validSelector([], true, secondCollection);     // 검사 대상 컬렉션 변경 (this.items)
          * 
          */
-         BindModelAjax.prototype.listSelector  = function(p_cmdNames, p_isLog, p_collection) {
+         BindModelAjax.prototype.validSelector  = function(p_cmdNames, p_isLog, p_collection) {
             
             var collection = p_collection || this.items;    // TODO: import 및 검사 추가
             var obj;

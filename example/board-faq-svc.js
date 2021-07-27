@@ -34,7 +34,7 @@
          * @param {String} p_suffix 셀렉터 접미사
          * @example
          * // 1단계 : 본문에 관련 스크립트 태그 삽입 (handlebars.js, _w-meta.*.js, base-svc.js, faq-svc.js)
-         * // 2단계 : 사용할 command 기준으로 items들을 셀렉터 설정 (mapping 참조, listSelector() 검사)
+         * // 2단계 : 사용할 command 기준으로 items들을 셀렉터 설정 (mapping 참조, validSelector() 검사)
          * // 3단계 : 스크립트 로딩 (하단은 목록 예시)
          * 
          * var faq = new BindModelAjax(new BoardFaqService());
