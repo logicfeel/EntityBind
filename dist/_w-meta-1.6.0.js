@@ -6593,7 +6593,7 @@ if (typeof Array.isArray === 'undefined') {
         /**
          * 셀렉터 검사 결과 얻기
          * @param {?(String | Arrary<String>)} p_cmdNames command 명칭들
-         * @param {?Boolean} p_isLog 
+         * @param {?Boolean} p_isLog 기본값 true
          * @param {?ItemCollecton} p_collection 지정된 컬렉션에서 검사한다.
          * @return {Arrary<Selector>}
          * @example
@@ -6608,6 +6608,8 @@ if (typeof Array.isArray === 'undefined') {
          */
          BindModelAjax.prototype.validSelector  = function(p_cmdNames, p_isLog, p_collection) {
             
+            p_isLog = typeof p_isLog === 'undefined' || true;
+
             var collection = p_collection || this.items;    // TODO: import 및 검사 추가
             var obj;
             var selector;
