@@ -1,7 +1,8 @@
 /**
- * namespace _W.Service.Page
+ * namespace _W.Service.Admin
  */
  (function(global) {
+     
     "use strict";
 
     //==============================================================
@@ -27,7 +28,7 @@
         /**
          * 상위 서비스 클래스
          * 인터페이스를 상속함 (구현) 추상 구현의 이슈로 구현이 아니고 상속함
-         * @constructs _W.Service.BaseService
+         * @constructs _W.Service.Admin.BaseService
          * @extends _W.Interface.IBindModel
          * @param {String} p_suffix 
          */
@@ -162,7 +163,7 @@
     var PageView  = (function () {
         /**
          * 페이지 처리 클래스
-         * @constructs _W.Service.PageView
+         * @constructs _W.Service.Admin.PageView
          * @param {*} p_instance 
          * @param {*} p_page_size 
          * @param {*} p_page_group 

@@ -1,4 +1,5 @@
 (function(global) {
+
     "use strict";
    
     //==============================================================
@@ -19,8 +20,8 @@
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BaseService === "undefined") throw new Error("[BaseService] module load fail...");
     if (typeof BindCommandAjax === "undefined") throw new Error("[BindCommandAjax] module load fail...");
-    if (typeof PageView === "undefined") throw new Error("[PageView] module load fail...");     // basee에 선언됨
-    if (typeof Handlebars === "undefined") throw new Error("[Handlebars] module load fail..."); // 전역에 선언됨
+    // if (typeof PageView === "undefined") throw new Error("[PageView] module load fail...");     // basee에 선언됨
+    // if (typeof Handlebars === "undefined") throw new Error("[Handlebars] module load fail..."); // 전역에 선언됨
 
     //==============================================================
     // 4. 모듈 구현    
@@ -29,8 +30,8 @@
     var BoardFaqService  = (function (_super) {
         /**
          * FAQ 게시판 서비스
-         * @constructs _W.Service.BoardFaqService
-         * @extends _W.Service.BaseService
+         * @constructs _W.Service.Admin.BoardFaqService
+         * @extends _W.Service.Admin.BaseService
          * @param {String} p_suffix 셀렉터 접미사
          * @example
          * // 1단계 : 본문에 관련 스크립트 태그 삽입 (handlebars.js, _w-meta.*.js, base-svc.js, faq-svc.js)
@@ -40,8 +41,8 @@
          * var faq = new BindModelAjax(new BoardFaqService());
          *    
          * // 속성 설정
-         * faq.prop["__listUrl"] = "FAQ_Frm.asp";
-         * faq.prop["__isGetLoad"] = false;
+         * faq.prop["__listUrl"]    = "FAQ_Frm.asp";
+         * faq.prop["__isGetLoad"]  = false;
          * faq.items["page_size"].value = 3;
          * 
          * // 이벤트 바인딩
@@ -101,7 +102,6 @@
              * @property {Object} rank_it.selector #m-rank_it : value
              * @property {ItemDOM} create_dt 등록일자
              * @property {Object} create_dt.selector ##m-create_dt : value
-             * 
              * @example
              * // prop 속성에만 연결됨, 이름규칙 '__'
              * faq.prop["__isGetLoad"] = false;
@@ -165,7 +165,6 @@
              * @property {Function} list.onExecute 목록조회 실행전 콜백 
              * @property {Function} list.cbOutput 목록조회 출력 콜랙
              * @property {Function} list.cbEnd 목록조회 완료 콜백
-             * 
              * @example
              * faq.create.execute();        // 등록 명령 처리
              * faq.create.bind.list         // 등록시 바인딩 목록
@@ -342,7 +341,7 @@
          */
         BoardFaqService.prototype.preRegister = function(p_bindModel) {
             BaseService.prototype.preRegister.call(this, p_bindModel);
-            console.log("----------------------------------");
+            if (this.isLog) console.log("______________ preRegister()");
             
             // 초기값 설정 : 서버측 > 파라메터 > 내부(기본값)
             p_bindModel.items["keyword"].value = decodeURI(getArgs("", getParamsToJSON(location.href).keyword ));
@@ -369,7 +368,7 @@
          */
         BoardFaqService.prototype.preCheck = function(p_bindModel) {
             if (BaseService.prototype.preCheck.call(this, p_bindModel)) {
-                if (true || p_bindModel.checkSelector()) console.log("preCheck : 선택자 검사 => 'Success' ");
+                if (this.isLog) if (true || p_bindModel.checkSelector()) console.log("______________ preCheck : 선택자 검사 => 'Success' ");
             }
             return true;
         };
@@ -381,7 +380,7 @@
          */
         BoardFaqService.prototype.preReady = function(p_bindModel) {
             BaseService.prototype.preReady.call(this, p_bindModel);
-            console.log("__________preReady__________");
+            if (this.isLog) console.log("______________ preReady()");
         };
 
         return BoardFaqService;
