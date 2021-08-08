@@ -52,7 +52,10 @@
             var __baseEntity;
             // var __propagation   = true;
             
-            /** @private */
+            /** 
+             * 이벤트 (옵서버)
+             * @private 
+             */
             this.__event    = new Observer(this, this);
 
             // Protected
@@ -120,17 +123,17 @@
             
             return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
-
-        /** @event */
+        
         /**
+         * 실행전 이벤트
          * @listens _W.Meta.Bind.BaseBind#_onExecute
          */
         BaseBind.prototype._onExecute = function(p_bindCommand) {
             this.__event.publish('execute', p_bindCommand);
         };
 
-        /** @event */
         /**
+         * 실행후 이벤트
          * @listens _W.Meta.Bind.BaseBind#_onExecuted
          */
         BaseBind.prototype._onExecuted = function(p_bindCommand, p_result) {

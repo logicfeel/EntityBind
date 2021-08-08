@@ -83,6 +83,10 @@
              */
             this._baseEntity = p_baseEntity;    // 최상위 설정
 
+            /**
+             * 출력 컬렉션
+             * @protected
+             */
             this._output = new EntityViewCollection(this, this._baseEntity);
             this.addOutput('output');
 
@@ -107,8 +111,10 @@
                 throw new Error('Only [p_baseEntity] type "Entity" can be added');
             }
             
-
-            
+            /**
+             * 이벤트 전파 유무 (기본값 = true)
+             * @member {Boolean} _W.Meta.Bind.BindCommand#eventPropagation 
+             */
             Object.defineProperty(this, 'eventPropagation', {
                 enumerable: true,
                 configurable: true,
@@ -119,6 +125,10 @@
                 get: function() { return __propagation; }
             }); 
             
+            /**
+             * 검사대상 EntityView
+             * @member {EntityView} _W.Meta.Bind.BindCommand#valid 
+             */
             Object.defineProperty(this, 'valid', 
             {
                 get: function() { return __valid; },
@@ -130,7 +140,10 @@
                 enumerable: true
             });
 
-
+            /**
+             * 바인드 EntityView
+             * @member {EntityView} _W.Meta.Bind.BindCommand#bind 
+             */
             Object.defineProperty(this, 'bind', 
             {
                 get: function() { return __bind; },
@@ -142,6 +155,10 @@
                 enumerable: true
             });
 
+            /**
+             * 기타 EntityView (기타의 용도 : validSelector 외)
+             * @member {EntityView} _W.Meta.Bind.BindCommand#etc 
+             */
             Object.defineProperty(this, 'etc', 
             {
                 get: function() { return __etc; },
@@ -153,7 +170,11 @@
                 enumerable: true
             });
             
-
+            /**
+             * 출력(output) 특성
+             * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만 
+             * @member {Number} _W.Meta.Bind.BindCommand#outputOption 
+             */
             Object.defineProperty(this, 'outputOption', 
             {
                 get: function() { return __outputOption; },
@@ -165,7 +186,11 @@
                 configurable: true,
                 enumerable: true
             });
-            
+
+            /**
+             * 검사(valid) 전 콜백
+             * @member {Function} _W.Meta.Bind.BindCommand#cbValid 
+             */
             Object.defineProperty(this, 'cbValid', 
             {
                 get: function() { return __cbValid; },
@@ -177,6 +202,10 @@
                 enumerable: true
             });
 
+            /**
+             * 바인드(bind) 전 콜백
+             * @member {Function} _W.Meta.Bind.BindCommand#cbBind
+             */
             Object.defineProperty(this, 'cbBind', 
             {
                 get: function() { return __cbBind; },
@@ -188,6 +217,10 @@
                 enumerable: true
             });
 
+            /**
+             * 바인드(bind) 결과 콜백 (주요 : 회신자료의 가공의 역활)
+             * @member {Function} _W.Meta.Bind.BindCommand#cbValid 
+             */
             Object.defineProperty(this, 'cbResult', 
             {
                 get: function() { return __cbResult; },
@@ -199,6 +232,10 @@
                 enumerable: true
             });
 
+            /**
+             * 바인드 결과 출력 콜백 (주요: 목록의 출력)
+             * @member {Function} _W.Meta.Bind.BindCommand#cbOutput 
+             */
             Object.defineProperty(this, 'cbOutput', 
             {
                 get: function() { return __cbOutput; },
@@ -209,7 +246,11 @@
                 configurable: true,
                 enumerable: true
             });
-
+            
+            /**
+             * 바인드 처리 종료 후 콜백 (주요: 다른 이벤트 또는 명령과의 연결)
+             * @member {Function} _W.Meta.Bind.BindCommand#cbEnd 
+             */
             Object.defineProperty(this, 'cbEnd', 
             {
                 get: function() { return __cbEnd; },
@@ -228,25 +269,35 @@
             this._symbol = this._symbol.concat(['_output', 'outputOption', 'cbOutput']);
             this._symbol = this._symbol.concat(['execute', '_onExecute', '_onExecuted', 'getTypes', 'add', 'addItem', 'setItem']);
             this._symbol = this._symbol.concat(['addOutput']);
-
-
         }
         util.inherits(BindCommand, _super);
     
 
-        /** @virtual */
+        /** 
+         * 실행 ( valid >> bind >> result >> output >> end )
+         * @virtual 
+         */
         BindCommand.prototype.execute = function() {
             throw new Error('[ execute() ] Abstract method definition, fail...');
         };
 
-        /** @override */
+        /**
+         * BindCommand의 실행 전 이벤트 
+         * @override 
+         * @param {BindCommand} p_bindCommand 
+         */
         BindCommand.prototype._onExecute = function(p_bindCommand) {
             _super.prototype._onExecute.call(this, p_bindCommand);               // 자신에 이벤트 발생
             
             if (this.eventPropagation) this._model._onExecute(p_bindCommand);    // 모델에 이벤트 추가 발생
         };
 
-        /** @override */
+        /**
+         * BindCommand의 실행 후 이벤트 
+         * @override 
+         * @param {BindCommand} p_bindCommand 
+         * @param {Object} p_result 
+         */
         BindCommand.prototype._onExecuted = function(p_bindCommand, p_result) {
             _super.prototype._onExecuted.call(this, p_bindCommand, p_result);
             if (this.eventPropagation) this._model._onExecuted(p_bindCommand, p_result);
@@ -328,7 +379,7 @@
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
          * @param {string} p_name
          * @param {object | string | number | boolean} p_value
-         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
+         * @param {?(array<string> | string)} p_entities <선택> 추가할 아이템 명령
          */
         BindCommand.prototype.addItem = function(p_name, p_value, p_entities) {
 
@@ -348,7 +399,7 @@
          * 예시>
          * e.read.setEntity(['idx', 'addr'], 'valid');
          * @param {string | array} p_names 
-         * @param {?string | array<string>} p_entities 
+         * @param {?(string | array<string>)} p_entities 
          */
         BindCommand.prototype.setItem = function(p_names, p_entities) {
 
@@ -376,10 +427,11 @@
         };
 
         /**
-         * 예시>
+         * 대상엔티티에서 해제
+         * @param {string | array} p_names 해제할 아이템명
+         * @param {?(string | array<string>)} p_entities 'valid', 'bind', 'output' 해제할 위치 지정 
+         * @example
          * e.read.release(['idx', 'addr'], 'valid');
-         * @param {string | array} p_names 
-         * @param {?string | array<string>} p_entities 
          */
         BindCommand.prototype.release = function(p_names, p_entities) {
 
@@ -442,6 +494,10 @@
             }
         };
 
+        /**
+         * 출력에 사용할 엔티티를 추가한다.
+         * @param {String} p_name 
+         */
         BindCommand.prototype.addOutput = function(p_name) {
 
             // 유효성 검사

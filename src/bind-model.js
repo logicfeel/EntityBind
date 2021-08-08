@@ -95,6 +95,10 @@
             //     throw new Error('Only [p_objectDI] type "IBindModel" can be added');
             // }
             
+            /**
+             * 바인드모델 속성 (내부 : __이름)
+             * @member {PropertyCollection} _W.Meta.Bind.BindModel#prop
+             */
             Object.defineProperty(this, 'prop', 
             {
                 get: function() { return __prop; },
@@ -106,6 +110,10 @@
                 enumerable: true
             });
 
+            /**
+             * 바인드모델 함수 (내부함수 + 노출함수)
+             * @member {PropertyFunctionCollection} _W.Meta.Bind.BindModel#fn
+             */
             Object.defineProperty(this, 'fn', 
             {
                 get: function() { return __fn; },
@@ -117,6 +125,10 @@
                 enumerable: true
             });
 
+            /**
+             * 바인드속성의 매핑한다.
+             * @member {PropertyCollection} _W.Meta.Bind.BindModel#mapping
+             */
             Object.defineProperty(this, 'mapping', 
             {
                 get: function() { return __mapping; },
@@ -128,6 +140,10 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템 타입을 설정한다.
+             * @member {Item} _W.Meta.Bind.BindModel#itemType
+             */
             Object.defineProperty(this, 'itemType', 
             {
                 get: function() { return __itemType; },
@@ -140,6 +156,10 @@
                 enumerable: true
             });
 
+            /**
+             * valid 에서 실패시 콜백
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbFail
+             */
             Object.defineProperty(this, 'cbFail', 
             {
                 get: function() { return __cbFail; },
@@ -151,6 +171,10 @@
                 enumerable: true
             });
 
+            /**
+             * valid 에서 오류발생시 콜백
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbError
+             */
             Object.defineProperty(this, 'cbError', 
             {
                 get: function() { return __cbError; },
@@ -162,6 +186,10 @@
                 enumerable: true
             });
 
+            /**
+             * 검사(valid)시 기본 콜백 (cbValid 콜백함수가 없을 경우)
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseValid
+             */
             Object.defineProperty(this, 'cbBaseValid', 
             {
                 get: function() { return __cbBaseValid; },
@@ -173,6 +201,10 @@
                 enumerable: true
             });
 
+            /**
+             * 바인드(valid)시 기본 콜백 (cbBind 콜백함수가 없을 경우)
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseBind
+             */
             Object.defineProperty(this, 'cbBaseBind', 
             {
                 get: function() { return __cbBaseBind; },
@@ -184,6 +216,10 @@
                 enumerable: true
             });
             
+            /**
+             * 바인드 결과 수신 기본 콜백 (cbResult 콜백함수가 없을 경우)
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseResult
+             */
             Object.defineProperty(this, 'cbBaseResult', 
             {
                 get: function() { return __cbBaseResult; },
@@ -195,6 +231,10 @@
                 enumerable: true
             });
 
+            /**
+             * 출력 기본 콜백 (cbOutput 콜백함수가 없을 경우)
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseOutput
+             */
             Object.defineProperty(this, 'cbBaseOutput', 
             {
                 get: function() { return __cbBaseOutput; },
@@ -206,6 +246,10 @@
                 enumerable: true
             });
 
+            /**
+             * 실행완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseEnd
+             */
             Object.defineProperty(this, 'cbBaseEnd', 
             {
                 get: function() { return __cbBaseEnd; },
@@ -226,7 +270,6 @@
             this._symbol = this._symbol.concat(['getTypes', 'init', 'preRegister', 'preCheck', 'preReady', 'addEntity']);
             this._symbol = this._symbol.concat(['add', 'addItem', 'loadProp', 'setMapping', 'preReady', 'addEntity']);
             this._symbol = this._symbol.concat(['addCommand', 'setService']);
-            
         }
         util.inherits(BindModel, _super);
 
@@ -241,7 +284,10 @@
             return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** 초기화 */
+        /** 
+         * 초기화  
+         * 내부적으로 preRegister() >>  preCheck() >> preRedy() 실행한다.
+         */
         BindModel.prototype.init = function() {
             if (this.isLog) console.log('call :: BindModel.init()');
             
@@ -274,6 +320,11 @@
             return this.__preReady.call(this, p_this);
         };
         
+        /**
+         * 사용할 엔티티를 추가한다. (확장시 사용)
+         * @param {String} p_name 
+         * @returns 
+         */
         BindModel.prototype.addEntity = function(p_name) {
 
             var entity;
@@ -356,7 +407,6 @@
          * @param {object | String | number | boolean} p_obj 
          * @param {?(array<string> | string)} p_entities <선택> 추가할 아이템 명령
          */
-// POINT::
         BindModel.prototype.addItem = function(p_name, p_obj, p_cmds, p_entities) {
 
             var item;
@@ -500,9 +550,9 @@
         /**
          * 명령 추가 (추상클래스) 상속하여 구현해야 함
          * @abstract
-         * @param {*} p_name 
-         * @param {*} p_option 
-         * @param {*} p_entities 
+         * @param {String} p_name 
+         * @param {?Number} p_option 
+         * @param {?Entity} p_entities 
          */
         BindModel.prototype.addCommand  = function(p_name, p_option, p_entities) {
 
@@ -510,9 +560,9 @@
         };
 
         /**
-         * 서비스 설정
-         * @param {*} p_service 
-         * @param {*} p_isLoadProp 
+         * 서비스를 설정한다.
+         * @param {IBindModel} p_service 서비스객체
+         * @param {?Boolean} p_isLoadProp 서비스 내의 prop 를 item 으로 로딩힌다. (기본값: true)
          */
         BindModel.prototype.setService  = function(p_service, p_isLoadProp) {
 

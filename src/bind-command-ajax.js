@@ -55,9 +55,9 @@
          * 바인드 명령 Ajax 
          * @constructs _W.Meta.Bind.BindCommandAjax
          * @extends _W.Meta.Bind.BindCommand
-         * @param {*} p_bindModel 
-         * @param {*} p_outputOption 
-         * @param {*} p_baseEntity 
+         * @param {BindModel} p_bindModel 
+         * @param {Number} p_outputOption 
+         * @param {Entity} p_baseEntity 
          */
         function BindCommandAjax(p_bindModel, p_outputOption, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
@@ -72,14 +72,22 @@
                 error: null,        // 실패 콜백
                 complete: null      // 완료 콜백
             };
-
+            
+            /**
+             * ajaxSetup 설정값 (jquery의 ajaxSetup 과 동일)
+             * @member {Object} _W.Meta.Bind.BindCommandAjax#ajaxSetup 
+             */
             Object.defineProperty(this, 'ajaxSetup', 
             {
                 get: function() { return __ajaxSetup; },
                 configurable: true,
                 enumerable: true
             });
-
+            
+            /**
+             * ajaxSetup.url 의 값에 설정한다.
+             * @member {String} _W.Meta.Bind.BindCommandAjax#url 
+             */
             Object.defineProperty(this, 'url', 
             {
                 get: function() { return __ajaxSetup.url; },
@@ -101,7 +109,10 @@
         }
         util.inherits(BindCommandAjax, _super);
 
-        /** @virtual */
+        /** 
+         * valid.items.. 검사한다.
+         * @protected
+         */
         BindCommandAjax.prototype._execValid = function() {
             
             var result = {};     // 오류 참조 변수

@@ -120,6 +120,10 @@
             this._baseEntity.items.itemType = this.itemType;            // base 엔티티 타입 변경
             this.items                      = this._baseEntity.items;   // 참조 추가
 
+            /**
+             * 바인딩 기본 ajaxSetup 을 설정한다.
+             * @member {Object} _W.Meta.Bind.BindModelAjax#baseAjaxSetup
+             */
             Object.defineProperty(this, 'baseAjaxSetup', 
             {
                 get: function() { return __baseAjaxSetup; },
@@ -127,6 +131,10 @@
                 enumerable: true
             });
 
+            /**
+             * 바인딩 기본 ajaxSetup.url 을 설정한다.
+             * @member {String} _W.Meta.Bind.BindModelAjax#baseUrl
+             */
             Object.defineProperty(this, 'baseUrl', 
             {
                 get: function() { return __baseAjaxSetup.url; },
