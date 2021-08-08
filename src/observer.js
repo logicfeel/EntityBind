@@ -24,8 +24,8 @@
     
     var Observer = (function () {
         /**
+         * 구독자 클래스 (이벤트에 활용)
          * @constructs _W.Common.Observer
-         * @classdesc 구독자 클래스, 이벤트에 활용
          * @param {obejct} p_onwer Observer 클래스의 소유 함수 또는 클래스
          * @param {object} p_this 함수 호출 본문에서 this 역활 publish.apply(p_this, ...)
          */
@@ -69,8 +69,8 @@
         /**
          * 구독 신청
          * 이벤트 'p_code'를 입력하지 않으면 전역(any)에 등록 된다.
-         * @param {function} p_fn  구독 콜백 함수
-         * @param {?string} p_code 구독 코드명 : 기본값 'any'
+         * @param {Function} p_fn  구독 콜백 함수
+         * @param {?String} p_code 구독 코드명 : 기본값 'any'
          */
         Observer.prototype.subscribe = function(p_fn, p_code) {
             p_code = p_code || 'any';
@@ -91,9 +91,9 @@
         };
         
         /**
-         * @desc 이벤트 'p_code'를 입력하지 않으면 전역(any)에서 취소 된다.
-         * @param {function} p_fn [필수] 이벤트 콜백 함수
-         * @param {?string} p_code 이벤트 코드명 : 기본값 'any'
+         * 이벤트 'p_code'를 입력하지 않으면 전역(any)에서 취소 된다.
+         * @param {Function} p_fn [필수] 이벤트 콜백 함수
+         * @param {?String} p_code 이벤트 코드명 : 기본값 'any'
          */
         Observer.prototype.unsubscribe = function(p_fn, p_code) {
             p_code = p_code || 'any';
@@ -110,8 +110,8 @@
         };
 
         /**
-         * 
-         * @param {?string} p_code 이벤트 코드명
+         * 전체 또는 지정 구독을 취소한다.
+         * @param {?String} p_code 이벤트 코드명
          * @desc 
          *  - p_code 입력하면 해당 콜백함수들 구독 취소한다.
          *  - p_code 를 입력하지 않으면 전체 등록된 이벤트가 취소된다.
@@ -126,8 +126,8 @@
         };
 
         /**
-         * @desc 구독 함수 호출
-         * @param {?string} p_code 이벤트 코드명 : 기본값 'any'
+         * 구독 함수 전체 또는 지정 구독을 호출한다.
+         * @param {?String} p_code 이벤트 코드명 : 기본값 'any'
          */
         Observer.prototype.publish = function(p_code) {
             p_code = p_code || 'any';
@@ -151,6 +151,9 @@
             }
         };
 
+        /**
+         * 이벤트 전달을 중단한다.
+         */
         Observer.prototype.stopPropagation = function() {
             this.propagation = false;
         }

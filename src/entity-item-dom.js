@@ -50,6 +50,10 @@
             var __filter        = null;
             var __selector      = null;
 
+            /**
+             * 아이템 DOM 타입
+             * @member {*} _W.Meta.Entity.ItemDOM#domType
+             */
             Object.defineProperty(this, 'domType', 
             {
                 get: function() { return __domType; },
@@ -62,6 +66,10 @@
                 enumerable: true
             });
             
+            /**
+             * 읽기전용 여부
+             * @member {*} _W.Meta.Entity.ItemDOM#isReadOnly
+             */
             Object.defineProperty(this, 'isReadOnly', 
             {
                 get: function() { return __isReadOnly; },
@@ -73,6 +81,10 @@
                 enumerable: true
             });
             
+            /**
+             * 숨김 여부
+             * @member {*} _W.Meta.Entity.ItemDOM#isHide
+             */
             Object.defineProperty(this, 'isHide', 
             {
                 get: function() { return __isHide; },
@@ -84,6 +96,10 @@
                 enumerable: true
             });
             
+            /**
+             * DOM 요소
+             * @member {*} _W.Meta.Entity.ItemDOM#element
+             */
             Object.defineProperty(this, 'element', 
             {
                 get: function() { return __element; },
@@ -97,6 +113,8 @@
 
             /**
              * 셀렉터
+             * @member _W.Meta.Entity.ItemDOM#selector
+             * @example
              * type
              *  - val | value   : 요소의 value 속성값
              *  - text          : 요소의 텍스트값
@@ -105,7 +123,6 @@
              *  - prop.속성명   : 요소의 속성명값 (초기상태기준)
              *  - attr.속성명   : 요소의 속성명값 (현재상태)
              *  - none         : 아무일도 하지 않음, 표현의 목적
-             * @member _W.Meta.Entity.ItemDOM#selector
              */
             Object.defineProperty(this, 'selector', 
             {
@@ -126,7 +143,10 @@
                 enumerable: true
             });
 
-            /** property {value} 오버라이딩 */
+            /**
+             * 아이템 값 (오버라이딩)
+             * @member {*} _W.Meta.Entity.ItemDOM#value
+             */
             Object.defineProperty(this, 'value', 
             {
                 get: function() { 
@@ -229,6 +249,10 @@
                 enumerable: true
             });
             
+            /**
+             * value 값 필터
+             * @member {Function} _W.Meta.Entity.ItemDOM#filter
+             */
             Object.defineProperty(this, 'filter', 
             {
                 get: function() { return __filter; },
@@ -264,7 +288,10 @@
             return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @override **/
+        /**
+         * 아이템 DOM을 복제한다. 
+         * @returns {ItemDOM}
+         */
         ItemDOM.prototype.clone  = function() {
                     
             var top = _super.prototype.clone.call(this);

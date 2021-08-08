@@ -38,8 +38,8 @@
         /**
          * 속성타입 컬렉션 클래스
          * @constructs _W.Collection.PropertyCollection
+         * @implements {_W.Interface.IPropertyCollection}
          * @extends _W.Collection.BaseCollection
-         * @memberof _W
          * @param {Object} p_onwer 소유자
          */
         function PropertyCollection(p_onwer) {
@@ -59,13 +59,13 @@
             // 예약어 등록
             this._symbol = this._symbol.concat(['properties', 'indexOfName', 'propertyOf']);
 
-            /** @implements IPropertyCollection 인터페이스 구현 */
+            /** implements IPropertyCollection 인터페이스 구현 */
             this._implements(IPropertyCollection);            
         }
         util.inherits(PropertyCollection, _super);
 
         /**
-         * 배열속성 삭제 (내부처리)
+         * 속성 컬렉션을 삭제한다. (내부처리)
          * @protected
          * @param {*} p_name 속성명
          * @returns {number} 삭제한 인덱스
@@ -97,7 +97,7 @@
         };
 
         /**
-         * 배열속성 설정 및 속성값 등록
+         * 속성컬렉션을 등록한다.
          * @param {string} p_name [필수] 속성명
          * @param {?any} p_value 속성값
          * @returns {any} 입력 속성 참조값 REVIEW:: 필요성 검토
@@ -146,7 +146,7 @@
         };
 
         /**
-         * 배열속성 전체삭제
+         * 속성컬렉션을 전체 삭제한다.
          */
         PropertyCollection.prototype.clear = function() {
             
@@ -168,8 +168,8 @@
         };
         
         /**
-         * 이름으로 index값 조회
-         * @param {string} p_name 
+         * 이름으로 index값 조회한다.
+         * @param {String} p_name 
          */
         PropertyCollection.prototype.indexOfName = function(p_name) {
             
@@ -183,9 +183,9 @@
         };
 
         /**
-         * 배열속성 이름 찾기
-         * @param {number} p_idx 인덱스
-         * @returns {string}
+         * 배열속성 이름 찾는다.
+         * @param {Number} p_idx 인덱스
+         * @returns {String}
          */
         PropertyCollection.prototype.propertyOf = function(p_idx) {
             return this.properties[p_idx];

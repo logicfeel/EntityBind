@@ -66,7 +66,10 @@
              */
             this._symbol        = [];
 
-            /** @member {Observer}  _W.Collection.BaseCollection#elementType 요소타입 */
+            /** 
+             * 요소타입
+             * @member {Observer}  _W.Collection.BaseCollection#elementType  
+             */
             Object.defineProperty(this, 'elementType', {
                 enumerable: true,
                 configurable: true,
@@ -179,7 +182,7 @@
         /**
          * 프로퍼티 기술자 설정
          * @protected
-         * @param {number} p_idx 인덱스
+         * @param {Number} p_idx 인덱스
          */
         BaseCollection.prototype._getPropDescriptor = function(p_idx) {
             return {
@@ -201,6 +204,7 @@
         };
 
         /**
+         * 추가 이벤트 수신자
          * @listens _W.Collection.BaseCollection#onClear
          */
         BaseCollection.prototype._onAdd = function(p_idx, p_value) {
@@ -208,6 +212,7 @@
         };
 
         /**
+         * 삭제 이벤트 수신자
          * @listens _W.Collection.BaseCollection#onRemove
          */
         BaseCollection.prototype._onRemove = function(p_idx) {
@@ -215,7 +220,7 @@
         };
 
         /** 
-         *  전체삭제 이벤트 수신
+         *  전체삭제 수신자 이벤트
          * @listens _W.Collection.BaseCollection#onClear
          */
         BaseCollection.prototype._onClear = function() {
@@ -223,7 +228,7 @@
         };
 
         /** 
-         *  변경(등록/삭제) 전 이벤트 수신
+         *  변경(등록/삭제) 전 수신자 이벤트
          * @listens _W.Collection.BaseCollection#onChanging
          */
         BaseCollection.prototype._onChanging = function() {
@@ -231,25 +236,31 @@
         };
 
         /** 
-         *  변경(등록/삭제) 후 이벤트 수신
+         *  변경(등록/삭제) 후 수신자 이벤트
          * @listens _W.Collection.BaseCollection#onChanged
          */        
         BaseCollection.prototype._onChanged = function() {
             this.__event.publish('changed'); 
         };
 
-        /** @abstract */
+        /** 
+         * 컬렉션을 삭제한다.
+         * @abstract 
+         */
         BaseCollection.prototype._remove  = function() {
             throw new Error('[ _remove() ] Abstract method definition, fail...');
         };
 
-        /** @abstract */
+        /** 
+         * 컬렉션을 추가한다.
+         * @abstract 
+         */
         BaseCollection.prototype.add  = function() {
             throw new Error('[ add() ] Abstract method definition, fail...');
         };
         
         /** 
-         * 전체삭제(초기화)
+         * 전체삭제(초기화)한다.
          * @abstract 
          * @fires _W.Collection.BaseCollection#onClear 
          */
@@ -258,9 +269,9 @@
         };
 
         /**
-         * 배열속성 삭제
-         * @param {element} p_elem 속성명
-         * @returns {number} 삭제한 인덱스
+         * 컬렉션을 삭제한다.
+         * @param {Object} p_elem 속성명
+         * @returns {Number} 삭제한 인덱스
          */
         BaseCollection.prototype.remove = function(p_elem) {
             
@@ -280,8 +291,8 @@
         };
         
         /**
-         * 배열속성 삭제
-         * @param {number} p_idx 인덱스
+         * 배열속성 삭제한다.
+         * @param {Number} p_idx 인덱스
          */
         BaseCollection.prototype.removeAt = function(p_idx) {
 
@@ -296,16 +307,16 @@
         };
 
         /**
-         * 배열속성 여부 
-         * @param {object} p_elem 속성 객체
-         * @returns {boolean}
+         * 배열속성 여부를 리턴한다. 
+         * @param {Object} p_elem 속성 객체
+         * @returns {Boolean}
          */
         BaseCollection.prototype.contains = function(p_elem) {
             return this._element.indexOf(p_elem) > -1;
         };
 
         /**
-         * 배열속성 인덱스 찾기
+         * 배열속성 인덱스 찾는다.
          * @param {Object} p_elem 속성 객체
          * @returns {Number}
          */

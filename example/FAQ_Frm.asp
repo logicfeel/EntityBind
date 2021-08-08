@@ -143,7 +143,7 @@
 </script>
 <script>
 	// #######################################################################################################
-	var faq = new BindModelAjax(new BoardFaqService());
+	var faq = new _W.BindModelAjax(new BoardFaqService());
 	
 	// 속성 설정
 	// faq.isLog = true;

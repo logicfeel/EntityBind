@@ -70,7 +70,7 @@
         util.inherits(EntityView, _super);
 
         /**
-         * 뷰 참조 등록
+         * 뷰 엔티티에 참조를 등록한다.
          * @param {Entity} p_entity 
          */
         EntityView.prototype._regRefer  = function(p_entity) {
@@ -92,7 +92,7 @@
         };
 
         /**
-         * 복제
+         * 뷰 엔티티를 복제한다.
          * @returns {*}
          */
         EntityView.prototype.clone  = function() {
@@ -135,14 +135,15 @@
         util.inherits(EntityViewCollection, _super);
 
         /**
+         * 뷰 컬렉션에 뷰 엔티티를 추가한다.
+         * @param {string | EntityView} p_object 
+         * @param {?ItemCollection} p_baseEntity
+         * @returns {EntityView} 등록한 아이템
+         * @example
          *  - string                    : 생성후   string      이름으로 등록 
          *  - string, colltion          : 생성후   string      이름으로  등록 (collection보냄)
          *  - entityView                :         entityView  이름으로 등록
          *  - entityView, collection    :         entityView  이름으로 등록 (collection보냄) => 오류발생
-         * 
-         * @param {string | EntityView} p_object 
-         * @param {?ItemCollection} p_baseEntity
-         * @returns {EntityView} 등록한 아이템
          */
         EntityViewCollection.prototype.add  = function(p_object, p_baseEntity) {
 

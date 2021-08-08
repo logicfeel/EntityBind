@@ -46,9 +46,10 @@
         util.inherits(PropertyObjectCollection, _super);
 
         /**
-         * 
-         * @param {String | Item} p_object 
-         * @returns {Item} 등록한 아이템
+         * 객체속성 컬렉션을 추가한다.
+         * @param {String} p_name 
+         * @param {*} p_value 
+         * @returns {Item} 등록한 아이템을 리턴한다.
          */
         PropertyObjectCollection.prototype.add  = function(p_name, p_value) {
 

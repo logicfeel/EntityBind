@@ -317,7 +317,7 @@
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?(Array<String> | string)} p_entities <선택> 추가할 아이템 명령
+         * @param {?(Array<String> | String)} p_entities <선택> 추가할 아이템 명령
          */
         BindCommand.prototype.add = function(p_item, p_entities) {
 
@@ -377,9 +377,9 @@
 
         /**
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
-         * @param {string} p_name
-         * @param {object | string | number | boolean} p_value
-         * @param {?(array<string> | string)} p_entities <선택> 추가할 아이템 명령
+         * @param {String} p_name
+         * @param {Object | String | Number | Boolean} p_value
+         * @param {?(Array<String> | String)} p_entities <선택> 추가할 아이템 명령
          */
         BindCommand.prototype.addItem = function(p_name, p_value, p_entities) {
 
@@ -398,8 +398,8 @@
         /**
          * 예시>
          * e.read.setEntity(['idx', 'addr'], 'valid');
-         * @param {string | array} p_names 
-         * @param {?(string | array<string>)} p_entities 
+         * @param {String | Array} p_names 
+         * @param {?(String | Array<String>)} p_entities 
          */
         BindCommand.prototype.setItem = function(p_names, p_entities) {
 
@@ -428,8 +428,8 @@
 
         /**
          * 대상엔티티에서 해제
-         * @param {string | array} p_names 해제할 아이템명
-         * @param {?(string | array<string>)} p_entities 'valid', 'bind', 'output' 해제할 위치 지정 
+         * @param {String | Array} p_names 해제할 아이템명
+         * @param {?(String | Array<String>)} p_entities 'valid', 'bind', 'output' 해제할 위치 지정 
          * @example
          * e.read.release(['idx', 'addr'], 'valid');
          */

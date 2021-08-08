@@ -68,7 +68,7 @@
         };
 
         /**
-         * 복제
+         * 테이블 엔티티를 복제한다.
          * @returns {*}
          */
         EntityTable.prototype.clone  = function() {
@@ -96,7 +96,7 @@
      //---------------------------------------
      var EntityTableCollection  = (function (_super) {
         /**
-         * 테이블 엔티티 컬렉션
+         * 테이블 컬렉션
          * @constructs _W.Meta.Entity.EntityTableCollection
          * @extends _W.Collection.PropertyCollection
          * @param {*} p_onwer 소유자 
@@ -109,7 +109,7 @@
         util.inherits(EntityTableCollection, _super);
 
         /**
-         * 엔티티 추가
+         * 테이블 컬렉션에 엔티티 추가한다.
          * @param {String | Item} p_object 
          * @returns {Item} 등록한 아이템
          */

@@ -46,14 +46,15 @@
         util.inherits(PropertyFunctionCollection, _super);
 
         /**
-         * 
-         * @param {String | Item} p_object 
-         * @returns {Item} 등록한 아이템
+         * 함수속성 컬렉션을 추가한다.
+         * @param {String} p_name 
+         * @param {*} p_value 
+         * @returns {Item} 등록한 아이템을 리턴한다.
          */
         PropertyFunctionCollection.prototype.add  = function(p_name, p_value) {
 
             if (typeof p_name === 'undefined') throw new Error('p_name param request fail...');
-            if (typeof p_value !== 'function') throw new Error('p_name param request fail...');
+            if (typeof p_value !== 'function') throw new Error('p_value param request fail...');
 
             return _super.prototype.add.call(this, p_name, p_value);
         };

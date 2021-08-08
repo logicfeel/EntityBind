@@ -68,6 +68,10 @@
             var __items = null;     // 상속해서 생성해야함
             var __rows  = new RowCollection(this);
 
+            /**
+             * 엔티티의 아이템(속성) 컬렉션
+             * @member {ItemCollection} _W.Meta.Entity.Entity#items
+             */
             Object.defineProperty(this, 'items', 
             {
                 get: function() { return __items; },
@@ -79,6 +83,10 @@
                 enumerable: true
             });
             
+            /**
+             * 엔티티의 데이터(로우) 컬렉션
+             * @member {RowCollection} _W.Meta.Entity.Entity#rows
+             */
             Object.defineProperty(this, 'rows', 
             {
                 get: function() { return __rows; },
@@ -95,7 +103,7 @@
         util.inherits(Entity, _super);
 
         /**
-         * 아이템 추가 (내부)
+         * 아이템 추가한다. (내부)
          * @Private
          * @param {*} p_name 
          * @param {*} p_property 
@@ -112,7 +120,7 @@
         };
 
         /**
-         * 빈 row 채우기
+         * 빈 row 채운다.
          * @param {*} p_target 
          */
         Entity.prototype.__fillRow  = function(p_target) {
@@ -130,10 +138,10 @@
         };
 
         /**
-         * 로드 JSON
+         * 객체(JSON)를 불러온다.
          * @private 
-         * @param {*} p_object 
-         * @param {*} p_option 
+         * @param {*} p_object 로딩할 객체
+         * @param {*} p_option 로딩옵션
          */
         Entity.prototype.__loadJSON  = function(p_object, p_option) {
             p_option = p_option || 1;   // 기본값 덮어쓰기
@@ -203,10 +211,10 @@
         };
 
         /**
-         * 로드 Entity
+         * Entity를 불러(로드)온다.
          * @private
-         * @param {*} p_object 
-         * @param {*} p_option 
+         * @param {*} p_object 대상 엔티티
+         * @param {*} p_option 옵션
          */
         Entity.prototype.__loadEntity  = function(p_object, p_option) {
             p_option = p_option || 1;   // 기본값 덮어쓰기
@@ -261,14 +269,14 @@
         };
 
         /**
-         * 새로운 Row 추가
+         * 새로운 Row를 추가한다.
          */
         Entity.prototype.newRow  = function() {
             return new Row(this);
         };
 
         /**
-         * value 설정
+         * Row의 값을 아이템의 value에 설정한다.
          * @param {*} p_row 
          */
         Entity.prototype.setValue  = function(p_row) {
@@ -281,7 +289,8 @@
         };
 
         /**
-         * value 얻기
+         * 아아템의 value을 Row형식으로 얻는다.
+         * @returns {Row}
          */
         Entity.prototype.getValue  = function() {
             
@@ -294,16 +303,18 @@
         };
 
         /** 
+         * 엔티티를 조회(검색) 한다.
+         * @param {Object} p_filter 필터객체
+         * @param {?(Number | Array<Number>)} p_index 인덱스 시작번호 또는 목록
+         * @param {?Number} p_end 인덱스 종료번호
+         * @return {Entity}
+         * @example
+         * // 상속기법을 이용함
          * filter = {
          *  __except : ['name'...],        // 제외 아이템 (1방법)
          *  아이템명: { __except: true }    // 아이템 제외 (2방법)
          *  아이템명: { order: 100 }        // 속성 오버라이딩
          * }
-         * ** 상속기법을 이용함
-         * @param {Object} p_filter 필터객체
-         * @param {?Number | Array<Number>} p_index 인덱스 시작번호 또는 목록
-         * @param {?Number} p_end 인덱스 종료번호
-         * @return {Entity}
          */
         Entity.prototype.select  = function(p_filter, p_index, p_end) {
             
@@ -385,7 +396,7 @@
         };
 
         /**
-         * 복사
+         * 엔티티를 복사한다. (조회 후 복제)
          * @param {*} p_filter 
          * @param {*} p_index 
          * @param {*} p_end 
@@ -398,15 +409,15 @@
         };
 
         /**
-         * '구조를 구성하는게 주용도임'
+         * 엔티티를 병합한다. (구조를 구성하는게 주용도임)
+         * @param {*} p_target 병합할 Entity (대상)
+         * @param {*} p_option {item: 1, row:2}
+         * @desc
          * 병합 : 컬렉션 순서에 따라 병한다.
          * Item과 Row가 있는 경우
          * - 1 items, rows 병합 (기존유지) *기본값
          * - 2 items, rows 병합 (덮어쓰기)  
          * - 3 row 안가져오기    (기존유지)
-         * @param {*} p_target 병합할 Entity
-         * @param {*} p_option {item: 1, row:2}
-
          */
         Entity.prototype.merge  = function(p_target, p_option) {
             p_option = p_option || 1;    // 기본값
@@ -469,8 +480,8 @@
          * 기존에 row 가 존재하면 newRow 부터 가져오고, 기존item 은 공백이 들어감
          * @param {*} p_object Entity 는 item과 row 는 쌍으로 존재함, JSON 은 row만 존재할 수 있음
          * @param {Number} p_option 
-         *          - 1: row 기준으로 가져옴, 없을시 item 생성, item 중복시 기존유지  <*기본값> 
-         *          - 2: 존재하는 item 데이터만 가져오기
+         * @param {Number} p_option.1 row 기준으로 가져옴, 없을시 item 생성, item 중복시 기존유지  <*기본값> 
+         * @param {Number} p_option.2 존재하는 item 데이터만 가져오기
          */
         Entity.prototype.load  = function(p_object, p_option) {
             
@@ -481,7 +492,9 @@
             }
         };
         
-        /** @method */
+        /** 
+         * 아이템과 로우를 초기화 한다.
+         */
         Entity.prototype.clear  = function() {
             
             this.items.clear();

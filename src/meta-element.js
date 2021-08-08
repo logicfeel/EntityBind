@@ -78,7 +78,7 @@
         };
 
         /**
-         * GUID 생성
+         * GUID 생성한다.
          * @private
          * @returns {String}
          */
@@ -88,7 +88,7 @@
 
         /**
          * 조건 : GUID는 한번만 생성해야 함
-         * GUID 얻기
+         * GUID를 얻는다.
          * @returns {String}
          */
         MetaObject.prototype.getGUID  = function() {
@@ -99,7 +99,8 @@
         };
 
         /**
-         * 객체 얻기 : 추상메소드 : REVIEW:: 공통 요소? 확인필요
+         * 객체를 얻는다
+         * REVIEW:: 공통 요소? 확인필요
          * @virtual
          * @returns {Object}
          */

@@ -299,31 +299,32 @@
 
         /**
          * 전처리 등록
-         * @param {*} p_this 
+         * @param {BindModel} p_bindModel 
          */
-        BindModel.prototype.preRegister = function(p_this) {
-            return this.__preRegister.call(this, p_this);
+        BindModel.prototype.preRegister = function(p_bindModel) {
+            return this.__preRegister.call(this, p_bindModel);
         };
 
         /**
          * 전처리 검사
+         * @param {BindModel} p_bindModel 
          */
-        BindModel.prototype.preCheck = function(p_this) {
-            return this.__preCheck.call(this, p_this);
+        BindModel.prototype.preCheck = function(p_bindModel) {
+            return this.__preCheck.call(this, p_bindModel);
         };
         
         /**
          * 전처리 준비
-         * @param {*} p_this 
+         * @param {BindModel} p_bindModel 
          */
-        BindModel.prototype.preReady = function(p_this) {
-            return this.__preReady.call(this, p_this);
+        BindModel.prototype.preReady = function(p_bindModel) {
+            return this.__preReady.call(this, p_bindModel);
         };
         
         /**
          * 사용할 엔티티를 추가한다. (확장시 사용)
          * @param {String} p_name 
-         * @returns 
+         * @returns {*}
          */
         BindModel.prototype.addEntity = function(p_name) {
 
@@ -351,8 +352,8 @@
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?array<string>} p_cmds <선택> 추가할 아이템 명령
-         * @param {?(array<string> | string)} p_entities <선택> 추가할 아이템 명령
+         * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
+         * @param {?(Array<String> | String)} p_entities <선택> 추가할 아이템 명령
          */
         BindModel.prototype.add = function(p_item, p_cmds, p_entities) {
 
@@ -403,9 +404,9 @@
 
         /**
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
-         * @param {string} p_name
-         * @param {object | String | number | boolean} p_obj 
-         * @param {?(array<string> | string)} p_entities <선택> 추가할 아이템 명령
+         * @param {String} p_name
+         * @param {Object | String | Number | Boolean} p_obj 
+         * @param {?(Array<String> | String)} p_entities <선택> 추가할 아이템 명령
          */
         BindModel.prototype.addItem = function(p_name, p_obj, p_cmds, p_entities) {
 
@@ -447,8 +448,8 @@
 
         /**
          * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
-         * @param {?(string | array<string>)} p_prop 
-         * @param {?string} p_entity 
+         * @param {?(String | Array<String>)} p_prop 
+         * @param {?String} p_entity 
          */
         BindModel.prototype.loadProp = function(p_prop, p_entity) {
 
@@ -493,8 +494,8 @@
 
         /**
          * 아이템을 매핑한다.
-         * @param {ProperyCollection | object} p_mapping Item 에 매핑할 객체 또는 컬렉션
-         * @param {?string} p_entity 대상 엔티티
+         * @param {ProperyCollection | Object} p_mapping Item 에 매핑할 객체 또는 컬렉션
+         * @param {?String} p_entity 대상 엔티티
          */
         BindModel.prototype.setMapping = function(p_mapping, p_entity) {
             

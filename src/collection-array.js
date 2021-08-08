@@ -44,7 +44,7 @@
         util.inherits(ArrayCollection, _super);
 
         /**
-         * 배열속성 삭제 (내부처리)
+         * 배열속성 컬렉션을 삭제한다.(내부처리)
          * @protected
          * @param {*} p_idx 인덱스 번호
          */
@@ -66,7 +66,7 @@
         };
 
         /**
-         * 배열속성 속성값 설정
+         * 배열속성 컬렉션을 추가한다.
          * @param {*} p_value [필수] 속성값
          * @returns {*} 입력 속성 참조값
          */
@@ -95,7 +95,7 @@
         };
 
         /**
-         * 배열속성 전체삭제
+         * 배열속성 컬렉션을 전체삭제한다.
          */
         ArrayCollection.prototype.clear = function() {
             

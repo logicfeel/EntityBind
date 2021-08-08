@@ -62,7 +62,10 @@
                 }
             }
 
-            /** @property {entity} */
+            /**
+             * 로우의 소유 엔티티
+             * @member {Entity} _W.Meta.Entity.Row#entity
+             */
             Object.defineProperty(this, 'entity', 
             {
                 get: function() { return __entity; },
@@ -81,7 +84,7 @@
         };
 
         /**
-         * 복사
+         * 로우를 복사한다. (생성 후 복제)
          * @param {Object} p_filter 필터객체
          */
         Row.prototype.copy = function(p_filter) {
@@ -92,8 +95,8 @@
         };
         
         /**
-         * 복제
-         * @returns {*}
+         * 로우를 복제한다.
+         * @returns {Row}
          */
         Row.prototype.clone  = function() {
           
@@ -128,9 +131,9 @@
         util.inherits(RowCollection, _super);
 
         /**
-         * 추가
+         * 로우컬렉션에 로우를 추가한다.
          * @param {String | Item} p_row 
-         * @returns {Item} 등록한 아이템
+         * @returns {Row} 등록한 로우
          */
         RowCollection.prototype.add  = function(p_row) {
 

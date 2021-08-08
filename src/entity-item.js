@@ -78,6 +78,11 @@
             /** @private */
             this.__event    = new Observer(this, this);
 
+            /**
+             * value 내부값 (필터 및 getter/setter 무시)
+             * @private
+             * @member {*} _W.Meta.Entity.Item#__value
+             */
             Object.defineProperty(this, '__value', 
             {
                 get: function() { return __value; },
@@ -90,6 +95,10 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템 소유 엔티티
+             * @member {Entity} _W.Meta.Entity.Item#entity
+             */
             Object.defineProperty(this, 'entity', 
             {
                 get: function() { return __entity; },
@@ -104,6 +113,10 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템 타입 (내부속성)
+             * @member {String} _W.Meta.Entity.Item#type
+             */
             Object.defineProperty(this, 'type', 
             {
                 get: function() { return __type; },
@@ -116,6 +129,10 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템 크기 (내부속성)
+             * @member {Number} _W.Meta.Entity.Item#size
+             */
             Object.defineProperty(this, 'size', 
             {
                 get: function() { return __size; },
@@ -127,6 +144,10 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템 기본값 (내부속성)
+             * @member {String | Number | Boolean} _W.Meta.Entity.Item#default
+             */
             Object.defineProperty(this, 'default', 
             {
                 get: function() { return __default; },
@@ -138,6 +159,10 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템 설명 (내부속성)
+             * @member {String} _W.Meta.Entity.Item#caption
+             */
             Object.defineProperty(this, 'caption', 
             {
                 get: function() { return __caption; },
@@ -149,6 +174,10 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템 value의 Null 여부
+             * @member {Boolean} _W.Meta.Entity.Item#isNotNull
+             */
             Object.defineProperty(this, 'isNotNull', 
             {
                 // get: function() { 
@@ -165,6 +194,10 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템 value null 통과 여부 (기본값 = false)
+             * @member {Boolean} _W.Meta.Entity.Item#isNullPass
+             */
             Object.defineProperty(this, 'isNullPass', 
             {
                 get: function() { return __isNullPass },
@@ -176,6 +209,11 @@
                 enumerable: true
             });
             
+            /**
+             * 아이템 콜백 함수
+             * REVIEW: 필요성 검토 필요
+             * @member {String} _W.Meta.Entity.Item#callback
+             */
             Object.defineProperty(this, 'callback', 
             {
                 get: function() { return __callback; },
@@ -187,6 +225,16 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템 제약 조건 
+             * @member {Array<Object>} _W.Meta.Entity.Item#constraints
+             * @example
+             * var c = {
+             *  regex: /aa/,
+             *  msg: '매칭메세지',  // return이 true면 성공시 메세지, false 실패시 메세지
+             *  return: ture     // 매칭시 싱공실패 여부 
+             * };
+             */
             Object.defineProperty(this, 'constraints', 
             {
                 get: function() { return __constraints; },
@@ -209,6 +257,10 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템 코드 타입
+             * @member {Object} _W.Meta.Entity.Item#codeType
+             */
             Object.defineProperty(this, 'codeType', 
             {
                 get: function() { return __codeType; },
@@ -217,6 +269,10 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템 순서
+             * @member {String} _W.Meta.Entity.Item#order
+             */
             Object.defineProperty(this, 'order', 
             {
                 get: function() { return __order; },
@@ -228,6 +284,10 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템 순서 증가 수
+             * @member {Number} _W.Meta.Entity.Item#increase
+             */
             Object.defineProperty(this, 'increase', 
             {
                 get: function() { return __increase; },
@@ -239,6 +299,10 @@
                 enumerable: true
             });
             
+            /**
+             * 아이템 value
+             * @member {*} _W.Meta.Entity.Item#value
+             */
             Object.defineProperty(this, 'value', 
             {
                 get: function() { 
@@ -267,6 +331,10 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템의 value 의 getter
+             * @member {Function} _W.Meta.Entity.Item#getter
+             */
             Object.defineProperty(this, 'getter', 
             {
                 get: function() { return __getter; },
@@ -278,6 +346,10 @@
                 enumerable: true
             });
 
+            /**
+             * 아이템의 value 의 setter
+             * @member {Function} _W.Meta.Entity.Item#setter
+             */
             Object.defineProperty(this, 'setter', 
             {
                 get: function() { return __setter; },
@@ -289,7 +361,10 @@
                 enumerable: true
             });
 
-            /** @event _W.Meta.Entity.Item#onChanged */
+            /**
+             * 변경 이벤트 
+             * @event _W.Meta.Entity.Item#onChanged 
+             */
             Object.defineProperty(this, 'onChanged', {
                 enumerable: true,
                 configurable: true,
@@ -333,7 +408,10 @@
             return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
         
-        /** @override */
+        /** 
+         * 아이템을 복제한다. 
+         * @returns {Item}
+         */
         Item.prototype.clone = function() {
             
             var clone = new Item(this.name);
@@ -367,7 +445,12 @@
         };
 
         /**
-         * 제약조건 설정
+         * 제약조건을 추가한다.
+         * REVIEW: addConstraint vs setConstraint 와 적합성 검토
+         * @param {*} p_regex 
+         * @param {*} p_msg 
+         * @param {*} p_code 
+         * @param {*} p_return 
          */
         Item.prototype.setConstraint = function(p_regex, p_msg, p_code, p_return) {
             p_return = p_return || false;
@@ -387,7 +470,7 @@
 
 // POINT:: 삭제 대기
         /**
-         * @method
+         * method
          */
         // Item.prototype.defineValueProperty = function(p_getter, p_setter) {
 
@@ -413,7 +496,7 @@
         // };
         
         /**
-         * 검사
+         * 아이템의 value에 유효성을 검사한다. (isNotnull, isNullPass, constraints 기준)
          * @param {string} p_value 
          * @param {object} r_result 메세지는 참조(객체)형 으로 전달
          * @param {number} p_option 1. isNotNull 참조 | 2: null검사 진행   |  3: null검사 무시
@@ -497,6 +580,10 @@
             
             this.elementType = Item;    // 기본 컬렉션 타입
             
+            /**
+             * 아이템의 타입
+             * @member {Function} _W.Meta.Entity.ItemCollection#itemType
+             */
             Object.defineProperty(this, 'itemType', 
             {
                 get: function() { return this.elementType; },
@@ -513,7 +600,7 @@
         util.inherits(ItemCollection, _super);
         
         /**
-         * 유무 검사
+         * 컬렉션에 아이템 유무를 검사한다.
          * @param {*} p_elem 
          * @returns {*} 
          */
@@ -527,10 +614,10 @@
         };
 
         /**
-         * 아이템 추가 : 이름, 값
-         * @param {*} p_name 
-         * @param {*} p_value 
-         * @returns {*}
+         *  이름과 값으로 아이템 생성하여 컬렉션에 추가한다.
+         * @param {*} p_name 아이템명
+         * @param {String | Number | Boolean} p_value 
+         * @returns {Item}
          */
         ItemCollection.prototype.addValue  = function(p_name, p_value) {
 
@@ -569,6 +656,7 @@
         util.inherits(ItemTableCollection, _super);
 
         /**
+         * 테이블컬렉션에 아이템을 추가한다.
          * @param {string | Item} p_object 
          * @returns {Item} 등록한 아이템
          */
@@ -620,6 +708,10 @@
         util.inherits(ItemViewCollection, _super);
 
         /**
+         * 뷰컬렉션에 아이템을 추가(등록/설정)한다.
+         * @param {String | Item} p_object 
+         * @param {?ItemCollection} p_baseCollection
+         * @example
          *  - base(all),    string | Itme, Collection   => Collection 에 생성후 자신에 등록 
          *  - base(N),      string | Itme               => this 에 생성후 자신에 등록
          *  - base(Y),      string | Item               => Base 에 생성후 자신에 등록
@@ -633,9 +725,6 @@
          * 
          *  TODO:: filter 옵션 : 충돌방지에 이용
          *  TODO:: 객체 비교는 string 이 아니고 값과 타입을 비교해야함 (그래야 참조를 사용)
-         * 
-         * @param {String | Item} p_object 
-         * @param {?ItemCollection} p_baseCollection
          */
         ItemViewCollection.prototype.add  = function(p_object, p_baseCollection) {
             
@@ -681,8 +770,8 @@
         };
 
         /**
-         * 엔티티 추가
-         * @param {*} p_entity 
+         * 엔티티 추가한다.
+         * @param {Entity} p_entity 
          */
         ItemViewCollection.prototype.addEntity  = function(p_entity) {
             if (typeof p_entity === 'undefined' && !(p_entity instanceof MetaElement && p_entity.instanceOf('Entity'))) {
