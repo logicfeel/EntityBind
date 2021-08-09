@@ -397,7 +397,7 @@
         module.exports = BindModelAjax;
     } else {
         global._W.Meta.Bind.BindModelAjax = BindModelAjax;
-        global.BindModelAjax = BindModelAjax;        // 힌트
+        global._W.BindModelAjax = BindModelAjax;        // 힌트
     }
 
 }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));

@@ -215,7 +215,7 @@ if (typeof Array.isArray === 'undefined') {
     /**
      * 셀렉터의 유효성 검사 : 대상을 모두 검사하여 결과를 리턴한다.
      * 주의!! DOM(web) 에서만 작동한다.
-     * @param {object<array | string> | array<string> | string} p_obj 
+     * @param {String | Object | Array<Object>} p_obj 
      * @returns {String} 없는 셀렉터, 통화하면 null 리턴
      * @memberof _W.Common.Util
      */
@@ -304,8 +304,8 @@ if (typeof Array.isArray === 'undefined') {
     
     var Observer = (function () {
         /**
+         * 구독자 클래스 (이벤트에 활용)
          * @constructs _W.Common.Observer
-         * @classdesc 구독자 클래스, 이벤트에 활용
          * @param {obejct} p_onwer Observer 클래스의 소유 함수 또는 클래스
          * @param {object} p_this 함수 호출 본문에서 this 역활 publish.apply(p_this, ...)
          */
@@ -349,8 +349,8 @@ if (typeof Array.isArray === 'undefined') {
         /**
          * 구독 신청
          * 이벤트 'p_code'를 입력하지 않으면 전역(any)에 등록 된다.
-         * @param {function} p_fn  구독 콜백 함수
-         * @param {?string} p_code 구독 코드명 : 기본값 'any'
+         * @param {Function} p_fn  구독 콜백 함수
+         * @param {?String} p_code 구독 코드명 : 기본값 'any'
          */
         Observer.prototype.subscribe = function(p_fn, p_code) {
             p_code = p_code || 'any';
@@ -371,9 +371,9 @@ if (typeof Array.isArray === 'undefined') {
         };
         
         /**
-         * @desc 이벤트 'p_code'를 입력하지 않으면 전역(any)에서 취소 된다.
-         * @param {function} p_fn [필수] 이벤트 콜백 함수
-         * @param {?string} p_code 이벤트 코드명 : 기본값 'any'
+         * 이벤트 'p_code'를 입력하지 않으면 전역(any)에서 취소 된다.
+         * @param {Function} p_fn [필수] 이벤트 콜백 함수
+         * @param {?String} p_code 이벤트 코드명 : 기본값 'any'
          */
         Observer.prototype.unsubscribe = function(p_fn, p_code) {
             p_code = p_code || 'any';
@@ -390,8 +390,8 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 
-         * @param {?string} p_code 이벤트 코드명
+         * 전체 또는 지정 구독을 취소한다.
+         * @param {?String} p_code 이벤트 코드명
          * @desc 
          *  - p_code 입력하면 해당 콜백함수들 구독 취소한다.
          *  - p_code 를 입력하지 않으면 전체 등록된 이벤트가 취소된다.
@@ -406,8 +406,8 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * @desc 구독 함수 호출
-         * @param {?string} p_code 이벤트 코드명 : 기본값 'any'
+         * 구독 함수 전체 또는 지정 구독을 호출한다.
+         * @param {?String} p_code 이벤트 코드명 : 기본값 'any'
          */
         Observer.prototype.publish = function(p_code) {
             p_code = p_code || 'any';
@@ -431,6 +431,9 @@ if (typeof Array.isArray === 'undefined') {
             }
         };
 
+        /**
+         * 이벤트 전달을 중단한다.
+         */
         Observer.prototype.stopPropagation = function() {
             this.propagation = false;
         }
@@ -1554,7 +1557,10 @@ if (typeof Array.isArray === 'undefined') {
              */
             this._symbol        = [];
 
-            /** @member {Observer}  _W.Collection.BaseCollection#elementType 요소타입 */
+            /** 
+             * 요소타입
+             * @member {Observer}  _W.Collection.BaseCollection#elementType  
+             */
             Object.defineProperty(this, 'elementType', {
                 enumerable: true,
                 configurable: true,
@@ -1667,7 +1673,7 @@ if (typeof Array.isArray === 'undefined') {
         /**
          * 프로퍼티 기술자 설정
          * @protected
-         * @param {number} p_idx 인덱스
+         * @param {Number} p_idx 인덱스
          */
         BaseCollection.prototype._getPropDescriptor = function(p_idx) {
             return {
@@ -1689,6 +1695,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
+         * 추가 이벤트 수신자
          * @listens _W.Collection.BaseCollection#onClear
          */
         BaseCollection.prototype._onAdd = function(p_idx, p_value) {
@@ -1696,6 +1703,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
+         * 삭제 이벤트 수신자
          * @listens _W.Collection.BaseCollection#onRemove
          */
         BaseCollection.prototype._onRemove = function(p_idx) {
@@ -1703,7 +1711,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /** 
-         *  전체삭제 이벤트 수신
+         *  전체삭제 수신자 이벤트
          * @listens _W.Collection.BaseCollection#onClear
          */
         BaseCollection.prototype._onClear = function() {
@@ -1711,7 +1719,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /** 
-         *  변경(등록/삭제) 전 이벤트 수신
+         *  변경(등록/삭제) 전 수신자 이벤트
          * @listens _W.Collection.BaseCollection#onChanging
          */
         BaseCollection.prototype._onChanging = function() {
@@ -1719,25 +1727,31 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /** 
-         *  변경(등록/삭제) 후 이벤트 수신
+         *  변경(등록/삭제) 후 수신자 이벤트
          * @listens _W.Collection.BaseCollection#onChanged
          */        
         BaseCollection.prototype._onChanged = function() {
             this.__event.publish('changed'); 
         };
 
-        /** @abstract */
+        /** 
+         * 컬렉션을 삭제한다.
+         * @abstract 
+         */
         BaseCollection.prototype._remove  = function() {
             throw new Error('[ _remove() ] Abstract method definition, fail...');
         };
 
-        /** @abstract */
+        /** 
+         * 컬렉션을 추가한다.
+         * @abstract 
+         */
         BaseCollection.prototype.add  = function() {
             throw new Error('[ add() ] Abstract method definition, fail...');
         };
         
         /** 
-         * 전체삭제(초기화)
+         * 전체삭제(초기화)한다.
          * @abstract 
          * @fires _W.Collection.BaseCollection#onClear 
          */
@@ -1746,9 +1760,9 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 배열속성 삭제
-         * @param {element} p_elem 속성명
-         * @returns {number} 삭제한 인덱스
+         * 컬렉션을 삭제한다.
+         * @param {Object} p_elem 속성명
+         * @returns {Number} 삭제한 인덱스
          */
         BaseCollection.prototype.remove = function(p_elem) {
             
@@ -1768,8 +1782,8 @@ if (typeof Array.isArray === 'undefined') {
         };
         
         /**
-         * 배열속성 삭제
-         * @param {number} p_idx 인덱스
+         * 배열속성 삭제한다.
+         * @param {Number} p_idx 인덱스
          */
         BaseCollection.prototype.removeAt = function(p_idx) {
 
@@ -1784,16 +1798,16 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 배열속성 여부 
-         * @param {object} p_elem 속성 객체
-         * @returns {boolean}
+         * 배열속성 여부를 리턴한다. 
+         * @param {Object} p_elem 속성 객체
+         * @returns {Boolean}
          */
         BaseCollection.prototype.contains = function(p_elem) {
             return this._element.indexOf(p_elem) > -1;
         };
 
         /**
-         * 배열속성 인덱스 찾기
+         * 배열속성 인덱스 찾는다.
          * @param {Object} p_elem 속성 객체
          * @returns {Number}
          */
@@ -1860,7 +1874,7 @@ if (typeof Array.isArray === 'undefined') {
         util.inherits(ArrayCollection, _super);
 
         /**
-         * 배열속성 삭제 (내부처리)
+         * 배열속성 컬렉션을 삭제한다.(내부처리)
          * @protected
          * @param {*} p_idx 인덱스 번호
          */
@@ -1882,7 +1896,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 배열속성 속성값 설정
+         * 배열속성 컬렉션을 추가한다.
          * @param {*} p_value [필수] 속성값
          * @returns {*} 입력 속성 참조값
          */
@@ -1911,7 +1925,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 배열속성 전체삭제
+         * 배열속성 컬렉션을 전체삭제한다.
          */
         ArrayCollection.prototype.clear = function() {
             
@@ -1983,8 +1997,8 @@ if (typeof Array.isArray === 'undefined') {
         /**
          * 속성타입 컬렉션 클래스
          * @constructs _W.Collection.PropertyCollection
+         * @implements {_W.Interface.IPropertyCollection}
          * @extends _W.Collection.BaseCollection
-         * @memberof _W
          * @param {Object} p_onwer 소유자
          */
         function PropertyCollection(p_onwer) {
@@ -2004,13 +2018,13 @@ if (typeof Array.isArray === 'undefined') {
             // 예약어 등록
             this._symbol = this._symbol.concat(['properties', 'indexOfName', 'propertyOf']);
 
-            /** @implements IPropertyCollection 인터페이스 구현 */
+            /** implements IPropertyCollection 인터페이스 구현 */
             this._implements(IPropertyCollection);            
         }
         util.inherits(PropertyCollection, _super);
 
         /**
-         * 배열속성 삭제 (내부처리)
+         * 속성 컬렉션을 삭제한다. (내부처리)
          * @protected
          * @param {*} p_name 속성명
          * @returns {number} 삭제한 인덱스
@@ -2042,7 +2056,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 배열속성 설정 및 속성값 등록
+         * 속성컬렉션을 등록한다.
          * @param {string} p_name [필수] 속성명
          * @param {?any} p_value 속성값
          * @returns {any} 입력 속성 참조값 REVIEW:: 필요성 검토
@@ -2091,7 +2105,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 배열속성 전체삭제
+         * 속성컬렉션을 전체 삭제한다.
          */
         PropertyCollection.prototype.clear = function() {
             
@@ -2113,8 +2127,8 @@ if (typeof Array.isArray === 'undefined') {
         };
         
         /**
-         * 이름으로 index값 조회
-         * @param {string} p_name 
+         * 이름으로 index값 조회한다.
+         * @param {String} p_name 
          */
         PropertyCollection.prototype.indexOfName = function(p_name) {
             
@@ -2128,9 +2142,9 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 배열속성 이름 찾기
-         * @param {number} p_idx 인덱스
-         * @returns {string}
+         * 배열속성 이름 찾는다.
+         * @param {Number} p_idx 인덱스
+         * @returns {String}
          */
         PropertyCollection.prototype.propertyOf = function(p_idx) {
             return this.properties[p_idx];
@@ -2198,9 +2212,10 @@ if (typeof Array.isArray === 'undefined') {
         util.inherits(PropertyObjectCollection, _super);
 
         /**
-         * 
-         * @param {String | Item} p_object 
-         * @returns {Item} 등록한 아이템
+         * 객체속성 컬렉션을 추가한다.
+         * @param {String} p_name 
+         * @param {*} p_value 
+         * @returns {Item} 등록한 아이템을 리턴한다.
          */
         PropertyObjectCollection.prototype.add  = function(p_name, p_value) {
 
@@ -2272,14 +2287,15 @@ if (typeof Array.isArray === 'undefined') {
         util.inherits(PropertyFunctionCollection, _super);
 
         /**
-         * 
-         * @param {String | Item} p_object 
-         * @returns {Item} 등록한 아이템
+         * 함수속성 컬렉션을 추가한다.
+         * @param {String} p_name 
+         * @param {*} p_value 
+         * @returns {Item} 등록한 아이템을 리턴한다.
          */
         PropertyFunctionCollection.prototype.add  = function(p_name, p_value) {
 
             if (typeof p_name === 'undefined') throw new Error('p_name param request fail...');
-            if (typeof p_value !== 'function') throw new Error('p_name param request fail...');
+            if (typeof p_value !== 'function') throw new Error('p_value param request fail...');
 
             return _super.prototype.add.call(this, p_name, p_value);
         };
@@ -2466,7 +2482,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * GUID 생성
+         * GUID 생성한다.
          * @private
          * @returns {String}
          */
@@ -2476,7 +2492,7 @@ if (typeof Array.isArray === 'undefined') {
 
         /**
          * 조건 : GUID는 한번만 생성해야 함
-         * GUID 얻기
+         * GUID를 얻는다.
          * @returns {String}
          */
         MetaObject.prototype.getGUID  = function() {
@@ -2487,7 +2503,8 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 객체 얻기 : 추상메소드 : REVIEW:: 공통 요소? 확인필요
+         * 객체를 얻는다
+         * REVIEW:: 공통 요소? 확인필요
          * @virtual
          * @returns {Object}
          */
@@ -2707,6 +2724,11 @@ if (typeof Array.isArray === 'undefined') {
             /** @private */
             this.__event    = new Observer(this, this);
 
+            /**
+             * value 내부값 (필터 및 getter/setter 무시)
+             * @private
+             * @member {*} _W.Meta.Entity.Item#__value
+             */
             Object.defineProperty(this, '__value', 
             {
                 get: function() { return __value; },
@@ -2719,6 +2741,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템 소유 엔티티
+             * @member {Entity} _W.Meta.Entity.Item#entity
+             */
             Object.defineProperty(this, 'entity', 
             {
                 get: function() { return __entity; },
@@ -2733,6 +2759,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템 타입 (내부속성)
+             * @member {String} _W.Meta.Entity.Item#type
+             */
             Object.defineProperty(this, 'type', 
             {
                 get: function() { return __type; },
@@ -2745,6 +2775,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템 크기 (내부속성)
+             * @member {Number} _W.Meta.Entity.Item#size
+             */
             Object.defineProperty(this, 'size', 
             {
                 get: function() { return __size; },
@@ -2756,6 +2790,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템 기본값 (내부속성)
+             * @member {String | Number | Boolean} _W.Meta.Entity.Item#default
+             */
             Object.defineProperty(this, 'default', 
             {
                 get: function() { return __default; },
@@ -2767,6 +2805,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템 설명 (내부속성)
+             * @member {String} _W.Meta.Entity.Item#caption
+             */
             Object.defineProperty(this, 'caption', 
             {
                 get: function() { return __caption; },
@@ -2778,6 +2820,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템 value의 Null 여부
+             * @member {Boolean} _W.Meta.Entity.Item#isNotNull
+             */
             Object.defineProperty(this, 'isNotNull', 
             {
                 // get: function() { 
@@ -2794,6 +2840,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템 value null 통과 여부 (기본값 = false)
+             * @member {Boolean} _W.Meta.Entity.Item#isNullPass
+             */
             Object.defineProperty(this, 'isNullPass', 
             {
                 get: function() { return __isNullPass },
@@ -2805,6 +2855,11 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
             
+            /**
+             * 아이템 콜백 함수
+             * REVIEW: 필요성 검토 필요
+             * @member {String} _W.Meta.Entity.Item#callback
+             */
             Object.defineProperty(this, 'callback', 
             {
                 get: function() { return __callback; },
@@ -2816,6 +2871,16 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템 제약 조건 
+             * @member {Array<Object>} _W.Meta.Entity.Item#constraints
+             * @example
+             * var c = {
+             *  regex: /aa/,
+             *  msg: '매칭메세지',  // return이 true면 성공시 메세지, false 실패시 메세지
+             *  return: ture     // 매칭시 싱공실패 여부 
+             * };
+             */
             Object.defineProperty(this, 'constraints', 
             {
                 get: function() { return __constraints; },
@@ -2838,6 +2903,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템 코드 타입
+             * @member {Object} _W.Meta.Entity.Item#codeType
+             */
             Object.defineProperty(this, 'codeType', 
             {
                 get: function() { return __codeType; },
@@ -2846,6 +2915,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템 순서
+             * @member {String} _W.Meta.Entity.Item#order
+             */
             Object.defineProperty(this, 'order', 
             {
                 get: function() { return __order; },
@@ -2857,6 +2930,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템 순서 증가 수
+             * @member {Number} _W.Meta.Entity.Item#increase
+             */
             Object.defineProperty(this, 'increase', 
             {
                 get: function() { return __increase; },
@@ -2868,6 +2945,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
             
+            /**
+             * 아이템 value
+             * @member {*} _W.Meta.Entity.Item#value
+             */
             Object.defineProperty(this, 'value', 
             {
                 get: function() { 
@@ -2896,6 +2977,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템의 value 의 getter
+             * @member {Function} _W.Meta.Entity.Item#getter
+             */
             Object.defineProperty(this, 'getter', 
             {
                 get: function() { return __getter; },
@@ -2907,6 +2992,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템의 value 의 setter
+             * @member {Function} _W.Meta.Entity.Item#setter
+             */
             Object.defineProperty(this, 'setter', 
             {
                 get: function() { return __setter; },
@@ -2918,7 +3007,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
-            /** @event _W.Meta.Entity.Item#onChanged */
+            /**
+             * 변경 이벤트 
+             * @event _W.Meta.Entity.Item#onChanged 
+             */
             Object.defineProperty(this, 'onChanged', {
                 enumerable: true,
                 configurable: true,
@@ -2962,7 +3054,10 @@ if (typeof Array.isArray === 'undefined') {
             return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
         
-        /** @override */
+        /** 
+         * 아이템을 복제한다. 
+         * @returns {Item}
+         */
         Item.prototype.clone = function() {
             
             var clone = new Item(this.name);
@@ -2996,7 +3091,12 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 제약조건 설정
+         * 제약조건을 추가한다.
+         * REVIEW: addConstraint vs setConstraint 와 적합성 검토
+         * @param {*} p_regex 
+         * @param {*} p_msg 
+         * @param {*} p_code 
+         * @param {*} p_return 
          */
         Item.prototype.setConstraint = function(p_regex, p_msg, p_code, p_return) {
             p_return = p_return || false;
@@ -3016,7 +3116,7 @@ if (typeof Array.isArray === 'undefined') {
 
 // POINT:: 삭제 대기
         /**
-         * @method
+         * method
          */
         // Item.prototype.defineValueProperty = function(p_getter, p_setter) {
 
@@ -3042,7 +3142,7 @@ if (typeof Array.isArray === 'undefined') {
         // };
         
         /**
-         * 검사
+         * 아이템의 value에 유효성을 검사한다. (isNotnull, isNullPass, constraints 기준)
          * @param {string} p_value 
          * @param {object} r_result 메세지는 참조(객체)형 으로 전달
          * @param {number} p_option 1. isNotNull 참조 | 2: null검사 진행   |  3: null검사 무시
@@ -3126,6 +3226,10 @@ if (typeof Array.isArray === 'undefined') {
             
             this.elementType = Item;    // 기본 컬렉션 타입
             
+            /**
+             * 아이템의 타입
+             * @member {Function} _W.Meta.Entity.ItemCollection#itemType
+             */
             Object.defineProperty(this, 'itemType', 
             {
                 get: function() { return this.elementType; },
@@ -3142,7 +3246,7 @@ if (typeof Array.isArray === 'undefined') {
         util.inherits(ItemCollection, _super);
         
         /**
-         * 유무 검사
+         * 컬렉션에 아이템 유무를 검사한다.
          * @param {*} p_elem 
          * @returns {*} 
          */
@@ -3156,10 +3260,10 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 아이템 추가 : 이름, 값
-         * @param {*} p_name 
-         * @param {*} p_value 
-         * @returns {*}
+         *  이름과 값으로 아이템 생성하여 컬렉션에 추가한다.
+         * @param {*} p_name 아이템명
+         * @param {String | Number | Boolean} p_value 
+         * @returns {Item}
          */
         ItemCollection.prototype.addValue  = function(p_name, p_value) {
 
@@ -3198,6 +3302,7 @@ if (typeof Array.isArray === 'undefined') {
         util.inherits(ItemTableCollection, _super);
 
         /**
+         * 테이블컬렉션에 아이템을 추가한다.
          * @param {string | Item} p_object 
          * @returns {Item} 등록한 아이템
          */
@@ -3249,6 +3354,10 @@ if (typeof Array.isArray === 'undefined') {
         util.inherits(ItemViewCollection, _super);
 
         /**
+         * 뷰컬렉션에 아이템을 추가(등록/설정)한다.
+         * @param {String | Item} p_object 
+         * @param {?ItemCollection} p_baseCollection
+         * @example
          *  - base(all),    string | Itme, Collection   => Collection 에 생성후 자신에 등록 
          *  - base(N),      string | Itme               => this 에 생성후 자신에 등록
          *  - base(Y),      string | Item               => Base 에 생성후 자신에 등록
@@ -3262,9 +3371,6 @@ if (typeof Array.isArray === 'undefined') {
          * 
          *  TODO:: filter 옵션 : 충돌방지에 이용
          *  TODO:: 객체 비교는 string 이 아니고 값과 타입을 비교해야함 (그래야 참조를 사용)
-         * 
-         * @param {String | Item} p_object 
-         * @param {?ItemCollection} p_baseCollection
          */
         ItemViewCollection.prototype.add  = function(p_object, p_baseCollection) {
             
@@ -3310,8 +3416,8 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 엔티티 추가
-         * @param {*} p_entity 
+         * 엔티티 추가한다.
+         * @param {Entity} p_entity 
          */
         ItemViewCollection.prototype.addEntity  = function(p_entity) {
             if (typeof p_entity === 'undefined' && !(p_entity instanceof MetaElement && p_entity.instanceOf('Entity'))) {
@@ -3396,6 +3502,10 @@ if (typeof Array.isArray === 'undefined') {
             var __filter        = null;
             var __selector      = null;
 
+            /**
+             * 아이템 DOM 타입
+             * @member {*} _W.Meta.Entity.ItemDOM#domType
+             */
             Object.defineProperty(this, 'domType', 
             {
                 get: function() { return __domType; },
@@ -3408,6 +3518,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
             
+            /**
+             * 읽기전용 여부
+             * @member {*} _W.Meta.Entity.ItemDOM#isReadOnly
+             */
             Object.defineProperty(this, 'isReadOnly', 
             {
                 get: function() { return __isReadOnly; },
@@ -3419,6 +3533,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
             
+            /**
+             * 숨김 여부
+             * @member {*} _W.Meta.Entity.ItemDOM#isHide
+             */
             Object.defineProperty(this, 'isHide', 
             {
                 get: function() { return __isHide; },
@@ -3430,6 +3548,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
             
+            /**
+             * DOM 요소
+             * @member {*} _W.Meta.Entity.ItemDOM#element
+             */
             Object.defineProperty(this, 'element', 
             {
                 get: function() { return __element; },
@@ -3443,6 +3565,8 @@ if (typeof Array.isArray === 'undefined') {
 
             /**
              * 셀렉터
+             * @member _W.Meta.Entity.ItemDOM#selector
+             * @example
              * type
              *  - val | value   : 요소의 value 속성값
              *  - text          : 요소의 텍스트값
@@ -3451,7 +3575,6 @@ if (typeof Array.isArray === 'undefined') {
              *  - prop.속성명   : 요소의 속성명값 (초기상태기준)
              *  - attr.속성명   : 요소의 속성명값 (현재상태)
              *  - none         : 아무일도 하지 않음, 표현의 목적
-             * @member _W.Meta.Entity.ItemDOM#selector
              */
             Object.defineProperty(this, 'selector', 
             {
@@ -3472,7 +3595,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
-            /** property {value} 오버라이딩 */
+            /**
+             * 아이템 값 (오버라이딩)
+             * @member {*} _W.Meta.Entity.ItemDOM#value
+             */
             Object.defineProperty(this, 'value', 
             {
                 get: function() { 
@@ -3575,6 +3701,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
             
+            /**
+             * value 값 필터
+             * @member {Function} _W.Meta.Entity.ItemDOM#filter
+             */
             Object.defineProperty(this, 'filter', 
             {
                 get: function() { return __filter; },
@@ -3610,7 +3740,10 @@ if (typeof Array.isArray === 'undefined') {
             return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** @override **/
+        /**
+         * 아이템 DOM을 복제한다. 
+         * @returns {ItemDOM}
+         */
         ItemDOM.prototype.clone  = function() {
                     
             var top = _super.prototype.clone.call(this);
@@ -3746,7 +3879,10 @@ if (typeof Array.isArray === 'undefined') {
                 }
             }
 
-            /** @property {entity} */
+            /**
+             * 로우의 소유 엔티티
+             * @member {Entity} _W.Meta.Entity.Row#entity
+             */
             Object.defineProperty(this, 'entity', 
             {
                 get: function() { return __entity; },
@@ -3765,7 +3901,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 복사
+         * 로우를 복사한다. (생성 후 복제)
          * @param {Object} p_filter 필터객체
          */
         Row.prototype.copy = function(p_filter) {
@@ -3776,8 +3912,8 @@ if (typeof Array.isArray === 'undefined') {
         };
         
         /**
-         * 복제
-         * @returns {*}
+         * 로우를 복제한다.
+         * @returns {Row}
          */
         Row.prototype.clone  = function() {
           
@@ -3812,9 +3948,9 @@ if (typeof Array.isArray === 'undefined') {
         util.inherits(RowCollection, _super);
 
         /**
-         * 추가
+         * 로우컬렉션에 로우를 추가한다.
          * @param {String | Item} p_row 
-         * @returns {Item} 등록한 아이템
+         * @returns {Row} 등록한 로우
          */
         RowCollection.prototype.add  = function(p_row) {
 
@@ -3916,6 +4052,10 @@ if (typeof Array.isArray === 'undefined') {
             var __items = null;     // 상속해서 생성해야함
             var __rows  = new RowCollection(this);
 
+            /**
+             * 엔티티의 아이템(속성) 컬렉션
+             * @member {ItemCollection} _W.Meta.Entity.Entity#items
+             */
             Object.defineProperty(this, 'items', 
             {
                 get: function() { return __items; },
@@ -3927,6 +4067,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
             
+            /**
+             * 엔티티의 데이터(로우) 컬렉션
+             * @member {RowCollection} _W.Meta.Entity.Entity#rows
+             */
             Object.defineProperty(this, 'rows', 
             {
                 get: function() { return __rows; },
@@ -3943,7 +4087,7 @@ if (typeof Array.isArray === 'undefined') {
         util.inherits(Entity, _super);
 
         /**
-         * 아이템 추가 (내부)
+         * 아이템 추가한다. (내부)
          * @Private
          * @param {*} p_name 
          * @param {*} p_property 
@@ -3960,7 +4104,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 빈 row 채우기
+         * 빈 row 채운다.
          * @param {*} p_target 
          */
         Entity.prototype.__fillRow  = function(p_target) {
@@ -3978,10 +4122,10 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 로드 JSON
+         * 객체(JSON)를 불러온다.
          * @private 
-         * @param {*} p_object 
-         * @param {*} p_option 
+         * @param {*} p_object 로딩할 객체
+         * @param {*} p_option 로딩옵션
          */
         Entity.prototype.__loadJSON  = function(p_object, p_option) {
             p_option = p_option || 1;   // 기본값 덮어쓰기
@@ -4051,10 +4195,10 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 로드 Entity
+         * Entity를 불러(로드)온다.
          * @private
-         * @param {*} p_object 
-         * @param {*} p_option 
+         * @param {*} p_object 대상 엔티티
+         * @param {*} p_option 옵션
          */
         Entity.prototype.__loadEntity  = function(p_object, p_option) {
             p_option = p_option || 1;   // 기본값 덮어쓰기
@@ -4109,14 +4253,14 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 새로운 Row 추가
+         * 새로운 Row를 추가한다.
          */
         Entity.prototype.newRow  = function() {
             return new Row(this);
         };
 
         /**
-         * value 설정
+         * Row의 값을 아이템의 value에 설정한다.
          * @param {*} p_row 
          */
         Entity.prototype.setValue  = function(p_row) {
@@ -4129,7 +4273,8 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * value 얻기
+         * 아아템의 value을 Row형식으로 얻는다.
+         * @returns {Row}
          */
         Entity.prototype.getValue  = function() {
             
@@ -4142,16 +4287,18 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /** 
+         * 엔티티를 조회(검색) 한다.
+         * @param {Object} p_filter 필터객체
+         * @param {?(Number | Array<Number>)} p_index 인덱스 시작번호 또는 목록
+         * @param {?Number} p_end 인덱스 종료번호
+         * @return {Entity}
+         * @example
+         * // 상속기법을 이용함
          * filter = {
          *  __except : ['name'...],        // 제외 아이템 (1방법)
          *  아이템명: { __except: true }    // 아이템 제외 (2방법)
          *  아이템명: { order: 100 }        // 속성 오버라이딩
          * }
-         * ** 상속기법을 이용함
-         * @param {Object} p_filter 필터객체
-         * @param {?Number | Array<Number>} p_index 인덱스 시작번호 또는 목록
-         * @param {?Number} p_end 인덱스 종료번호
-         * @return {Entity}
          */
         Entity.prototype.select  = function(p_filter, p_index, p_end) {
             
@@ -4233,7 +4380,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 복사
+         * 엔티티를 복사한다. (조회 후 복제)
          * @param {*} p_filter 
          * @param {*} p_index 
          * @param {*} p_end 
@@ -4246,15 +4393,15 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * '구조를 구성하는게 주용도임'
+         * 엔티티를 병합한다. (구조를 구성하는게 주용도임)
+         * @param {*} p_target 병합할 Entity (대상)
+         * @param {*} p_option {item: 1, row:2}
+         * @desc
          * 병합 : 컬렉션 순서에 따라 병한다.
          * Item과 Row가 있는 경우
          * - 1 items, rows 병합 (기존유지) *기본값
          * - 2 items, rows 병합 (덮어쓰기)  
          * - 3 row 안가져오기    (기존유지)
-         * @param {*} p_target 병합할 Entity
-         * @param {*} p_option {item: 1, row:2}
-
          */
         Entity.prototype.merge  = function(p_target, p_option) {
             p_option = p_option || 1;    // 기본값
@@ -4317,8 +4464,8 @@ if (typeof Array.isArray === 'undefined') {
          * 기존에 row 가 존재하면 newRow 부터 가져오고, 기존item 은 공백이 들어감
          * @param {*} p_object Entity 는 item과 row 는 쌍으로 존재함, JSON 은 row만 존재할 수 있음
          * @param {Number} p_option 
-         *          - 1: row 기준으로 가져옴, 없을시 item 생성, item 중복시 기존유지  <*기본값> 
-         *          - 2: 존재하는 item 데이터만 가져오기
+         * @param {Number} p_option.1 row 기준으로 가져옴, 없을시 item 생성, item 중복시 기존유지  <*기본값> 
+         * @param {Number} p_option.2 존재하는 item 데이터만 가져오기
          */
         Entity.prototype.load  = function(p_object, p_option) {
             
@@ -4329,7 +4476,9 @@ if (typeof Array.isArray === 'undefined') {
             }
         };
         
-        /** @method */
+        /** 
+         * 아이템과 로우를 초기화 한다.
+         */
         Entity.prototype.clear  = function() {
             
             this.items.clear();
@@ -4425,7 +4574,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 복제
+         * 테이블 엔티티를 복제한다.
          * @returns {*}
          */
         EntityTable.prototype.clone  = function() {
@@ -4453,7 +4602,7 @@ if (typeof Array.isArray === 'undefined') {
      //---------------------------------------
      var EntityTableCollection  = (function (_super) {
         /**
-         * 테이블 엔티티 컬렉션
+         * 테이블 컬렉션
          * @constructs _W.Meta.Entity.EntityTableCollection
          * @extends _W.Collection.PropertyCollection
          * @param {*} p_onwer 소유자 
@@ -4466,7 +4615,7 @@ if (typeof Array.isArray === 'undefined') {
         util.inherits(EntityTableCollection, _super);
 
         /**
-         * 엔티티 추가
+         * 테이블 컬렉션에 엔티티 추가한다.
          * @param {String | Item} p_object 
          * @returns {Item} 등록한 아이템
          */
@@ -4579,7 +4728,7 @@ if (typeof Array.isArray === 'undefined') {
         util.inherits(EntityView, _super);
 
         /**
-         * 뷰 참조 등록
+         * 뷰 엔티티에 참조를 등록한다.
          * @param {Entity} p_entity 
          */
         EntityView.prototype._regRefer  = function(p_entity) {
@@ -4601,7 +4750,7 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 복제
+         * 뷰 엔티티를 복제한다.
          * @returns {*}
          */
         EntityView.prototype.clone  = function() {
@@ -4644,14 +4793,15 @@ if (typeof Array.isArray === 'undefined') {
         util.inherits(EntityViewCollection, _super);
 
         /**
+         * 뷰 컬렉션에 뷰 엔티티를 추가한다.
+         * @param {string | EntityView} p_object 
+         * @param {?ItemCollection} p_baseEntity
+         * @returns {EntityView} 등록한 아이템
+         * @example
          *  - string                    : 생성후   string      이름으로 등록 
          *  - string, colltion          : 생성후   string      이름으로  등록 (collection보냄)
          *  - entityView                :         entityView  이름으로 등록
          *  - entityView, collection    :         entityView  이름으로 등록 (collection보냄) => 오류발생
-         * 
-         * @param {string | EntityView} p_object 
-         * @param {?ItemCollection} p_baseEntity
-         * @returns {EntityView} 등록한 아이템
          */
         EntityViewCollection.prototype.add  = function(p_object, p_baseEntity) {
 
@@ -4784,7 +4934,10 @@ if (typeof Array.isArray === 'undefined') {
             var __baseEntity;
             // var __propagation   = true;
             
-            /** @private */
+            /** 
+             * 이벤트 (옵서버)
+             * @private 
+             */
             this.__event    = new Observer(this, this);
 
             // Protected
@@ -4852,17 +5005,17 @@ if (typeof Array.isArray === 'undefined') {
             
             return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
-
-        /** @event */
+        
         /**
+         * 실행전 이벤트
          * @listens _W.Meta.Bind.BaseBind#_onExecute
          */
         BaseBind.prototype._onExecute = function(p_bindCommand) {
             this.__event.publish('execute', p_bindCommand);
         };
 
-        /** @event */
         /**
+         * 실행후 이벤트
          * @listens _W.Meta.Bind.BaseBind#_onExecuted
          */
         BaseBind.prototype._onExecuted = function(p_bindCommand, p_result) {
@@ -4967,6 +5120,10 @@ if (typeof Array.isArray === 'undefined') {
              */
             this._baseEntity = p_baseEntity;    // 최상위 설정
 
+            /**
+             * 출력 컬렉션
+             * @protected
+             */
             this._output = new EntityViewCollection(this, this._baseEntity);
             this.addOutput('output');
 
@@ -4991,8 +5148,10 @@ if (typeof Array.isArray === 'undefined') {
                 throw new Error('Only [p_baseEntity] type "Entity" can be added');
             }
             
-
-            
+            /**
+             * 이벤트 전파 유무 (기본값 = true)
+             * @member {Boolean} _W.Meta.Bind.BindCommand#eventPropagation 
+             */
             Object.defineProperty(this, 'eventPropagation', {
                 enumerable: true,
                 configurable: true,
@@ -5003,6 +5162,10 @@ if (typeof Array.isArray === 'undefined') {
                 get: function() { return __propagation; }
             }); 
             
+            /**
+             * 검사대상 EntityView
+             * @member {EntityView} _W.Meta.Bind.BindCommand#valid 
+             */
             Object.defineProperty(this, 'valid', 
             {
                 get: function() { return __valid; },
@@ -5014,7 +5177,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
-
+            /**
+             * 바인드 EntityView
+             * @member {EntityView} _W.Meta.Bind.BindCommand#bind 
+             */
             Object.defineProperty(this, 'bind', 
             {
                 get: function() { return __bind; },
@@ -5026,6 +5192,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 기타 EntityView (기타의 용도 : validSelector 외)
+             * @member {EntityView} _W.Meta.Bind.BindCommand#etc 
+             */
             Object.defineProperty(this, 'etc', 
             {
                 get: function() { return __etc; },
@@ -5037,7 +5207,11 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
             
-
+            /**
+             * 출력(output) 특성
+             * 0: 제외(edit),  1: View 오버로딩 , 2: 있는자료만 , 3: 존재하는 자료만 
+             * @member {Number} _W.Meta.Bind.BindCommand#outputOption 
+             */
             Object.defineProperty(this, 'outputOption', 
             {
                 get: function() { return __outputOption; },
@@ -5049,7 +5223,11 @@ if (typeof Array.isArray === 'undefined') {
                 configurable: true,
                 enumerable: true
             });
-            
+
+            /**
+             * 검사(valid) 전 콜백
+             * @member {Function} _W.Meta.Bind.BindCommand#cbValid 
+             */
             Object.defineProperty(this, 'cbValid', 
             {
                 get: function() { return __cbValid; },
@@ -5061,6 +5239,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 바인드(bind) 전 콜백
+             * @member {Function} _W.Meta.Bind.BindCommand#cbBind
+             */
             Object.defineProperty(this, 'cbBind', 
             {
                 get: function() { return __cbBind; },
@@ -5072,6 +5254,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 바인드(bind) 결과 콜백 (주요 : 회신자료의 가공의 역활)
+             * @member {Function} _W.Meta.Bind.BindCommand#cbValid 
+             */
             Object.defineProperty(this, 'cbResult', 
             {
                 get: function() { return __cbResult; },
@@ -5083,6 +5269,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 바인드 결과 출력 콜백 (주요: 목록의 출력)
+             * @member {Function} _W.Meta.Bind.BindCommand#cbOutput 
+             */
             Object.defineProperty(this, 'cbOutput', 
             {
                 get: function() { return __cbOutput; },
@@ -5093,7 +5283,11 @@ if (typeof Array.isArray === 'undefined') {
                 configurable: true,
                 enumerable: true
             });
-
+            
+            /**
+             * 바인드 처리 종료 후 콜백 (주요: 다른 이벤트 또는 명령과의 연결)
+             * @member {Function} _W.Meta.Bind.BindCommand#cbEnd 
+             */
             Object.defineProperty(this, 'cbEnd', 
             {
                 get: function() { return __cbEnd; },
@@ -5112,25 +5306,35 @@ if (typeof Array.isArray === 'undefined') {
             this._symbol = this._symbol.concat(['_output', 'outputOption', 'cbOutput']);
             this._symbol = this._symbol.concat(['execute', '_onExecute', '_onExecuted', 'getTypes', 'add', 'addItem', 'setItem']);
             this._symbol = this._symbol.concat(['addOutput']);
-
-
         }
         util.inherits(BindCommand, _super);
     
 
-        /** @virtual */
+        /** 
+         * 실행 ( valid >> bind >> result >> output >> end )
+         * @virtual 
+         */
         BindCommand.prototype.execute = function() {
             throw new Error('[ execute() ] Abstract method definition, fail...');
         };
 
-        /** @override */
+        /**
+         * BindCommand의 실행 전 이벤트 
+         * @override 
+         * @param {BindCommand} p_bindCommand 
+         */
         BindCommand.prototype._onExecute = function(p_bindCommand) {
             _super.prototype._onExecute.call(this, p_bindCommand);               // 자신에 이벤트 발생
             
             if (this.eventPropagation) this._model._onExecute(p_bindCommand);    // 모델에 이벤트 추가 발생
         };
 
-        /** @override */
+        /**
+         * BindCommand의 실행 후 이벤트 
+         * @override 
+         * @param {BindCommand} p_bindCommand 
+         * @param {Object} p_result 
+         */
         BindCommand.prototype._onExecuted = function(p_bindCommand, p_result) {
             _super.prototype._onExecuted.call(this, p_bindCommand, p_result);
             if (this.eventPropagation) this._model._onExecuted(p_bindCommand, p_result);
@@ -5150,7 +5354,7 @@ if (typeof Array.isArray === 'undefined') {
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?(Array<String> | string)} p_entities <선택> 추가할 아이템 명령
+         * @param {?(Array<String> | String)} p_entities <선택> 추가할 아이템 명령
          */
         BindCommand.prototype.add = function(p_item, p_entities) {
 
@@ -5210,9 +5414,9 @@ if (typeof Array.isArray === 'undefined') {
 
         /**
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
-         * @param {string} p_name
-         * @param {object | string | number | boolean} p_value
-         * @param {?array<string> | string} p_entities <선택> 추가할 아이템 명령
+         * @param {String} p_name
+         * @param {Object | String | Number | Boolean} p_value
+         * @param {?(Array<String> | String)} p_entities <선택> 추가할 아이템 명령
          */
         BindCommand.prototype.addItem = function(p_name, p_value, p_entities) {
 
@@ -5231,8 +5435,8 @@ if (typeof Array.isArray === 'undefined') {
         /**
          * 예시>
          * e.read.setEntity(['idx', 'addr'], 'valid');
-         * @param {string | array} p_names 
-         * @param {?string | array<string>} p_entities 
+         * @param {String | Array} p_names 
+         * @param {?(String | Array<String>)} p_entities 
          */
         BindCommand.prototype.setItem = function(p_names, p_entities) {
 
@@ -5260,10 +5464,11 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 예시>
+         * 대상엔티티에서 해제
+         * @param {String | Array} p_names 해제할 아이템명
+         * @param {?(String | Array<String>)} p_entities 'valid', 'bind', 'output' 해제할 위치 지정 
+         * @example
          * e.read.release(['idx', 'addr'], 'valid');
-         * @param {string | array} p_names 
-         * @param {?string | array<string>} p_entities 
          */
         BindCommand.prototype.release = function(p_names, p_entities) {
 
@@ -5326,6 +5531,10 @@ if (typeof Array.isArray === 'undefined') {
             }
         };
 
+        /**
+         * 출력에 사용할 엔티티를 추가한다.
+         * @param {String} p_name 
+         */
         BindCommand.prototype.addOutput = function(p_name) {
 
             // 유효성 검사
@@ -5455,6 +5664,10 @@ if (typeof Array.isArray === 'undefined') {
             //     throw new Error('Only [p_objectDI] type "IBindModel" can be added');
             // }
             
+            /**
+             * 바인드모델 속성 (내부 : __이름)
+             * @member {PropertyCollection} _W.Meta.Bind.BindModel#prop
+             */
             Object.defineProperty(this, 'prop', 
             {
                 get: function() { return __prop; },
@@ -5466,6 +5679,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 바인드모델 함수 (내부함수 + 노출함수)
+             * @member {PropertyFunctionCollection} _W.Meta.Bind.BindModel#fn
+             */
             Object.defineProperty(this, 'fn', 
             {
                 get: function() { return __fn; },
@@ -5477,6 +5694,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 바인드속성의 매핑한다.
+             * @member {PropertyCollection} _W.Meta.Bind.BindModel#mapping
+             */
             Object.defineProperty(this, 'mapping', 
             {
                 get: function() { return __mapping; },
@@ -5488,6 +5709,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 아이템 타입을 설정한다.
+             * @member {Item} _W.Meta.Bind.BindModel#itemType
+             */
             Object.defineProperty(this, 'itemType', 
             {
                 get: function() { return __itemType; },
@@ -5500,6 +5725,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * valid 에서 실패시 콜백
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbFail
+             */
             Object.defineProperty(this, 'cbFail', 
             {
                 get: function() { return __cbFail; },
@@ -5511,6 +5740,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * valid 에서 오류발생시 콜백
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbError
+             */
             Object.defineProperty(this, 'cbError', 
             {
                 get: function() { return __cbError; },
@@ -5522,6 +5755,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 검사(valid)시 기본 콜백 (cbValid 콜백함수가 없을 경우)
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseValid
+             */
             Object.defineProperty(this, 'cbBaseValid', 
             {
                 get: function() { return __cbBaseValid; },
@@ -5533,6 +5770,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 바인드(valid)시 기본 콜백 (cbBind 콜백함수가 없을 경우)
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseBind
+             */
             Object.defineProperty(this, 'cbBaseBind', 
             {
                 get: function() { return __cbBaseBind; },
@@ -5544,6 +5785,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
             
+            /**
+             * 바인드 결과 수신 기본 콜백 (cbResult 콜백함수가 없을 경우)
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseResult
+             */
             Object.defineProperty(this, 'cbBaseResult', 
             {
                 get: function() { return __cbBaseResult; },
@@ -5555,6 +5800,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 출력 기본 콜백 (cbOutput 콜백함수가 없을 경우)
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseOutput
+             */
             Object.defineProperty(this, 'cbBaseOutput', 
             {
                 get: function() { return __cbBaseOutput; },
@@ -5566,6 +5815,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 실행완료시 기본 콜백 (cbEnd 콜백함수가 없을 경우)
+             * @member {Funtion} _W.Meta.Bind.BindModel#cbBaseEnd
+             */
             Object.defineProperty(this, 'cbBaseEnd', 
             {
                 get: function() { return __cbBaseEnd; },
@@ -5586,7 +5839,6 @@ if (typeof Array.isArray === 'undefined') {
             this._symbol = this._symbol.concat(['getTypes', 'init', 'preRegister', 'preCheck', 'preReady', 'addEntity']);
             this._symbol = this._symbol.concat(['add', 'addItem', 'loadProp', 'setMapping', 'preReady', 'addEntity']);
             this._symbol = this._symbol.concat(['addCommand', 'setService']);
-            
         }
         util.inherits(BindModel, _super);
 
@@ -5601,7 +5853,10 @@ if (typeof Array.isArray === 'undefined') {
             return type.concat(typeof _super !== 'undefined' && _super.prototype && _super.prototype.getTypes ? _super.prototype.getTypes() : []);
         };
 
-        /** 초기화 */
+        /** 
+         * 초기화  
+         * 내부적으로 preRegister() >>  preCheck() >> preRedy() 실행한다.
+         */
         BindModel.prototype.init = function() {
             if (this.isLog) console.log('call :: BindModel.init()');
             
@@ -5613,27 +5868,33 @@ if (typeof Array.isArray === 'undefined') {
 
         /**
          * 전처리 등록
-         * @param {*} p_this 
+         * @param {BindModel} p_bindModel 
          */
-        BindModel.prototype.preRegister = function(p_this) {
-            return this.__preRegister.call(this, p_this);
+        BindModel.prototype.preRegister = function(p_bindModel) {
+            return this.__preRegister.call(this, p_bindModel);
         };
 
         /**
          * 전처리 검사
+         * @param {BindModel} p_bindModel 
          */
-        BindModel.prototype.preCheck = function(p_this) {
-            return this.__preCheck.call(this, p_this);
+        BindModel.prototype.preCheck = function(p_bindModel) {
+            return this.__preCheck.call(this, p_bindModel);
         };
         
         /**
          * 전처리 준비
-         * @param {*} p_this 
+         * @param {BindModel} p_bindModel 
          */
-        BindModel.prototype.preReady = function(p_this) {
-            return this.__preReady.call(this, p_this);
+        BindModel.prototype.preReady = function(p_bindModel) {
+            return this.__preReady.call(this, p_bindModel);
         };
         
+        /**
+         * 사용할 엔티티를 추가한다. (확장시 사용)
+         * @param {String} p_name 
+         * @returns {*}
+         */
         BindModel.prototype.addEntity = function(p_name) {
 
             var entity;
@@ -5660,8 +5921,8 @@ if (typeof Array.isArray === 'undefined') {
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?array<string>} p_cmds <선택> 추가할 아이템 명령
-         * @param {?(array<string> | string)} p_entities <선택> 추가할 아이템 명령
+         * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
+         * @param {?(Array<String> | String)} p_entities <선택> 추가할 아이템 명령
          */
         BindModel.prototype.add = function(p_item, p_cmds, p_entities) {
 
@@ -5712,11 +5973,10 @@ if (typeof Array.isArray === 'undefined') {
 
         /**
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
-         * @param {string} p_name
-         * @param {object | String | number | boolean} p_obj 
-         * @param {?(array<string> | string)} p_entities <선택> 추가할 아이템 명령
+         * @param {String} p_name
+         * @param {Object | String | Number | Boolean} p_obj 
+         * @param {?(Array<String> | String)} p_entities <선택> 추가할 아이템 명령
          */
-// POINT::
         BindModel.prototype.addItem = function(p_name, p_obj, p_cmds, p_entities) {
 
             var item;
@@ -5757,8 +6017,8 @@ if (typeof Array.isArray === 'undefined') {
 
         /**
          * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
-         * @param {?(string | array<string>)} p_prop 
-         * @param {?string} p_entity 
+         * @param {?(String | Array<String>)} p_prop 
+         * @param {?String} p_entity 
          */
         BindModel.prototype.loadProp = function(p_prop, p_entity) {
 
@@ -5803,8 +6063,8 @@ if (typeof Array.isArray === 'undefined') {
 
         /**
          * 아이템을 매핑한다.
-         * @param {ProperyCollection | object} p_mapping Item 에 매핑할 객체 또는 컬렉션
-         * @param {?string} p_entity 대상 엔티티
+         * @param {ProperyCollection | Object} p_mapping Item 에 매핑할 객체 또는 컬렉션
+         * @param {?String} p_entity 대상 엔티티
          */
         BindModel.prototype.setMapping = function(p_mapping, p_entity) {
             
@@ -5860,9 +6120,9 @@ if (typeof Array.isArray === 'undefined') {
         /**
          * 명령 추가 (추상클래스) 상속하여 구현해야 함
          * @abstract
-         * @param {*} p_name 
-         * @param {*} p_option 
-         * @param {*} p_entities 
+         * @param {String} p_name 
+         * @param {?Number} p_option 
+         * @param {?Entity} p_entities 
          */
         BindModel.prototype.addCommand  = function(p_name, p_option, p_entities) {
 
@@ -5870,9 +6130,9 @@ if (typeof Array.isArray === 'undefined') {
         };
 
         /**
-         * 서비스 설정
-         * @param {*} p_service 
-         * @param {*} p_isLoadProp 
+         * 서비스를 설정한다.
+         * @param {IBindModel} p_service 서비스객체
+         * @param {?Boolean} p_isLoadProp 서비스 내의 prop 를 item 으로 로딩힌다. (기본값: true)
          */
         BindModel.prototype.setService  = function(p_service, p_isLoadProp) {
 
@@ -6081,9 +6341,9 @@ if (typeof Array.isArray === 'undefined') {
          * 바인드 명령 Ajax 
          * @constructs _W.Meta.Bind.BindCommandAjax
          * @extends _W.Meta.Bind.BindCommand
-         * @param {*} p_bindModel 
-         * @param {*} p_outputOption 
-         * @param {*} p_baseEntity 
+         * @param {BindModel} p_bindModel 
+         * @param {Number} p_outputOption 
+         * @param {Entity} p_baseEntity 
          */
         function BindCommandAjax(p_bindModel, p_outputOption, p_baseEntity) {
             _super.call(this, p_bindModel, p_baseEntity);
@@ -6098,14 +6358,22 @@ if (typeof Array.isArray === 'undefined') {
                 error: null,        // 실패 콜백
                 complete: null      // 완료 콜백
             };
-
+            
+            /**
+             * ajaxSetup 설정값 (jquery의 ajaxSetup 과 동일)
+             * @member {Object} _W.Meta.Bind.BindCommandAjax#ajaxSetup 
+             */
             Object.defineProperty(this, 'ajaxSetup', 
             {
                 get: function() { return __ajaxSetup; },
                 configurable: true,
                 enumerable: true
             });
-
+            
+            /**
+             * ajaxSetup.url 의 값에 설정한다.
+             * @member {String} _W.Meta.Bind.BindCommandAjax#url 
+             */
             Object.defineProperty(this, 'url', 
             {
                 get: function() { return __ajaxSetup.url; },
@@ -6127,7 +6395,10 @@ if (typeof Array.isArray === 'undefined') {
         }
         util.inherits(BindCommandAjax, _super);
 
-        /** @virtual */
+        /** 
+         * valid.items.. 검사한다.
+         * @protected
+         */
         BindCommandAjax.prototype._execValid = function() {
             
             var result = {};     // 오류 참조 변수
@@ -6490,6 +6761,10 @@ if (typeof Array.isArray === 'undefined') {
             this._baseEntity.items.itemType = this.itemType;            // base 엔티티 타입 변경
             this.items                      = this._baseEntity.items;   // 참조 추가
 
+            /**
+             * 바인딩 기본 ajaxSetup 을 설정한다.
+             * @member {Object} _W.Meta.Bind.BindModelAjax#baseAjaxSetup
+             */
             Object.defineProperty(this, 'baseAjaxSetup', 
             {
                 get: function() { return __baseAjaxSetup; },
@@ -6497,6 +6772,10 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
 
+            /**
+             * 바인딩 기본 ajaxSetup.url 을 설정한다.
+             * @member {String} _W.Meta.Bind.BindModelAjax#baseUrl
+             */
             Object.defineProperty(this, 'baseUrl', 
             {
                 get: function() { return __baseAjaxSetup.url; },
@@ -6759,7 +7038,7 @@ if (typeof Array.isArray === 'undefined') {
         module.exports = BindModelAjax;
     } else {
         global._W.Meta.Bind.BindModelAjax = BindModelAjax;
-        global.BindModelAjax = BindModelAjax;        // 힌트
+        global._W.BindModelAjax = BindModelAjax;        // 힌트
     }
 
 }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
