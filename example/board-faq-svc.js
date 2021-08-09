@@ -38,7 +38,7 @@
          * // 2단계 : 사용할 command 기준으로 items들을 셀렉터 설정 (mapping 참조, validSelector() 검사)
          * // 3단계 : 스크립트 로딩 (하단은 목록 예시)
          * 
-         * var faq = new BindModelAjax(new BoardFaqService());
+         * var faq = new _W.BindModelAjax(new BoardFaqService());
          *    
          * // 속성 설정
          * faq.prop["__listUrl"]    = "FAQ_Frm.asp";
