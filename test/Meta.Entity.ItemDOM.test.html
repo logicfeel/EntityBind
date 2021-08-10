@@ -53,8 +53,9 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
 
 <div>
     <h2> 7. ItemDOM :: selector : 체크박스(단일값)</h2>
+    <p>checkbox 를 사용할 경우와 radio 사용하는 경우 구분 정리 필요</p>
     t7 : 
-    <input type='checkbox' name='t7' value='1' onclick='check_event2(this.value)'>
+    <input type='checkbox' name='t7' value='Y' onclick='check_event2(this.value)'>
     <p>item.value : <span id='t7-1'></span> </p>
 </div>
 
@@ -201,6 +202,9 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
     var item7 = new ItemDOM('i1');
     
     { // *************************************************
+        item7.setter = function(val) { 
+            $('input[name=t7]').prop('checked', val.indexOf('Y') >= 0);
+        };
         item7.selector = { key: 'input[name=t7][type=checkbox]:checked', type: 'value'};
     } // *************************************************
 
@@ -220,8 +224,8 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
             return vv; 
         };
         item8.setter = function(val) { 
-            if (val.indexOf('A') >= 0) $('input[name=t8][value=A]').prop('checked', true);
-            if (val.indexOf('B') >= 0) $('input[name=t8][value=B]').prop('checked', true);
+            $('input[name=t8][value=A]').prop('checked', val.indexOf('A') >= 0);
+            $('input[name=t8][value=B]').prop('checked', val.indexOf('B') >= 0);
         };
         item8.selector = { key: 'input[name=t8][type=checkbox]', type: 'none'};     // 가상 선택자 사용!!
     } // *************************************************
