@@ -12,7 +12,7 @@
 '------------------------------------------------------------------------------
 '
 '   확인
-'   http://rtwgs4.cafe24.com/Admin/pc/mod/bod/faq_Frm.asp?cmd=INSERT
+'   http://rtwgs4.cafe24.com/Admin/pc/mod/bod/notice_Frm.asp?cmd=INSERT
 '
 '******************************************************************************
 %>
@@ -57,39 +57,35 @@
                     <col style="width:auto;" />
                 </colgroup>
                 <tbody>
-                    <tr id="area_create">
-                        <th scope="row">등록일자 </th>
+                    <tr>
+                        <th scope="row">제목<strong class="icoRequired">필수</strong></th>
                         <td colspan="3">
-                        	<p id="m-create_dt"></p>
+                        	<input type="text" id="m-title" name="title" value="" class="fText" style="width:600px;" />
                         </td>
                     </tr>                
                     <tr>
-                        <th scope="row">질문내용 <strong class="icoRequired">필수</strong></th>
-                        <td colspan="3">
-                        	<input type="text" id="m-question" name="question" value="" class="fText" style="width:600px;" />
-                        </td>
-                    </tr>                
-                    <tr>
-                        <th scope="row">순번 </th>
+                        <th scope="row">작성자 </th>
                         <td  colspan="3">
-                            <input type="text" id="m-rank_it" name="rank_it" value="99" class="fText" style="width:200px;" />
+                            <input type="text" id="m-writer" name="writer" value="" class="fText" style="width:200px;" />
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row">코드타입 </th>
-                        <td  colspan="3">
-                            <input type="text" id="m-typeCode" name="typeCode" value="" class="fText" style="width:200px;" />
+                        <th scope="row">상단공지 유무</th>
+                        <td>
+                            <input id="top_N" type="radio" name="m-top_yn" value="N" checked class="fChk" /> No</label> 
+                            <input id="top_Y" type="radio" name="m-top_yn" value="Y" class="fChk" /> Yes</label> 
                         </td>
-                    </tr>                    
+                        <th scope="row">팝업공지 유무</th>
+                        <td>
+                            <input id="popup_N" type="radio" name="m-popup_yn" value="N" checked class="fChk" /> No</label> 
+                            <input id="popup_Y" type="radio" name="m-popup_yn" value="Y" class="fChk" /> Yes</label> 
+                        </td>                        
+                    </tr>                                        
                     <tr>
-                        <th scope="row">답변내용 <strong class="icoRequired">필수</strong></th>
+                        <th scope="row">공지내용</th>
                         <td colspan="3">
-                        	<!-- <input type="textarea" id="answer" name="answer" value="" class="fTextarea" style="width:600px;height:300px" />-->
-                            <textarea id="m-answer"  class="fTextarea" style="width:600px;height:300px"></textarea>
-                            
-                            <!-- 
-                            <a href="javascript:submitContents(this)"><img src="버튼이미지" border=0></a>
-                            -->
+                        	<!--<input type="textarea" id="contents" name="contents" value="" class="fTextarea" style="width:600px;height:300px" />-->
+                            <textarea id="m-contents"  class="fTextarea" style="width:600px;height:300px"></textarea>
                         </td>
                     </tr>  
                     </tbody>
@@ -119,11 +115,24 @@
 
 	<!-- // 도움말 영역 -->
     </form>
-</div>        
+</div>  
+      
+<!-- 네이버 웹에디터 -->
+<script type="text/javascript" src="/nhn_editor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
+<script type="text/javascript">
+    var oEditors = [];
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: oEditors,
+        elPlaceHolder: "m-contents",        // textarea id
+        sSkinURI: "/nhn_editor/SmartEditor2Skin.html",
+        fCreator: "createSEditor2"
+    });
+</script>
 
+<script src="/Common/js/handlebars.js"></script>
 <script src="/Common/js/_w-meta-1.6.0.js?<%=g_iRandomID%>"></script>
 <script src="/Admin/adm_cmn/Service/base-page-svc.js?<%=g_iRandomID%>"></script>
-<script src="/Admin/adm_mod/BOD/Service/board-faq-svc.js?<%=g_iRandomID%>"></script>
+<script src="/Admin/adm_mod/BOD/Service/board-notice-svc.js?<%=g_iRandomID%>"></script>
 <script>
     function setEditMode(pIsEdit) {
         if (pIsEdit) {
@@ -131,39 +140,45 @@
             $('#btn_Update').show();
             $('#btn_Delete').show();
             $('#btn_Reset').hide();
-            $('#area_create').show();
         }  else {
             $('#btn_Update').hide();
             $('#btn_Delete').hide();
             $('#btn_Insert').show();
             $('#btn_Reset').show();
-            $('#area_create').hide();
         }
     }
 </script>
 <script>
 	// #######################################################################################################
-	var faq = new _W.BindModelAjax(new BoardFaqService());
+	var ntc = new _W.BindModelAjax(new BoardNoticeService());
 	
-	// 속성 설정
-	faq.isLog = true;
-	faq.prop["__listUrl"] = "FAQ_Lst.asp";
-    faq.prop["__mode"] = ParamGet2JSON(location.href).mode;
+	// 속성 설정 : ntc
+    ntc.isLog = true;
+	ntc.prop["__listUrl"] = "Notice_Lst.asp";
+    ntc.prop["__mode"] = ParamGet2JSON(location.href).mode;
 
-	// 이벤트 바인딩
-	$('#btn_Insert').click(faq.fn.procCreate);
-	$('#btn_Update').click(faq.fn.procUpdate);
-	$('#btn_Delete').click(faq.fn.procDelete);
-	$('#btn_List').click(faq.fn.moveList);
-	$('#btn_Reset').click(faq.fn.resetForm);
+    // 콜백 등록 : ntc
+    ntc.create.onExecute = function(p_bindCommand) { 
+        oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
+    };
+    ntc.update.onExecute = function(p_bindCommand) { 
+        oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
+    };
+
+	// 이벤트 바인딩 : ntc
+    $('#btn_Insert').click(ntc.fn.procCreate);  // 수정
+	$('#btn_Update').click(ntc.fn.procUpdate);  // 수정
+	$('#btn_Delete').click(ntc.fn.procDelete);  // 삭제
+	$('#btn_List').click(ntc.fn.moveList);      // 목록 이동
+	$('#btn_Reset').click(ntc.fn.resetForm);    // 입력폼 초기화
     //--------------------------------------------------------------
 	$(document).ready(function () {
-        faq.init();
+        ntc.init();
 
-        if (faq.prop["__mode"] === "EDIT") {
+        if (ntc.prop["__mode"] === "EDIT") {
             setEditMode(true);
-            faq.items["faq_idx"].value  = ParamGet2JSON(location.href).faq_idx;
-            faq.fn.procRead();
+            ntc.items["ntc_idx"].value  = ParamGet2JSON(location.href).ntc_idx;
+            ntc.fn.procRead();
         }  else {
             setEditMode(false);
         }

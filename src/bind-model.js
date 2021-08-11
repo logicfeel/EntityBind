@@ -593,6 +593,8 @@
                         // command 등록 및 설정
                         command = this.addCommand(prop);
                         if (typeof propObject[prop]['outputOption'] === 'number') command.outputOption = propObject[prop]['outputOption'];
+                        if (typeof propObject[prop]['ajaxSetup'] === 'object')    command.ajaxSetup = propObject[prop]['ajaxSetup'];
+                        if (typeof propObject[prop]['url'] === 'string')          command.url = propObject[prop]['url'];
                         if (typeof propObject[prop]['onExecute'] === 'function')  command.onExecute = propObject[prop]['onExecute'];
                         if (typeof propObject[prop]['onExecuted'] === 'function') command.onExecuted = propObject[prop]['onExecuted'];
                         if (typeof propObject[prop]['cbValid'] === 'function')    command.cbValid = propObject[prop]['cbValid'];
