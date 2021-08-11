@@ -215,12 +215,17 @@
     img.items["prefix"].value 	    = "EVT-";
 
     // 콜백 등록 : evt
-    evt.create.onExecute = function(p_bindCommand) { 
-        oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
+    evt.onExecute = function(p_bindCommand) { 
+        if (['create', 'update'].indexOf(p_bindCommand.name) > -1) {
+            oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
+        }
     };
-    evt.update.onExecute = function(p_bindCommand) { 
-        oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
-    };
+    // evt.create.onExecute = function(p_bindCommand) { 
+    //     oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
+    // };
+    // evt.update.onExecute = function(p_bindCommand) { 
+    //     oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
+    // };
     evt.read.onExecuted = function(p_bindCommand, p_result) { 
         img.items["pos_idx"].value   = evt.items["evt_idx"].value;      // image 키 등록
         img.list.execute();

@@ -367,7 +367,9 @@
          * @param {*} p_entities 
          */
         BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_entities) {
-
+            
+            var bindCommand;
+            
             // 유효성 검사
             if (typeof p_name !== 'string') {
                 throw new Error('Only [p_name] type "string" can be added');
@@ -381,8 +383,11 @@
             // 중복 검사
             if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
 
-            // 생성
-            this[p_name] = new BindCommandAjax(this, p_option, p_entities);
+            // 생성 및 이름 설정
+            bindCommand = new BindCommandAjax(this, p_option, p_entities);
+            bindCommand.name = p_name;  // 인스턴스 이름
+
+            this[p_name] = bindCommand;
 
             return this[p_name];
         };

@@ -118,7 +118,7 @@
             model.create.cbBind = function(p_ajax){
                 console.log('call cbBind');
             };
-            model.onExecute = function() {
+            model.onExecute = function(pp) {
                 this.result.push('onExecute');
             };
             model.onExecuted = function() {

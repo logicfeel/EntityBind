@@ -37,6 +37,24 @@
          */
         function MetaObject() {
             
+            var _name = '';
+
+            /**
+             * 이름
+             * @member _W.Meta.MetaObject#name
+             * @protected
+             */
+             Object.defineProperty(this, 'name', 
+             {
+                 get: function() { return _name; },
+                 set: function(newValue) { 
+                     if (typeof newValue !== 'string') throw new Error('Only [name] type "string" can be added');
+                     _name = newValue;
+                 },
+                 configurable: true,
+                 enumerable: true
+             });
+
             /** implements IObject 인터페이스 구현 */
             this._implements(IObject);
         }

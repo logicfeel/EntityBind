@@ -49,7 +49,7 @@
         function MetaElement(p_name) {
             _super.call(this);
             
-            p_name = p_name || '';
+            this.name = p_name || '';
             
             /**
              * GUID 값 
@@ -57,12 +57,6 @@
              * @private 
              */
             this.__GUID = null;
-
-            /**
-             * 메타 이름
-             * @member {String}
-             */
-            this.name = p_name;
             
             /** implements IMarshal 인터페이스 구현 */
             this._implements(IMarshal);            
