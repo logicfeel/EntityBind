@@ -72,8 +72,8 @@
                     <tr>
                         <th scope="row">활성화 유무 <strong class="icoRequired">필수</strong></th>
                         <td  colspan="3">
-                            <input name="m-active" type="radio"  value="Y"> 활성화
-                            <input name="m-active" type="radio"  value="N"> 비활성화
+                            <input name="m-active_yn" type="radio"  value="Y"> 활성화
+                            <input name="m-active_yn" type="radio"  value="N"> 비활성화
                         </td>
                     </tr>
                     <tr>
@@ -210,25 +210,13 @@
     evt.isLog = true;
 	evt.prop["__listUrl"] = "Event_Lst.asp";
     evt.prop["__mode"] = ParamGet2JSON(location.href).mode;
-    // 속성 설정 : img
-    img.items["position_cd"].value 	= "Event";
-    img.items["prefix"].value 	    = "EVT-";
 
     // 콜백 등록 : evt
-    evt.onExecute = function(p_bindCommand) { 
-        if (['create', 'update'].indexOf(p_bindCommand.name) > -1) {
-            oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
-        }
+    evt.create.onExecute = function(p_bindCommand) { 
+        oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
     };
-    // evt.create.onExecute = function(p_bindCommand) { 
-    //     oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
-    // };
-    // evt.update.onExecute = function(p_bindCommand) { 
-    //     oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
-    // };
-    evt.read.onExecuted = function(p_bindCommand, p_result) { 
-        img.items["pos_idx"].value   = evt.items["evt_idx"].value;      // image 키 등록
-        img.list.execute();
+    evt.update.onExecute = function(p_bindCommand) { 
+        oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
     };
     // 콜백 등록 : img
     img.create.onExecuted = function(p_bindCommand, p_result) { 
@@ -249,13 +237,20 @@
     $('#btn_Upload').click(img.fn.procCreate);  // 이미지 업로드(등록)
     //--------------------------------------------------------------
 	$(document).ready(function () {
+        // 초기화
         evt.init();
         img.init();
 
         if (evt.prop["__mode"] === "EDIT") {
             setEditMode(true);
-            evt.items["evt_idx"].value  = ParamGet2JSON(location.href).evt_idx;
+            // evt
+            evt.items["evt_idx"].value = ParamGet2JSON(location.href).evt_idx;
             evt.fn.procRead();
+            // img
+            img.items["position_cd"].value = "Event";
+            img.items["prefix"].value = "EVT-";
+            img.items["pos_idx"].value = evt.items["evt_idx"].value;      // image 키 등록
+            img.fn.procList();
         }  else {
             setEditMode(false);
         }

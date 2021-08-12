@@ -53,6 +53,7 @@
                 // view
                 _temp_list:     { selector: { key: '#s-temp-img'+ _SUFF,         type: 'html' } },
                 _area_list:     { selector: { key: '#s-area-img'+ _SUFF,         type: 'html' } },
+                _form:          { selector: { key: '#fileUploadForm'+ _SUFF,     type: 'none' } },
                 // bind
                 cmd:            '',
                 upfile:         {
@@ -212,22 +213,6 @@
             };
         }
         util.inherits(SystemImageService, _super);
-    
-        // 데코레이션 메소드
-        SystemImageService.prototype.preRegister = function(p_bindModel) {
-            BaseService.prototype.preRegister.call(this, p_bindModel);
-            if (this.isLog) console.log("______________ preRegister()");
-        };
-        SystemImageService.prototype.preCheck = function(p_bindModel) {
-            if (BaseService.prototype.preCheck.call(this, p_bindModel)) {
-                if (this.isLog) if (true || p_bindModel.checkSelector()) console.log("preCheck : 선택자 검사 => 'Success' ");
-            }
-            return true;
-        };
-        SystemImageService.prototype.preReady = function(p_bindModel) {
-            BaseService.prototype.preReady.call(this, p_bindModel);
-            if (this.isLog) console.log("______________ preReady()");
-        };
 
         return SystemImageService;
     

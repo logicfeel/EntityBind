@@ -12,8 +12,9 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0; 
+    var errorCnt = 0; 
     var result = [];        // 결과 확인 **사용시 초기화    
+    var taskCnt = 0;
 
     var util;
     var ArrayCollection;
@@ -46,15 +47,17 @@
         var table = new TestTable();
         table.items.add(100);
         table.items.add(200);
-        if (table.items[0] === 100 && 
-            table.items[1] === 200 && 
-            table.items.count === 2 && 
-            table.items.list[0] === 100 &&
-            true) {
+        if (
+                table.items[0] === 100 && 
+                table.items[1] === 200 && 
+                table.items.count === 2 && 
+                table.items.list[0] === 100 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
                 
         console.log('---------------------------------------------------------------------------');
@@ -62,10 +65,11 @@
         var table = new TestTable();
         table.items.add('A1');
         if (table.items[0] === 'A1') {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -77,10 +81,11 @@
         table.items.add('A1');
         table.items.remove('A1');
         if (table.items.count === 0) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -90,14 +95,16 @@
         table.items.add('A2');  // 삭제 위치
         table.items.add('A3');
         table.items.removeAt(1);
-        if (table.items.count === 2 && 
-            table.items[0] === 'A1' && 
-            table.items[1] === 'A3' &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.items[0] === 'A1' && 
+                table.items[1] === 'A3' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -107,14 +114,16 @@
         table.items.add('A2');  // 삭제 위치
         table.items.add('A3');
         table.items.removeAt(0);
-        if (table.items.count === 2 && 
-            table.items[0] === 'A2' && 
-            table.items[1] === 'A3' &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.items[0] === 'A2' && 
+                table.items[1] === 'A3' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -124,14 +133,16 @@
         table.items.add('A2');  // 삭제 위치
         table.items.add('A3');
         table.items.removeAt(2);
-        if (table.items.count === 2 && 
-            table.items[0] === 'A1' && 
-            table.items[1] === 'A2' &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.items[0] === 'A1' && 
+                table.items[1] === 'A2' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -141,14 +152,16 @@
         table.items.add('A2');
         table.items.add('A3');
         table.items.clear();
-        if (table.items.count === 0 && 
-            table.items[0] === undefined && 
-            table.items[1] === undefined &&
-            true) {
+        if (
+                table.items.count === 0 && 
+                table.items[0] === undefined && 
+                table.items[1] === undefined &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -157,13 +170,15 @@
         table.items.add('A1');
         table.items.add('A2');
         table.items.add('A3');
-        if (table.items.contains('A1') === true && 
-            table.items.contains('A4') === false &&
-            true) {
+        if (
+                table.items.contains('A1') === true && 
+                table.items.contains('A4') === false &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -173,15 +188,17 @@
         table.items.add('A2');
         table.items.add(100);
         table.items.add(2);
-        if (table.items.indexOf('A1') === 0 && 
-            table.items.indexOf(0) === -1 && 
-            table.items.indexOf(100) === 2 && 
-            table.items.indexOf(2) === 3 &&
-            true) {
+        if (
+                table.items.indexOf('A1') === 0 && 
+                table.items.indexOf(0) === -1 && 
+                table.items.indexOf(100) === 2 && 
+                table.items.indexOf(2) === 3 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         // console.log('---------------------------------------------------------------------------');
@@ -195,7 +212,7 @@
         //     console.log('Result = Success');
         // } else {
         //     console.warn('Result = Fail');
-        //     errorCount++;
+        //     errorCnt++;
         // }
 
         // console.log('---------------------------------------------------------------------------');
@@ -207,7 +224,7 @@
         //     console.log('Result = Success');
         // } else {
         //     console.warn('Result = Fail');
-        //     errorCount++;
+        //     errorCnt++;
         // }
         console.log('---------------------------------------------------------------------------');
         console.log('BaseCollection.elementType = function :: 값타입 설정 ');
@@ -221,13 +238,15 @@
         table.items.add(s1);
         table.items[0] = s2;
         table.items.add(s1);    
-        if (table.items[1].name === 's1' &&     // 값으로 비교
-            table.items[0] === s2 &&            // 객체로 비교
-            true) {   
+        if (
+                table.items[1].name === 's1' &&     // 값으로 비교
+                table.items[0] === s2 &&
+                true) {   
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -239,13 +258,15 @@
             result.push(val);
         };
         table.items.add('A1');
-        if (result.indexOf('A1') > -1 && 
-            result.indexOf(0) > -1 &&
-            true) {
+        if (
+                result.indexOf('A1') > -1 && 
+                result.indexOf(0) > -1 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -259,10 +280,11 @@
         table.items.add('A2');
         table.items.remove('A2');
         if (result.indexOf(1) > -1) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -277,10 +299,11 @@
         table.items.add('A3');
         table.items.clear();
         if (result.indexOf('CLEAR') > -1) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -299,24 +322,29 @@
         table.items.add('A3');
         table.items.remove('A1');
         table.items.removeAt(0);
-        if (result.length === 10 && 
-            table.items.count === 1 &&
-            true) {
+        if (
+                result.length === 10 && 
+                table.items.count === 1 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
 
-        return errorCount;
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -342,8 +370,9 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
+    var taskCnt = 0;
         
     var util;
     var PropertyCollection;
@@ -377,13 +406,15 @@
         var table = new TestTable();
         table.items.add('a1');
         table.items.add('a2', 'A2');
-        if (table.items['a2'] === 'A2' && 
-            table.items.count === 2 &&
-            true) {
+        if (
+                table.items['a2'] === 'A2' && 
+                table.items.count === 2 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -394,10 +425,11 @@
         table.items.add('a2', 'A2');
         table.items.remove(table.items['a2']);
         if (true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -407,16 +439,18 @@
         table.items.add('a2', 'A2');    // 삭제위치
         table.items.add('a3', 'A3');
         table.items.removeAt(1);
-        if (table.items.count === 2 && 
-            table.items[0] === 'A1' && 
-            table.items['a1'] === 'A1' &&
-            table.items[1] === 'A3' && 
-            table.items['a3'] === 'A3' &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.items[0] === 'A1' && 
+                table.items['a1'] === 'A1' &&
+                table.items[1] === 'A3' && 
+                table.items['a3'] === 'A3' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -426,13 +460,16 @@
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');
         table.items.removeAt(0);
-        if (table.items.count === 2 && 
-            table.items[0] === 'A2' && table.items['a2'] === 'A2' &&
-            table.items[1] === 'A3' && table.items['a3'] === 'A3') {
+        if (
+                table.items.count === 2 && 
+                table.items[0] === 'A2' && table.items['a2'] === 'A2' &&
+                table.items[1] === 'A3' && table.items['a3'] === 'A3' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -442,16 +479,18 @@
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');    // 삭제위치
         table.items.removeAt(2);
-        if (table.items.count === 2 && 
-            table.items[0] === 'A1' && 
-            table.items['a1'] === 'A1' &&
-            table.items[1] === 'A2' && 
-            table.items['a2'] === 'A2' &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.items[0] === 'A1' && 
+                table.items['a1'] === 'A1' &&
+                table.items[1] === 'A2' && 
+                table.items['a2'] === 'A2' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -461,14 +500,16 @@
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');
         table.items.clear();
-        if (table.items.count === 0 && 
-            table.items[0] === undefined && 
-            table.items[1] === undefined &&
-            true) {
+        if (
+                table.items.count === 0 && 
+                table.items[0] === undefined && 
+                table.items[1] === undefined &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -477,13 +518,15 @@
         table.items.add('a1', 'A1');
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');
-        if (table.items.contains('A1') === true && 
-            table.items.contains('A4') === false &&
-            true) {
+        if (
+                table.items.contains('A1') === true && 
+                table.items.contains('A4') === false &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -492,13 +535,15 @@
         table.items.add('a1', 'A1');
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');        
-        if (table.items.indexOf('A1') === 0 && 
-            table.items.indexOf(table.items['a3']) === 2 &&
-            true) {
+        if (
+                table.items.indexOf('A1') === 0 && 
+                table.items.indexOf(table.items['a3']) === 2 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -507,13 +552,15 @@
         table.items.add('a1', 'A1');
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');        
-        if (table.items.indexOfName('a2') === 1 && 
-            table.items.indexOfName('a4') === -1 &&
-            true) {
+        if (true && 
+                table.items.indexOfName('a2') === 1 && 
+                table.items.indexOfName('a4') === -1 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -522,13 +569,15 @@
         table.items.add('a1', 'A1');
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');        
-        if (table.items.propertyOf(1) === 'a2' && 
-            table.items.propertyOf('a4') === undefined &&
-            true) {
+        if (
+                table.items.propertyOf(1) === 'a2' && 
+                table.items.propertyOf('a4') === undefined &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         console.log('---------------------------------------------------------------------------');
@@ -542,25 +591,29 @@
         table.items.add('a2', s1);    
         // table.items.add('a3', 'A3');        // new 통한 생성이 아니면 오류 !!
         // 인스턴스로 비교해야함
-        if (table.items.propertyOf(1) === 'a2' && 
-            table.items['a2'] === s1 &&
-            true) {   
+        if (
+                table.items.propertyOf(1) === 'a2' && 
+                table.items['a2'] === s1 &&
+                true) {   
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         //#################################################
-        //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
 
-        return errorCount;
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -586,8 +639,9 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0; 
+    var errorCnt = 0; 
     var result = [];        // 결과 확인 **사용시 초기화    
+    var taskCnt = 0;
 
     var util;
 
@@ -612,12 +666,13 @@
         }());
 
         var i = new ISuper();
-        if (i.m1() === 'I1' && 
-            true) {
+        if (
+                i.m1() === 'I1' && 
+                true) {
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -645,16 +700,17 @@
         }());
 
         var c = new CoClass();
-        if (c.m1() === 'C1' &&
-            c.m2() === 'C2' && 
-            c._interface.length === 2 &&
-            c.isImplementOf(ISuper) === true &&
-            c.isImplementOf(ISuper2) === true &&
-            true) {
+        if (
+                c.m1() === 'C1' &&
+                c.m2() === 'C2' && 
+                c._interface.length === 2 &&
+                c.isImplementOf(ISuper) === true &&
+                c.isImplementOf(ISuper2) === true &&
+                true) {
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -684,16 +740,17 @@
         }(Super));
 
         var c = new CoClass();
-        if (c.m1() === 'C1' &&
-            c.m2() === 'C2' && 
-            c._interface.length === 1 &&
-            c.isImplementOf(ISuper) === true &&
-            c.isImplementOf(ISuper2) === false &&
-            true) {
+        if (
+                c.m1() === 'C1' &&
+                c.m2() === 'C2' && 
+                c._interface.length === 1 &&
+                c.isImplementOf(ISuper) === true &&
+                c.isImplementOf(ISuper2) === false &&
+                true) {
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -727,16 +784,18 @@
         }());
 
         var c = new CoClass();
-        if (c.m1() === 'C1' &&
-            c.m2() === 'C2' && 
-            c._interface.length === 1 &&
-            c.isImplementOf(ISuper) === false &&
-            c.isImplementOf(ISub) === true &&
-            true) {
+        if (
+                c.m1() === 'C1' &&
+                c.m2() === 'C2' && 
+                c._interface.length === 1 &&
+                c.isImplementOf(ISuper) === false &&
+                c.isImplementOf(ISub) === true &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -766,27 +825,32 @@
         }());
 
         var c = new CoClass();
-        if (c.m1() === 'C1' &&
-            c.m2() === 'C2' && 
-            c._interface.length === 1 &&
-            c.isImplementOf(ISuper) === false &&
-            c.isImplementOf(ISub) === true &&
-            true) {
+        if (    
+                c.m1() === 'C1' &&
+                c.m2() === 'C2' && 
+                c._interface.length === 1 &&
+                c.isImplementOf(ISuper) === false &&
+                c.isImplementOf(ISub) === true &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -812,8 +876,9 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0; 
+    var errorCnt = 0; 
     var result = [];        // 결과 확인 **사용시 초기화    
+    var taskCnt = 0;
     
     var Observer;
 
@@ -899,10 +964,11 @@
         };
         e._onLoad(); // 테스크
         if (result.indexOf('onLoad') > -1 ) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
         
         console.log('---------------------------------------------------------------------------');
@@ -912,10 +978,11 @@
         e.onClear = event2;
         e._onClear(); // 테스크
         if (result.indexOf('onClear') > -1 ) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
         
         console.log('---------------------------------------------------------------------------');
@@ -925,10 +992,11 @@
         e.__event.subscribe(event2, 'code');
         e.__event.publish('code');
         if (result.indexOf('onClear') > -1 ) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -941,7 +1009,7 @@
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -952,10 +1020,11 @@
         e.__event.unsubscribe(event2, 'code');
         e.__event.publish('code');
         if (result.indexOf('onClear') < 0 ) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -966,10 +1035,11 @@
         e.__event.unsubscribe(event2);
         e.__event.publish();
         if (result.indexOf('onClear') < 0 ) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -985,7 +1055,7 @@
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -997,10 +1067,11 @@
         e.__event.unsubscribeAll('code');
         e.__event.publish('code');
         if (result.indexOf('onClear') < 0 ) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -1012,10 +1083,11 @@
         e.__event.subscribe(event3, 'code');    // 지역
         e.__event.publish('code');
         if (result.length == 1 ) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -1029,14 +1101,16 @@
             result.push(this.id);  // Result 등록
         };
         e._onParam('P1', 'P2'); // 테스크
-        if (result.indexOf('P1') > -1 && 
-            result.indexOf('P2') > -1 && 
-            result.indexOf('OBJ') > -1 &&
-            true) {
+        if (
+                result.indexOf('P1') > -1 && 
+                result.indexOf('P2') > -1 && 
+                result.indexOf('OBJ') > -1 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -1047,14 +1121,17 @@
         
 
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -1080,9 +1157,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
 
     var util
 
@@ -1123,7 +1201,7 @@
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
         
         console.log('---------------------------------------------------------------------------');
@@ -1144,27 +1222,31 @@
             [[100], 20],
             [10]
         ];
-        if (util.getArrayLevel(arr) === 1 &&
-            util.getArrayLevel(arr2) === 2 &&
-            util.getArrayLevel(arr3) === 3 &&
-            util.getArrayLevel(arr4) === 1 &&
-            true) {
+        if (
+                util.getArrayLevel(arr) === 1 &&
+                util.getArrayLevel(arr2) === 2 &&
+                util.getArrayLevel(arr3) === 3 &&
+                util.getArrayLevel(arr4) === 1 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
         console.log('Util.createGUID() :: GUID 생성 ');
         var guid = util.createGUID();
-        if (guid.length === 36 &&
-            guid.match(/-/g).length === 4 &&
-            true) {
+        if (
+                guid.length === 36 &&
+                guid.match(/-/g).length === 4 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -1181,14 +1263,17 @@
 
 
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -1214,8 +1299,9 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0; 
+    var errorCnt = 0; 
     var result = [];        // 결과 확인 **사용시 초기화        
+    var taskCnt = 0;
 
     var Observer;
 
@@ -1279,25 +1365,30 @@
             result.push(this.id);  // Result 등록
         };
         e._onParam('P1', 'P2'); // 테스크
-        if (result.indexOf('P1') > -1 && 
-            result.indexOf('P2') > -1 && 
-            result.indexOf('OBJ') > -1 &&
-            true) {
+        if (
+                result.indexOf('P1') > -1 && 
+                result.indexOf('P2') > -1 && 
+                result.indexOf('OBJ') > -1 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -1323,9 +1414,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
 
     var util;        
     var Row;
@@ -1402,20 +1494,22 @@
                 console.log('---------------------------------------------------------------------------');
                 console.log('cbOutput, cbEnd, read.onExecuted, onExecuted :: 콜백 ');
                 // 콜백에서 검사
-                if (this.result[0] === 'read.onExecute' && 
-                    this.result[1] === 'onExecute' && 
-                    this.result[2] === 'cbValid' && 
-                    this.result[3] === 'cbBind' && 
-                    this.result[4] === 'cbResult' && 
-                    this.result[5] === 'cbOutput' && 
-                    this.result[6] === 'cbEnd' && 
-                    this.result[7] === 'read.onExecuted' && 
-                    this.result[8] === 'onExecuted' && 
-                    true) {
+                if (
+                        this.result[0] === 'read.onExecute' && 
+                        this.result[1] === 'onExecute' && 
+                        this.result[2] === 'cbValid' && 
+                        this.result[3] === 'cbBind' && 
+                        this.result[4] === 'cbResult' && 
+                        this.result[5] === 'cbOutput' && 
+                        this.result[6] === 'cbEnd' && 
+                        this.result[7] === 'read.onExecuted' && 
+                        this.result[8] === 'onExecuted' && 
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
                 model.result = [];    // 콜백 초기화
             };
@@ -1456,16 +1550,18 @@
                 console.log('---------------------------------------------------------------------------');
                 console.log('cbBaseOutput, cbBaseEnd... :: 콜백 ');
                 // 콜백에서 검사
-                if (this.result[0] === 'cbBaseValid' &&
-                    this.result[1] === 'cbBaseBind' &&
-                    this.result[2] === 'cbBaseResult' &&
-                    this.result[3] === 'cbBaseOutput' &&
-                    this.result[4] === 'cbBaseEnd' &&
-                    true) {
+                if (
+                        this.result[0] === 'cbBaseValid' &&
+                        this.result[1] === 'cbBaseBind' &&
+                        this.result[2] === 'cbBaseResult' &&
+                        this.result[3] === 'cbBaseOutput' &&
+                        this.result[4] === 'cbBaseEnd' &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
                 result = [];    // 콜백 초기화
             };
@@ -1520,16 +1616,18 @@
                 console.log('---------------------------------------------------------------------------');
                 console.log('cbBaseOutput, cbBaseEnd... :: 우선순위 콜백 ');
                 // 콜백에서 검사
-                if (this.result[0] === 'cbValid' &&
-                    this.result[1] === 'cbBind' &&
-                    this.result[2] === 'cbResult' &&
-                    this.result[3] === 'cbOutput' &&
-                    this.result[4] === 'cbEnd' &&
-                    true) {
+                if (
+                        this.result[0] === 'cbValid' &&
+                        this.result[1] === 'cbBind' &&
+                        this.result[2] === 'cbResult' &&
+                        this.result[3] === 'cbOutput' &&
+                        this.result[4] === 'cbEnd' &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
                 result = [];    // 콜백 초기화
             };
@@ -1552,14 +1650,16 @@
                 this._model.result.push('read.onExecuted');
                 console.log('---------------------------------------------------------------------------');
                 console.log('read.onExecuted, onExecuted :: 콜백 ');
-                if (this._model.result[0] === 'read.onExecute' && 
-                    this._model.result[1] === 'read.onExecuted' && 
-                    this._model.result.length === 2 &&
-                    true) {
+                if (
+                        this._model.result[0] === 'read.onExecute' && 
+                        this._model.result[1] === 'read.onExecuted' && 
+                        this._model.result.length === 2 &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             model.onExecute = function() {
@@ -1580,13 +1680,14 @@
             model.read.cbOutput = function(p_result) {
                 console.log('---------------------------------------------------------------------------');
                 console.log('BindCommandAjax.execute() :: 콜백 ');
-                if (this.output.items.count > 0 &&
-                    this.output.rows.count > 0 &&
-                    true) {
+                if (    this.output.items.count > 0 &&
+                        this.output.rows.count > 0 &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             model.read.execute();
@@ -1603,13 +1704,15 @@
             model.read.cbOutput = function(p_result) {
                 console.log('---------------------------------------------------------------------------');
                 console.log('BindCommandAjax.execute() :: 콜백 ');
-                if (this.output.items.count === 2 &&
-                    this.output.rows.count === 1 &&
-                    true) {
+                if (
+                        this.output.items.count === 2 &&
+                        this.output.rows.count === 1 &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             model.read.execute();
@@ -1627,16 +1730,18 @@
             model.read.cbOutput = function(p_result) {
                 console.log('---------------------------------------------------------------------------');
                 console.log('BindCommandAjax.execute() :: 콜백 ');
-                if (this.output.items.count === 2 &&
-                    this.output.rows.count === 1 &&
-                    this.output.items['sto_id'].value === 'S00001' &&
-                    this.output.items['adm_id'].value === 'logicfeel' &&
-                    this.output.rows.count === 1 &&
-                    true) {
+                if (
+                        this.output.items.count === 2 &&
+                        this.output.rows.count === 1 &&
+                        this.output.items['sto_id'].value === 'S00001' &&
+                        this.output.items['adm_id'].value === 'logicfeel' &&
+                        this.output.rows.count === 1 &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             model.read.execute();
@@ -1652,15 +1757,17 @@
             model.read.cbOutput = function(p_result) {
                 console.log('---------------------------------------------------------------------------');
                 console.log('BindCommandAjax.execute() :: 콜백 ');
-                if (this.output.items.count > 0 &&
-                    this.output.rows.count > 0 &&
-                    this.output2.items.count > 0 &&
-                    this.output2.rows.count > 0 &&
-                    true) {
+                if (
+                        this.output.items.count > 0 &&
+                        this.output.rows.count > 0 &&
+                        this.output2.items.count > 0 &&
+                        this.output2.rows.count > 0 &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             model.read.execute();
@@ -1671,28 +1778,33 @@
         var model = new BindModelAjax();
         model.addCommand('read', 1);
         var types = model.read.getTypes();
-        if (types.indexOf('BindCommandAjax') > -1 &&
-            types[0] === 'BindCommandAjax' && 
-            types[1] === 'BindCommand' && 
-            types[2] === 'BaseBind' && 
-            types[3] === 'MetaObject' &&
-            true) {
+        if (
+                types.indexOf('BindCommandAjax') > -1 &&
+                types[0] === 'BindCommandAjax' && 
+                types[1] === 'BindCommand' && 
+                types[2] === 'BaseBind' && 
+                types[3] === 'MetaObject' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
 
-        return errorCount;
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -1718,9 +1830,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
         
     var util;        
     var Row;
@@ -1824,21 +1937,22 @@
             model.create.cbBind = function(p_ajax){
                 console.log('call cbBind');
             };
-            model.onExecute = function() {
+            model.onExecute = function(pp) {
                 this.result.push('onExecute');
             };
             model.onExecuted = function() {
                 this.result.push('onExecuted');
                 console.log('---------------------------------------------------------------------------');
                 console.log('onExecute, onExecuted  :: 콜백 ');
-                if (true 
-                    && this.result[0] === 'onExecute'                           // 처음
-                    && this.result[this.result.length - 1] === 'onExecuted'     // 마지막
-                    ) {
+                if (
+                        this.result[0] === 'onExecute' &&                          // 처음
+                        this.result[this.result.length - 1] === 'onExecuted' &&    // 마지막
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             model.create.execute();
@@ -1863,15 +1977,17 @@
             this.result.push('preReady');
         };
         model.init();
-        if (model.result[0] === 'preRegister' && 
-            model.result[1] === 'preCheck' && 
-            model.result[2] === 'preReady' && 
-            model.result.length === 3 && 
-        true) {
-        console.log('Result = Success');
+        if (
+                model.result[0] === 'preRegister' && 
+                model.result[1] === 'preCheck' && 
+                model.result[2] === 'preReady' && 
+                model.result.length === 3 && 
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -1892,13 +2008,15 @@
         //     return false;
         // };   // 리턴을 하지 않아 실패함
         model.create.execute();
-        if (model.result[0] === 'cbFail' && 
-            model.result.length === 1 && 
-            true) {
+        if (
+                model.result[0] === 'cbFail' && 
+                model.result.length === 1 && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         // REVIEW:: URL 오류 메세지로 일단 막아둠
@@ -1920,13 +2038,15 @@
             model.onExecuted = function() {
                 console.log('---------------------------------------------------------------------------');
                 console.log('BindModel.cbError      :: 콜백 ');
-                if (this.result[0] === 'cbError' && 
-                    this.result.length === 1 && 
-                    true) {
+                if (    
+                        this.result[0] === 'cbError' && 
+                        this.result.length === 1 && 
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             
@@ -1946,28 +2066,29 @@
         model.addCommand('create2');
         model.add(new Item('i1'), []);
         model.first.items['i1'].value = 'V1';
-        if (// create 
-            model.create.valid.items.count === 1 &&
-            model.create.valid.items['i1'].value === 'V1' &&
-            model.create.valid.items['i1'].entity.name === 'first' &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -1981,24 +2102,25 @@
         // model.add(new Item('i1'), null, 'bind');
         model.add(new Item('i1'), '', 'bind');
         model.first.items['i1'].value = 'V1';
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 0 &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 0 &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2009,24 +2131,25 @@
         model.addCommand('create2');
         model.add(new Item('i1'), 'create2');
         model.first.items['i1'].value = 'V1';
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            model.create.bind.items.count === 0 &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                model.create.bind.items.count === 0 &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2037,22 +2160,23 @@
         model.addCommand('create2');
         model.add(new Item('i1'), 'create2', 'bind');
         model.first.items['i1'].value = 'V1';
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            model.create.bind.items.count === 0 &&
-            // create 2
-            model.create2.valid.items.count === 0 &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                model.create.bind.items.count === 0 &&
+                // create 2
+                model.create2.valid.items.count === 0 &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         console.log('---------------------------------------------------------------------------');
@@ -2064,30 +2188,31 @@
         model.addCommand('create3');
         model.add(new Item('i1'), ['create', 'create2']);
         model.first.items['i1'].value = 'V1';
-        if (// create 
-            model.create.valid.items.count === 1 &&
-            model.create.valid.items['i1'].value === 'V1' &&
-            model.create.valid.items['i1'].entity.name === 'first' &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // create 3
-            model.create3.valid.items.count === 0 &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&               
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // create 3
+                model.create3.valid.items.count === 0 &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&               
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2099,30 +2224,31 @@
             default: 10, 
             value: 'V1',
         }, []);
-        if (// create 
-            model.create.valid.items.count === 1 &&
-            model.create.valid.items['i1'].value === 'V1' &&
-            model.create.valid.items['i1'].entity.name === 'first' &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            model.first.items['i1'].default === 10 &&
-            model.itemType.name === 'ItemDOM' &&
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                model.first.items['i1'].default === 10 &&
+                model.itemType.name === 'ItemDOM' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2132,28 +2258,29 @@
         model.addCommand('create');
         model.addCommand('create2');
         model.addItem('i1', 'V1', []);
-        if (// create 
-            model.create.valid.items.count === 1 &&
-            model.create.valid.items['i1'].value === 'V1' &&
-            model.create.valid.items['i1'].entity.name === 'first' &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -2163,24 +2290,25 @@
         model.addCommand('create');
         model.addCommand('create2');
         model.addItem('i1', 'V1', [], 'bind');
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 0 &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 0 &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2189,23 +2317,24 @@
         model.addCommand('create');
         model.addCommand('create2');
         model.addItem('i1', 'V1', 'create2');
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2215,30 +2344,31 @@
         model.addCommand('create2');
         model.addCommand('create3');
         model.addItem('i1', 'V1', ['create', 'create2']);
-        if (// create 
-            model.create.valid.items.count === 1 &&
-            model.create.valid.items['i1'].value === 'V1' &&
-            model.create.valid.items['i1'].entity.name === 'first' &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // create 3
-            model.create3.valid.items.count === 0 &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&               
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // create 3
+                model.create3.valid.items.count === 0 &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&               
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2256,14 +2386,13 @@
         };
 
         model.setMapping(mapping);
-        if (true
-            // create 
-            && model.create.valid.items.count === 1
-            && model.create.valid.items['i1'].value === 'V1'
-            && model.create.valid.items['i1'].entity.name === 'first'
-            && model.create.bind.items.count === 1
-            && model.create.bind.items['i1'].value === 'V1'
-            && model.create.bind.items['i1'].entity.name === 'first' &&
+        if (// create 
+            model.create.valid.items.count === 1 &&
+            model.create.valid.items['i1'].value === 'V1' &&
+            model.create.valid.items['i1'].entity.name === 'first' &&
+            model.create.bind.items.count === 1 &&
+            model.create.bind.items['i1'].value === 'V1' &&
+            model.create.bind.items['i1'].entity.name === 'first' &&
             // create 2
             model.create2.valid.items.count === 1 &&
             model.create2.valid.items['i1'].value === 'V1' &&
@@ -2272,10 +2401,11 @@
             model.create2.bind.items['i1'].value === 'V1' &&
             model.create2.bind.items['i1'].entity.name === 'first' &&
             true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -2292,26 +2422,26 @@
             },
         };
         model.setMapping(mapping);
-        if (true
-            // create 
-            && model.create.valid.items.count === 1
-            && model.create.valid.items['i1'].value === 'V1'
-            && model.create.valid.items['i1'].entity.name === 'first'
-            && model.create.bind.items.count === 1
-            && model.create.bind.items['i1'].value === 'V1'
-            && model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2322,24 +2452,25 @@
         model.addEntity('second');
         model.add(new Item('i1'), []);
         model.first.items['i1'].value = 'V1';
-        if (// create 
-            model.create.valid.items.count === 1 &&
-            model.create.valid.items['i1'].value === 'V1' &&
-            model.create.valid.items['i1'].entity.name === 'first' &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.second instanceof EntityTable &&
-            model.second.items.count === 0 &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.second instanceof EntityTable &&
+                model.second.items.count === 0 &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2350,21 +2481,22 @@
         model.prop.add('i2', 'V2');
         model.prop.add('i3', {caption: 'C3'});    
         model.loadProp();
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            // first
-            model.first.items.count === 3 &&
-            model.first.items['i1'].value === 'V1' &&
-            model.first.items['i1'].entity.name === 'first' &&
-            model.first.items['i2'].value === 'V2' &&
-            model.first.items['i2'].entity.name === 'first' &&
-            model.first.items['i3'].caption === 'C3' &&
-            model.first.items['i3'].entity.name === 'first' &&
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                // first
+                model.first.items.count === 3 &&
+                model.first.items['i1'].value === 'V1' &&
+                model.first.items['i1'].entity.name === 'first' &&
+                model.first.items['i2'].value === 'V2' &&
+                model.first.items['i2'].entity.name === 'first' &&
+                model.first.items['i3'].caption === 'C3' &&
+                model.first.items['i3'].entity.name === 'first' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2376,21 +2508,22 @@
         model.prop.add('i3', {caption: 'C3'});    
         model.prop.add('__i4', 'V4');
         model.loadProp();
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            // first
-            model.first.items.count === 3 &&
-            model.first.items['i1'].value === 'V1' &&
-            model.first.items['i1'].entity.name === 'first' &&
-            model.first.items['i2'].value === 'V2' &&
-            model.first.items['i2'].entity.name === 'first' &&
-            model.first.items['i3'].caption === 'C3' &&
-            model.first.items['i3'].entity.name === 'first' &&
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                // first
+                model.first.items.count === 3 &&
+                model.first.items['i1'].value === 'V1' &&
+                model.first.items['i1'].entity.name === 'first' &&
+                model.first.items['i2'].value === 'V2' &&
+                model.first.items['i2'].entity.name === 'first' &&
+                model.first.items['i3'].caption === 'C3' &&
+                model.first.items['i3'].entity.name === 'first' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2401,19 +2534,20 @@
         model.prop.add('i2', 'V2');
         model.prop.add('i3', {caption: 'C3'});    
         model.loadProp(['i2', 'i3']);
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            // first
-            model.first.items.count === 2 &&
-            model.first.items['i2'].value === 'V2' &&
-            model.first.items['i2'].entity.name === 'first' &&
-            model.first.items['i3'].caption === 'C3' &&
-            model.first.items['i3'].entity.name === 'first' &&
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                // first
+                model.first.items.count === 2 &&
+                model.first.items['i2'].value === 'V2' &&
+                model.first.items['i2'].entity.name === 'first' &&
+                model.first.items['i3'].caption === 'C3' &&
+                model.first.items['i3'].entity.name === 'first' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2425,21 +2559,22 @@
         model.prop.add('i2', 'V2');
         model.prop.add('i3', {caption: 'C3'});    
         model.loadProp(['i2', 'i3'], 'second');
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            // first
-            model.first.items.count === 0 &&
-            // second
-            model.second.items.count === 2 &&
-            model.second.items['i2'].value === 'V2' &&
-            model.second.items['i2'].entity.name === 'second' &&
-            model.second.items['i3'].caption === 'C3' &&
-            model.second.items['i3'].entity.name === 'second' &&
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                // first
+                model.first.items.count === 0 &&
+                // second
+                model.second.items.count === 2 &&
+                model.second.items['i2'].value === 'V2' &&
+                model.second.items['i2'].entity.name === 'second' &&
+                model.second.items['i3'].caption === 'C3' &&
+                model.second.items['i3'].entity.name === 'second' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2447,12 +2582,14 @@
         console.log('BindModelAjax.baseUrl :: 설명 ');
         var model = new BindModelAjax();
         model.baseUrl = 'URL';
-        if (model.baseAjaxSetup.url === 'URL' &&
-            true) {
+        if (
+                model.baseAjaxSetup.url === 'URL' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2460,17 +2597,19 @@
         var model = new BindModelAjax();
         var cc  = new CreateDI(model);
         model.setService(cc, true);
-        if (model.prop.count === 3 &&
-            model.preRegister() === 'preRegister' &&
-            model.preCheck() === 'preCheck' &&
-            model.preReady() === 'preReady' &&
-            model.cbFail() === 'cbFail' &&
-            model.cbError() === 'cbError' &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.preRegister() === 'preRegister' &&
+                model.preCheck() === 'preCheck' &&
+                model.preReady() === 'preReady' &&
+                model.cbFail() === 'cbFail' &&
+                model.cbError() === 'cbError' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2478,20 +2617,22 @@
         var model = new BindModelAjax();
         var cc  = new CreateDI(model);
         model.setService(cc, true);
-        if (model.prop.count === 3 &&
-            // first
-            model.first.items.count === 3 &&
-            model.first.items['i1'].value === 'V1' &&
-            model.first.items['i1'].entity.name === 'first' &&
-            model.first.items['i2'].value === 'V2' &&
-            model.first.items['i2'].entity.name === 'first' &&
-            model.first.items['i3'].caption === 'C3' &&
-            model.first.items['i3'].entity.name === 'first' &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                // first
+                model.first.items.count === 3 &&
+                model.first.items['i1'].value === 'V1' &&
+                model.first.items['i1'].entity.name === 'first' &&
+                model.first.items['i2'].value === 'V2' &&
+                model.first.items['i2'].entity.name === 'first' &&
+                model.first.items['i3'].caption === 'C3' &&
+                model.first.items['i3'].entity.name === 'first' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2500,34 +2641,38 @@
         model.itemType = ItemDOM;
         var cc  = new CreateDI(model);
         model.setService(cc, true);
-        if (model.prop.count === 3 &&
-            model.first.items.count === 3 &&
-            model.first.items['i1'].getTypes()[0] === 'ItemDOM' &&
-            model.first.items['i1'] instanceof  ItemDOM &&
-            model.first.items['i2'].getTypes()[0] === 'ItemDOM' &&
-            model.first.items['i2'] instanceof  ItemDOM &&
-            model.first.items['i3'].getTypes()[0] === 'ItemDOM' &&
-            model.first.items['i3'] instanceof  ItemDOM &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.first.items.count === 3 &&
+                model.first.items['i1'].getTypes()[0] === 'ItemDOM' &&
+                model.first.items['i1'] instanceof  ItemDOM &&
+                model.first.items['i2'].getTypes()[0] === 'ItemDOM' &&
+                model.first.items['i2'] instanceof  ItemDOM &&
+                model.first.items['i3'].getTypes()[0] === 'ItemDOM' &&
+                model.first.items['i3'] instanceof  ItemDOM &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
     
         console.log('---------------------------------------------------------------------------');
         console.log('BindModelAjax.getTypes() :: 타입 조회(상속) ');
         var creator = new BindModelAjax();
         var types = creator.getTypes();
-        if (types[0] === 'BindModelAjax' && 
-            types[1] === 'BindModel' && 
-            types[2] === 'BaseBind' && 
-            types[3] === 'MetaObject' &&
-            true) {
+        if (
+                types[0] === 'BindModelAjax' && 
+                types[1] === 'BindModel' && 
+                types[2] === 'BaseBind' && 
+                types[3] === 'MetaObject' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         function ReadDI() {
@@ -2586,34 +2731,35 @@
         model.addCommand('read2', 1);
         model.add(new Item('i1'), []);
         model.first.items['i1'].value = 'V1';
-        if (// read 
-            model.read.valid.items.count === 1 &&
-            model.read.valid.items['i1'].value === 'V1' &&
-            model.read.valid.items['i1'].entity.name === 'first' &&
-            model.read.bind.items.count === 1 &&
-            model.read.bind.items['i1'].value === 'V1' &&
-            model.read.bind.items['i1'].entity.name === 'first' &&
-            model.read.output.items.count === 1 &&
-            model.read.output.items['i1'].value === 'V1' &&
-            model.read.output.items['i1'].entity.name === 'first' &&
-            // read 2
-            model.read2.valid.items.count === 1 &&
-            model.read2.valid.items['i1'].value === 'V1' &&
-            model.read2.valid.items['i1'].entity.name === 'first' &&
-            model.read2.bind.items.count === 1 &&
-            model.read2.bind.items['i1'].value === 'V1' &&
-            model.read2.bind.items['i1'].entity.name === 'first' &&
-            model.read2.output.items.count === 1 &&
-            model.read2.output.items['i1'].value === 'V1' &&
-            model.read2.output.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // read 
+                model.read.valid.items.count === 1 &&
+                model.read.valid.items['i1'].value === 'V1' &&
+                model.read.valid.items['i1'].entity.name === 'first' &&
+                model.read.bind.items.count === 1 &&
+                model.read.bind.items['i1'].value === 'V1' &&
+                model.read.bind.items['i1'].entity.name === 'first' &&
+                model.read.output.items.count === 1 &&
+                model.read.output.items['i1'].value === 'V1' &&
+                model.read.output.items['i1'].entity.name === 'first' &&
+                // read 2
+                model.read2.valid.items.count === 1 &&
+                model.read2.valid.items['i1'].value === 'V1' &&
+                model.read2.valid.items['i1'].entity.name === 'first' &&
+                model.read2.bind.items.count === 1 &&
+                model.read2.bind.items['i1'].value === 'V1' &&
+                model.read2.bind.items['i1'].entity.name === 'first' &&
+                model.read2.output.items.count === 1 &&
+                model.read2.output.items['i1'].value === 'V1' &&
+                model.read2.output.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2624,21 +2770,22 @@
         model.addCommand('read2', 1);
         model.add(new Item('i1'));
         model.first.items['i1'].value = 'V1';
-        if (// read 
-            model.read.valid.items.count === 0 &&
-            model.read.bind.items.count === 0 &&
-            model.read.output.items.count === 0 &&
-            // read 2
-            model.read2.valid.items.count === 0 &&
-            model.read2.bind.items.count === 0 &&
-            model.read2.output.items.count === 0 &&
-            // first
-            model.first.items.count === 1 &&
-            true) {
+        if (    // read 
+                model.read.valid.items.count === 0 &&
+                model.read.bind.items.count === 0 &&
+                model.read.output.items.count === 0 &&
+                // read 2
+                model.read2.valid.items.count === 0 &&
+                model.read2.bind.items.count === 0 &&
+                model.read2.output.items.count === 0 &&
+                // first
+                model.first.items.count === 1 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -2648,17 +2795,19 @@
         var cc  = new ReadDI(model);
         model.setService(cc, false);
         model.addCommand('read', 1);
-        if (model.prop.count === 3 &&
-            model.preRegister() === 'preRegister' &&
-            model.preCheck() === 'preCheck' &&
-            model.preReady() === 'preReady' &&
-            model.cbFail() === 'cbFail' &&
-            model.cbError() === 'cbError' &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.preRegister() === 'preRegister' &&
+                model.preCheck() === 'preCheck' &&
+                model.preReady() === 'preReady' &&
+                model.cbFail() === 'cbFail' &&
+                model.cbError() === 'cbError' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2667,20 +2816,22 @@
         var cc  = new ReadDI(model);
         model.setService(cc, true);
         model.addCommand('read', 1);
-        if (model.prop.count === 3 &&
-            // first
-            model.first.items.count === 3 &&
-            model.first.items['i1'].value === 'V1' &&
-            model.first.items['i1'].entity.name === 'first' &&
-            model.first.items['i2'].value === 'V2' &&
-            model.first.items['i2'].entity.name === 'first' &&
-            model.first.items['i3'].caption === 'C3' &&
-            model.first.items['i3'].entity.name === 'first' &&
-            true) {
+        if (    
+                model.prop.count === 3 &&
+                // first
+                model.first.items.count === 3 &&
+                model.first.items['i1'].value === 'V1' &&
+                model.first.items['i1'].entity.name === 'first' &&
+                model.first.items['i2'].value === 'V2' &&
+                model.first.items['i2'].entity.name === 'first' &&
+                model.first.items['i3'].caption === 'C3' &&
+                model.first.items['i3'].entity.name === 'first' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2689,19 +2840,21 @@
         var cc  = new ReadDI(model);
         model.itemType = ItemDOM;
         model.setService(cc, true);
-        if (model.prop.count === 3 &&
-            model.first.items.count === 3 &&
-            model.first.items['i1'].getTypes()[0] === 'ItemDOM' &&
-            model.first.items['i1'] instanceof  ItemDOM &&
-            model.first.items['i2'].getTypes()[0] === 'ItemDOM' &&
-            model.first.items['i2'] instanceof  ItemDOM &&
-            model.first.items['i3'].getTypes()[0] === 'ItemDOM' &&
-            model.first.items['i3'] instanceof  ItemDOM &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.first.items.count === 3 &&
+                model.first.items['i1'].getTypes()[0] === 'ItemDOM' &&
+                model.first.items['i1'] instanceof  ItemDOM &&
+                model.first.items['i2'].getTypes()[0] === 'ItemDOM' &&
+                model.first.items['i2'] instanceof  ItemDOM &&
+                model.first.items['i3'].getTypes()[0] === 'ItemDOM' &&
+                model.first.items['i3'] instanceof  ItemDOM &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
     
         console.log('---------------------------------------------------------------------------');
@@ -2709,33 +2862,36 @@
         var cc  = new ReadDI();
         var model = new BindModelAjax();
         model.setService(cc);
-        if (model.prop.count === 3 &&
-            model.preRegister() === 'preRegister' &&
-            model.preCheck() === 'preCheck' &&
-            model.preReady() === 'preReady' &&
-            model.cbFail() === 'cbFail' &&
-            model.cbError() === 'cbError' &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.preRegister() === 'preRegister' &&
+                model.preCheck() === 'preCheck' &&
+                model.preReady() === 'preReady' &&
+                model.cbFail() === 'cbFail' &&
+                model.cbError() === 'cbError' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
         console.log('new BindModelAjax(new service) :: 생성시 서비스 객체 주입 ');
         var model = new BindModelAjax( new ReadDI());
-        if (model.prop.count === 3 &&
-            model.preRegister() === 'preRegister' &&
-            model.preCheck() === 'preCheck' &&
-            model.preReady() === 'preReady' &&
-            model.cbFail() === 'cbFail' &&
-            model.cbError() === 'cbError' &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.preRegister() === 'preRegister' &&
+                model.preCheck() === 'preCheck' &&
+                model.preReady() === 'preReady' &&
+                model.cbFail() === 'cbFail' &&
+                model.cbError() === 'cbError' &&
+                true) {
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -2771,34 +2927,39 @@
             cbFail: function(p_msg, p_code) { return 'cbFail'; },
             cbError: function(p_msg, p_status) { return 'cbError'; },
         });
-        if (model.prop.count === 3 &&
-            model.read.outputOption === 3 &&
-            model.read.cbValid() === 'cbValid' &&
-            model.read.cbBind() === 'cbBind' &&
-            model.read.cbResult() === 'cbResult' &&
-            model.read.cbOutput() === 'cbOutput' &&
-            model.read.cbEnd() === 'cbEnd' &&
-            model.preRegister() === 'preRegister' &&
-            model.preCheck() === 'preCheck' &&
-            model.preReady() === 'preReady' &&
-            model.cbFail() === 'cbFail' &&
-            model.cbError() === 'cbError' &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.read.outputOption === 3 &&
+                model.read.cbValid() === 'cbValid' &&
+                model.read.cbBind() === 'cbBind' &&
+                model.read.cbResult() === 'cbResult' &&
+                model.read.cbOutput() === 'cbOutput' &&
+                model.read.cbEnd() === 'cbEnd' &&
+                model.preRegister() === 'preRegister' &&
+                model.preCheck() === 'preCheck' &&
+                model.preReady() === 'preReady' &&
+                model.cbFail() === 'cbFail' &&
+                model.cbError() === 'cbError' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -2824,9 +2985,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         require('../src/object-implement'); // _implements() : 폴리필
@@ -2842,21 +3004,25 @@
         console.log('---------------------------------------------------------------------------');
         console.log('ComplexElement_Sub :: 설명 ');
         if (true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -2883,9 +3049,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
         
     var Row;
     var Item;
@@ -2917,19 +3084,21 @@
         var table2 = new EntityTable('T2');
         table2.items.add('ii1');
         table2.items.add(table.items['i2']); // 참조값 등록 (내부 복제됨)
-        if (table.items['i1'].value === 'R1' && 
-            table.items['i2'].value === 'R2' &&
-            table.items['i1'].entity.name === 'T1' && 
-            table.items['i2'].entity.name === 'T1' &&
-            table2.items['ii1'].value === null && 
-            table2.items['i2'].value === 'R2' &&
-            table2.items['ii1'].entity.name === 'T2' && 
-            table2.items['i2'].entity.name === 'T2' &&
-            true) {
+        if (
+                table.items['i1'].value === 'R1' && 
+                table.items['i2'].value === 'R2' &&
+                table.items['i1'].entity.name === 'T1' && 
+                table.items['i2'].entity.name === 'T1' &&
+                table2.items['ii1'].value === null && 
+                table2.items['i2'].value === 'R2' &&
+                table2.items['ii1'].entity.name === 'T2' && 
+                table2.items['i2'].entity.name === 'T2' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2940,19 +3109,21 @@
         table.items.add('i3');
         var row = table.newRow();
         row['i1'] = 'R1';
-        if (row['i1'] !== undefined && 
-            row['i2'] !== undefined && 
-            row['i3'] !== undefined &&
-            row[0] !== undefined && 
-            row[1] !== undefined && 
-            row[2] !== undefined && 
-            row[0] === 'R1' && 
-            row['i1'] === 'R1' &&
-            true) {
+        if (
+                row['i1'] !== undefined && 
+                row['i2'] !== undefined && 
+                row['i3'] !== undefined &&
+                row[0] !== undefined && 
+                row[1] !== undefined && 
+                row[2] !== undefined && 
+                row[0] === 'R1' && 
+                row['i1'] === 'R1' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2966,14 +3137,16 @@
         row['i2'] = 'R2';
         row['i3'] = 'R3';
         table.setValue(row);
-        if (table.items['i1'].value === 'R1' && 
-            table.items['i2'].value === 'R2' && 
-            table.items['i3'].value === 'R3' &&
-            true) {
+        if (
+                table.items['i1'].value === 'R1' && 
+                table.items['i2'].value === 'R2' && 
+                table.items['i3'].value === 'R3' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -2986,17 +3159,19 @@
         table.items['i2'].value = 'R2';
         table.items['i3'].value = 'R3';
         var row = table.getValue();
-        if (row['i1'] === 'R1' && 
-            row['i2'] === 'R2' && 
-            row['i3'] === 'R3' &&
-            row[0] === 'R1' && 
-            row[1] === 'R2' &&
-            row[2] === 'R3' &&
-            true) {
-                console.log('Result = Success');
+        if (
+                row['i1'] === 'R1' && 
+                row['i2'] === 'R2' && 
+                row['i3'] === 'R3' &&
+                row[0] === 'R1' && 
+                row[1] === 'R2' &&
+                row[2] === 'R3' &&
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3014,23 +3189,25 @@
         };
         var table2 = table.select(filter);
         table.items['i3'].order = 200;          // 참조값 체크
-        if (table.name === 'T1' && 
-            table.items.count === 5 && 
-            table.items['i4'].value === 'R4' && 
-            table.items['i5'].value === 'R5' &&
-            table.items['i3'].order === 200 && 
-            table2.items['i3'].order === 300 &&
-            table2.name === 'T1' &&
-             table2.items.count === 3 && 
-            table2.items['i3'].caption === 'C3' && 
-            table2.items['i3'].value === 'R3' && 
-            table2.items['i4'].value === 'R4' &&
-            table2.items['i5'].value === 'R5' &&
-            true) {
+        if (
+                table.name === 'T1' && 
+                table.items.count === 5 && 
+                table.items['i4'].value === 'R4' && 
+                table.items['i5'].value === 'R5' &&
+                table.items['i3'].order === 200 && 
+                table2.items['i3'].order === 300 &&
+                table2.name === 'T1' &&
+                table2.items.count === 3 && 
+                table2.items['i3'].caption === 'C3' && 
+                table2.items['i3'].value === 'R3' && 
+                table2.items['i4'].value === 'R4' &&
+                table2.items['i5'].value === 'R5' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3055,21 +3232,23 @@
         row['i2'] = 'R200';
         table.rows.add(row);
         var table2 = table.select(filter, 1);
-        if (table.items.count === 2 && 
-            table.rows.count === 3 &&
-            table.rows[0][0] === 'R1' && 
-            table.rows[0]['i1'] === 'R1' &&
-            table2.items.count === 1 && 
-            table2.rows.count === 2 && 
-            table2.rows[0][0] === 'R20' &&
-            table2.rows[0]['i2'] === 'R20' && 
-            table2.rows[1][0] === 'R200' && 
-            table2.rows[1]['i2'] === 'R200' &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.rows.count === 3 &&
+                table.rows[0][0] === 'R1' && 
+                table.rows[0]['i1'] === 'R1' &&
+                table2.items.count === 1 && 
+                table2.rows.count === 2 && 
+                table2.rows[0][0] === 'R20' &&
+                table2.rows[0]['i2'] === 'R20' && 
+                table2.rows[1][0] === 'R200' && 
+                table2.rows[1]['i2'] === 'R200' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         console.log('---------------------------------------------------------------------------');
@@ -3094,20 +3273,22 @@
         row['i2'] = 'R2000';
         table.rows.add(row);
         var table2 = table.select(null, 1, 2);
-        if (table.items.count === 2 && 
-            table.rows.count === 4 &&
-            table2.items.count === 2 && 
-            table2.rows.count === 2 && 
-            table2.rows[0][1] === 'R20' && 
-            table2.rows[0]['i2'] === 'R20' && 
-            table2.rows[1][1] === 'R200' && 
-            table2.rows[1]['i2'] === 'R200' && 
-            table2.rows[2] === undefined &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.rows.count === 4 &&
+                table2.items.count === 2 && 
+                table2.rows.count === 2 && 
+                table2.rows[0][1] === 'R20' && 
+                table2.rows[0]['i2'] === 'R20' && 
+                table2.rows[1][1] === 'R200' && 
+                table2.rows[1]['i2'] === 'R200' && 
+                table2.rows[2] === undefined &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3132,20 +3313,22 @@
         row['i2'] = 'R2000';
         table.rows.add(row);
         var table2 = table.select(null, [0, 2]);
-        if (table.items.count === 2 && 
-            table.rows.count === 4 &&
-            table2.items.count === 2 && 
-            table2.rows.count === 2 && 
-            table2.rows[0][1] === 'R2' && 
-            table2.rows[0]['i2'] === 'R2' && 
-            table2.rows[1][1] === 'R200' && 
-            table2.rows[1]['i2'] === 'R200' && 
-            table2.rows[2] === undefined &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.rows.count === 4 &&
+                table2.items.count === 2 && 
+                table2.rows.count === 2 && 
+                table2.rows[0][1] === 'R2' && 
+                table2.rows[0]['i2'] === 'R2' && 
+                table2.rows[1][1] === 'R200' && 
+                table2.rows[1]['i2'] === 'R200' && 
+                table2.rows[2] === undefined &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3171,24 +3354,26 @@
         table.rows.add(row);
         var table2 = table.copy(filter, 1);
         table.items['i2'].caption = 'C30';  // 덮어쓰기
-        if (table.items.count === 2 && 
-            table.rows.count === 3 &&
-            table.rows[0][0] === 'R1' && 
-            table.rows[0]['i1'] === 'R1' &&
-            table.items['i2'] !== table2.items['i2'] && 
-            table.items['i2'].caption === 'C30' && 
-            table2.items['i2'].caption === 'C3' &&
-            table2.items.count === 1 && 
-            table2.rows.count === 2 && 
-            table2.rows[0][0] === 'R20' && 
-            table2.rows[0]['i2'] === 'R20' && 
-            table2.rows[1][0] === 'R200' && 
-            table2.rows[1]['i2'] === 'R200' &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.rows.count === 3 &&
+                table.rows[0][0] === 'R1' && 
+                table.rows[0]['i1'] === 'R1' &&
+                table.items['i2'] !== table2.items['i2'] && 
+                table.items['i2'].caption === 'C30' && 
+                table2.items['i2'].caption === 'C3' &&
+                table2.items.count === 1 && 
+                table2.rows.count === 2 && 
+                table2.rows[0][0] === 'R20' && 
+                table2.rows[0]['i2'] === 'R20' && 
+                table2.rows[1][0] === 'R200' && 
+                table2.rows[1]['i2'] === 'R200' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3214,20 +3399,22 @@
         row['i3'] = 'R33';
         table2.rows.add(row);
         table.merge(table2, 1);
-        if (table.items.count === 3 && 
-            table.rows.count === 2 &&
-            table.items['i2'].caption === 'C1' &&   // 기존 유지 
-            table.rows[0]['i1'] === 'R1' && 
-            table.rows[0]['i2'] === 'R2' && 
-            table.rows[0]['i3'] === 'R33' &&
-            table.rows[1]['i1'] === 'R10' && 
-            table.rows[1]['i2'] === 'R20' && 
-            table.rows[1]['i3'] === '' &&
-            true) {
+        if (
+                table.items.count === 3 && 
+                table.rows.count === 2 &&
+                table.items['i2'].caption === 'C1' &&   // 기존 유지 
+                table.rows[0]['i1'] === 'R1' && 
+                table.rows[0]['i2'] === 'R2' && 
+                table.rows[0]['i3'] === 'R33' &&
+                table.rows[1]['i1'] === 'R10' && 
+                table.rows[1]['i2'] === 'R20' && 
+                table.rows[1]['i3'] === '' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3253,20 +3440,22 @@
         row['i3'] = 'R30';
         table2.rows.add(row);
         table.merge(table2, 2);
-        if (table.items.count === 3 && 
-            table.rows.count === 2 &&
-            table.items['i2'].caption === 'C2' &&   // 덮어쓰기
-            table.rows[0]['i1'] === 'R1' && 
-            table.rows[0]['i2'] === 'R22' && 
-            table.rows[0]['i3'] === 'R33' &&
-            table.rows[1]['i1'] === '' && 
-            table.rows[1]['i2'] === 'R20' && 
-            table.rows[1]['i3'] === 'R30' &&
-            true) {
+        if (
+                table.items.count === 3 && 
+                table.rows.count === 2 &&
+                table.items['i2'].caption === 'C2' &&   // 덮어쓰기
+                table.rows[0]['i1'] === 'R1' && 
+                table.rows[0]['i2'] === 'R22' && 
+                table.rows[0]['i3'] === 'R33' &&
+                table.rows[1]['i1'] === '' && 
+                table.rows[1]['i2'] === 'R20' && 
+                table.rows[1]['i3'] === 'R30' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3292,13 +3481,18 @@
         row['i3'] = 'R30';
         table2.rows.add(row);
         table.merge(table2, 3);
-        if (table.items.count === 3 && table.rows.count === 1 && 
-            table.items['i2'].caption === 'C1' &&
-            table.rows[0]['i1'] === 'R1' && table.rows[0]['i2'] === 'R2' && table.rows[0]['i3'] === '') {
+        if (
+                table.items.count === 3 && table.rows.count === 1 && 
+                table.items['i2'].caption === 'C1' &&
+                table.rows[0]['i1'] === 'R1' && 
+                table.rows[0]['i2'] === 'R2' && 
+                table.rows[0]['i3'] === '' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3324,23 +3518,25 @@
         row['i3'] = 'R30';
         table2.rows.add(row);
         table.load(table2, 1);
-        if (table.items.count === 3 && 
-            table.rows.count === 3 &&
-            table.items['i2'].caption === 'C1' &&
-            table.rows[0]['i1'] === 'R1' && 
-            table.rows[0]['i2'] === 'R2' && 
-            table.rows[0]['i3'] === '' &&
-            table.rows[1]['i1'] === '' && 
-            table.rows[1]['i2'] === 'R22' && 
-            table.rows[1]['i3'] === 'R33' &&
-            table.rows[2]['i1'] === '' && 
-            table.rows[2]['i2'] === 'R20' && 
-            table.rows[2]['i3'] === 'R30' &&
-            true) {
+        if (
+                table.items.count === 3 && 
+                table.rows.count === 3 &&
+                table.items['i2'].caption === 'C1' &&
+                table.rows[0]['i1'] === 'R1' && 
+                table.rows[0]['i2'] === 'R2' && 
+                table.rows[0]['i3'] === '' &&
+                table.rows[1]['i1'] === '' && 
+                table.rows[1]['i2'] === 'R22' && 
+                table.rows[1]['i3'] === 'R33' &&
+                table.rows[2]['i1'] === '' && 
+                table.rows[2]['i2'] === 'R20' && 
+                table.rows[2]['i3'] === 'R30' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3366,21 +3562,23 @@
         row['i3'] = 'R30';
         table2.rows.add(row);
         table.load(table2, 2);
-        if (table.items.count === 2 && 
-            table.rows.count === 3 &&
-            table.items['i2'].caption === 'C1' &&
-            table.rows[0]['i1'] === 'R1' && 
-            table.rows[0]['i2'] === 'R2' && 
-            table.rows[0]['i3'] === undefined &&
-            table.rows[1]['i1'] === '' && 
-            table.rows[1]['i2'] === 'R22' &&
-            table.rows[2]['i1'] === '' && 
-            table.rows[2]['i2'] === 'R20' &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.rows.count === 3 &&
+                table.items['i2'].caption === 'C1' &&
+                table.rows[0]['i1'] === 'R1' && 
+                table.rows[0]['i2'] === 'R2' && 
+                table.rows[0]['i3'] === undefined &&
+                table.rows[1]['i1'] === '' && 
+                table.rows[1]['i2'] === 'R22' &&
+                table.rows[2]['i1'] === '' && 
+                table.rows[2]['i2'] === 'R20' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3399,18 +3597,20 @@
         row['i3'] = 'R30';
         table2.rows.add(row);
         table.load(table2, 1);
-        if (table.items.count === 2 && 
-            table.rows.count === 2 &&
-            table.items['i2'].caption === 'C2' &&
-            table.rows[0]['i2'] === 'R22' && 
-            table.rows[0]['i3'] === 'R33' &&
-            table.rows[1]['i2'] === 'R20' && 
-            table.rows[1]['i3'] === 'R30' &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.rows.count === 2 &&
+                table.items['i2'].caption === 'C2' &&
+                table.rows[0]['i2'] === 'R22' && 
+                table.rows[0]['i3'] === 'R33' &&
+                table.rows[1]['i2'] === 'R20' && 
+                table.rows[1]['i3'] === 'R30' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3432,17 +3632,20 @@
         row['i3'] = 'R30';
         table2.rows.add(row);
         table.load(table2, 2);
-        if (table.items.count === 2 && 
-            table.rows.count === 2 &&
-            table.items['i2'].caption === 'C1' &&
-            table.rows[0]['i1'] === '' && 
-            table.rows[0]['i2'] === 'R22' &&
-            table.rows[1]['i1'] === '' && 
-            table.rows[1]['i2'] === 'R20') {
+        if (
+                table.items.count === 2 && 
+                table.rows.count === 2 &&
+                table.items['i2'].caption === 'C1' &&
+                table.rows[0]['i1'] === '' && 
+                table.rows[0]['i2'] === 'R22' &&
+                table.rows[1]['i1'] === '' && 
+                table.rows[1]['i2'] === 'R20' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3463,24 +3666,26 @@
             }            
         };
         table.load(table2, 1);
-        if (table.items.count === 3 && 
-            table.rows.count === 3 &&
-            table.items['i2'].caption === 'C1' && 
-            table.items['i2'].size === 10 &&
-            table.rows[0]['i1'] === 'R1' && 
-            table.rows[0]['i2'] === 'R2' && 
-            table.rows[0]['i3'] === '' &&
-            table.rows[1]['i1'] === '' && 
-            table.rows[1]['i2'] === 'R22' && 
-            table.rows[1]['i3'] === 'R33' &&
-            table.rows[2]['i1'] === '' && 
-            table.rows[2]['i2'] === 'R20' && 
-            table.rows[2]['i3'] === 'R30' &&
-            true) {
+        if (
+                table.items.count === 3 && 
+                table.rows.count === 3 &&
+                table.items['i2'].caption === 'C1' && 
+                table.items['i2'].size === 10 &&
+                table.rows[0]['i1'] === 'R1' && 
+                table.rows[0]['i2'] === 'R2' && 
+                table.rows[0]['i3'] === '' &&
+                table.rows[1]['i1'] === '' && 
+                table.rows[1]['i2'] === 'R22' && 
+                table.rows[1]['i3'] === 'R33' &&
+                table.rows[2]['i1'] === '' && 
+                table.rows[2]['i2'] === 'R20' && 
+                table.rows[2]['i3'] === 'R30' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3501,21 +3706,23 @@
             }            
         };
         table.load(table2, 2);
-        if (table.items.count === 2 && 
-            table.rows.count === 3 &&
-            table.items['i2'].caption === 'C1' && 
-            table.rows[0]['i1'] === 'R1' && 
-            table.rows[0]['i2'] === 'R2' && 
-            table.rows[0]['i3'] === undefined &&
-            table.rows[1]['i1'] === '' && 
-            table.rows[1]['i2'] === 'R22' &&
-            table.rows[2]['i1'] === '' && 
-            table.rows[2]['i2'] === 'R20' &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.rows.count === 3 &&
+                table.items['i2'].caption === 'C1' && 
+                table.rows[0]['i1'] === 'R1' && 
+                table.rows[0]['i2'] === 'R2' && 
+                table.rows[0]['i3'] === undefined &&
+                table.rows[1]['i1'] === '' && 
+                table.rows[1]['i2'] === 'R22' &&
+                table.rows[2]['i1'] === '' && 
+                table.rows[2]['i2'] === 'R20' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -3530,19 +3737,21 @@
             }            
         };
         table.load(table2, 1);
-        if (table.items.count === 2 && 
-            table.rows.count === 2 &&
-            table.items['i2'].size === 10 && 
-            table.items['i3'].size === 20 &&
-            table.rows[0]['i2'] === 'R22' && 
-            table.rows[0]['i3'] === 'R33' &&
-            table.rows[1]['i2'] === 'R20' && 
-            table.rows[1]['i3'] === 'R30' &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.rows.count === 2 &&
+                table.items['i2'].size === 10 && 
+                table.items['i3'].size === 20 &&
+                table.rows[0]['i2'] === 'R22' && 
+                table.rows[0]['i3'] === 'R33' &&
+                table.rows[1]['i2'] === 'R20' && 
+                table.rows[1]['i3'] === 'R30' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3556,13 +3765,15 @@
             }            
         };
         table.load(table2, 2);
-        if (table.items.count === 0 && 
-            table.rows.count === 0 &&
-            true) {
+        if (
+                table.items.count === 0 && 
+                table.rows.count === 0 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -3576,13 +3787,15 @@
         row['i2'] = 'R2';
         table.rows.add(row);
         table.clear();
-        if (table.items.count === 0 && 
-            table.rows.count === 0 &&
-            true) {
+        if (
+                table.items.count === 0 && 
+                table.rows.count === 0 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3596,39 +3809,43 @@
         row['i2'] = 'R2';
         table.rows.add(row);
         var table2 = table.clone();
-        if (table.name === 'T1' && 
-            table.items.count === 2 && 
-            table.rows.count === 1 && 
-            table.items['i2'].caption === 'C1' && 
-            table.rows[0]['i1'] === 'R1' && 
-            table.rows[0]['i2'] === 'R2' && 
-            table2.name === 'T1' && 
-            table2.items.count === 2 && 
-            table2.rows.count === 1 && 
-            table2.items['i2'].caption === 'C1' && 
-            table2.rows[0]['i1'] === 'R1' && 
-            table2.rows[0]['i2'] === 'R2' &&
-            true) {
+        if (
+                table.name === 'T1' && 
+                table.items.count === 2 && 
+                table.rows.count === 1 && 
+                table.items['i2'].caption === 'C1' && 
+                table.rows[0]['i1'] === 'R1' && 
+                table.rows[0]['i2'] === 'R2' && 
+                table2.name === 'T1' && 
+                table2.items.count === 2 && 
+                table2.rows.count === 1 && 
+                table2.items['i2'].caption === 'C1' && 
+                table2.rows[0]['i1'] === 'R1' && 
+                table2.rows[0]['i2'] === 'R2' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
         console.log('EntityTable.getTypes() :: 타입 조회(상속) ');
         var table = new EntityTable('T1');
         var types = table.getTypes();
-        if (types.indexOf('EntityTable') > -1 &&
-            types[0] === 'EntityTable' && 
-            types[1] === 'Entity' && 
-            types[2] === 'MetaElement' && 
-            types[3] === 'MetaObject' &&
-            true) {
+        if (
+                types.indexOf('EntityTable') > -1 &&
+                types[0] === 'EntityTable' && 
+                types[1] === 'Entity' && 
+                types[2] === 'MetaElement' && 
+                types[3] === 'MetaObject' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3637,18 +3854,21 @@
             // console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -3674,9 +3894,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
         
     var Row;
     var Item;
@@ -3718,33 +3939,35 @@
         view2.items['i2'].caption = 'C2';
         view2.items['i3'].caption = 'C3';
 
-        if (view.name === 'T1' && 
-            view.items.count === 4 && 
-            view.rows.count === 1 && 
-            view.items['i2'].caption === 'C2' && 
-            view.items['i3'].caption === 'C3' &&
-            view.items['i4'].value === 'V4' &&
-            view.items._baseCollection === undefined &&
-            view.items['i1'].entity.name === 'T1' && 
-            view.items['i2'].entity.name === 'T1' &&
-            view.rows[0]['i1'] === 'R1' && 
-            view.rows[0]['i2'] === 'R2' && 
-            view2._refEntities[0].name === 'T1' &&                                              // 참조 등록 검사
-            view2._refEntities[1].name === 'T3' &&                                              // 참조 등록 검사
-            view2.items['i2'].caption === 'C2' && 
-            view2.items['i3'].caption === 'C3' &&
-            view2.items['i4'].value === 'V4' &&
-            view2.items._baseCollection._onwer.name === 'T1' &&
-            view2.name === 'T2' && 
-            view2.items.count === 5 && 
-            view2.rows.count === 0 && 
-            view2.items['i1'].entity.name === 'T1' && 
-            view2.items['i2'].entity.name === 'T1' &&
-            true) {
+        if (
+                view.name === 'T1' && 
+                view.items.count === 4 && 
+                view.rows.count === 1 && 
+                view.items['i2'].caption === 'C2' && 
+                view.items['i3'].caption === 'C3' &&
+                view.items['i4'].value === 'V4' &&
+                view.items._baseCollection === undefined &&
+                view.items['i1'].entity.name === 'T1' && 
+                view.items['i2'].entity.name === 'T1' &&
+                view.rows[0]['i1'] === 'R1' && 
+                view.rows[0]['i2'] === 'R2' && 
+                view2._refEntities[0].name === 'T1' &&                                              // 참조 등록 검사
+                view2._refEntities[1].name === 'T3' &&                                              // 참조 등록 검사
+                view2.items['i2'].caption === 'C2' && 
+                view2.items['i3'].caption === 'C3' &&
+                view2.items['i4'].value === 'V4' &&
+                view2.items._baseCollection._onwer.name === 'T1' &&
+                view2.name === 'T2' && 
+                view2.items.count === 5 && 
+                view2.rows.count === 0 && 
+                view2.items['i1'].entity.name === 'T1' && 
+                view2.items['i2'].entity.name === 'T1' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3758,43 +3981,51 @@
         row['i2'] = 'R2';
         view.rows.add(row);
         var view2 = view.clone();
-        if (view.name === 'T1' && view.items.count === 2 && view.rows.count === 1 && 
-            view.items['i2'].caption === 'C1' &&
-            view.rows[0]['i1'] === 'R1' && view.rows[0]['i2'] === 'R2' && 
-            view2.name === 'T1' && view2.items.count === 2 && view2.rows.count === 1 && 
-            view2.items['i2'].caption === 'C1' && 
-            view2.rows[0]['i1'] === 'R1' && view2.rows[0]['i2'] === 'R2' ) {
+        if (
+                view.name === 'T1' && view.items.count === 2 && view.rows.count === 1 && 
+                view.items['i2'].caption === 'C1' &&
+                view.rows[0]['i1'] === 'R1' && view.rows[0]['i2'] === 'R2' && 
+                view2.name === 'T1' && view2.items.count === 2 && view2.rows.count === 1 && 
+                view2.items['i2'].caption === 'C1' && 
+                view2.rows[0]['i1'] === 'R1' && view2.rows[0]['i2'] === 'R2' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
         console.log('EntityView.getTypes() :: 타입 조회(상속) ');
         var table = new EntityView('T1');
         var types = table.getTypes();
-        if (types.indexOf('EntityView') > -1 &&
-            types[0] === 'EntityView' && 
-            types[1] === 'Entity' && 
-            types[2] === 'MetaElement' && 
-            types[3] === 'MetaObject' &&
-            true) {
+        if (
+                types.indexOf('EntityView') > -1 &&
+                types[0] === 'EntityView' && 
+                types[1] === 'Entity' && 
+                types[2] === 'MetaElement' && 
+                types[3] === 'MetaObject' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
 
@@ -3822,9 +4053,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
 
     var Row;
     var Item;
@@ -3864,20 +4096,22 @@
             increase: 10,
             value: 'V1'
         });
-        if (item.type === 'text' &&
-            item.size === 100 &&
-            item.default === 'D1' &&
-            item.caption === 'C1' &&
-            item.isNotNull === true &&
-            item.constraints.length === 2 &&
-            item.order === 1000 &&
-            item.increase === 10 &&
-            item.value === 'V1' &&
-            true) {
+        if (
+                item.type === 'text' &&
+                item.size === 100 &&
+                item.default === 'D1' &&
+                item.caption === 'C1' &&
+                item.isNotNull === true &&
+                item.constraints.length === 2 &&
+                item.order === 1000 &&
+                item.increase === 10 &&
+                item.value === 'V1' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3886,13 +4120,15 @@
         var evt;
         item.onChanged = function(val) {evt = val};
         item.value = 10;
-        if (item.value === 10 &&
-            evt === 10. &&
-            true) {
+        if (
+                item.value === 10 &&
+                evt === 10. &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -3902,15 +4138,17 @@
         item.setConstraint(/10/, '10 시작...', 100, true);
         item.setConstraint(/[0-9]{5}/, '5자리 이하만...', 200, false);
         item.setConstraint(/\D/, '5자리 이하만...', 300);   // return 기본값 = false
-        if (item.constraints.length === 3 &&
-            item.constraints[0].code === 100 &&
-            item.constraints[1].code === 200 &&
-            item.constraints[2].code === 300 &&
-            true) {
+        if (
+                item.constraints.length === 3 &&
+                item.constraints[0].code === 100 &&
+                item.constraints[1].code === 200 &&
+                item.constraints[2].code === 300 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3920,12 +4158,14 @@
         item.value = 'V1';
         // item.defineValueProperty(function() { return item_value; });
         item.getter = function() { return item_value; };
-        if (item.value  === 10 && 
-            true) {
+        if (
+                item.value  === 10 && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3936,13 +4176,15 @@
         // item.defineValueProperty(undefined, function(val) { item_value = val; });
         item.setter = function(val) { item_value = val; };
         item.value = 'V11';
-        if (item.value  === 'V11' && 
-            item_value  === 'V11' && 
-            true) {
+        if (
+                item.value  === 'V11' && 
+                item_value  === 'V11' && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3954,13 +4196,15 @@
         item.getter = function() { return item_value; }
         item.setter = function(val) { item_value = val; };
         item.value = 'V11';
-        if (item.value  === 'V11' && 
-            item_value  === 'V11' && 
-            true) {
+        if (
+                item.value  === 'V11' && 
+                item_value  === 'V11' && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3970,13 +4214,15 @@
         item.value = 'V1';
         item.getter = function() { return item_value; };
         item.value = 'V11';
-        if (item.value  === 10 && 
-            item_value  === 10 && 
-            true) {
+        if (
+                item.value  === 10 && 
+                item_value  === 10 && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -3986,13 +4232,15 @@
         item.value = 'V1';
         item.setter = function(val) { item_value = val; };
         item.value = 'V11';
-        if (item.value  === 'V11' && 
-            item_value  === 'V11' && 
-            true) {
+        if (
+                item.value  === 'V11' && 
+                item_value  === 'V11' && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -4002,13 +4250,15 @@
         item.value = 'V1';
         item.setter = function(val) { item_value = val + 'R'; };
         item.value = 'V11';
-        if (item.value  === 'V11' && 
-            item_value  === 'V11R' && 
-            true) {
+        if (
+                item.value  === 'V11' && 
+                item_value  === 'V11R' && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         console.log('---------------------------------------------------------------------------');
@@ -4018,13 +4268,15 @@
         item.value = 'V1';
         item.setter = function(val) { return item_value = val + 'R'; };
         item.value = 'V11';
-        if (item.value  === 'V11R' && 
-            item_value  === 'V11R' && 
-            true) {
+        if (
+                item.value  === 'V11R' && 
+                item_value  === 'V11R' && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -4035,13 +4287,15 @@
         item.getter = function() { return item_value; };
         item.setter = function(val) { item_value = val; };
         item.value = 'V11';
-        if (item.value  === 'V11' && 
-            item_value  === 'V11' && 
-            true) {
+        if (
+                item.value  === 'V11' && 
+                item_value  === 'V11' && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -4052,16 +4306,18 @@
         item.setConstraint(/[0-9]{5}/, '5자리 이하만...', 200, false);
         item.setConstraint(/\D/, '숫자만...', 300);   // return 기본값 = false
         var result = {};
-        if (item.valid('10', result) === true &&        // 성공
-            item.valid('', result) === false &&         // 실패 : 10로 시작을 안해서
-            item.valid('1000', result) === true &&      // 성공
-            item.valid('10000', result) === false &&    // 실패 : 5자리 이상
-            item.valid('100a', result) === false &&     // 실패 : 문자가 들어가서
-            true) {
+        if (
+                item.valid('10', result) === true &&        // 성공
+                item.valid('', result) === false &&         // 실패 : 10로 시작을 안해서
+                item.valid('1000', result) === true &&      // 성공
+                item.valid('10000', result) === false &&    // 실패 : 5자리 이상
+                item.valid('100a', result) === false &&     // 실패 : 문자가 들어가서
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -4072,14 +4328,15 @@
         item2.isNotNull = true;     // 공백허용 안함
         var result = {};
         var result2 = {};
-        if (false
-            || item.valid('', result) === true         // 성공 : 공백 허용
-            || item2.valid('', result2) === false      // 실패 : 공백 불가
-            ) {
+        if (
+                item.valid('', result) === true ||         // 성공 : 공백 허용
+                item2.valid('', result2) === false ||     // 실패 : 공백 불가
+                false) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -4093,13 +4350,15 @@
         item2.isNullPass    = true;     
         var result = {};
         var result2 = {};
-        if (item.valid('', result) === true &&
-            item2.valid('', result2) === false &&
-            true) {
+        if (
+                item.valid('', result) === true &&
+                item2.valid('', result2) === false &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -4120,21 +4379,23 @@
             value: 'V1'
         });
         var item2 = item.clone();
-        if (item2.entity.name === 'T1' &&
-            item2.type === 'text' &&
-            item2.size === 100 &&
-            item2.default === 'D1' &&
-            item2.caption === 'C1' &&
-            item2.isNotNull === true &&
-            item2.constraints.length === 2 &&
-            item2.order === 1000 &&
-            item2.increase === 10 &&
-            item2.value === 'V1' &&
-            true) {
+        if (
+                item2.entity.name === 'T1' &&
+                item2.type === 'text' &&
+                item2.size === 100 &&
+                item2.default === 'D1' &&
+                item2.caption === 'C1' &&
+                item2.isNotNull === true &&
+                item2.constraints.length === 2 &&
+                item2.order === 1000 &&
+                item2.increase === 10 &&
+                item2.value === 'V1' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -4142,26 +4403,31 @@
         console.log('Item.getTypes() :: 타입 조회(상속) ');
         var item = new Item('i1');
         var types = item.getTypes();
-        if (types.indexOf('Item') > -1 &&
-            types[0] === 'Item' && 
-            types[1] === 'MetaElement' && 
-            types[2] === 'MetaObject' &&
-            true) {
+        if (
+                types.indexOf('Item') > -1 &&
+                types[0] === 'Item' && 
+                types[1] === 'MetaElement' && 
+                types[2] === 'MetaObject' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -4187,9 +4453,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
         
     var Row;
     var Item;
@@ -4218,10 +4485,11 @@
         table.items.add('i1');
         table.items.add('i2');
         if (table.items.count === 2) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -4233,17 +4501,19 @@
         var table2 = new EntityTable('T2');
         table2.items.add(table.items['i2']);
         table.items['i2'].caption = 'C2';
-        if (table.items.count === 2 &&
-            table.items['i2'].caption === 'C2' &&       // caption 변경함
-            table.items['i2'].entity.name === 'T1' &&
-            table2.items.count === 1 && 
-            table2.items['i2'].caption === 'C1' &&      // caption 변경함
-            table2.items['i2'].entity.name === 'T2'
-            ) {
+        if (
+                table.items.count === 2 &&
+                table.items['i2'].caption === 'C2' &&       // caption 변경함
+                table.items['i2'].entity.name === 'T1' &&
+                table2.items.count === 1 && 
+                table2.items['i2'].caption === 'C1' &&      // caption 변경함
+                table2.items['i2'].entity.name === 'T2' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -4251,14 +4521,16 @@
         var table = new EntityTable('T1');
         table.items.addValue('i1', 'V1');
         table.items.addValue('i2', 'V2');
-        if (table.items.count === 2 &&
-            table.items['i1'].value === 'V1' &&
-            table.items['i2'].value === 'V2'
-            ) {
+        if (
+                table.items.count === 2 &&
+                table.items['i1'].value === 'V1' &&
+                table.items['i2'].value === 'V2' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -4275,21 +4547,23 @@
         view2.items['i1'].value = 'V1';
         view2.items['i2'].caption = 'C2';
         view2.items['i3'].caption = 'C3';
-        if (view.name === 'T1' && 
-            view.items.count === 3 &&
-            view.items['i1'].value === 'V1' &&
-            view.items['i2'].caption === 'C1' && 
-            view.items['i3'].caption === 'C3' &&
-            view2.name === 'T2' && 
-            view2.items.count === 3 &&
-            view2.items['i1'].value === 'V1' && 
-            view2.items['i2'].caption === 'C2' &&
-            view2.items['i3'].caption === 'C3' &&
-            true ) {
+        if (
+                view.name === 'T1' && 
+                view.items.count === 3 &&
+                view.items['i1'].value === 'V1' &&
+                view.items['i2'].caption === 'C1' && 
+                view.items['i3'].caption === 'C3' &&
+                view2.name === 'T2' && 
+                view2.items.count === 3 &&
+                view2.items['i1'].value === 'V1' && 
+                view2.items['i2'].caption === 'C2' &&
+                view2.items['i3'].caption === 'C3' &&
+                true ) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -4310,27 +4584,29 @@
         view2.items.add('i4', view3.items);      // 참조형에 참조컬렉션 지정
         view2.items['i3'].caption = 'C3';       // 참조에 속성 덮어씀
         view2.items['i4'].caption = 'C4';
-        if (view.name === 'T1' && 
-            view.items.count === 3 &&
-            view.items['i1'].caption === 'C1' &&
-            view.items['i2'].caption === 'C2' && 
-            view.items['i3'].caption === 'C3' &&
-            view.items['i3'].value === 'V3' &&
-            view2.name === 'T2' && 
-            view2.items.count === 4 &&
-            view2.items['i1'].caption === 'C1' && 
-            view2.items['i2'].caption === 'C2' &&
-            view2.items['i3'].caption === 'C3' &&
-            view2.items['i3'].value === 'V3' &&
-            view2.items['i4'].caption === 'C4' &&
-            view3.name === 'T3' && 
-            view3.items.count === 1 &&
-            view3.items['i4'].caption === 'C4' &&
-            true ) {
+        if (
+                view.name === 'T1' && 
+                view.items.count === 3 &&
+                view.items['i1'].caption === 'C1' &&
+                view.items['i2'].caption === 'C2' && 
+                view.items['i3'].caption === 'C3' &&
+                view.items['i3'].value === 'V3' &&
+                view2.name === 'T2' && 
+                view2.items.count === 4 &&
+                view2.items['i1'].caption === 'C1' && 
+                view2.items['i2'].caption === 'C2' &&
+                view2.items['i3'].caption === 'C3' &&
+                view2.items['i3'].value === 'V3' &&
+                view2.items['i4'].caption === 'C4' &&
+                view3.name === 'T3' && 
+                view3.items.count === 1 &&
+                view3.items['i4'].caption === 'C4' &&
+                true ) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -4340,31 +4616,36 @@
         view.items.addValue('i2', 'V2');
         var view2 = new EntityView('T2');
         view2.items.addEntity(view);
-        if (view.name === 'T1' && 
-            view.items.count === 2 &&
-            view.items['i1'].value === 'V1' &&
-            view.items['i2'].value === 'V2' && 
-            view2.name === 'T2' && 
-            view2.items.count === 2 &&
-            view2.items['i1'].value === 'V1' && 
-            view2.items['i2'].value === 'V2' &&
-            true ) {
+        if (
+                view.name === 'T1' && 
+                view.items.count === 2 &&
+                view.items['i1'].value === 'V1' &&
+                view.items['i2'].value === 'V2' && 
+                view2.name === 'T2' && 
+                view2.items.count === 2 &&
+                view2.items['i1'].value === 'V1' && 
+                view2.items['i2'].value === 'V2' &&
+                true ) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -4391,9 +4672,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
         
     var Row;
     var ItemDOM;
@@ -4442,53 +4724,60 @@
             selector: 'btn_'
         });
         var item2 = item.clone();
-        if (item2.entity.name === 'T1' &&
-            item2.type === 'text' &&
-            item2.size === 100 &&
-            item2.default === 'D1' &&
-            item2.caption === 'C1' &&
-            item2.isNotNull === true &&
-            item2.constraints.length === 2 &&
-            item2.order === 1000 &&
-            item2.increase === 10 &&
-            item2.value === 'V1' &&
-            item2.domType.value === true &&
-            item2.isReadOnly === true &&
-            item2.isHide === true &&
-            item2.element.value === true &&
-            item2.selector.key === 'btn_' &&
-            true) {
+        if (
+                item2.entity.name === 'T1' &&
+                item2.type === 'text' &&
+                item2.size === 100 &&
+                item2.default === 'D1' &&
+                item2.caption === 'C1' &&
+                item2.isNotNull === true &&
+                item2.constraints.length === 2 &&
+                item2.order === 1000 &&
+                item2.increase === 10 &&
+                item2.value === 'V1' &&
+                item2.domType.value === true &&
+                item2.isReadOnly === true &&
+                item2.isHide === true &&
+                item2.element.value === true &&
+                item2.selector.key === 'btn_' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         console.log('---------------------------------------------------------------------------');
         console.log('getTypes() :: 타입 조회(상속) ');
         var item = new ItemDOM('i1');
         var types = item.getTypes();
-        if (types.indexOf('ItemDOM') > -1 &&
-            types[0] === 'ItemDOM' &&
-            types[1] === 'Item' && 
-            types[2] === 'MetaElement' && 
-            types[3] === 'MetaObject' &&
-            true) {
+        if (
+                types.indexOf('ItemDOM') > -1 &&
+                types[0] === 'ItemDOM' &&
+                types[1] === 'Item' && 
+                types[2] === 'MetaElement' && 
+                types[3] === 'MetaObject' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -4515,9 +4804,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
 
     var Row;
     var Item;
@@ -4551,15 +4841,17 @@
         var row2 = new Row(table);
         table.rows.add(row);
         table.rows.add(row2);
-        if (row.count === 0 &&
-            row2.count > 0 &&
-            table.rows[0].count === 0 &&
-            table.rows[1].count > 0 &&
-            true) {
+        if (
+                row.count === 0 &&
+                row2.count > 0 &&
+                table.rows[0].count === 0 &&
+                table.rows[1].count > 0 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -4568,15 +4860,17 @@
         table.items.addValue('i1', 'V1');
         table.items.addValue('i2', 'V2');
         table.rows.add();
-        if (table.rows[0].count === 2 &&
-            table.rows[0]['i1'] === '' &&
-            table.rows[0]['i2'] === '' &&
-            table.rows[0]['i3'] !== '' &&
-            true) {
+        if (
+                table.rows[0].count === 2 &&
+                table.rows[0]['i1'] === '' &&
+                table.rows[0]['i2'] === '' &&
+                table.rows[0]['i3'] !== '' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -4588,26 +4882,31 @@
         row['i1'] = 'R1';
         row['i2'] = 'R2';
         table.rows.add(row);
-        if (table.rows[0].count === 2 &&
-            table.rows[0]['i1'] === 'R1' &&
-            table.rows[0]['i2'] === 'R2' &&
-            table.rows[0]['i3'] !== '' &&
-            true) {
+        if (
+                table.rows[0].count === 2 &&
+                table.rows[0]['i1'] === 'R1' &&
+                table.rows[0]['i2'] === 'R2' &&
+                table.rows[0]['i3'] !== '' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
         
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
         
-        return errorCount;
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -4634,9 +4933,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
 
     
     if (typeof module === 'object' && typeof module.exports === 'object') {     
@@ -4653,21 +4953,25 @@
         console.log('---------------------------------------------------------------------------');
         console.log('MetaElement_Sub :: 설명 ');
         if (true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -4694,9 +4998,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
 
     if (typeof module === 'object' && typeof module.exports === 'object') {    
         require('../src/object-implement'); // _implements() : 폴리필 
@@ -4712,21 +5017,25 @@
         console.log('---------------------------------------------------------------------------');
         console.log('MetaObject_Sub :: 설명 ');
         if (true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================
@@ -4756,11 +5065,13 @@
     
     //==============================================================
     // 2. 변수 선언
-    var errorCount = 0;
+    var errorCnt = 0;
     var tasks = [];  //{ns:..., file:.... }
     var result, task;
     var isCallback      = false;
     var CLEAR           = false;
+    var totalTaskCnt = 0;
+    var totalFileCnt = 0;
     
     /* 단순 로그 보기 */
     // CLEAR = true;
@@ -4820,17 +5131,21 @@
         for (var i = 0; i < tasks.length; i++) {            
 
             task = typeof module === 'object' ?  tasks[i].file : tasks[i].ns;
+            
+            totalTaskCnt += typeof tasks[i].result.taskCnt === 'number' ? tasks[i].result.taskCnt : 0; // 전체 태스크 갯수
+            totalFileCnt++;
 
-            if (tasks[i].result === 0) {
-                console.log('No: %s, Task: %s = Success', i, task);
+            if (tasks[i].result.errorCnt === 0) {
+                console.log('No: %s, file: %s, task [ %s EA ] = Success', totalFileCnt, task, tasks[i].result.taskCnt);
             } else {
-                console.warn('No: %s, Task : %s = Warning, ERR_COUNT = %s ', i, task, tasks[i].result);
-                errorCount++;
+                console.warn('No: %s, file : %s, ERR_COUNT: [ %s EA ] = Warning', totalFileCnt, task, tasks[i].result.errorCnt);
+                errorCnt++;
             }
             console.log('___________________________________________________________________________');
         }
+        console.log('Total: file [ %s EA ], task [ %s EA ] = Success', totalFileCnt, totalTaskCnt);
 
-        return errorCount;
+        return errorCnt;
     }
     
     //==============================================================

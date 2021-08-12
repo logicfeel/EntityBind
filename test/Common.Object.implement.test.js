@@ -12,8 +12,9 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0; 
+    var errorCnt = 0; 
     var result = [];        // 결과 확인 **사용시 초기화    
+    var taskCnt = 0;
 
     var util;
 
@@ -38,12 +39,13 @@
         }());
 
         var i = new ISuper();
-        if (i.m1() === 'I1' && 
-            true) {
+        if (
+                i.m1() === 'I1' && 
+                true) {
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -71,16 +73,17 @@
         }());
 
         var c = new CoClass();
-        if (c.m1() === 'C1' &&
-            c.m2() === 'C2' && 
-            c._interface.length === 2 &&
-            c.isImplementOf(ISuper) === true &&
-            c.isImplementOf(ISuper2) === true &&
-            true) {
+        if (
+                c.m1() === 'C1' &&
+                c.m2() === 'C2' && 
+                c._interface.length === 2 &&
+                c.isImplementOf(ISuper) === true &&
+                c.isImplementOf(ISuper2) === true &&
+                true) {
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -110,16 +113,17 @@
         }(Super));
 
         var c = new CoClass();
-        if (c.m1() === 'C1' &&
-            c.m2() === 'C2' && 
-            c._interface.length === 1 &&
-            c.isImplementOf(ISuper) === true &&
-            c.isImplementOf(ISuper2) === false &&
-            true) {
+        if (
+                c.m1() === 'C1' &&
+                c.m2() === 'C2' && 
+                c._interface.length === 1 &&
+                c.isImplementOf(ISuper) === true &&
+                c.isImplementOf(ISuper2) === false &&
+                true) {
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -153,16 +157,18 @@
         }());
 
         var c = new CoClass();
-        if (c.m1() === 'C1' &&
-            c.m2() === 'C2' && 
-            c._interface.length === 1 &&
-            c.isImplementOf(ISuper) === false &&
-            c.isImplementOf(ISub) === true &&
-            true) {
+        if (
+                c.m1() === 'C1' &&
+                c.m2() === 'C2' && 
+                c._interface.length === 1 &&
+                c.isImplementOf(ISuper) === false &&
+                c.isImplementOf(ISub) === true &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -192,27 +198,32 @@
         }());
 
         var c = new CoClass();
-        if (c.m1() === 'C1' &&
-            c.m2() === 'C2' && 
-            c._interface.length === 1 &&
-            c.isImplementOf(ISuper) === false &&
-            c.isImplementOf(ISub) === true &&
-            true) {
+        if (    
+                c.m1() === 'C1' &&
+                c.m2() === 'C2' && 
+                c._interface.length === 1 &&
+                c.isImplementOf(ISuper) === false &&
+                c.isImplementOf(ISub) === true &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================

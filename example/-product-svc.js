@@ -27,14 +27,14 @@
     // 4. 모듈 구현    
     var page = new PageView('page', 10);
 
-    var BoardEventService  = (function (_super) {
+    var ProductService  = (function (_super) {
         /**
          * FAQ 게시판 서비스
-         * @constructs _W.Service.Admin.BoardEventService
+         * @constructs _W.Service.Admin.ProductService
          * @extends _W.Service.Admin.BaseService
          * @param {String} p_suffix 셀렉터 접미사
          */
-        function BoardEventService(p_suffix) {
+        function ProductService(p_suffix) {
             _super.call(this);
             
             var _SUFF       = p_suffix || '';  // 접미사
@@ -45,7 +45,7 @@
              * 기본 콜백 경로
              * @type {String}
              */
-            this.baseUrl = '/Admin/adm_mod/BOD/Board_Event.C.asp';
+            this.baseUrl = '/Admin/adm_mod/PRT/Product.C.asp';
 
             /**
              * prop 속성
@@ -74,22 +74,61 @@
                     setter: function(val) { return page.page_count = val; }
                 },              
                 sort_cd:        '',
-                evt_idx:        '',
-                title:          { 
-                    selector: { key: '#m-title'+ _SUFF,        type: 'value' },
+                prt_id:         '',
+                sto_id:         'S00001',       // 단일상점
+                prtName:        { 
+                    selector: { key: '#m-prtName'+ _SUFF,        type: 'value' },
                     isNotNull: true,
                 },
-                writer:         { selector: { key: '#m-writer'+ _SUFF,       type: 'value' } },
-                begin_dt:       { selector: { key: '#m-begin_dt'+ _SUFF,     type: 'value' } },
-                close_dt:       { selector: { key: '#m-close_dt'+ _SUFF,     type: 'value' } },
-                contents:       { selector: { key: '#m-contents'+ _SUFF,     type: 'value' } },
-                active_yn:      { 
-                    selector: { key: 'input[name=m-active_yn'+_SUFF+'][type=radio]:checked',  type: 'value' },
+                type_cd:        { 
+                    selector: { key: 'input[name=m-type_cd'+_SUFF+'][type=radio]:checked',  type: 'value' },
                     setter: function(val) { 
-                        $('input[name=m-active_yn'+_SUFF+'][value='+ val + ']').prop('checked', true);
+                        $('input[name=m-type_cd'+_SUFF+'][value='+ val + ']').prop('checked', true);
                     },
                     isNotNull: true,
                 },
+                state_cd:      { 
+                    selector: { key: 'input[name=m-state_cd'+_SUFF+'][type=radio]:checked',  type: 'value' },
+                    setter: function(val) { 
+                        $('input[name=m-state_cd'+_SUFF+'][value='+ val + ']').prop('checked', true);
+                    },
+                    isNotNull: true,
+                },
+                kind_cd:      { 
+                    selector: { key: 'input[name=m-kind_cd'+_SUFF+'][type=radio]:checked',  type: 'value' },
+                    setter: function(val) { 
+                        $('input[name=m-kind_cd'+_SUFF+'][value='+ val + ']').prop('checked', true);
+                    },
+                },
+                stock_it:       { selector: { key: '#m-stock_it'+ _SUFF,         type: 'value' } },
+                brd_idx:        { selector: { key: '#m-brd_idx'+ _SUFF,          type: 'value' } },
+                recommRange:    { selector: { key: '#m-recommRange'+ _SUFF,      type: 'value' } },
+                begin_dt:       { 
+                    selector: { key: '#m-begin_dt'+ _SUFF,     type: 'value' },
+                    constraints: [
+                        { regex: /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/, msg: '날짜형식으로 입력해주세요 (2001-01-01) ', code: 150, return: true}
+                    ],
+                    isNullPass:     true
+                },
+                close_dt:       { 
+                    selector: { key: '#m-close_dt'+ _SUFF,     type: 'value' },
+                    constraints: [
+                        { regex: /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/, msg: '날짜형식으로 입력해주세요 (2001-01-01) ', code: 150, return: true}
+                    ],
+                    isNullPass:     true
+                },
+                contents:       { selector: { key: '#m-contents'+ _SUFF,        type: 'value' } },
+                method_cd:      { 
+                    selector: { key: 'input[name=m-method_cd'+_SUFF+'][type=radio]:checked',  type: 'value' },
+                    setter: function(val) { 
+                        $('input[name=m-method_cd'+_SUFF+'][value='+ val + ']').prop('checked', true);
+                    },
+                },
+                deli_mn:        { selector: { key: '#m-deli_mn'+ _SUFF,         type: 'value' } },
+                default_cd:     { selector: { key: '#m-default_cd'+ _SUFF,      type: 'value' } },  // 확장시 수정
+                choice_bt:      { selector: { key: '#m-choice_bt'+ _SUFF,       type: 'value' } },  // 확장시 수정
+                under_mn:       { selector: { key: '#m-under_mn'+ _SUFF,        type: 'value' } },
+                underBase_mn:   { selector: { key: '#m-underBase_mn'+ _SUFF,    type: 'value' } },
             };
 
             /**
@@ -137,7 +176,25 @@
                         
                         var row_total   = entity['row_total'];
                         if (_template === null) {
-                            _template    = Handlebars.compile( _this.bindModel.items['_temp_list'].value ); 
+                            _template    = Handlebars.compile( _this.bindModel.items['_temp_list'].value );
+                            // 핼퍼 등록
+                            Handlebars.registerHelper('type_code', function (p_value) {
+                                if (p_value === 'DE') return '배송';
+                                else return '기타';
+                            });
+                            Handlebars.registerHelper('kind_code', function (p_value) {
+                                if (p_value === 'NEW') return '신상';
+                                if (p_value === 'REC') return '추천';
+                                if (p_value === 'POP') return '인기';
+                                return '일반'
+                            });
+                            Handlebars.registerHelper('state_code', function (p_value) {
+                                if (p_value === 'SS') return '판매(전시중)';
+                                if (p_value === 'RS') return '예약(전시중)';
+                                if (p_value === 'DS') return '재고없음(전시중)';
+                                if (p_value === 'DH') return '판매중지(전시중지)';
+                                return ''
+                            });                            
                         }
                         _this.bindModel.items['_txt_totalCnt'].value   = row_total;
                         _this.bindModel.items['_area_list'].value      = _template(entity);
@@ -159,17 +216,24 @@
                 _area_page:     { list:     'etc' },    // 묶음의 용도
                 _txt_totalCnt:  { list:     'etc' },    // 묶음의 용도
                 cmd:            { Array:    'bind' },
-                keyword:        { list:     'bind' },
+                // WARN:: 검색어와 내용을 같이 사용
+                keyword:        { list:     'bind',             read: 'output',             update: 'bind',            create: 'bind' },   
                 page_size:      { list:     'bind' },
                 page_count:     { list:     'bind' },
                 sort_cd:        { list:     'bind' },
-                evt_idx:        { read:     'bind',     delete:     'bind',            update:  'bind' },
-                title:          { read:     'output',   create:     ['valid', 'bind'], update:  ['valid', 'bind'], },
-                writer:         { read:     'output',   create:     'bind',            update:  'bind' },
-                begin_dt:       { read:     'output',   create:     'bind',            update:  'bind' },
-                close_dt:       { read:     'output',   create:     'bind',            update:  'bind' },
-                contents:       { read:     'output',   create:     'bind',            update:  'bind' },
-                active_yn:      { read:     'output',   create:     ['valid', 'bind'], update:  ['valid', 'bind'], },
+                prt_id:         { read: ['valid', 'bind'],      update: ['valid', 'bind'],  delete: ['valid', 'bind']  },
+                sto_id:         { create: ['valid', 'bind'] },
+                type_cd:        { create: ['valid', 'bind'],    read: 'output' },
+                prtName:        { create: ['valid', 'bind'],    read: 'output',             update: ['valid', 'bind'],  delete: ['valid', 'bind'] },
+                state_cd:       { create: ['valid', 'bind'],    read: 'output',             update: ['valid', 'bind'],  delete: ['valid', 'bind'] },
+                begin_dt:       { read: 'output',               update: ['valid', 'bind'],  create: ['valid', 'bind'] },
+                close_dt:       { read: 'output',               update: ['valid', 'bind'],  create: ['valid', 'bind'] },
+                kind_cd:        { read: 'output',               update: 'bind',             create: 'bind' },
+                stock_it:       { read: 'output',               update: 'bind',             create: 'bind' },
+                recommRange:    { read: 'output',               update: 'bind',             create: 'bind' },
+                contents:       { read: 'output',               update: 'bind',             create: 'bind' },
+                method_cd:      { read: 'output',               update: 'bind',             create: 'bind' },
+                deli_mn:        { read: 'output',               update: 'bind',             create: 'bind' },
             };
 
             /**
@@ -195,16 +259,16 @@
                     var url = _this.bindModel.prop['__listUrl'];
                     location.href = url;
                 },
-                moveEdit: function(p_evt_idx) {
+                moveEdit: function(p_prt_id) {
                     var url = _this.bindModel.prop['__formUrl'];
-                    location.href = url +'?mode=EDIT&evt_idx='+ p_evt_idx;
+                    location.href = url +'?mode=EDIT&prt_id='+ p_prt_id;
                 },
                 moveForm: function() {
                     var url = _this.bindModel.prop['__formUrl'];
                     location.href = url;
                 },
-                procRead: function (p_evt_idx) { 
-                    _this.bindModel.items['evt_idx'].value = ParamGet2JSON(location.href).evt_idx;
+                procRead: function (p_prt_id) { 
+                    _this.bindModel.items['prt_id'].value = ParamGet2JSON(location.href).prt_id;
                     _this.bindModel.read.execute(); 
                 },
                 procCreate: function () { 
@@ -221,14 +285,14 @@
                 },
             };
         }
-        util.inherits(BoardEventService, _super);
+        util.inherits(ProductService, _super);
     
         /**
          * 전처리 :: 등록 
          * 데코레이션 패턴 : 상위 메소드 호출함
          * @param {BindModelAjax} p_bindModel 서비스 소유자
          */
-        BoardEventService.prototype.preRegister = function(p_bindModel) {
+        ProductService.prototype.preRegister = function(p_bindModel) {
             BaseService.prototype.preRegister.call(this, p_bindModel);
             if (this.isLog) console.log('______________ preRegister()');
             
@@ -244,7 +308,7 @@
             }
         };
 
-        return BoardEventService;
+        return ProductService;
     
     }(BaseService));
     
@@ -254,7 +318,7 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {     
 
     } else {
-        global.BoardEventService = BoardEventService;
+        global.ProductService = ProductService;
         global.page = page;
     }
 

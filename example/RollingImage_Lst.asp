@@ -209,60 +209,6 @@
 	<div id="part_Overlay" class="w3-overlay w3-animate-opacity" style="cursor:pointer;z-index:90;"></div>
 
 </div>        
-<!--
-<script src="/Common/js/handlebars.js"></script>
-<script src="/Common/js/page-view.js??<%=g_iRandomID%>"></script>
-<script src="/Common/js/_w-meta-1.5.1.js?<%=g_iRandomID%>"></script>
-<script src="/Admin/adm_cmn/Service/base-svc.js?<%=g_iRandomID%>"></script>
-<script src="/Admin/adm_mod/DGN/Service/design-rolling-svc.js?<%=g_iRandomID%>"></script>
-<script>
-    //--------------------------------------------------------------
-	// 1. 생성 및 서비스 설정
-    var roll              = new BindModelAjax();
-    
-    roll.setService(new DesignRollingService(roll));
-	//--------------------------------------------------------------    
-	// 2. 객체 설정 (등록)
-    roll.prop["__isGetLoad"] 	= false;
-	roll.prop["__formUrl"] 	= "Rolling_Frm.asp";
-	
-    //--------------------------------------------------------------    
-	// 6. 외부 호출 함수 구현
-	function view(p_idx) {
-		var url = roll.prop["__formUrl"];
-		var roll_idx = roll.items["roll_idx"].value;
-		var param = "&roll_idx=" + roll_idx;
-
-		if ( roll_idx > 0 ) {
-			location.href = url + "?mode=EDIT&img_idx=" + p_idx + param;
-		} else {
-			return alert("롤링을 선택해주세요.");
-		}
-    }
-	function createFrom() {
-		var url = roll.prop["__formUrl"];
-		var roll_idx = roll.items["roll_idx"].value;
-		var param = "&roll_idx=" + roll_idx;
-
-		if ( roll_idx > 0 ) {
-			location.href = url + "?mode=CREATE" + param;
-		} else {
-			return alert("롤링을 선택해주세요.");
-		}
-    }
-	$("#s-area-roll").change(function () {
-		roll.list.execute();
-	});
-
-	//--------------------------------------------------------------
-	// 0. 준비완료 후 실행 정의
-	$(document).ready(function () {
-		roll.init();
-		roll.rolling.execute();
-	});
-</script>
--->
-
 
 <script src="/Common/js/handlebars.js"></script>
 <script src="/Common/js/_w-meta-1.6.0.js?<%=g_iRandomID%>"></script>

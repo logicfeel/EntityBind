@@ -262,38 +262,10 @@
             
             // page 콜백 함수 설정 (방식)
             if (p_bindModel.prop['__isGetLoad'] === true) {
-                /**
-                 * # 2가지 중 선택하여 사용
-                 * page.callback = goPage;                                      // 2-1) GET 방식
-                 * page.callback = page.goPage.bind(p_bindModel.list.bind);     // 2-2) GET 방식 (bind)    
-                 */
-                page.callback = page.goPage.bind(p_bindModel.list.bind);
+                page.callback = page.goPage.bind(p_bindModel.list.bind);            // 2-2) GET 방식 (bind)            
             } else {
-                page.callback = p_bindModel.list.execute.bind(p_bindModel.list);      // 1) 콜백 방식
+                page.callback = p_bindModel.list.execute.bind(p_bindModel.list);    // 1) 콜백 방식
             }
-        };
-
-        /**
-         * 전치리 :: 검사
-         * 데코레이션 패턴 : 상위 메소드 호출함
-         * @param {BindModelAjax} p_bindModel 
-         * @returns {Boolean}
-         */
-        DesignPopupService.prototype.preCheck = function(p_bindModel) {
-            if (BaseService.prototype.preCheck.call(this, p_bindModel)) {
-                if (this.isLog) if (true || p_bindModel.checkSelector()) console.log('preCheck : 선택자 검사 => [Success] ');
-            }
-            return true;
-        };
-        
-        /**
-         * 전처리 :: 준비
-         * 데코레이션 패턴 : 상위 메소드 호출함
-         * @param {BindModelAjax} p_bindModel 
-         */
-        DesignPopupService.prototype.preReady = function(p_bindModel) {
-            BaseService.prototype.preReady.call(this, p_bindModel);
-            if (this.isLog) console.log('______________ preReady()');
         };
 
         return DesignPopupService;

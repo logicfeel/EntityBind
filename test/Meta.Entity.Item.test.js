@@ -12,9 +12,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
 
     var Row;
     var Item;
@@ -54,20 +55,22 @@
             increase: 10,
             value: 'V1'
         });
-        if (item.type === 'text' &&
-            item.size === 100 &&
-            item.default === 'D1' &&
-            item.caption === 'C1' &&
-            item.isNotNull === true &&
-            item.constraints.length === 2 &&
-            item.order === 1000 &&
-            item.increase === 10 &&
-            item.value === 'V1' &&
-            true) {
+        if (
+                item.type === 'text' &&
+                item.size === 100 &&
+                item.default === 'D1' &&
+                item.caption === 'C1' &&
+                item.isNotNull === true &&
+                item.constraints.length === 2 &&
+                item.order === 1000 &&
+                item.increase === 10 &&
+                item.value === 'V1' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -76,13 +79,15 @@
         var evt;
         item.onChanged = function(val) {evt = val};
         item.value = 10;
-        if (item.value === 10 &&
-            evt === 10. &&
-            true) {
+        if (
+                item.value === 10 &&
+                evt === 10. &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -92,15 +97,17 @@
         item.setConstraint(/10/, '10 시작...', 100, true);
         item.setConstraint(/[0-9]{5}/, '5자리 이하만...', 200, false);
         item.setConstraint(/\D/, '5자리 이하만...', 300);   // return 기본값 = false
-        if (item.constraints.length === 3 &&
-            item.constraints[0].code === 100 &&
-            item.constraints[1].code === 200 &&
-            item.constraints[2].code === 300 &&
-            true) {
+        if (
+                item.constraints.length === 3 &&
+                item.constraints[0].code === 100 &&
+                item.constraints[1].code === 200 &&
+                item.constraints[2].code === 300 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -110,12 +117,14 @@
         item.value = 'V1';
         // item.defineValueProperty(function() { return item_value; });
         item.getter = function() { return item_value; };
-        if (item.value  === 10 && 
-            true) {
+        if (
+                item.value  === 10 && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -126,13 +135,15 @@
         // item.defineValueProperty(undefined, function(val) { item_value = val; });
         item.setter = function(val) { item_value = val; };
         item.value = 'V11';
-        if (item.value  === 'V11' && 
-            item_value  === 'V11' && 
-            true) {
+        if (
+                item.value  === 'V11' && 
+                item_value  === 'V11' && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -144,13 +155,15 @@
         item.getter = function() { return item_value; }
         item.setter = function(val) { item_value = val; };
         item.value = 'V11';
-        if (item.value  === 'V11' && 
-            item_value  === 'V11' && 
-            true) {
+        if (
+                item.value  === 'V11' && 
+                item_value  === 'V11' && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -160,13 +173,15 @@
         item.value = 'V1';
         item.getter = function() { return item_value; };
         item.value = 'V11';
-        if (item.value  === 10 && 
-            item_value  === 10 && 
-            true) {
+        if (
+                item.value  === 10 && 
+                item_value  === 10 && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -176,13 +191,15 @@
         item.value = 'V1';
         item.setter = function(val) { item_value = val; };
         item.value = 'V11';
-        if (item.value  === 'V11' && 
-            item_value  === 'V11' && 
-            true) {
+        if (
+                item.value  === 'V11' && 
+                item_value  === 'V11' && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -192,13 +209,15 @@
         item.value = 'V1';
         item.setter = function(val) { item_value = val + 'R'; };
         item.value = 'V11';
-        if (item.value  === 'V11' && 
-            item_value  === 'V11R' && 
-            true) {
+        if (
+                item.value  === 'V11' && 
+                item_value  === 'V11R' && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         console.log('---------------------------------------------------------------------------');
@@ -208,13 +227,15 @@
         item.value = 'V1';
         item.setter = function(val) { return item_value = val + 'R'; };
         item.value = 'V11';
-        if (item.value  === 'V11R' && 
-            item_value  === 'V11R' && 
-            true) {
+        if (
+                item.value  === 'V11R' && 
+                item_value  === 'V11R' && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -225,13 +246,15 @@
         item.getter = function() { return item_value; };
         item.setter = function(val) { item_value = val; };
         item.value = 'V11';
-        if (item.value  === 'V11' && 
-            item_value  === 'V11' && 
-            true) {
+        if (
+                item.value  === 'V11' && 
+                item_value  === 'V11' && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -242,16 +265,18 @@
         item.setConstraint(/[0-9]{5}/, '5자리 이하만...', 200, false);
         item.setConstraint(/\D/, '숫자만...', 300);   // return 기본값 = false
         var result = {};
-        if (item.valid('10', result) === true &&        // 성공
-            item.valid('', result) === false &&         // 실패 : 10로 시작을 안해서
-            item.valid('1000', result) === true &&      // 성공
-            item.valid('10000', result) === false &&    // 실패 : 5자리 이상
-            item.valid('100a', result) === false &&     // 실패 : 문자가 들어가서
-            true) {
+        if (
+                item.valid('10', result) === true &&        // 성공
+                item.valid('', result) === false &&         // 실패 : 10로 시작을 안해서
+                item.valid('1000', result) === true &&      // 성공
+                item.valid('10000', result) === false &&    // 실패 : 5자리 이상
+                item.valid('100a', result) === false &&     // 실패 : 문자가 들어가서
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -262,14 +287,15 @@
         item2.isNotNull = true;     // 공백허용 안함
         var result = {};
         var result2 = {};
-        if (false
-            || item.valid('', result) === true         // 성공 : 공백 허용
-            || item2.valid('', result2) === false      // 실패 : 공백 불가
-            ) {
+        if (
+                item.valid('', result) === true ||         // 성공 : 공백 허용
+                item2.valid('', result2) === false ||     // 실패 : 공백 불가
+                false) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -283,13 +309,15 @@
         item2.isNullPass    = true;     
         var result = {};
         var result2 = {};
-        if (item.valid('', result) === true &&
-            item2.valid('', result2) === false &&
-            true) {
+        if (
+                item.valid('', result) === true &&
+                item2.valid('', result2) === false &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -310,21 +338,23 @@
             value: 'V1'
         });
         var item2 = item.clone();
-        if (item2.entity.name === 'T1' &&
-            item2.type === 'text' &&
-            item2.size === 100 &&
-            item2.default === 'D1' &&
-            item2.caption === 'C1' &&
-            item2.isNotNull === true &&
-            item2.constraints.length === 2 &&
-            item2.order === 1000 &&
-            item2.increase === 10 &&
-            item2.value === 'V1' &&
-            true) {
+        if (
+                item2.entity.name === 'T1' &&
+                item2.type === 'text' &&
+                item2.size === 100 &&
+                item2.default === 'D1' &&
+                item2.caption === 'C1' &&
+                item2.isNotNull === true &&
+                item2.constraints.length === 2 &&
+                item2.order === 1000 &&
+                item2.increase === 10 &&
+                item2.value === 'V1' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -332,26 +362,31 @@
         console.log('Item.getTypes() :: 타입 조회(상속) ');
         var item = new Item('i1');
         var types = item.getTypes();
-        if (types.indexOf('Item') > -1 &&
-            types[0] === 'Item' && 
-            types[1] === 'MetaElement' && 
-            types[2] === 'MetaObject' &&
-            true) {
+        if (
+                types.indexOf('Item') > -1 &&
+                types[0] === 'Item' && 
+                types[1] === 'MetaElement' && 
+                types[2] === 'MetaObject' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================

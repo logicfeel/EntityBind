@@ -163,48 +163,6 @@
     -->
 
 </div>        
-<!--
-<script src="/Common/js/handlebars.js"></script>
-<script src="/Common/js/page-view.js??<%=g_iRandomID%>"></script>
-<script src="/Common/js/_w-meta-1.5.1.js?<%=g_iRandomID%>"></script>
-<script src="/Admin/adm_cmn/Service/base-svc.js?<%=g_iRandomID%>"></script>
-<script src="/Admin/adm_mod/DGN/Service/design-rolling-svc.js?<%=g_iRandomID%>"></script>
-<script src="/Admin/adm_mod/SYS/Service/system-image-svc.js?<%=g_iRandomID%>"></script>
-<script>
-    //--------------------------------------------------------------
-	// 1. 생성 및 서비스 설정
-    var roll              = new BindModelAjax();
-    var image              = new BindModelAjax();
-    
-    roll.setService(new DesignRollingService(roll));
-    image.setService(new SystemImageService(image));
-
-	//--------------------------------------------------------------    
-	// 2. 객체 설정 (등록)
-	roll.prop["__listUrl"] 	        = "Rolling_Lst.asp";
-    roll.items["roll_idx"].value    = getParamsToJSON(location.href).roll_idx;
-
-    image.items["pos_idx"].value   = getParamsToJSON(location.href).img_idx;      // image 키 등록
-    image.items["position_cd"].value 	= "Rolling";
-    image.items["prefix"].value 	    = "ROL-";
-    //--------------------------------------------------------------    
-	// 6. 외부 호출 함수 구현
-
-	//--------------------------------------------------------------
-	// 0. 준비완료 후 실행 정의
-	$(document).ready(function () {
-        console.log('read ~');
-        roll.init();
-        image.init();
-        
-        if (roll.prop["__mode"] === "EDIT") {
-            $("#s-area-upload").show();
-            roll.read.execute();
-            image.list.execute();
-        }
-	});
-</script>
--->
 
 <script src="/Common/js/handlebars.js"></script>
 <script src="/Common/js/_w-meta-1.6.0.js?<%=g_iRandomID%>"></script>
@@ -240,9 +198,6 @@
 	roll.prop["__listUrl"] = "RollingImage_Lst.asp";
     roll.prop["__mode"] = ParamGet2JSON(location.href).mode;
     roll.items["roll_idx"].value = getParamsToJSON(location.href).roll_idx;
-    // 속성 설정 : img
-    img.items["position_cd"].value 	= "Rolling";
-    img.items["prefix"].value 	    = "ROL-";
 
 	// 이벤트 바인딩 : roll
     $('#btn_Insert').click(roll.fn.procCreate);  // 수정
@@ -254,14 +209,19 @@
     $('#btn_Upload').click(img.fn.procCreate);  // 이미지 업로드(등록)
     //--------------------------------------------------------------
 	$(document).ready(function () {
+        // 초기화
         roll.init();
         img.init();
 
         if (roll.prop["__mode"] === "EDIT") {
             setEditMode(true);
+            // roll
             roll.items["roll_idx"].value  = ParamGet2JSON(location.href).roll_idx;
-            img.items["pos_idx"].value   = getParamsToJSON(location.href).img_idx;
             roll.fn.procRead();
+            // img
+            img.items["position_cd"].value = "Rolling";
+            img.items["prefix"].value = "ROL-";
+            img.items["pos_idx"].value = getParamsToJSON(location.href).img_idx;
             img.fn.procList();
         }  else {
             setEditMode(false);

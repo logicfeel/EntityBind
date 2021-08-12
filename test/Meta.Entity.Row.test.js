@@ -12,9 +12,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
 
     var Row;
     var Item;
@@ -48,15 +49,17 @@
         var row2 = new Row(table);
         table.rows.add(row);
         table.rows.add(row2);
-        if (row.count === 0 &&
-            row2.count > 0 &&
-            table.rows[0].count === 0 &&
-            table.rows[1].count > 0 &&
-            true) {
+        if (
+                row.count === 0 &&
+                row2.count > 0 &&
+                table.rows[0].count === 0 &&
+                table.rows[1].count > 0 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -65,15 +68,17 @@
         table.items.addValue('i1', 'V1');
         table.items.addValue('i2', 'V2');
         table.rows.add();
-        if (table.rows[0].count === 2 &&
-            table.rows[0]['i1'] === '' &&
-            table.rows[0]['i2'] === '' &&
-            table.rows[0]['i3'] !== '' &&
-            true) {
+        if (
+                table.rows[0].count === 2 &&
+                table.rows[0]['i1'] === '' &&
+                table.rows[0]['i2'] === '' &&
+                table.rows[0]['i3'] !== '' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -85,26 +90,31 @@
         row['i1'] = 'R1';
         row['i2'] = 'R2';
         table.rows.add(row);
-        if (table.rows[0].count === 2 &&
-            table.rows[0]['i1'] === 'R1' &&
-            table.rows[0]['i2'] === 'R2' &&
-            table.rows[0]['i3'] !== '' &&
-            true) {
+        if (
+                table.rows[0].count === 2 &&
+                table.rows[0]['i1'] === 'R1' &&
+                table.rows[0]['i2'] === 'R2' &&
+                table.rows[0]['i3'] !== '' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
         
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
         
-        return errorCount;
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================

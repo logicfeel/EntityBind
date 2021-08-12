@@ -12,9 +12,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
 
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         require('../src/object-implement'); // _implements() : 폴리필
@@ -30,21 +31,25 @@
         console.log('---------------------------------------------------------------------------');
         console.log('ComplexElement_Sub :: 설명 ');
         if (true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================

@@ -12,9 +12,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
 
     var util
 
@@ -55,7 +56,7 @@
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
-            errorCount++;
+            errorCnt++;
         }
         
         console.log('---------------------------------------------------------------------------');
@@ -76,27 +77,31 @@
             [[100], 20],
             [10]
         ];
-        if (util.getArrayLevel(arr) === 1 &&
-            util.getArrayLevel(arr2) === 2 &&
-            util.getArrayLevel(arr3) === 3 &&
-            util.getArrayLevel(arr4) === 1 &&
-            true) {
+        if (
+                util.getArrayLevel(arr) === 1 &&
+                util.getArrayLevel(arr2) === 2 &&
+                util.getArrayLevel(arr3) === 3 &&
+                util.getArrayLevel(arr4) === 1 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
         console.log('Util.createGUID() :: GUID 생성 ');
         var guid = util.createGUID();
-        if (guid.length === 36 &&
-            guid.match(/-/g).length === 4 &&
-            true) {
+        if (
+                guid.length === 36 &&
+                guid.match(/-/g).length === 4 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -113,14 +118,17 @@
 
 
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================

@@ -12,9 +12,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
         
     var Row;
     var Item;
@@ -56,33 +57,35 @@
         view2.items['i2'].caption = 'C2';
         view2.items['i3'].caption = 'C3';
 
-        if (view.name === 'T1' && 
-            view.items.count === 4 && 
-            view.rows.count === 1 && 
-            view.items['i2'].caption === 'C2' && 
-            view.items['i3'].caption === 'C3' &&
-            view.items['i4'].value === 'V4' &&
-            view.items._baseCollection === undefined &&
-            view.items['i1'].entity.name === 'T1' && 
-            view.items['i2'].entity.name === 'T1' &&
-            view.rows[0]['i1'] === 'R1' && 
-            view.rows[0]['i2'] === 'R2' && 
-            view2._refEntities[0].name === 'T1' &&                                              // 참조 등록 검사
-            view2._refEntities[1].name === 'T3' &&                                              // 참조 등록 검사
-            view2.items['i2'].caption === 'C2' && 
-            view2.items['i3'].caption === 'C3' &&
-            view2.items['i4'].value === 'V4' &&
-            view2.items._baseCollection._onwer.name === 'T1' &&
-            view2.name === 'T2' && 
-            view2.items.count === 5 && 
-            view2.rows.count === 0 && 
-            view2.items['i1'].entity.name === 'T1' && 
-            view2.items['i2'].entity.name === 'T1' &&
-            true) {
+        if (
+                view.name === 'T1' && 
+                view.items.count === 4 && 
+                view.rows.count === 1 && 
+                view.items['i2'].caption === 'C2' && 
+                view.items['i3'].caption === 'C3' &&
+                view.items['i4'].value === 'V4' &&
+                view.items._baseCollection === undefined &&
+                view.items['i1'].entity.name === 'T1' && 
+                view.items['i2'].entity.name === 'T1' &&
+                view.rows[0]['i1'] === 'R1' && 
+                view.rows[0]['i2'] === 'R2' && 
+                view2._refEntities[0].name === 'T1' &&                                              // 참조 등록 검사
+                view2._refEntities[1].name === 'T3' &&                                              // 참조 등록 검사
+                view2.items['i2'].caption === 'C2' && 
+                view2.items['i3'].caption === 'C3' &&
+                view2.items['i4'].value === 'V4' &&
+                view2.items._baseCollection._onwer.name === 'T1' &&
+                view2.name === 'T2' && 
+                view2.items.count === 5 && 
+                view2.rows.count === 0 && 
+                view2.items['i1'].entity.name === 'T1' && 
+                view2.items['i2'].entity.name === 'T1' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -96,43 +99,51 @@
         row['i2'] = 'R2';
         view.rows.add(row);
         var view2 = view.clone();
-        if (view.name === 'T1' && view.items.count === 2 && view.rows.count === 1 && 
-            view.items['i2'].caption === 'C1' &&
-            view.rows[0]['i1'] === 'R1' && view.rows[0]['i2'] === 'R2' && 
-            view2.name === 'T1' && view2.items.count === 2 && view2.rows.count === 1 && 
-            view2.items['i2'].caption === 'C1' && 
-            view2.rows[0]['i1'] === 'R1' && view2.rows[0]['i2'] === 'R2' ) {
+        if (
+                view.name === 'T1' && view.items.count === 2 && view.rows.count === 1 && 
+                view.items['i2'].caption === 'C1' &&
+                view.rows[0]['i1'] === 'R1' && view.rows[0]['i2'] === 'R2' && 
+                view2.name === 'T1' && view2.items.count === 2 && view2.rows.count === 1 && 
+                view2.items['i2'].caption === 'C1' && 
+                view2.rows[0]['i1'] === 'R1' && view2.rows[0]['i2'] === 'R2' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
         console.log('EntityView.getTypes() :: 타입 조회(상속) ');
         var table = new EntityView('T1');
         var types = table.getTypes();
-        if (types.indexOf('EntityView') > -1 &&
-            types[0] === 'EntityView' && 
-            types[1] === 'Entity' && 
-            types[2] === 'MetaElement' && 
-            types[3] === 'MetaObject' &&
-            true) {
+        if (
+                types.indexOf('EntityView') > -1 &&
+                types[0] === 'EntityView' && 
+                types[1] === 'Entity' && 
+                types[2] === 'MetaElement' && 
+                types[3] === 'MetaObject' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
 

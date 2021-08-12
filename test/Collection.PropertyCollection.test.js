@@ -12,8 +12,9 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
+    var taskCnt = 0;
         
     var util;
     var PropertyCollection;
@@ -47,13 +48,15 @@
         var table = new TestTable();
         table.items.add('a1');
         table.items.add('a2', 'A2');
-        if (table.items['a2'] === 'A2' && 
-            table.items.count === 2 &&
-            true) {
+        if (
+                table.items['a2'] === 'A2' && 
+                table.items.count === 2 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -64,10 +67,11 @@
         table.items.add('a2', 'A2');
         table.items.remove(table.items['a2']);
         if (true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -77,16 +81,18 @@
         table.items.add('a2', 'A2');    // 삭제위치
         table.items.add('a3', 'A3');
         table.items.removeAt(1);
-        if (table.items.count === 2 && 
-            table.items[0] === 'A1' && 
-            table.items['a1'] === 'A1' &&
-            table.items[1] === 'A3' && 
-            table.items['a3'] === 'A3' &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.items[0] === 'A1' && 
+                table.items['a1'] === 'A1' &&
+                table.items[1] === 'A3' && 
+                table.items['a3'] === 'A3' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -96,13 +102,16 @@
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');
         table.items.removeAt(0);
-        if (table.items.count === 2 && 
-            table.items[0] === 'A2' && table.items['a2'] === 'A2' &&
-            table.items[1] === 'A3' && table.items['a3'] === 'A3') {
+        if (
+                table.items.count === 2 && 
+                table.items[0] === 'A2' && table.items['a2'] === 'A2' &&
+                table.items[1] === 'A3' && table.items['a3'] === 'A3' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -112,16 +121,18 @@
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');    // 삭제위치
         table.items.removeAt(2);
-        if (table.items.count === 2 && 
-            table.items[0] === 'A1' && 
-            table.items['a1'] === 'A1' &&
-            table.items[1] === 'A2' && 
-            table.items['a2'] === 'A2' &&
-            true) {
+        if (
+                table.items.count === 2 && 
+                table.items[0] === 'A1' && 
+                table.items['a1'] === 'A1' &&
+                table.items[1] === 'A2' && 
+                table.items['a2'] === 'A2' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -131,14 +142,16 @@
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');
         table.items.clear();
-        if (table.items.count === 0 && 
-            table.items[0] === undefined && 
-            table.items[1] === undefined &&
-            true) {
+        if (
+                table.items.count === 0 && 
+                table.items[0] === undefined && 
+                table.items[1] === undefined &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -147,13 +160,15 @@
         table.items.add('a1', 'A1');
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');
-        if (table.items.contains('A1') === true && 
-            table.items.contains('A4') === false &&
-            true) {
+        if (
+                table.items.contains('A1') === true && 
+                table.items.contains('A4') === false &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -162,13 +177,15 @@
         table.items.add('a1', 'A1');
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');        
-        if (table.items.indexOf('A1') === 0 && 
-            table.items.indexOf(table.items['a3']) === 2 &&
-            true) {
+        if (
+                table.items.indexOf('A1') === 0 && 
+                table.items.indexOf(table.items['a3']) === 2 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -177,13 +194,15 @@
         table.items.add('a1', 'A1');
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');        
-        if (table.items.indexOfName('a2') === 1 && 
-            table.items.indexOfName('a4') === -1 &&
-            true) {
+        if (true && 
+                table.items.indexOfName('a2') === 1 && 
+                table.items.indexOfName('a4') === -1 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -192,13 +211,15 @@
         table.items.add('a1', 'A1');
         table.items.add('a2', 'A2');    
         table.items.add('a3', 'A3');        
-        if (table.items.propertyOf(1) === 'a2' && 
-            table.items.propertyOf('a4') === undefined &&
-            true) {
+        if (
+                table.items.propertyOf(1) === 'a2' && 
+                table.items.propertyOf('a4') === undefined &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         console.log('---------------------------------------------------------------------------');
@@ -212,25 +233,29 @@
         table.items.add('a2', s1);    
         // table.items.add('a3', 'A3');        // new 통한 생성이 아니면 오류 !!
         // 인스턴스로 비교해야함
-        if (table.items.propertyOf(1) === 'a2' && 
-            table.items['a2'] === s1 &&
-            true) {   
+        if (
+                table.items.propertyOf(1) === 'a2' && 
+                table.items['a2'] === s1 &&
+                true) {   
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         //#################################################
-        //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
 
-        return errorCount;
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================

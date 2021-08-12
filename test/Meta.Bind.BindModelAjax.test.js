@@ -12,9 +12,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
         
     var util;        
     var Row;
@@ -125,14 +126,15 @@
                 this.result.push('onExecuted');
                 console.log('---------------------------------------------------------------------------');
                 console.log('onExecute, onExecuted  :: 콜백 ');
-                if (true 
-                    && this.result[0] === 'onExecute'                           // 처음
-                    && this.result[this.result.length - 1] === 'onExecuted'     // 마지막
-                    ) {
+                if (
+                        this.result[0] === 'onExecute' &&                          // 처음
+                        this.result[this.result.length - 1] === 'onExecuted' &&    // 마지막
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             model.create.execute();
@@ -157,15 +159,17 @@
             this.result.push('preReady');
         };
         model.init();
-        if (model.result[0] === 'preRegister' && 
-            model.result[1] === 'preCheck' && 
-            model.result[2] === 'preReady' && 
-            model.result.length === 3 && 
-        true) {
-        console.log('Result = Success');
+        if (
+                model.result[0] === 'preRegister' && 
+                model.result[1] === 'preCheck' && 
+                model.result[2] === 'preReady' && 
+                model.result.length === 3 && 
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -186,13 +190,15 @@
         //     return false;
         // };   // 리턴을 하지 않아 실패함
         model.create.execute();
-        if (model.result[0] === 'cbFail' && 
-            model.result.length === 1 && 
-            true) {
+        if (
+                model.result[0] === 'cbFail' && 
+                model.result.length === 1 && 
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         // REVIEW:: URL 오류 메세지로 일단 막아둠
@@ -214,13 +220,15 @@
             model.onExecuted = function() {
                 console.log('---------------------------------------------------------------------------');
                 console.log('BindModel.cbError      :: 콜백 ');
-                if (this.result[0] === 'cbError' && 
-                    this.result.length === 1 && 
-                    true) {
+                if (    
+                        this.result[0] === 'cbError' && 
+                        this.result.length === 1 && 
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             
@@ -240,28 +248,29 @@
         model.addCommand('create2');
         model.add(new Item('i1'), []);
         model.first.items['i1'].value = 'V1';
-        if (// create 
-            model.create.valid.items.count === 1 &&
-            model.create.valid.items['i1'].value === 'V1' &&
-            model.create.valid.items['i1'].entity.name === 'first' &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -275,24 +284,25 @@
         // model.add(new Item('i1'), null, 'bind');
         model.add(new Item('i1'), '', 'bind');
         model.first.items['i1'].value = 'V1';
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 0 &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 0 &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -303,24 +313,25 @@
         model.addCommand('create2');
         model.add(new Item('i1'), 'create2');
         model.first.items['i1'].value = 'V1';
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            model.create.bind.items.count === 0 &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                model.create.bind.items.count === 0 &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -331,22 +342,23 @@
         model.addCommand('create2');
         model.add(new Item('i1'), 'create2', 'bind');
         model.first.items['i1'].value = 'V1';
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            model.create.bind.items.count === 0 &&
-            // create 2
-            model.create2.valid.items.count === 0 &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                model.create.bind.items.count === 0 &&
+                // create 2
+                model.create2.valid.items.count === 0 &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         console.log('---------------------------------------------------------------------------');
@@ -358,30 +370,31 @@
         model.addCommand('create3');
         model.add(new Item('i1'), ['create', 'create2']);
         model.first.items['i1'].value = 'V1';
-        if (// create 
-            model.create.valid.items.count === 1 &&
-            model.create.valid.items['i1'].value === 'V1' &&
-            model.create.valid.items['i1'].entity.name === 'first' &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // create 3
-            model.create3.valid.items.count === 0 &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&               
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // create 3
+                model.create3.valid.items.count === 0 &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&               
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -393,30 +406,31 @@
             default: 10, 
             value: 'V1',
         }, []);
-        if (// create 
-            model.create.valid.items.count === 1 &&
-            model.create.valid.items['i1'].value === 'V1' &&
-            model.create.valid.items['i1'].entity.name === 'first' &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            model.first.items['i1'].default === 10 &&
-            model.itemType.name === 'ItemDOM' &&
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                model.first.items['i1'].default === 10 &&
+                model.itemType.name === 'ItemDOM' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -426,28 +440,29 @@
         model.addCommand('create');
         model.addCommand('create2');
         model.addItem('i1', 'V1', []);
-        if (// create 
-            model.create.valid.items.count === 1 &&
-            model.create.valid.items['i1'].value === 'V1' &&
-            model.create.valid.items['i1'].entity.name === 'first' &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -457,24 +472,25 @@
         model.addCommand('create');
         model.addCommand('create2');
         model.addItem('i1', 'V1', [], 'bind');
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 0 &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 0 &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -483,23 +499,24 @@
         model.addCommand('create');
         model.addCommand('create2');
         model.addItem('i1', 'V1', 'create2');
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -509,30 +526,31 @@
         model.addCommand('create2');
         model.addCommand('create3');
         model.addItem('i1', 'V1', ['create', 'create2']);
-        if (// create 
-            model.create.valid.items.count === 1 &&
-            model.create.valid.items['i1'].value === 'V1' &&
-            model.create.valid.items['i1'].entity.name === 'first' &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            // create 3
-            model.create3.valid.items.count === 0 &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&               
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                // create 3
+                model.create3.valid.items.count === 0 &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&               
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -550,14 +568,13 @@
         };
 
         model.setMapping(mapping);
-        if (true
-            // create 
-            && model.create.valid.items.count === 1
-            && model.create.valid.items['i1'].value === 'V1'
-            && model.create.valid.items['i1'].entity.name === 'first'
-            && model.create.bind.items.count === 1
-            && model.create.bind.items['i1'].value === 'V1'
-            && model.create.bind.items['i1'].entity.name === 'first' &&
+        if (// create 
+            model.create.valid.items.count === 1 &&
+            model.create.valid.items['i1'].value === 'V1' &&
+            model.create.valid.items['i1'].entity.name === 'first' &&
+            model.create.bind.items.count === 1 &&
+            model.create.bind.items['i1'].value === 'V1' &&
+            model.create.bind.items['i1'].entity.name === 'first' &&
             // create 2
             model.create2.valid.items.count === 1 &&
             model.create2.valid.items['i1'].value === 'V1' &&
@@ -566,10 +583,11 @@
             model.create2.bind.items['i1'].value === 'V1' &&
             model.create2.bind.items['i1'].entity.name === 'first' &&
             true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -586,26 +604,26 @@
             },
         };
         model.setMapping(mapping);
-        if (true
-            // create 
-            && model.create.valid.items.count === 1
-            && model.create.valid.items['i1'].value === 'V1'
-            && model.create.valid.items['i1'].entity.name === 'first'
-            && model.create.bind.items.count === 1
-            && model.create.bind.items['i1'].value === 'V1'
-            && model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.create2.valid.items.count === 1 &&
-            model.create2.valid.items['i1'].value === 'V1' &&
-            model.create2.valid.items['i1'].entity.name === 'first' &&
-            model.create2.bind.items.count === 1 &&
-            model.create2.bind.items['i1'].value === 'V1' &&
-            model.create2.bind.items['i1'].entity.name === 'first' &&
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.create2.valid.items.count === 1 &&
+                model.create2.valid.items['i1'].value === 'V1' &&
+                model.create2.valid.items['i1'].entity.name === 'first' &&
+                model.create2.bind.items.count === 1 &&
+                model.create2.bind.items['i1'].value === 'V1' &&
+                model.create2.bind.items['i1'].entity.name === 'first' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -616,24 +634,25 @@
         model.addEntity('second');
         model.add(new Item('i1'), []);
         model.first.items['i1'].value = 'V1';
-        if (// create 
-            model.create.valid.items.count === 1 &&
-            model.create.valid.items['i1'].value === 'V1' &&
-            model.create.valid.items['i1'].entity.name === 'first' &&
-            model.create.bind.items.count === 1 &&
-            model.create.bind.items['i1'].value === 'V1' &&
-            model.create.bind.items['i1'].entity.name === 'first' &&
-            // create 2
-            model.second instanceof EntityTable &&
-            model.second.items.count === 0 &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 1 &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
+                model.create.bind.items.count === 1 &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
+                // create 2
+                model.second instanceof EntityTable &&
+                model.second.items.count === 0 &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -644,21 +663,22 @@
         model.prop.add('i2', 'V2');
         model.prop.add('i3', {caption: 'C3'});    
         model.loadProp();
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            // first
-            model.first.items.count === 3 &&
-            model.first.items['i1'].value === 'V1' &&
-            model.first.items['i1'].entity.name === 'first' &&
-            model.first.items['i2'].value === 'V2' &&
-            model.first.items['i2'].entity.name === 'first' &&
-            model.first.items['i3'].caption === 'C3' &&
-            model.first.items['i3'].entity.name === 'first' &&
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                // first
+                model.first.items.count === 3 &&
+                model.first.items['i1'].value === 'V1' &&
+                model.first.items['i1'].entity.name === 'first' &&
+                model.first.items['i2'].value === 'V2' &&
+                model.first.items['i2'].entity.name === 'first' &&
+                model.first.items['i3'].caption === 'C3' &&
+                model.first.items['i3'].entity.name === 'first' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -670,21 +690,22 @@
         model.prop.add('i3', {caption: 'C3'});    
         model.prop.add('__i4', 'V4');
         model.loadProp();
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            // first
-            model.first.items.count === 3 &&
-            model.first.items['i1'].value === 'V1' &&
-            model.first.items['i1'].entity.name === 'first' &&
-            model.first.items['i2'].value === 'V2' &&
-            model.first.items['i2'].entity.name === 'first' &&
-            model.first.items['i3'].caption === 'C3' &&
-            model.first.items['i3'].entity.name === 'first' &&
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                // first
+                model.first.items.count === 3 &&
+                model.first.items['i1'].value === 'V1' &&
+                model.first.items['i1'].entity.name === 'first' &&
+                model.first.items['i2'].value === 'V2' &&
+                model.first.items['i2'].entity.name === 'first' &&
+                model.first.items['i3'].caption === 'C3' &&
+                model.first.items['i3'].entity.name === 'first' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -695,19 +716,20 @@
         model.prop.add('i2', 'V2');
         model.prop.add('i3', {caption: 'C3'});    
         model.loadProp(['i2', 'i3']);
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            // first
-            model.first.items.count === 2 &&
-            model.first.items['i2'].value === 'V2' &&
-            model.first.items['i2'].entity.name === 'first' &&
-            model.first.items['i3'].caption === 'C3' &&
-            model.first.items['i3'].entity.name === 'first' &&
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                // first
+                model.first.items.count === 2 &&
+                model.first.items['i2'].value === 'V2' &&
+                model.first.items['i2'].entity.name === 'first' &&
+                model.first.items['i3'].caption === 'C3' &&
+                model.first.items['i3'].entity.name === 'first' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -719,21 +741,22 @@
         model.prop.add('i2', 'V2');
         model.prop.add('i3', {caption: 'C3'});    
         model.loadProp(['i2', 'i3'], 'second');
-        if (// create 
-            model.create.valid.items.count === 0 &&
-            // first
-            model.first.items.count === 0 &&
-            // second
-            model.second.items.count === 2 &&
-            model.second.items['i2'].value === 'V2' &&
-            model.second.items['i2'].entity.name === 'second' &&
-            model.second.items['i3'].caption === 'C3' &&
-            model.second.items['i3'].entity.name === 'second' &&
-            true) {
+        if (    // create 
+                model.create.valid.items.count === 0 &&
+                // first
+                model.first.items.count === 0 &&
+                // second
+                model.second.items.count === 2 &&
+                model.second.items['i2'].value === 'V2' &&
+                model.second.items['i2'].entity.name === 'second' &&
+                model.second.items['i3'].caption === 'C3' &&
+                model.second.items['i3'].entity.name === 'second' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -741,12 +764,14 @@
         console.log('BindModelAjax.baseUrl :: 설명 ');
         var model = new BindModelAjax();
         model.baseUrl = 'URL';
-        if (model.baseAjaxSetup.url === 'URL' &&
-            true) {
+        if (
+                model.baseAjaxSetup.url === 'URL' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -754,17 +779,19 @@
         var model = new BindModelAjax();
         var cc  = new CreateDI(model);
         model.setService(cc, true);
-        if (model.prop.count === 3 &&
-            model.preRegister() === 'preRegister' &&
-            model.preCheck() === 'preCheck' &&
-            model.preReady() === 'preReady' &&
-            model.cbFail() === 'cbFail' &&
-            model.cbError() === 'cbError' &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.preRegister() === 'preRegister' &&
+                model.preCheck() === 'preCheck' &&
+                model.preReady() === 'preReady' &&
+                model.cbFail() === 'cbFail' &&
+                model.cbError() === 'cbError' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -772,20 +799,22 @@
         var model = new BindModelAjax();
         var cc  = new CreateDI(model);
         model.setService(cc, true);
-        if (model.prop.count === 3 &&
-            // first
-            model.first.items.count === 3 &&
-            model.first.items['i1'].value === 'V1' &&
-            model.first.items['i1'].entity.name === 'first' &&
-            model.first.items['i2'].value === 'V2' &&
-            model.first.items['i2'].entity.name === 'first' &&
-            model.first.items['i3'].caption === 'C3' &&
-            model.first.items['i3'].entity.name === 'first' &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                // first
+                model.first.items.count === 3 &&
+                model.first.items['i1'].value === 'V1' &&
+                model.first.items['i1'].entity.name === 'first' &&
+                model.first.items['i2'].value === 'V2' &&
+                model.first.items['i2'].entity.name === 'first' &&
+                model.first.items['i3'].caption === 'C3' &&
+                model.first.items['i3'].entity.name === 'first' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -794,34 +823,38 @@
         model.itemType = ItemDOM;
         var cc  = new CreateDI(model);
         model.setService(cc, true);
-        if (model.prop.count === 3 &&
-            model.first.items.count === 3 &&
-            model.first.items['i1'].getTypes()[0] === 'ItemDOM' &&
-            model.first.items['i1'] instanceof  ItemDOM &&
-            model.first.items['i2'].getTypes()[0] === 'ItemDOM' &&
-            model.first.items['i2'] instanceof  ItemDOM &&
-            model.first.items['i3'].getTypes()[0] === 'ItemDOM' &&
-            model.first.items['i3'] instanceof  ItemDOM &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.first.items.count === 3 &&
+                model.first.items['i1'].getTypes()[0] === 'ItemDOM' &&
+                model.first.items['i1'] instanceof  ItemDOM &&
+                model.first.items['i2'].getTypes()[0] === 'ItemDOM' &&
+                model.first.items['i2'] instanceof  ItemDOM &&
+                model.first.items['i3'].getTypes()[0] === 'ItemDOM' &&
+                model.first.items['i3'] instanceof  ItemDOM &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
     
         console.log('---------------------------------------------------------------------------');
         console.log('BindModelAjax.getTypes() :: 타입 조회(상속) ');
         var creator = new BindModelAjax();
         var types = creator.getTypes();
-        if (types[0] === 'BindModelAjax' && 
-            types[1] === 'BindModel' && 
-            types[2] === 'BaseBind' && 
-            types[3] === 'MetaObject' &&
-            true) {
+        if (
+                types[0] === 'BindModelAjax' && 
+                types[1] === 'BindModel' && 
+                types[2] === 'BaseBind' && 
+                types[3] === 'MetaObject' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         function ReadDI() {
@@ -880,34 +913,35 @@
         model.addCommand('read2', 1);
         model.add(new Item('i1'), []);
         model.first.items['i1'].value = 'V1';
-        if (// read 
-            model.read.valid.items.count === 1 &&
-            model.read.valid.items['i1'].value === 'V1' &&
-            model.read.valid.items['i1'].entity.name === 'first' &&
-            model.read.bind.items.count === 1 &&
-            model.read.bind.items['i1'].value === 'V1' &&
-            model.read.bind.items['i1'].entity.name === 'first' &&
-            model.read.output.items.count === 1 &&
-            model.read.output.items['i1'].value === 'V1' &&
-            model.read.output.items['i1'].entity.name === 'first' &&
-            // read 2
-            model.read2.valid.items.count === 1 &&
-            model.read2.valid.items['i1'].value === 'V1' &&
-            model.read2.valid.items['i1'].entity.name === 'first' &&
-            model.read2.bind.items.count === 1 &&
-            model.read2.bind.items['i1'].value === 'V1' &&
-            model.read2.bind.items['i1'].entity.name === 'first' &&
-            model.read2.output.items.count === 1 &&
-            model.read2.output.items['i1'].value === 'V1' &&
-            model.read2.output.items['i1'].entity.name === 'first' &&
-            // first
-            model.first.items.count === 1 &&
-            model.first.items['i1'].value === 'V1' &&            
-            true) {
+        if (    // read 
+                model.read.valid.items.count === 1 &&
+                model.read.valid.items['i1'].value === 'V1' &&
+                model.read.valid.items['i1'].entity.name === 'first' &&
+                model.read.bind.items.count === 1 &&
+                model.read.bind.items['i1'].value === 'V1' &&
+                model.read.bind.items['i1'].entity.name === 'first' &&
+                model.read.output.items.count === 1 &&
+                model.read.output.items['i1'].value === 'V1' &&
+                model.read.output.items['i1'].entity.name === 'first' &&
+                // read 2
+                model.read2.valid.items.count === 1 &&
+                model.read2.valid.items['i1'].value === 'V1' &&
+                model.read2.valid.items['i1'].entity.name === 'first' &&
+                model.read2.bind.items.count === 1 &&
+                model.read2.bind.items['i1'].value === 'V1' &&
+                model.read2.bind.items['i1'].entity.name === 'first' &&
+                model.read2.output.items.count === 1 &&
+                model.read2.output.items['i1'].value === 'V1' &&
+                model.read2.output.items['i1'].entity.name === 'first' &&
+                // first
+                model.first.items.count === 1 &&
+                model.first.items['i1'].value === 'V1' &&            
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -918,21 +952,22 @@
         model.addCommand('read2', 1);
         model.add(new Item('i1'));
         model.first.items['i1'].value = 'V1';
-        if (// read 
-            model.read.valid.items.count === 0 &&
-            model.read.bind.items.count === 0 &&
-            model.read.output.items.count === 0 &&
-            // read 2
-            model.read2.valid.items.count === 0 &&
-            model.read2.bind.items.count === 0 &&
-            model.read2.output.items.count === 0 &&
-            // first
-            model.first.items.count === 1 &&
-            true) {
+        if (    // read 
+                model.read.valid.items.count === 0 &&
+                model.read.bind.items.count === 0 &&
+                model.read.output.items.count === 0 &&
+                // read 2
+                model.read2.valid.items.count === 0 &&
+                model.read2.bind.items.count === 0 &&
+                model.read2.output.items.count === 0 &&
+                // first
+                model.first.items.count === 1 &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -942,17 +977,19 @@
         var cc  = new ReadDI(model);
         model.setService(cc, false);
         model.addCommand('read', 1);
-        if (model.prop.count === 3 &&
-            model.preRegister() === 'preRegister' &&
-            model.preCheck() === 'preCheck' &&
-            model.preReady() === 'preReady' &&
-            model.cbFail() === 'cbFail' &&
-            model.cbError() === 'cbError' &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.preRegister() === 'preRegister' &&
+                model.preCheck() === 'preCheck' &&
+                model.preReady() === 'preReady' &&
+                model.cbFail() === 'cbFail' &&
+                model.cbError() === 'cbError' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -961,20 +998,22 @@
         var cc  = new ReadDI(model);
         model.setService(cc, true);
         model.addCommand('read', 1);
-        if (model.prop.count === 3 &&
-            // first
-            model.first.items.count === 3 &&
-            model.first.items['i1'].value === 'V1' &&
-            model.first.items['i1'].entity.name === 'first' &&
-            model.first.items['i2'].value === 'V2' &&
-            model.first.items['i2'].entity.name === 'first' &&
-            model.first.items['i3'].caption === 'C3' &&
-            model.first.items['i3'].entity.name === 'first' &&
-            true) {
+        if (    
+                model.prop.count === 3 &&
+                // first
+                model.first.items.count === 3 &&
+                model.first.items['i1'].value === 'V1' &&
+                model.first.items['i1'].entity.name === 'first' &&
+                model.first.items['i2'].value === 'V2' &&
+                model.first.items['i2'].entity.name === 'first' &&
+                model.first.items['i3'].caption === 'C3' &&
+                model.first.items['i3'].entity.name === 'first' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -983,19 +1022,21 @@
         var cc  = new ReadDI(model);
         model.itemType = ItemDOM;
         model.setService(cc, true);
-        if (model.prop.count === 3 &&
-            model.first.items.count === 3 &&
-            model.first.items['i1'].getTypes()[0] === 'ItemDOM' &&
-            model.first.items['i1'] instanceof  ItemDOM &&
-            model.first.items['i2'].getTypes()[0] === 'ItemDOM' &&
-            model.first.items['i2'] instanceof  ItemDOM &&
-            model.first.items['i3'].getTypes()[0] === 'ItemDOM' &&
-            model.first.items['i3'] instanceof  ItemDOM &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.first.items.count === 3 &&
+                model.first.items['i1'].getTypes()[0] === 'ItemDOM' &&
+                model.first.items['i1'] instanceof  ItemDOM &&
+                model.first.items['i2'].getTypes()[0] === 'ItemDOM' &&
+                model.first.items['i2'] instanceof  ItemDOM &&
+                model.first.items['i3'].getTypes()[0] === 'ItemDOM' &&
+                model.first.items['i3'] instanceof  ItemDOM &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
     
         console.log('---------------------------------------------------------------------------');
@@ -1003,33 +1044,36 @@
         var cc  = new ReadDI();
         var model = new BindModelAjax();
         model.setService(cc);
-        if (model.prop.count === 3 &&
-            model.preRegister() === 'preRegister' &&
-            model.preCheck() === 'preCheck' &&
-            model.preReady() === 'preReady' &&
-            model.cbFail() === 'cbFail' &&
-            model.cbError() === 'cbError' &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.preRegister() === 'preRegister' &&
+                model.preCheck() === 'preCheck' &&
+                model.preReady() === 'preReady' &&
+                model.cbFail() === 'cbFail' &&
+                model.cbError() === 'cbError' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
         console.log('new BindModelAjax(new service) :: 생성시 서비스 객체 주입 ');
         var model = new BindModelAjax( new ReadDI());
-        if (model.prop.count === 3 &&
-            model.preRegister() === 'preRegister' &&
-            model.preCheck() === 'preCheck' &&
-            model.preReady() === 'preReady' &&
-            model.cbFail() === 'cbFail' &&
-            model.cbError() === 'cbError' &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.preRegister() === 'preRegister' &&
+                model.preCheck() === 'preCheck' &&
+                model.preReady() === 'preReady' &&
+                model.cbFail() === 'cbFail' &&
+                model.cbError() === 'cbError' &&
+                true) {
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
 
@@ -1065,34 +1109,39 @@
             cbFail: function(p_msg, p_code) { return 'cbFail'; },
             cbError: function(p_msg, p_status) { return 'cbError'; },
         });
-        if (model.prop.count === 3 &&
-            model.read.outputOption === 3 &&
-            model.read.cbValid() === 'cbValid' &&
-            model.read.cbBind() === 'cbBind' &&
-            model.read.cbResult() === 'cbResult' &&
-            model.read.cbOutput() === 'cbOutput' &&
-            model.read.cbEnd() === 'cbEnd' &&
-            model.preRegister() === 'preRegister' &&
-            model.preCheck() === 'preCheck' &&
-            model.preReady() === 'preReady' &&
-            model.cbFail() === 'cbFail' &&
-            model.cbError() === 'cbError' &&
-            true) {
+        if (
+                model.prop.count === 3 &&
+                model.read.outputOption === 3 &&
+                model.read.cbValid() === 'cbValid' &&
+                model.read.cbBind() === 'cbBind' &&
+                model.read.cbResult() === 'cbResult' &&
+                model.read.cbOutput() === 'cbOutput' &&
+                model.read.cbEnd() === 'cbEnd' &&
+                model.preRegister() === 'preRegister' &&
+                model.preCheck() === 'preCheck' &&
+                model.preReady() === 'preReady' &&
+                model.cbFail() === 'cbFail' &&
+                model.cbError() === 'cbError' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================

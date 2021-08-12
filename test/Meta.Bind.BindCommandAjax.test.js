@@ -12,9 +12,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
 
     var util;        
     var Row;
@@ -91,20 +92,22 @@
                 console.log('---------------------------------------------------------------------------');
                 console.log('cbOutput, cbEnd, read.onExecuted, onExecuted :: 콜백 ');
                 // 콜백에서 검사
-                if (this.result[0] === 'read.onExecute' && 
-                    this.result[1] === 'onExecute' && 
-                    this.result[2] === 'cbValid' && 
-                    this.result[3] === 'cbBind' && 
-                    this.result[4] === 'cbResult' && 
-                    this.result[5] === 'cbOutput' && 
-                    this.result[6] === 'cbEnd' && 
-                    this.result[7] === 'read.onExecuted' && 
-                    this.result[8] === 'onExecuted' && 
-                    true) {
+                if (
+                        this.result[0] === 'read.onExecute' && 
+                        this.result[1] === 'onExecute' && 
+                        this.result[2] === 'cbValid' && 
+                        this.result[3] === 'cbBind' && 
+                        this.result[4] === 'cbResult' && 
+                        this.result[5] === 'cbOutput' && 
+                        this.result[6] === 'cbEnd' && 
+                        this.result[7] === 'read.onExecuted' && 
+                        this.result[8] === 'onExecuted' && 
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
                 model.result = [];    // 콜백 초기화
             };
@@ -145,16 +148,18 @@
                 console.log('---------------------------------------------------------------------------');
                 console.log('cbBaseOutput, cbBaseEnd... :: 콜백 ');
                 // 콜백에서 검사
-                if (this.result[0] === 'cbBaseValid' &&
-                    this.result[1] === 'cbBaseBind' &&
-                    this.result[2] === 'cbBaseResult' &&
-                    this.result[3] === 'cbBaseOutput' &&
-                    this.result[4] === 'cbBaseEnd' &&
-                    true) {
+                if (
+                        this.result[0] === 'cbBaseValid' &&
+                        this.result[1] === 'cbBaseBind' &&
+                        this.result[2] === 'cbBaseResult' &&
+                        this.result[3] === 'cbBaseOutput' &&
+                        this.result[4] === 'cbBaseEnd' &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
                 result = [];    // 콜백 초기화
             };
@@ -209,16 +214,18 @@
                 console.log('---------------------------------------------------------------------------');
                 console.log('cbBaseOutput, cbBaseEnd... :: 우선순위 콜백 ');
                 // 콜백에서 검사
-                if (this.result[0] === 'cbValid' &&
-                    this.result[1] === 'cbBind' &&
-                    this.result[2] === 'cbResult' &&
-                    this.result[3] === 'cbOutput' &&
-                    this.result[4] === 'cbEnd' &&
-                    true) {
+                if (
+                        this.result[0] === 'cbValid' &&
+                        this.result[1] === 'cbBind' &&
+                        this.result[2] === 'cbResult' &&
+                        this.result[3] === 'cbOutput' &&
+                        this.result[4] === 'cbEnd' &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
                 result = [];    // 콜백 초기화
             };
@@ -241,14 +248,16 @@
                 this._model.result.push('read.onExecuted');
                 console.log('---------------------------------------------------------------------------');
                 console.log('read.onExecuted, onExecuted :: 콜백 ');
-                if (this._model.result[0] === 'read.onExecute' && 
-                    this._model.result[1] === 'read.onExecuted' && 
-                    this._model.result.length === 2 &&
-                    true) {
+                if (
+                        this._model.result[0] === 'read.onExecute' && 
+                        this._model.result[1] === 'read.onExecuted' && 
+                        this._model.result.length === 2 &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             model.onExecute = function() {
@@ -269,13 +278,14 @@
             model.read.cbOutput = function(p_result) {
                 console.log('---------------------------------------------------------------------------');
                 console.log('BindCommandAjax.execute() :: 콜백 ');
-                if (this.output.items.count > 0 &&
-                    this.output.rows.count > 0 &&
-                    true) {
+                if (    this.output.items.count > 0 &&
+                        this.output.rows.count > 0 &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             model.read.execute();
@@ -292,13 +302,15 @@
             model.read.cbOutput = function(p_result) {
                 console.log('---------------------------------------------------------------------------');
                 console.log('BindCommandAjax.execute() :: 콜백 ');
-                if (this.output.items.count === 2 &&
-                    this.output.rows.count === 1 &&
-                    true) {
+                if (
+                        this.output.items.count === 2 &&
+                        this.output.rows.count === 1 &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             model.read.execute();
@@ -316,16 +328,18 @@
             model.read.cbOutput = function(p_result) {
                 console.log('---------------------------------------------------------------------------');
                 console.log('BindCommandAjax.execute() :: 콜백 ');
-                if (this.output.items.count === 2 &&
-                    this.output.rows.count === 1 &&
-                    this.output.items['sto_id'].value === 'S00001' &&
-                    this.output.items['adm_id'].value === 'logicfeel' &&
-                    this.output.rows.count === 1 &&
-                    true) {
+                if (
+                        this.output.items.count === 2 &&
+                        this.output.rows.count === 1 &&
+                        this.output.items['sto_id'].value === 'S00001' &&
+                        this.output.items['adm_id'].value === 'logicfeel' &&
+                        this.output.rows.count === 1 &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             model.read.execute();
@@ -341,15 +355,17 @@
             model.read.cbOutput = function(p_result) {
                 console.log('---------------------------------------------------------------------------');
                 console.log('BindCommandAjax.execute() :: 콜백 ');
-                if (this.output.items.count > 0 &&
-                    this.output.rows.count > 0 &&
-                    this.output2.items.count > 0 &&
-                    this.output2.rows.count > 0 &&
-                    true) {
+                if (
+                        this.output.items.count > 0 &&
+                        this.output.rows.count > 0 &&
+                        this.output2.items.count > 0 &&
+                        this.output2.rows.count > 0 &&
+                        true) {
+                    taskCnt++;
                     console.log('Result = Success');
                 } else {
+                    errorCnt++;
                     console.warn('Result = Fail');
-                    errorCount++;
                 }
             };
             model.read.execute();
@@ -360,28 +376,33 @@
         var model = new BindModelAjax();
         model.addCommand('read', 1);
         var types = model.read.getTypes();
-        if (types.indexOf('BindCommandAjax') > -1 &&
-            types[0] === 'BindCommandAjax' && 
-            types[1] === 'BindCommand' && 
-            types[2] === 'BaseBind' && 
-            types[3] === 'MetaObject' &&
-            true) {
+        if (
+                types.indexOf('BindCommandAjax') > -1 &&
+                types[0] === 'BindCommandAjax' && 
+                types[1] === 'BindCommand' && 
+                types[2] === 'BaseBind' && 
+                types[3] === 'MetaObject' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
 
-        return errorCount;
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================

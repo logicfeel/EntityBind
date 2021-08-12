@@ -15,11 +15,13 @@
     
     //==============================================================
     // 2. 변수 선언
-    var errorCount = 0;
+    var errorCnt = 0;
     var tasks = [];  //{ns:..., file:.... }
     var result, task;
     var isCallback      = false;
     var CLEAR           = false;
+    var totalTaskCnt = 0;
+    var totalFileCnt = 0;
     
     /* 단순 로그 보기 */
     // CLEAR = true;
@@ -79,17 +81,21 @@
         for (var i = 0; i < tasks.length; i++) {            
 
             task = typeof module === 'object' ?  tasks[i].file : tasks[i].ns;
+            
+            totalTaskCnt += typeof tasks[i].result.taskCnt === 'number' ? tasks[i].result.taskCnt : 0; // 전체 태스크 갯수
+            totalFileCnt++;
 
-            if (tasks[i].result === 0) {
-                console.log('No: %s, Task: %s = Success', i, task);
+            if (tasks[i].result.errorCnt === 0) {
+                console.log('No: %s, file: %s, task [ %s EA ] = Success', totalFileCnt, task, tasks[i].result.taskCnt);
             } else {
-                console.warn('No: %s, Task : %s = Warning, ERR_COUNT = %s ', i, task, tasks[i].result);
-                errorCount++;
+                console.warn('No: %s, file : %s, ERR_COUNT: [ %s EA ] = Warning', totalFileCnt, task, tasks[i].result.errorCnt);
+                errorCnt++;
             }
             console.log('___________________________________________________________________________');
         }
+        console.log('Total: file [ %s EA ], task [ %s EA ] = Success', totalFileCnt, totalTaskCnt);
 
-        return errorCount;
+        return errorCnt;
     }
     
     //==============================================================

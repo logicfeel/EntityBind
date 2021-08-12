@@ -86,8 +86,8 @@
         </div>
 		<!--###############  검색 버튼 Block ###############-->
 		<div class="mButton gCenter">
-		    <a href="#none" id="s-btn-search" class="btnSearch"><span>검색</span></a>
-		    <a href="#none" id="s-btn-reset" class="btnSearch reset"><span>초기화</span></a>
+		    <a href="#none" id="btn_Search" class="btnSearch"><span>검색</span></a>
+		    <a href="#none" id="btn_Reset" class="btnSearch reset"><span>초기화</span></a>
 		</div>
     </div>
 
@@ -110,7 +110,7 @@
 	    <div class="mCtrl typeHeader">
 	        <div class="gLeft">
                 
-                <a href="#none" id="btn_Insert" onclick="createFrom();" class="btnNormal"><span> 등록</span></a>
+                <a href="#none" id="btn_Insert" class="btnNormal"><span> 등록</span></a>
                 
 	        </div>
 	        <div class="gRight">

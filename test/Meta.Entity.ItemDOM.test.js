@@ -12,9 +12,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
         
     var Row;
     var ItemDOM;
@@ -63,53 +64,60 @@
             selector: 'btn_'
         });
         var item2 = item.clone();
-        if (item2.entity.name === 'T1' &&
-            item2.type === 'text' &&
-            item2.size === 100 &&
-            item2.default === 'D1' &&
-            item2.caption === 'C1' &&
-            item2.isNotNull === true &&
-            item2.constraints.length === 2 &&
-            item2.order === 1000 &&
-            item2.increase === 10 &&
-            item2.value === 'V1' &&
-            item2.domType.value === true &&
-            item2.isReadOnly === true &&
-            item2.isHide === true &&
-            item2.element.value === true &&
-            item2.selector.key === 'btn_' &&
-            true) {
+        if (
+                item2.entity.name === 'T1' &&
+                item2.type === 'text' &&
+                item2.size === 100 &&
+                item2.default === 'D1' &&
+                item2.caption === 'C1' &&
+                item2.isNotNull === true &&
+                item2.constraints.length === 2 &&
+                item2.order === 1000 &&
+                item2.increase === 10 &&
+                item2.value === 'V1' &&
+                item2.domType.value === true &&
+                item2.isReadOnly === true &&
+                item2.isHide === true &&
+                item2.element.value === true &&
+                item2.selector.key === 'btn_' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
         
         console.log('---------------------------------------------------------------------------');
         console.log('getTypes() :: 타입 조회(상속) ');
         var item = new ItemDOM('i1');
         var types = item.getTypes();
-        if (types.indexOf('ItemDOM') > -1 &&
-            types[0] === 'ItemDOM' &&
-            types[1] === 'Item' && 
-            types[2] === 'MetaElement' && 
-            types[3] === 'MetaObject' &&
-            true) {
+        if (
+                types.indexOf('ItemDOM') > -1 &&
+                types[0] === 'ItemDOM' &&
+                types[1] === 'Item' && 
+                types[2] === 'MetaElement' && 
+                types[3] === 'MetaObject' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================

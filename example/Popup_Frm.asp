@@ -241,9 +241,6 @@
     pop.isLog = true;
 	pop.prop["__listUrl"] = "Popup_Lst.asp";
     pop.prop["__mode"] = ParamGet2JSON(location.href).mode;
-    // 속성 설정 : img
-    img.items["position_cd"].value 	= "Popup";
-    img.items["prefix"].value 	    = "POP-";
 
     // 콜백 등록 : pop
     pop.create.onExecute = function(p_bindCommand) { 
@@ -251,10 +248,6 @@
     };
     pop.update.onExecute = function(p_bindCommand) { 
         oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
-    };
-    pop.read.onExecuted = function(p_bindCommand, p_result) { 
-        img.items["pos_idx"].value   = pop.items["pop_idx"].value;      // image 키 등록
-        img.list.execute();
     };
     // 콜백 등록 : img
     img.create.onExecuted = function(p_bindCommand, p_result) { 
@@ -275,14 +268,20 @@
     $('#btn_Upload').click(img.fn.procCreate);  // 이미지 업로드(등록)
     //--------------------------------------------------------------
 	$(document).ready(function () {
+        // 초기화
         pop.init();
         img.init();
 
         if (pop.prop["__mode"] === "EDIT") {
             setEditMode(true);
+            // pop
             pop.items["pop_idx"].value  = ParamGet2JSON(location.href).pop_idx;
-            img.items["pos_idx"].value   = pop.items["pop_idx"].value;      // image 키 등록
             pop.fn.procRead();
+            // img
+            img.items["position_cd"].value 	= "Popup";
+            img.items["prefix"].value = "POP-";
+            img.items["pos_idx"].value = pop.items["pop_idx"].value;      // image 키 등록
+            img.fn.procList();
         }  else {
             setEditMode(false);
         }

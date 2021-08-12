@@ -12,9 +12,10 @@
     
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
-    var errorCount = 0;
+    var errorCnt = 0;
     var result = [];        // 결과 확인 **사용시 초기화    
     var isCallback = global.isCallback === false ? false : true;
+    var taskCnt = 0;
         
     var Row;
     var Item;
@@ -43,10 +44,11 @@
         table.items.add('i1');
         table.items.add('i2');
         if (table.items.count === 2) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -58,17 +60,19 @@
         var table2 = new EntityTable('T2');
         table2.items.add(table.items['i2']);
         table.items['i2'].caption = 'C2';
-        if (table.items.count === 2 &&
-            table.items['i2'].caption === 'C2' &&       // caption 변경함
-            table.items['i2'].entity.name === 'T1' &&
-            table2.items.count === 1 && 
-            table2.items['i2'].caption === 'C1' &&      // caption 변경함
-            table2.items['i2'].entity.name === 'T2'
-            ) {
+        if (
+                table.items.count === 2 &&
+                table.items['i2'].caption === 'C2' &&       // caption 변경함
+                table.items['i2'].entity.name === 'T1' &&
+                table2.items.count === 1 && 
+                table2.items['i2'].caption === 'C1' &&      // caption 변경함
+                table2.items['i2'].entity.name === 'T2' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -76,14 +80,16 @@
         var table = new EntityTable('T1');
         table.items.addValue('i1', 'V1');
         table.items.addValue('i2', 'V2');
-        if (table.items.count === 2 &&
-            table.items['i1'].value === 'V1' &&
-            table.items['i2'].value === 'V2'
-            ) {
+        if (
+                table.items.count === 2 &&
+                table.items['i1'].value === 'V1' &&
+                table.items['i2'].value === 'V2' &&
+                true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -100,21 +106,23 @@
         view2.items['i1'].value = 'V1';
         view2.items['i2'].caption = 'C2';
         view2.items['i3'].caption = 'C3';
-        if (view.name === 'T1' && 
-            view.items.count === 3 &&
-            view.items['i1'].value === 'V1' &&
-            view.items['i2'].caption === 'C1' && 
-            view.items['i3'].caption === 'C3' &&
-            view2.name === 'T2' && 
-            view2.items.count === 3 &&
-            view2.items['i1'].value === 'V1' && 
-            view2.items['i2'].caption === 'C2' &&
-            view2.items['i3'].caption === 'C3' &&
-            true ) {
+        if (
+                view.name === 'T1' && 
+                view.items.count === 3 &&
+                view.items['i1'].value === 'V1' &&
+                view.items['i2'].caption === 'C1' && 
+                view.items['i3'].caption === 'C3' &&
+                view2.name === 'T2' && 
+                view2.items.count === 3 &&
+                view2.items['i1'].value === 'V1' && 
+                view2.items['i2'].caption === 'C2' &&
+                view2.items['i3'].caption === 'C3' &&
+                true ) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -135,27 +143,29 @@
         view2.items.add('i4', view3.items);      // 참조형에 참조컬렉션 지정
         view2.items['i3'].caption = 'C3';       // 참조에 속성 덮어씀
         view2.items['i4'].caption = 'C4';
-        if (view.name === 'T1' && 
-            view.items.count === 3 &&
-            view.items['i1'].caption === 'C1' &&
-            view.items['i2'].caption === 'C2' && 
-            view.items['i3'].caption === 'C3' &&
-            view.items['i3'].value === 'V3' &&
-            view2.name === 'T2' && 
-            view2.items.count === 4 &&
-            view2.items['i1'].caption === 'C1' && 
-            view2.items['i2'].caption === 'C2' &&
-            view2.items['i3'].caption === 'C3' &&
-            view2.items['i3'].value === 'V3' &&
-            view2.items['i4'].caption === 'C4' &&
-            view3.name === 'T3' && 
-            view3.items.count === 1 &&
-            view3.items['i4'].caption === 'C4' &&
-            true ) {
+        if (
+                view.name === 'T1' && 
+                view.items.count === 3 &&
+                view.items['i1'].caption === 'C1' &&
+                view.items['i2'].caption === 'C2' && 
+                view.items['i3'].caption === 'C3' &&
+                view.items['i3'].value === 'V3' &&
+                view2.name === 'T2' && 
+                view2.items.count === 4 &&
+                view2.items['i1'].caption === 'C1' && 
+                view2.items['i2'].caption === 'C2' &&
+                view2.items['i3'].caption === 'C3' &&
+                view2.items['i3'].value === 'V3' &&
+                view2.items['i4'].caption === 'C4' &&
+                view3.name === 'T3' && 
+                view3.items.count === 1 &&
+                view3.items['i4'].caption === 'C4' &&
+                true ) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         console.log('---------------------------------------------------------------------------');
@@ -165,31 +175,36 @@
         view.items.addValue('i2', 'V2');
         var view2 = new EntityView('T2');
         view2.items.addEntity(view);
-        if (view.name === 'T1' && 
-            view.items.count === 2 &&
-            view.items['i1'].value === 'V1' &&
-            view.items['i2'].value === 'V2' && 
-            view2.name === 'T2' && 
-            view2.items.count === 2 &&
-            view2.items['i1'].value === 'V1' && 
-            view2.items['i2'].value === 'V2' &&
-            true ) {
+        if (
+                view.name === 'T1' && 
+                view.items.count === 2 &&
+                view.items['i1'].value === 'V1' &&
+                view.items['i2'].value === 'V2' && 
+                view2.name === 'T2' && 
+                view2.items.count === 2 &&
+                view2.items['i1'].value === 'V1' && 
+                view2.items['i2'].value === 'V2' &&
+                true ) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
+            errorCnt++;
             console.warn('Result = Fail');
-            errorCount++;
         }
 
         
         //#################################################
-        if (errorCount > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCount);    
+        if (errorCnt > 0) {
+            console.warn('Error Sub SUM : %dEA', errorCnt);    
         } else {
             console.log('===========================================================================');
-            console.log('단위 테스트 : OK');
+            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
         }
-        
-        return errorCount;
+
+        return {
+            errorCnt: errorCnt,
+            taskCnt: taskCnt
+        };
     }
 
     //==============================================================

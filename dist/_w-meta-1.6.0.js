@@ -2353,6 +2353,24 @@ if (typeof Array.isArray === 'undefined') {
          */
         function MetaObject() {
             
+            var _name = '';
+
+            /**
+             * 이름
+             * @member _W.Meta.MetaObject#name
+             * @protected
+             */
+             Object.defineProperty(this, 'name', 
+             {
+                 get: function() { return _name; },
+                 set: function(newValue) { 
+                     if (typeof newValue !== 'string') throw new Error('Only [name] type "string" can be added');
+                     _name = newValue;
+                 },
+                 configurable: true,
+                 enumerable: true
+             });
+
             /** implements IObject 인터페이스 구현 */
             this._implements(IObject);
         }
@@ -2453,7 +2471,7 @@ if (typeof Array.isArray === 'undefined') {
         function MetaElement(p_name) {
             _super.call(this);
             
-            p_name = p_name || '';
+            this.name = p_name || '';
             
             /**
              * GUID 값 
@@ -2461,12 +2479,6 @@ if (typeof Array.isArray === 'undefined') {
              * @private 
              */
             this.__GUID = null;
-
-            /**
-             * 메타 이름
-             * @member {String}
-             */
-            this.name = p_name;
             
             /** implements IMarshal 인터페이스 구현 */
             this._implements(IMarshal);            
@@ -7010,7 +7022,9 @@ if (typeof Array.isArray === 'undefined') {
          * @param {*} p_entities 
          */
         BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_entities) {
-
+            
+            var bindCommand;
+            
             // 유효성 검사
             if (typeof p_name !== 'string') {
                 throw new Error('Only [p_name] type "string" can be added');
@@ -7024,8 +7038,11 @@ if (typeof Array.isArray === 'undefined') {
             // 중복 검사
             if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
 
-            // 생성
-            this[p_name] = new BindCommandAjax(this, p_option, p_entities);
+            // 생성 및 이름 설정
+            bindCommand = new BindCommandAjax(this, p_option, p_entities);
+            bindCommand.name = p_name;  // 인스턴스 이름
+
+            this[p_name] = bindCommand;
 
             return this[p_name];
         };
