@@ -445,13 +445,6 @@
     });
 </script>
 
-<script src="/Common/js/handlebars.js"></script>
-<script src="/Common/js/_w-meta-1.6.0.js?<%=g_iRandomID%>"></script>
-<script src="/Admin/adm_cmn/Service/base-page-svc.js?<%=g_iRandomID%>"></script>
-<script src="/Admin/adm_mod/PRT/Service/-product-svc.js?<%=g_iRandomID%>"></script>
-<script src="/Admin/adm_mod/PRT/Service/product-photo-svc.js?<%=g_iRandomID%>"></script>
-<script src="/Admin/adm_mod/PRT/Service/-product-option-svc.js?<%=g_iRandomID%>"></script>
-<script src="/Admin/adm_mod/SYS/Service/-system-image-svc.js?<%=g_iRandomID%>"></script>
 <script>
     function setEditMode(pIsEdit) {
         if (pIsEdit) {
@@ -477,6 +470,14 @@
         }
     }
 </script>
+
+<script src="/Common/js/handlebars.js"></script>
+<script src="/Common/js/_w-meta-1.6.0.js?<%=g_iRandomID%>"></script>
+<script src="/Admin/adm_cmn/Service/base-page-svc.js?<%=g_iRandomID%>"></script>
+<script src="/Admin/adm_mod/PRT/Service/-product-svc.js?<%=g_iRandomID%>"></script>
+<script src="/Admin/adm_mod/PRT/Service/product-photo-svc.js?<%=g_iRandomID%>"></script>
+<script src="/Admin/adm_mod/PRT/Service/-product-option-svc.js?<%=g_iRandomID%>"></script>
+<script src="/Admin/adm_mod/SYS/Service/-system-image-svc.js?<%=g_iRandomID%>"></script>
 <script>
 	// #######################################################################################################
 	var prt = new _W.BindModelAjax(new ProductService());
