@@ -2726,6 +2726,7 @@ if (typeof Array.isArray === 'undefined') {
             var __getter        = null;
             var __setter        = null;
             var __value         = null;
+            var __alias         = null;
 
             // Entity 등록 & order(순서) 값 계산
             if (p_entity && p_entity instanceof MetaElement && p_entity.instanceOf('Entity')) {
@@ -3020,6 +3021,26 @@ if (typeof Array.isArray === 'undefined') {
             });
 
             /**
+             * 아이템 별칭 (bind전송시, 데이터 수신후 설정시 활용함)
+             * 사용처 
+             * - Bind-command-ajax._execBind() : 데이터 전송시
+             * - BaseBind.setValue(row) : 로우값 을 엔티티에 설정시
+             * - getValue() : row 에 활용함
+             * 기본값 = name 값
+             * @member {String} _W.Meta.Entity.Item#alias
+             */
+             Object.defineProperty(this, 'alias', 
+             {
+                 get: function() { return typeof __alias === 'string' ? __alias : this.name; },
+                 set: function(newValue) { 
+                    if(typeof newValue !== 'string') throw new Error('Only [alias] type "string" can be added');
+                     __alias = newValue; 
+                 },
+                 configurable: true,
+                 enumerable: true
+             });
+
+            /**
              * 변경 이벤트 
              * @event _W.Meta.Entity.Item#onChanged 
              */
@@ -3039,7 +3060,7 @@ if (typeof Array.isArray === 'undefined') {
                     if (p_property.hasOwnProperty(prop) &&
                     [   'entity', 'type', 'size', 'default', 'caption', 
                         'isNotNull', 'isNullPass', 'callback', 'constraints', 
-                        'codeType', 'order', 'increase', 'value', 'getter', 'setter' 
+                        'codeType', 'order', 'increase', 'value', 'getter', 'setter', 'alias' 
                     ].indexOf(prop) > -1) {
                         this[prop] = p_property[prop];
                     }
@@ -3076,6 +3097,7 @@ if (typeof Array.isArray === 'undefined') {
             var constraints = [];
 
             if (this.entity) clone['entity']            = this.entity;  // 참조값
+            if (this.alias) clone['alias']              = this.alias;
             if (this.type) clone['type']                = this.type;
             if (this.size) clone['size']                = this.size;
             if (this.default) clone['default']          = this.default;
@@ -3886,7 +3908,10 @@ if (typeof Array.isArray === 'undefined') {
                 __entity    = p_entity;
 
                 for (var i = 0; i < __entity.items.count; i++) {
-                    itemName = __entity.items[i].name;
+                    
+                    // 별칭 가져오기로 수정함
+                    // itemName = __entity.items[i].name;   
+                    itemName = __entity.items[i].alias;
                     _super.prototype.add.call(this, itemName, null);
                 }
             }
@@ -4277,10 +4302,15 @@ if (typeof Array.isArray === 'undefined') {
          */
         Entity.prototype.setValue  = function(p_row) {
             
+            var _name = '';
+
             if (!(p_row instanceof Row)) throw new Error('Only [p_row] type "Row" can be added');
 
             for(var i = 0; this.items.count > i; i++) {
-                this.items[i].value = p_row[i];
+                
+                // this.items[i].value = p_row[i];
+                _name = this.items[i].alias;        // 별칭이 없을시 기본이름
+                this.items[i].value = p_row[_name];
             }
         };
 
@@ -4293,7 +4323,7 @@ if (typeof Array.isArray === 'undefined') {
             var row = this.newRow();
             
             for(var i = 0; this.items.count > i; i++) {
-                row[i] = this.items[i].value;
+                 row[i] = this.items[i].value;
             }
             return row;
         };
@@ -6474,7 +6504,9 @@ if (typeof Array.isArray === 'undefined') {
                 if(typeof ajaxSetup.data !== 'object') ajaxSetup.data = {};
                 item = this.bind.items[i];
                 value = item.value || item.default;     // 값이 없으면 기본값 설정
-                ajaxSetup.data[item.name] = value;
+                
+                //ajaxSetup.data[item.name] = value;
+                ajaxSetup.data[item.alias] = value;     // 별칭에 설정, 없을시 기본 name
             }
             
             // 콜백 검사 (bind)

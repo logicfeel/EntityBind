@@ -57,7 +57,10 @@
                 __entity    = p_entity;
 
                 for (var i = 0; i < __entity.items.count; i++) {
-                    itemName = __entity.items[i].name;
+                    
+                    // 별칭 가져오기로 수정함
+                    // itemName = __entity.items[i].name;   
+                    itemName = __entity.items[i].alias;
                     _super.prototype.add.call(this, itemName, null);
                 }
             }

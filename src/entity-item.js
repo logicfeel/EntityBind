@@ -68,6 +68,7 @@
             var __getter        = null;
             var __setter        = null;
             var __value         = null;
+            var __alias         = null;
 
             // Entity 등록 & order(순서) 값 계산
             if (p_entity && p_entity instanceof MetaElement && p_entity.instanceOf('Entity')) {
@@ -362,6 +363,26 @@
             });
 
             /**
+             * 아이템 별칭 (bind전송시, 데이터 수신후 설정시 활용함)
+             * 사용처 
+             * - Bind-command-ajax._execBind() : 데이터 전송시
+             * - BaseBind.setValue(row) : 로우값 을 엔티티에 설정시
+             * - getValue() : row 에 활용함
+             * 기본값 = name 값
+             * @member {String} _W.Meta.Entity.Item#alias
+             */
+             Object.defineProperty(this, 'alias', 
+             {
+                 get: function() { return typeof __alias === 'string' ? __alias : this.name; },
+                 set: function(newValue) { 
+                    if(typeof newValue !== 'string') throw new Error('Only [alias] type "string" can be added');
+                     __alias = newValue; 
+                 },
+                 configurable: true,
+                 enumerable: true
+             });
+
+            /**
              * 변경 이벤트 
              * @event _W.Meta.Entity.Item#onChanged 
              */
@@ -381,7 +402,7 @@
                     if (p_property.hasOwnProperty(prop) &&
                     [   'entity', 'type', 'size', 'default', 'caption', 
                         'isNotNull', 'isNullPass', 'callback', 'constraints', 
-                        'codeType', 'order', 'increase', 'value', 'getter', 'setter' 
+                        'codeType', 'order', 'increase', 'value', 'getter', 'setter', 'alias' 
                     ].indexOf(prop) > -1) {
                         this[prop] = p_property[prop];
                     }
@@ -418,6 +439,7 @@
             var constraints = [];
 
             if (this.entity) clone['entity']            = this.entity;  // 참조값
+            if (this.alias) clone['alias']              = this.alias;
             if (this.type) clone['type']                = this.type;
             if (this.size) clone['size']                = this.size;
             if (this.default) clone['default']          = this.default;

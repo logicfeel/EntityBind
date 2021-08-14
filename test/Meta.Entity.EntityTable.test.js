@@ -113,6 +113,31 @@
         }
 
         console.log('---------------------------------------------------------------------------');
+        console.log('Entity.setValue(row) :: row  설정(단일), 별칭 사용');
+        var table = new EntityTable('T1');
+        table.items.add('i1');
+        table.items.add('i2');
+        table.items.add('i3');
+        table.items['i2'].alias = 'ii2';    // 별칭
+        table.items['i3'].alias = 'ii3';    // 별칭
+        var row = table.newRow();
+        row['i1'] = 'R1';
+        row['i2'] = 'R2';
+        row['ii3'] = 'RR3';
+        table.setValue(row);
+        if (
+                table.items['i1'].value === 'R1' && 
+                table.items['i2'].value === null &&     // 값 설정안됨
+                table.items['i3'].value === 'RR3' &&
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
+        } else {
+            errorCnt++;
+            console.warn('Result = Fail');
+        }
+
+        console.log('---------------------------------------------------------------------------');
         console.log('Entity.getValue() : Row :: row 얻기(단일) ');
         var table = new EntityTable('T1');
         table.items.add('i1');
@@ -137,6 +162,33 @@
             console.warn('Result = Fail');
         }
 
+        console.log('---------------------------------------------------------------------------');
+        console.log('Entity.getValue() : Row :: row 얻기(단일), 별칭 사용 ');
+        var table = new EntityTable('T1');
+        table.items.add('i1');
+        table.items.add('i2');
+        table.items.add('i3');
+        table.items['i2'].alias = 'ii2';    // 별칭
+        table.items['i3'].alias = 'ii3';    // 별칭
+        table.items['i1'].value = 'R1';
+        table.items['i2'].value = 'R2';
+        table.items['i3'].value = 'R3';
+        var row = table.getValue();
+        if (
+                row['i1'] === 'R1' && 
+                row['ii2'] === 'R2' && 
+                row['ii3'] === 'R3' &&
+                row[0] === 'R1' && 
+                row[1] === 'R2' &&
+                row[2] === 'R3' &&
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
+        } else {
+            errorCnt++;
+            console.warn('Result = Fail');
+        }
+        
         console.log('---------------------------------------------------------------------------');
         console.log('Entity.select(filter) : Entity :: 언티티 조회(참조값), 필터  ');
         var table = new EntityTable('T1');

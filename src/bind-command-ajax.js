@@ -174,7 +174,9 @@
                 if(typeof ajaxSetup.data !== 'object') ajaxSetup.data = {};
                 item = this.bind.items[i];
                 value = item.value || item.default;     // 값이 없으면 기본값 설정
-                ajaxSetup.data[item.name] = value;
+                
+                //ajaxSetup.data[item.name] = value;
+                ajaxSetup.data[item.alias] = value;     // 별칭에 설정, 없을시 기본 name
             }
             
             // 콜백 검사 (bind)
@@ -332,8 +334,9 @@
          * 실행 
          */
         BindCommandAjax.prototype.execute = function() {
-            if (this._model.isLog) console.log('call : BindCommandAjax.execute()');
-
+            // if (this._model.isLog) console.log('call : BindCommandAjax.execute()');
+            if (this._model.isLog) console.log('call : [%s] BindCommandAjax.execute()', this.name);
+            
             this._onExecute(this);  // '실행 시작' 이벤트 발생
             if (this._execValid()) this._execBind();
         };

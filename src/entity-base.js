@@ -281,10 +281,15 @@
          */
         Entity.prototype.setValue  = function(p_row) {
             
+            var _name = '';
+
             if (!(p_row instanceof Row)) throw new Error('Only [p_row] type "Row" can be added');
 
             for(var i = 0; this.items.count > i; i++) {
-                this.items[i].value = p_row[i];
+                
+                // this.items[i].value = p_row[i];
+                _name = this.items[i].alias;        // 별칭이 없을시 기본이름
+                this.items[i].value = p_row[_name];
             }
         };
 
@@ -297,7 +302,7 @@
             var row = this.newRow();
             
             for(var i = 0; this.items.count > i; i++) {
-                row[i] = this.items[i].value;
+                 row[i] = this.items[i].value;
             }
             return row;
         };
