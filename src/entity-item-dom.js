@@ -192,6 +192,11 @@
                         __val = this.__value || this.default;  // value 없으면 기본값 리턴
                     }
 
+                    // Get값과 내부값이 다를경우 값 설정 (내부적으로 change 이벤트 발생함)
+                    if (__val !== this.__value) {
+                        this.value = __val;
+                    }
+
                     return __val; 
                 },
                 set:  function(val) { 

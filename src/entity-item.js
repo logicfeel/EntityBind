@@ -402,7 +402,7 @@
                     if (p_property.hasOwnProperty(prop) &&
                     [   'entity', 'type', 'size', 'default', 'caption', 
                         'isNotNull', 'isNullPass', 'callback', 'constraints', 
-                        'codeType', 'order', 'increase', 'value', 'getter', 'setter', 'alias' 
+                        'codeType', 'order', 'increase', 'value', 'getter', 'setter', 'alias', 'onChanged' 
                     ].indexOf(prop) > -1) {
                         this[prop] = p_property[prop];
                     }
@@ -457,7 +457,14 @@
             if (this.value) clone['value']              = this.value;
             if (this.getter) clone['getter']            = this.getter;
             if (this.setter) clone['setter']            = this.setter;
-
+            
+            // 이벤트 복사 (REVIEW:: 개선필요!!)
+            if (this.__event.subscribers.onChanged) {
+                for (var i = 0; this.__event.subscribers.onChanged.length > i; i++) {
+                    clone['onChanged'] = this.__event.subscribers.onChanged[i];
+                }
+            }
+            
             return clone;
         };
 
