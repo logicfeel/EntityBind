@@ -264,9 +264,13 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
     var item21 = new ItemDOM('i2');
     { // *************************************************
         item20.getter = function(val) { return item21.value * 10;  };
-        item20.onChanged =  function(val) { $('#t20').text(val * 3 ) };
+        item20.onChanged =  function(val) { 
+            $('#t20').text(val * 3 ) 
+        };
         
-        item21.onChanged = function(val) { item20._onChanged(); };    // 강제 이벤트 발생 !!
+        item21.onChanged = function(val) { 
+            item20._onChanged(val); 
+        };    // 강제 이벤트 발생 !!
         item21.onChanged = function(val) { $('#t21').text(val); };
         item21.value = 2;
     } // *************************************************

@@ -154,7 +154,15 @@
                     var key, type, option;
 
                     if (typeof this.getter === 'function' ) {
+                        
                         __val = this.getter.call(this);
+                        
+                        // 검사 및 이벤트 발생
+                        if (this.__value !== null && this.__value !== __val) {
+                            this._onChanged(__val, this.__value);
+                            this.__value = __val;   // 내부에 저장
+                        }
+
                     } else if (__selector !== null && __filter === null) {
 
                         // node 에서는 강제 종료함
@@ -181,9 +189,17 @@
                                     console.warn('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
                                 }
                                 
-                                // if (typeof __val === 'undefined' || __val === null) {
-                                //     console.warn('['+ key +'] 일치하는 selector가 없습니다. ');
-                                // }
+                                // selector 검사
+                                if (typeof __val === 'undefined' || __val === null) {
+                                    console.warn('['+ key +'] ['+ type +'] 일치하는 selector가 없습니다. ');                            
+                                } 
+
+                                // 검사 및 이벤트 발생
+                                if (this.__sValue !== null && this.__sValue !== __val && __val) {
+                                    this._onChanged(__val, this.__sValue);
+                                    this.__sValue = __val;  // sValue 저장
+                                }
+
                             }
                         }
                     }
@@ -202,6 +218,7 @@
                 set:  function(val) { 
                     var __val, _val;
                     var key, type, option;
+                    var _oldVal = this.__value;
 
                     if (typeof this.setter === 'function' ) _val = this.setter.call(this, val);
                     
@@ -215,6 +232,9 @@
                     }
                     this.__value = __val;   // 내부에 저장
 
+                    // 검사 및 이벤트 발생
+                    if (_oldVal !== __val && __val) this._onChanged(__val, _oldVal);
+
                     if (__selector !== null) {
 
                         // node 에서는 강제 종료함
@@ -222,6 +242,9 @@
 
                             // 필터 적용
                             if (typeof __filter === 'function') __val = __filter.call(this, __val);
+
+                            // 셀렉터 내부값 저장
+                            this.__sValue = __val;
 
                             key = this.selector.key;
                             type = this.selector.type;
@@ -246,9 +269,8 @@
                             }
                         }
                     }
-
-                    // 이벤트 발생
-                    this._onChanged();
+                    // // 이벤트 발생
+                    // this._onChanged();
                 },
                 configurable: true,
                 enumerable: true

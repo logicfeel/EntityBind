@@ -308,12 +308,26 @@
             {
                 get: function() { 
                     var __val;
-                    if (typeof __getter === 'function' ) __val = __getter.call(this);
-                    else __val = this.__value || this.default;
+                    if (typeof __getter === 'function' ) {
+                        __val = __getter.call(this);
+                        // 검사 및 이벤트 발생
+                        if (this.__value !== null && this.__value !== __val) {
+                            this._onChanged(__val, this.__value);
+                            this.__value = __val;   // 내부에 저장
+                        }
+                    } else {
+                        __val = this.__value;
+                    }
+
+                    if (typeof __val === 'undefined' || __val === null) {
+                        __val = this.default;  // value 없으면 기본값 리턴
+                    }
+
                     return __val; 
                 },
                 set:  function(val) { 
                     var __val, _val;
+                    var _oldVal = this.__value;
                     if (typeof __setter === 'function' ) _val = __setter.call(this, val);
                     
                     // settter 의 리턴이 여부
@@ -325,8 +339,8 @@
                         throw new Error('Only [value] type "number, string, boolean" can be added');
                     }
                     this.__value = __val;
-                    // 이벤트 발생
-                    this._onChanged();
+                    // 검사 및 이벤트 발생
+                    if (_oldVal !== __val && __val) this._onChanged(__val, _oldVal);
                 },
                 configurable: true,
                 enumerable: true
@@ -417,8 +431,9 @@
         /**
          * @listens _W.Meta.Entity.Item#_onChanged
          */
-        Item.prototype._onChanged = function() {
-            this.__event.publish('onChanged', this.value);
+         Item.prototype._onChanged = function(p_nValue, p_oValue) {
+            p_oValue = p_oValue || this.__value;
+            this.__event.publish('onChanged', p_nValue, p_oValue);
         };
 
         /** @override **/

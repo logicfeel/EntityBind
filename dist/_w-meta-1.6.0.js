@@ -2966,12 +2966,26 @@ if (typeof Array.isArray === 'undefined') {
             {
                 get: function() { 
                     var __val;
-                    if (typeof __getter === 'function' ) __val = __getter.call(this);
-                    else __val = this.__value || this.default;
+                    if (typeof __getter === 'function' ) {
+                        __val = __getter.call(this);
+                        // 검사 및 이벤트 발생
+                        if (this.__value !== null && this.__value !== __val) {
+                            this._onChanged(__val, this.__value);
+                            this.__value = __val;   // 내부에 저장
+                        }
+                    } else {
+                        __val = this.__value;
+                    }
+
+                    if (typeof __val === 'undefined' || __val === null) {
+                        __val = this.default;  // value 없으면 기본값 리턴
+                    }
+
                     return __val; 
                 },
                 set:  function(val) { 
                     var __val, _val;
+                    var _oldVal = this.__value;
                     if (typeof __setter === 'function' ) _val = __setter.call(this, val);
                     
                     // settter 의 리턴이 여부
@@ -2983,8 +2997,8 @@ if (typeof Array.isArray === 'undefined') {
                         throw new Error('Only [value] type "number, string, boolean" can be added');
                     }
                     this.__value = __val;
-                    // 이벤트 발생
-                    this._onChanged();
+                    // 검사 및 이벤트 발생
+                    if (_oldVal !== __val && __val) this._onChanged(__val, _oldVal);
                 },
                 configurable: true,
                 enumerable: true
@@ -3060,7 +3074,7 @@ if (typeof Array.isArray === 'undefined') {
                     if (p_property.hasOwnProperty(prop) &&
                     [   'entity', 'type', 'size', 'default', 'caption', 
                         'isNotNull', 'isNullPass', 'callback', 'constraints', 
-                        'codeType', 'order', 'increase', 'value', 'getter', 'setter', 'alias' 
+                        'codeType', 'order', 'increase', 'value', 'getter', 'setter', 'alias', 'onChanged' 
                     ].indexOf(prop) > -1) {
                         this[prop] = p_property[prop];
                     }
@@ -3075,8 +3089,9 @@ if (typeof Array.isArray === 'undefined') {
         /**
          * @listens _W.Meta.Entity.Item#_onChanged
          */
-        Item.prototype._onChanged = function() {
-            this.__event.publish('onChanged', this.value);
+         Item.prototype._onChanged = function(p_nValue, p_oValue) {
+            p_oValue = p_oValue || this.__value;
+            this.__event.publish('onChanged', p_nValue, p_oValue);
         };
 
         /** @override **/
@@ -3115,7 +3130,14 @@ if (typeof Array.isArray === 'undefined') {
             if (this.value) clone['value']              = this.value;
             if (this.getter) clone['getter']            = this.getter;
             if (this.setter) clone['setter']            = this.setter;
-
+            
+            // 이벤트 복사 (REVIEW:: 개선필요!!)
+            if (this.__event.subscribers.onChanged) {
+                for (var i = 0; this.__event.subscribers.onChanged.length > i; i++) {
+                    clone['onChanged'] = this.__event.subscribers.onChanged[i];
+                }
+            }
+            
             return clone;
         };
 
@@ -3640,7 +3662,15 @@ if (typeof Array.isArray === 'undefined') {
                     var key, type, option;
 
                     if (typeof this.getter === 'function' ) {
+                        
                         __val = this.getter.call(this);
+                        
+                        // 검사 및 이벤트 발생
+                        if (this.__value !== null && this.__value !== __val) {
+                            this._onChanged(__val, this.__value);
+                            this.__value = __val;   // 내부에 저장
+                        }
+
                     } else if (__selector !== null && __filter === null) {
 
                         // node 에서는 강제 종료함
@@ -3667,9 +3697,17 @@ if (typeof Array.isArray === 'undefined') {
                                     console.warn('['+ key +'] selector의 type는[value, val, text, prop, attr, css, none] 이어야합니다. ');
                                 }
                                 
-                                // if (typeof __val === 'undefined' || __val === null) {
-                                //     console.warn('['+ key +'] 일치하는 selector가 없습니다. ');
-                                // }
+                                // selector 검사
+                                if (typeof __val === 'undefined' || __val === null) {
+                                    console.warn('['+ key +'] ['+ type +'] 일치하는 selector가 없습니다. ');                            
+                                } 
+
+                                // 검사 및 이벤트 발생
+                                if (this.__sValue !== null && this.__sValue !== __val && __val) {
+                                    this._onChanged(__val, this.__sValue);
+                                    this.__sValue = __val;  // sValue 저장
+                                }
+
                             }
                         }
                     }
@@ -3678,11 +3716,17 @@ if (typeof Array.isArray === 'undefined') {
                         __val = this.__value || this.default;  // value 없으면 기본값 리턴
                     }
 
+                    // Get값과 내부값이 다를경우 값 설정 (내부적으로 change 이벤트 발생함)
+                    if (__val !== this.__value) {
+                        this.value = __val;
+                    }
+
                     return __val; 
                 },
                 set:  function(val) { 
                     var __val, _val;
                     var key, type, option;
+                    var _oldVal = this.__value;
 
                     if (typeof this.setter === 'function' ) _val = this.setter.call(this, val);
                     
@@ -3696,6 +3740,9 @@ if (typeof Array.isArray === 'undefined') {
                     }
                     this.__value = __val;   // 내부에 저장
 
+                    // 검사 및 이벤트 발생
+                    if (_oldVal !== __val && __val) this._onChanged(__val, _oldVal);
+
                     if (__selector !== null) {
 
                         // node 에서는 강제 종료함
@@ -3703,6 +3750,9 @@ if (typeof Array.isArray === 'undefined') {
 
                             // 필터 적용
                             if (typeof __filter === 'function') __val = __filter.call(this, __val);
+
+                            // 셀렉터 내부값 저장
+                            this.__sValue = __val;
 
                             key = this.selector.key;
                             type = this.selector.type;
@@ -3727,9 +3777,8 @@ if (typeof Array.isArray === 'undefined') {
                             }
                         }
                     }
-
-                    // 이벤트 발생
-                    this._onChanged();
+                    // // 이벤트 발생
+                    // this._onChanged();
                 },
                 configurable: true,
                 enumerable: true
@@ -6664,8 +6713,9 @@ if (typeof Array.isArray === 'undefined') {
          * 실행 
          */
         BindCommandAjax.prototype.execute = function() {
-            if (this._model.isLog) console.log('call : BindCommandAjax.execute()');
-
+            // if (this._model.isLog) console.log('call : BindCommandAjax.execute()');
+            if (this._model.isLog) console.log('call : [%s] BindCommandAjax.execute()', this.name);
+            
             this._onExecute(this);  // '실행 시작' 이벤트 발생
             if (this._execValid()) this._execBind();
         };
