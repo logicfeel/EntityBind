@@ -2969,12 +2969,14 @@ if (typeof Array.isArray === 'undefined') {
                     
                     // 우선순위 : 1
                     if (typeof __getter === 'function' ) {
+                        
                         __val = __getter.call(this);
+                        
                         // 검사 및 이벤트 발생
-                        // if (this.__value !== null && this.__value !== __val) {
-                        //     this._onChanged(__val, this.__value);
-                        //     this.__value = __val;   // 내부에 저장
-                        // }
+                        if (this.__value !== null && this.__value !== __val) {
+                            this._onChanged(__val, this.__value);
+                            this.__value = __val;   // 내부에 저장
+                        }
                     
                     // 우선순위 : 2
                     } else {
@@ -3347,6 +3349,19 @@ if (typeof Array.isArray === 'undefined') {
             return this.add(item);
         };
 
+        /**
+         *  이름과 값으로 아이템 생성하여 컬렉션에 추가한다.
+         * @param {*} p_name 아이템명
+         * @param {String | Number | Boolean} p_value 
+         * @returns {Item}
+         */
+         ItemCollection.prototype.initValue  = function() {
+
+            for (var i = 0; this.count > i; i++) {
+                this[i].value = this[i].default;
+            }
+        };
+
         return ItemCollection;
     
     }(PropertyCollection));
@@ -3676,10 +3691,10 @@ if (typeof Array.isArray === 'undefined') {
                         __val = this.getter.call(this);
                         
                         // 검사 및 이벤트 발생
-                        // if (this.__value !== null && this.__value !== __val) {
-                        //     this._onChanged(__val, this.__value);
-                        //     this.__value = __val;   // 내부에 저장
-                        // }
+                        if (this.__value !== null && this.__value !== __val) {
+                            this._onChanged(__val, this.__value);
+                            this.__value = __val;   // 내부에 저장
+                        }
 
                     // 우선순위 : 2
                     // } else if (__selector !== null && __filter === null) {
@@ -3715,10 +3730,10 @@ if (typeof Array.isArray === 'undefined') {
                                 } 
 
                                 // 검사 및 이벤트 발생
-                                // if (this.__sValue !== null && this.__sValue !== __val && __val) {
-                                //     this._onChanged(__val, this.__sValue);
-                                //     this.__sValue = __val;  // sValue 저장
-                                // }
+                                if (this.__sValue !== null && this.__sValue !== __val && __val) {
+                                    this._onChanged(__val, this.__sValue);
+                                    this.__sValue = __val;  // sValue 저장
+                                }
 
                             }
                         }
@@ -3828,7 +3843,7 @@ if (typeof Array.isArray === 'undefined') {
             if (typeof p_option === 'object' ) {
                 for(var prop in p_option) {
                     if (p_option.hasOwnProperty(prop) && 
-                        ['domType', 'isReadOnly', 'isHide', 'element', 'selector'].indexOf(prop) > -1) {
+                        ['domType', 'isReadOnly', 'isHide', 'element', 'selector', 'filter'].indexOf(prop) > -1) {
                         this[prop] = p_option[prop];
                     }
                 }
@@ -3867,6 +3882,7 @@ if (typeof Array.isArray === 'undefined') {
             if (this.element) clone['element']          = this.element;
             
             if (this.selector) clone['selector']        = this.selector;
+            if (this.filter) clone['filter']            = this.filter;
             // if (this.selector) clone.__selector        = this.__selector.concat([]); // 배열 + 함수형
             
             return clone;

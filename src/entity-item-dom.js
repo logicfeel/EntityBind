@@ -159,10 +159,10 @@
                         __val = this.getter.call(this);
                         
                         // 검사 및 이벤트 발생
-                        // if (this.__value !== null && this.__value !== __val) {
-                        //     this._onChanged(__val, this.__value);
-                        //     this.__value = __val;   // 내부에 저장
-                        // }
+                        if (this.__value !== null && this.__value !== __val) {
+                            this._onChanged(__val, this.__value);
+                            this.__value = __val;   // 내부에 저장
+                        }
 
                     // 우선순위 : 2
                     // } else if (__selector !== null && __filter === null) {
@@ -198,10 +198,10 @@
                                 } 
 
                                 // 검사 및 이벤트 발생
-                                // if (this.__sValue !== null && this.__sValue !== __val && __val) {
-                                //     this._onChanged(__val, this.__sValue);
-                                //     this.__sValue = __val;  // sValue 저장
-                                // }
+                                if (this.__sValue !== null && this.__sValue !== __val && __val) {
+                                    this._onChanged(__val, this.__sValue);
+                                    this.__sValue = __val;  // sValue 저장
+                                }
 
                             }
                         }
@@ -311,7 +311,7 @@
             if (typeof p_option === 'object' ) {
                 for(var prop in p_option) {
                     if (p_option.hasOwnProperty(prop) && 
-                        ['domType', 'isReadOnly', 'isHide', 'element', 'selector'].indexOf(prop) > -1) {
+                        ['domType', 'isReadOnly', 'isHide', 'element', 'selector', 'filter'].indexOf(prop) > -1) {
                         this[prop] = p_option[prop];
                     }
                 }
@@ -350,6 +350,7 @@
             if (this.element) clone['element']          = this.element;
             
             if (this.selector) clone['selector']        = this.selector;
+            if (this.filter) clone['filter']            = this.filter;
             // if (this.selector) clone.__selector        = this.__selector.concat([]); // 배열 + 함수형
             
             return clone;

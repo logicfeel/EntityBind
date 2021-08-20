@@ -192,6 +192,25 @@
             console.warn('Result = Fail');
         }
 
+        console.log('---------------------------------------------------------------------------');
+        console.log('ItemViewCollection.initValue() :: 컬렉션 전체 값 초기화 ');
+        var view = new EntityView('T1');
+        view.items.addValue('i1', 'V1');
+        view.items.addValue('i2', 'V2');
+        view.items.initValue();
+        if (
+                view.name === 'T1' && 
+                view.items.count === 2 &&
+                view.items['i1'].value === '' &&
+                view.items['i2'].value === '' && 
+                true ) {
+            taskCnt++;
+            console.log('Result = Success');
+        } else {
+            errorCnt++;
+            console.warn('Result = Fail');
+        }
+
         
         //#################################################
         if (errorCnt > 0) {

@@ -311,12 +311,14 @@
                     
                     // 우선순위 : 1
                     if (typeof __getter === 'function' ) {
+                        
                         __val = __getter.call(this);
+                        
                         // 검사 및 이벤트 발생
-                        // if (this.__value !== null && this.__value !== __val) {
-                        //     this._onChanged(__val, this.__value);
-                        //     this.__value = __val;   // 내부에 저장
-                        // }
+                        if (this.__value !== null && this.__value !== __val) {
+                            this._onChanged(__val, this.__value);
+                            this.__value = __val;   // 내부에 저장
+                        }
                     
                     // 우선순위 : 2
                     } else {
@@ -687,6 +689,19 @@
             item = new this.itemType(p_name, this._onwer, property);
 
             return this.add(item);
+        };
+
+        /**
+         *  이름과 값으로 아이템 생성하여 컬렉션에 추가한다.
+         * @param {*} p_name 아이템명
+         * @param {String | Number | Boolean} p_value 
+         * @returns {Item}
+         */
+         ItemCollection.prototype.initValue  = function() {
+
+            for (var i = 0; this.count > i; i++) {
+                this[i].value = this[i].default;
+            }
         };
 
         return ItemCollection;
