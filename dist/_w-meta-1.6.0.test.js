@@ -3164,7 +3164,7 @@
         table.setValue(row);
         if (
                 table.items['i1'].value === 'R1' && 
-                table.items['i2'].value === null &&     // 값 설정안됨
+                table.items['i2'].value === '' &&     // 값 설정안됨
                 table.items['i3'].value === 'RR3' &&
                 true) {
             taskCnt++;

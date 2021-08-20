@@ -308,19 +308,28 @@
             {
                 get: function() { 
                     var __val;
+                    
+                    // 우선순위 : 1
                     if (typeof __getter === 'function' ) {
                         __val = __getter.call(this);
                         // 검사 및 이벤트 발생
-                        if (this.__value !== null && this.__value !== __val) {
-                            this._onChanged(__val, this.__value);
-                            this.__value = __val;   // 내부에 저장
-                        }
+                        // if (this.__value !== null && this.__value !== __val) {
+                        //     this._onChanged(__val, this.__value);
+                        //     this.__value = __val;   // 내부에 저장
+                        // }
+                    
+                    // 우선순위 : 2
                     } else {
                         __val = this.__value;
                     }
-
+                    
+                    /**
+                     * 분기 처리값 '__val' 없는경우 (null, undefined)
+                     *  - this.__value 초기화 되지 않은 경우
+                     *  - getter 리턴이 없는 경우
+                     */
                     if (typeof __val === 'undefined' || __val === null) {
-                        __val = this.default;  // value 없으면 기본값 리턴
+                        __val = this.__value || this.default;  
                     }
 
                     return __val; 
