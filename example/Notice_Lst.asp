@@ -220,8 +220,12 @@
 	$('#btn_Insert').click(ntc.fn.moveForm);
     //--------------------------------------------------------------
 	$(document).ready(function () {
-        ntc.init();
-		ntc.fn.procList();
+        try {
+			ntc.init();
+			ntc.fn.procList();
+		} catch (e) {
+			alert(e);
+		}
     });
 	console.log("______________ $.ready()");
 </script>

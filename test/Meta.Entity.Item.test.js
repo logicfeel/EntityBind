@@ -375,6 +375,54 @@
             console.warn('Result = Fail');
         }
         
+        console.log('---------------------------------------------------------------------------');
+        console.log('Item :: 속성 + get/set + 생성자 예외 테스트 : try');
+        var item = new Item('i1');
+        item.result = true;
+        item.result2 = true;
+        try {
+            item.order = 'A';   // 에러 수사만
+        } catch {
+            item.result = false;
+        } finally {
+            item.result2 = false;
+        }
+        
+        if (
+                item.result === false &&
+                item.result2 === false &&
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
+        } else {
+            errorCnt++;
+            console.warn('Result = Fail');
+        }
+
+        console.log('---------------------------------------------------------------------------');
+        console.log('Item :: 속성 + get/set + 생성자 예외 테스트 : try');
+        var item = new Item('i1');
+        item.result = true;
+        item.result2 = true;
+        try {
+            item.order = 10;
+        } catch {
+            item.result = false;
+        } finally {
+            item.result2 = false;
+        }
+        
+        if (
+                item.result === true &&
+                item.result2 === false &&
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
+        } else {
+            errorCnt++;
+            console.warn('Result = Fail');
+        }
+
         //#################################################
         if (errorCnt > 0) {
             console.warn('Error Sub SUM : %dEA', errorCnt);    

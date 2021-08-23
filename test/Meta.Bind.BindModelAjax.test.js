@@ -1130,6 +1130,29 @@
             console.warn('Result = Fail');
         }
 
+        console.log('---------------------------------------------------------------------------');
+        console.log('new BindModelAjax() :: 예외 ');
+        try {
+            var model = new BindModelAjax();
+            model.addCommand('read', 1);
+            model.read.addItem('i1', '');
+            model.items.i1.value = 'A';
+            model.items.i1.order = 'E';
+        } catch (e) {
+            model.error = true;
+            // console.log(e);
+        }
+        
+        if (
+                model.items.i1.value === 'A' &&
+                model.error === true &&
+                true) {
+            console.log('Result = Success');
+        } else {
+            errorCnt++;
+            console.warn('Result = Fail');
+        }
+
         //#################################################
         if (errorCnt > 0) {
             console.warn('Error Sub SUM : %dEA', errorCnt);    

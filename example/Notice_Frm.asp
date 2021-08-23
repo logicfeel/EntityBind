@@ -150,39 +150,44 @@
 </script>
 <script>
 	// #######################################################################################################
-	var ntc = new _W.BindModelAjax(new BoardNoticeService());
+	try {
+        var ntc = new _W.BindModelAjax(new BoardNoticeService());
 	
-	// 속성 설정 : ntc
-    ntc.isLog = true;
-	ntc.prop["__listUrl"] = "Notice_Lst.asp";
-    ntc.prop["__mode"] = ParamGet2JSON(location.href).mode;
+        // 속성 설정 : ntc
+        ntc.isLog = true;
+        ntc.prop["__listUrl"] = "Notice_Lst.asp";
+        ntc.prop["__mode"] = ParamGet2JSON(location.href).mode;
 
-    // 콜백 등록 : ntc
-    ntc.create.onExecute = function(p_bindCommand) { 
-        oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
-    };
-    ntc.update.onExecute = function(p_bindCommand) { 
-        oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
-    };
+        // 콜백 등록 : ntc
+        ntc.create.onExecute = function(p_bindCommand) { 
+            oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
+        };
+        ntc.update.onExecute = function(p_bindCommand) { 
+            oEditors.getById["m-contents"].exec("UPDATE_CONTENTS_FIELD", []);   // nhn 웹데이터
+        };
 
-	// 이벤트 바인딩 : ntc
-    $('#btn_Insert').click(ntc.fn.procCreate);  // 수정
-	$('#btn_Update').click(ntc.fn.procUpdate);  // 수정
-	$('#btn_Delete').click(ntc.fn.procDelete);  // 삭제
-	$('#btn_List').click(ntc.fn.moveList);      // 목록 이동
-	$('#btn_Reset').click(ntc.fn.resetForm);    // 입력폼 초기화
-    //--------------------------------------------------------------
-	$(document).ready(function () {
-        ntc.init();
+        // 이벤트 바인딩 : ntc
+        $('#btn_Insert').click(ntc.fn.procCreate);  // 수정
+        $('#btn_Update').click(ntc.fn.procUpdate);  // 수정
+        $('#btn_Delete').click(ntc.fn.procDelete);  // 삭제
+        $('#btn_List').click(ntc.fn.moveList);      // 목록 이동
+        $('#btn_Reset').click(ntc.fn.resetForm);    // 입력폼 초기화
+        //--------------------------------------------------------------
+        $(document).ready(function () {
+            ntc.init();
 
-        if (ntc.prop["__mode"] === "EDIT") {
-            setEditMode(true);
-            ntc.items["ntc_idx"].value  = ParamGet2JSON(location.href).ntc_idx;
-            ntc.fn.procRead();
-        }  else {
-            setEditMode(false);
-        }
-    });
+            if (ntc.prop["__mode"] === "EDIT") {
+                setEditMode(true);
+                ntc.items["ntc_idx"].value  = ParamGet2JSON(location.href).ntc_idx;
+                ntc.fn.procRead();
+            }  else {
+                setEditMode(false);
+            }
+        });
+    } catch (e) {
+        alert(e);
+    }
+    
 	console.log("______________ $.ready()");
 </script>
 
