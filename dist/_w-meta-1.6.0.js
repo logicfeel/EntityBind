@@ -3579,7 +3579,8 @@ if (typeof Array.isArray === 'undefined') {
             var __isReadOnly    = false;
             var __isHide        = false;
             var __element       = null;
-            var __filter        = null;
+            var __getFilter     = null;
+            var __setFilter     = null;
             var __selector      = null;
 
             /**
@@ -3676,6 +3677,36 @@ if (typeof Array.isArray === 'undefined') {
             });
 
             /**
+             * value 값 필터
+             * @member {Function} _W.Meta.Entity.ItemDOM#getFilter
+             */
+             Object.defineProperty(this, 'getFilter', 
+             {
+                 get: function() { return __getFilter; },
+                 set: function(val) { 
+                     if(val !== null && typeof val !== 'function') throw new Error('Only [getFilter] type "function" can be added');
+                     __getFilter = val;
+                 },
+                 configurable: true,
+                 enumerable: true
+             });
+                      
+             /**
+             * value 값 필터
+             * @member {Function} _W.Meta.Entity.ItemDOM#setFilter
+             */
+              Object.defineProperty(this, 'setFilter', 
+              {
+                  get: function() { return __setFilter; },
+                  set: function(val) { 
+                      if(val !== null && typeof val !== 'function') throw new Error('Only [setFilter] type "function" can be added');
+                      __setFilter = val;
+                  },
+                  configurable: true,
+                  enumerable: true
+              });
+
+            /**
              * 아이템 값 (오버라이딩)
              * @member {*} _W.Meta.Entity.ItemDOM#value
              */
@@ -3732,8 +3763,11 @@ if (typeof Array.isArray === 'undefined') {
                                 // 검사 및 이벤트 발생
                                 if (this.__sValue !== null && this.__sValue !== __val && __val) {
                                     this._onChanged(__val, this.__sValue);
-                                    this.__sValue = __val;  // sValue 저장
+                                    this.__sValue = String(__val);  // sValue 저장
                                 }
+
+                                // 필터 적용 : get
+                                if (typeof this.getFilter === 'function') __val = this.getFilter.call(this, __val);
 
                             }
                         }
@@ -3765,6 +3799,7 @@ if (typeof Array.isArray === 'undefined') {
                     var __val, _val;
                     var key, type, option;
                     var _oldVal = this.__value;
+                    var _isSetSelector = true;   // selector 설정 여부
 
                     if (typeof this.setter === 'function' ) _val = this.setter.call(this, val);
                     
@@ -3777,26 +3812,26 @@ if (typeof Array.isArray === 'undefined') {
                         throw new Error('Only [value] type "number, string, boolean" can be added');
                     }
                     this.__value = __val;   // 내부에 저장
-
-                    // 검사 및 이벤트 발생
-                    if (_oldVal !== __val && __val) this._onChanged(__val, _oldVal);
-
+           
                     if (__selector !== null) {
 
                         // node 에서는 강제 종료함
                         if (typeof module !== 'object') {
 
-                            // 필터 적용
-                            if (typeof __filter === 'function') __val = __filter.call(this, __val);
+                            // 필터 적용 : set
+                            if (typeof this.setFilter === 'function') {
+                                __val = this.setFilter.call(this, __val);
+                                _isSetSelector = __val ? true : false;
+                            }
 
                             // 셀렉터 내부값 저장
-                            this.__sValue = __val;
+                            this.__sValue = String(__val);
 
                             key = this.selector.key;
                             type = this.selector.type;
                             option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
 
-                            if (type !== 'none' && type !== ''){
+                            if (type !== 'none' && type !== '' && _isSetSelector){
                                 if (type === 'value' || type === 'val') {
                                     jQuery(key).val(__val);
                                 } else if (type === 'text') {
@@ -3815,6 +3850,10 @@ if (typeof Array.isArray === 'undefined') {
                             }
                         }
                     }
+
+                    // 검사 및 이벤트 발생 : 타입간 호환성
+                    if (_oldVal !== __val && __val) this._onChanged(__val, _oldVal);
+
                     // // 이벤트 발생
                     // this._onChanged();
                 },
@@ -3822,20 +3861,7 @@ if (typeof Array.isArray === 'undefined') {
                 enumerable: true
             });
             
-            /**
-             * value 값 필터
-             * @member {Function} _W.Meta.Entity.ItemDOM#filter
-             */
-            Object.defineProperty(this, 'filter', 
-            {
-                get: function() { return __filter; },
-                set: function(val) { 
-                    if(val !== null && typeof val !== 'function') throw new Error('Only [filter] type "function" can be added');
-                    __filter = val;
-                },
-                configurable: true,
-                enumerable: true
-            });
+
 
 
             //---------------------------------------------------
@@ -3843,7 +3869,7 @@ if (typeof Array.isArray === 'undefined') {
             if (typeof p_option === 'object' ) {
                 for(var prop in p_option) {
                     if (p_option.hasOwnProperty(prop) && 
-                        ['domType', 'isReadOnly', 'isHide', 'element', 'selector', 'filter'].indexOf(prop) > -1) {
+                        ['domType', 'isReadOnly', 'isHide', 'element', 'selector', 'getFilter', 'setFilter'].indexOf(prop) > -1) {
                         this[prop] = p_option[prop];
                     }
                 }
@@ -3882,7 +3908,8 @@ if (typeof Array.isArray === 'undefined') {
             if (this.element) clone['element']          = this.element;
             
             if (this.selector) clone['selector']        = this.selector;
-            if (this.filter) clone['filter']            = this.filter;
+            if (this.getFilter) clone['getFilter']      = this.getFilter;
+            if (this.setFilter) clone['setFilter']      = this.setFilter;
             // if (this.selector) clone.__selector        = this.__selector.concat([]); // 배열 + 함수형
             
             return clone;
@@ -6340,7 +6367,14 @@ if (typeof Array.isArray === 'undefined') {
                     }
                 }
             }
-            
+            // base
+            if (typeof p_service['baseUrl'] === 'string') {
+                this.baseUrl = p_service['baseUrl'];
+            }
+            if (typeof p_service['baseAjaxSetup'] === 'object') {
+                this.baseAjaxSetup = p_service['baseAjaxSetup'];
+            }
+
             // pre 메소드 등록
             if (typeof p_service['preRegister'] === 'function') {
                 // __preRegister = p_service['preRegister'];
@@ -6926,13 +6960,15 @@ if (typeof Array.isArray === 'undefined') {
             if (typeof p_service === 'object') {
                 // 서비스 설정
                 this.setService(p_service);
+                
+// POINT:: 테스트후 제거해야 함
                 // 속성 설정
-                if (typeof p_service['baseUrl'] === 'string') {
-                    this.baseUrl = p_service['baseUrl'];
-                }
-                if (typeof p_service['baseAjaxSetup'] === 'object') {
-                    this.baseAjaxSetup = p_service['baseAjaxSetup'];
-                }
+                // if (typeof p_service['baseUrl'] === 'string') {
+                //     this.baseUrl = p_service['baseUrl'];
+                // }
+                // if (typeof p_service['baseAjaxSetup'] === 'object') {
+                //     this.baseAjaxSetup = p_service['baseAjaxSetup'];
+                // }
             }
 
             // 예약어 등록

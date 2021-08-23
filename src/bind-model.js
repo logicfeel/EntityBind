@@ -641,7 +641,14 @@
                     }
                 }
             }
-            
+            // base
+            if (typeof p_service['baseUrl'] === 'string') {
+                this.baseUrl = p_service['baseUrl'];
+            }
+            if (typeof p_service['baseAjaxSetup'] === 'object') {
+                this.baseAjaxSetup = p_service['baseAjaxSetup'];
+            }
+
             // pre 메소드 등록
             if (typeof p_service['preRegister'] === 'function') {
                 // __preRegister = p_service['preRegister'];

@@ -150,13 +150,15 @@
             if (typeof p_service === 'object') {
                 // 서비스 설정
                 this.setService(p_service);
+                
+// POINT:: 테스트후 제거해야 함
                 // 속성 설정
-                if (typeof p_service['baseUrl'] === 'string') {
-                    this.baseUrl = p_service['baseUrl'];
-                }
-                if (typeof p_service['baseAjaxSetup'] === 'object') {
-                    this.baseAjaxSetup = p_service['baseAjaxSetup'];
-                }
+                // if (typeof p_service['baseUrl'] === 'string') {
+                //     this.baseUrl = p_service['baseUrl'];
+                // }
+                // if (typeof p_service['baseAjaxSetup'] === 'object') {
+                //     this.baseAjaxSetup = p_service['baseAjaxSetup'];
+                // }
             }
 
             // 예약어 등록

@@ -28,7 +28,7 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
     
     item.value = 3;
     $('#t1-1').text(item.value);
-    if (item.value == 30 &&
+    if (item.value == 60 &&
         $('#t1').text() == 60 &&
         true) {
         console.log('Result = Success');
@@ -69,6 +69,37 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
 </script>
 
 <div>
+    <h2> 2_1. ItemDOM :: setter + selector  : 라디오박스 (체크박스)</h2>
+    t2 : 
+    <input type='radio' name='t2_1' value='1' onclick='radio_event_1(this.value)'>상
+    <input type='radio' name='t2_1' value='2' onclick='radio_event_1(this.value)'>중
+    <input type='radio' name='t2_1' value='3' onclick='radio_event_1(this.value)'>하
+    <p>item.value : <span id='t2_1-1'></span> </p>
+</div>
+
+<script>
+    console.log('---------------------------------------------------------------------------');
+    console.log(' 2_1. ItemDOM :: setter + selector  : 라디오박스 (체크박스) ');
+    var item2_1 = new ItemDOM('i1');
+    
+    { // *************************************************
+        item2_1.setFilter = function(val) { // setFilter 로 변경필요!, return 없음으로.
+            $('input[name=t2_1][value='+ val + ']').prop('checked', true); 
+        };
+        item2_1.selector = { key: 'input[name=t2_1][type=radio]:checked', type: 'value'};
+    } // *************************************************
+    
+    item2_1.value = 2;
+    radio_event_1(item2_1.value)
+
+    function radio_event_1(val) { 
+        $('#t2_1-1').text(item2_1.value) 
+    }
+
+</script>
+
+
+<div>
     <h2> 3. ItemDOM :: selector + filter :통화단위(읽기전용) </h2>
     <p>item : 3 </p>
     <p>item.value(filter) : <span id='t3'></span> </p>
@@ -87,7 +118,8 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
     
     item3.value = 3;
     $('#t3-1').text(item3.value);
-    if (item3.value == 3 &&
+
+    if (item3.value == 6 &&
         $('#t3').text() == 6 &&
         true) {
         console.log('Result = Success');
@@ -115,6 +147,8 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
     } // *************************************************
     
     item4.value = 2;
+    text_event(item4.value)
+
     function text_event(val) { 
         $('#t4-1').text(item4.value);
     }
@@ -142,6 +176,8 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
     } // *************************************************
     
     item5.value = 2;
+    select_event(item5.value);
+
     function select_event(val) { 
         $('#t5-1').text(item5.value);
     }
@@ -163,6 +199,7 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
         item6.selector = { key: 'input[name=t6][type=checkbox]', type: 'prop.checked'};
     } // *************************************************
 
+    check_event1(item6.value)
     // item6.value = true;
     function check_event1(val) { 
         $('#t6-1').text(item6.value);
@@ -189,13 +226,46 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
         };
         item7.selector = { key: 'input[name=t7][type=checkbox]:checked', type: 'value'};
     } // *************************************************
-
+    
     function check_event2(val) { 
         $('#t7-1').text(item7.value);
     }
 
 </script>
 
+<div>
+    <h2> 7_1. ItemDOM :: selector : 체크박스(단일값)</h2>
+    <p>checkbox 를 사용할 경우와 radio 사용하는 경우 구분 정리 필요</p>
+    t7 : 
+    <input type='checkbox' name='t7_1' value='Y' onclick='check_event2_1(this.value)'>
+    <p>item.value : <span id='t7_1-1'></span> </p>
+</div>
+
+<script>
+    console.log('---------------------------------------------------------------------------');
+    console.log(' 7_1. ItemDOM :: selector : 체크박스(단일값) ');
+    var item7_1 = new ItemDOM('i1');
+    
+    { // *************************************************
+        // item7_1.setter = function(val) { 
+        //     $('input[name=t7]').prop('checked', val.indexOf('Y') >= 0);
+        // };
+        item7_1.selector = { key: 'input[name=t7_1][type=checkbox]', type: 'prop.checked'};
+        item7_1.setFilter = function (val) {
+            return (val === 'Y') ? true : false;
+        }
+        item7_1.getFilter = function (val) {
+            return val === true ? 'Y' : 'N'; 
+        }
+    } // *************************************************
+    // item7_1.value = 'Y';
+    check_event2_1(item7_1.value);
+
+    function check_event2_1(val) { 
+        $('#t7_1-1').text(item7_1.value);
+    }
+
+</script>
 
 <div>
     <h2> 8. ItemDOM :: setter + getter : 체크박스(복수)</h2>
@@ -225,6 +295,8 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
     } // *************************************************
     
     item8.value = 'A';
+    check_event3(item8.value);
+
     function check_event3(val) { 
         $('#t8-1').text(item8.value);
     }
@@ -295,7 +367,8 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
             return item21.value * 10;  
         };
         item20.onChanged =  function(val) { 
-            $('#t20').text(val * 3 ) 
+            var th = this.value;
+            $('#t20').text(th * 3 );
         };
         
         item21.onChanged = function(val) { 
@@ -308,8 +381,8 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
 </script>
 
 <div>
-    <h2> 22. onChanged 이벤트 강제 발생 </h2>
-    <p>item.value(60) : <span id='t22'></span> </p>
+    <h2> 22. onChanged 이벤트 자동계산  </h2>
+    <p>item.value(120) : <span id='t22'></span> </p>
     <p>item.value (4): <span id='t23'></span> </p>
 </div>
 
@@ -319,13 +392,21 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
     var item22 = new ItemDOM('i1');
     var item23 = new ItemDOM('i2');
     { // *************************************************
+        item22.setter = function(val) { 
+            return item23.value * 10;   // 40 * 10 = 40
+        }; 
+        item22.setFilter = function(val) { 
+            return val * 3;             // 40 * 3 = 120
+        };
         item22.selector = { key: '#t22', type: 'text'};
-        item22.filter = function(val) { return val * 3; };
-        item22.setter = function(val) { return item23.value * 10;  };
         
         item23.selector = { key: '#t23', type: 'text'};
-        item23.filter = function(val) { return val * 2; };
-        item23.onChanged = function(val) { item22.value = 0; }; // 임의값 등록 (이벤트 발생)
+        item23.setFilter = function(val) { 
+            return val * 2;             // 2 * 2 = 4
+        };
+        item23.onChanged = function(val, old) { 
+            item22.value = 0; 
+        }; // 임의값 등록 (이벤트 발생)
         item23.value = 2;
     } // *************************************************
 
