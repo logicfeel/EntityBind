@@ -76,8 +76,8 @@
             var __fn            = new PropertyFunctionCollection(this);
             var __mapping       = new PropertyCollection(this);
             
-            var __cbFail        = function() { console.warn('바인딩 실패하였습니다.'); };
-            var __cbError       = function() { console.error('바인딩 오류가 발생 하였습니다.'); };
+            var __cbFail        = function(msg) { console.warn('실패하였습니다. Err:'+ msg); };
+            var __cbError       = function(msg) { console.error('오류가 발생 하였습니다. Err:'+msg); };
             var __cbBaseValid   = null;
             var __cbBaseBind    = null;
             var __cbBaseResult  = null;
@@ -291,10 +291,19 @@
         BindModel.prototype.init = function() {
             if (this.isLog) console.log('call :: BindModel.init()');
             
-            this.preRegister.call(this, this);
-            if (this.preCheck.call(this, this)) {
-                this.preReady.call(this, this)
-            }
+            // 콜백 예외처리
+            try {
+
+                this.preRegister.call(this, this);
+                if (this.preCheck.call(this, this)) {
+                    this.preReady.call(this, this)
+                }
+
+            } catch (err) {
+                var msg = err.message || err;
+                this.cbError(msg +' Err:init() ');
+                // throw err;   // 에러 던지기
+            } 
         };
 
         /**
@@ -640,13 +649,6 @@
                         this.mapping.add(prop, propObject[prop]);
                     }
                 }
-            }
-            // base
-            if (typeof p_service['baseUrl'] === 'string') {
-                this.baseUrl = p_service['baseUrl'];
-            }
-            if (typeof p_service['baseAjaxSetup'] === 'object') {
-                this.baseAjaxSetup = p_service['baseAjaxSetup'];
             }
 
             // pre 메소드 등록

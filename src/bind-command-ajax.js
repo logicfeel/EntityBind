@@ -271,6 +271,7 @@
             
             var option = {};
             var result;
+            var _this = this;
 
             // request VS Jquery.ajax 와 콜백 어뎁터 연결 함수
             function callback(error, response, body) {
@@ -278,19 +279,29 @@
                 var status = response ? response.statusCode : null;
                 var msg    = response ? response.statusMessage : '';
 
-                // (xhr,status) : 완료콜백
-                if (p_ajaxSetup && typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(response, status);
+                // 콜백 예외처리
+                try {   
 
-                if (error || response.statusCode !== 200) {    // 실패시
-                    msg = error ? (msg + ' ' + error) : msg;
-                    // (xhr,status,error)
-                    p_ajaxSetup.error(response, status, msg);
-                } else {                                        // 성공시
-                    if (p_ajaxSetup.dataType === 'json') result = JSON.parse(body);
-                    result = result || body;
-                    // (result,status,xhr)
-                    p_ajaxSetup.success(result, error, response);
-                }                
+                    // (xhr,status) : 완료콜백
+                    if (p_ajaxSetup && typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(response, status);
+
+                    if (error || response.statusCode !== 200) {    // 실패시
+                        msg = error ? (msg + ' ' + error) : msg;
+                        // (xhr,status,error)
+                        p_ajaxSetup.error(response, status, msg);
+                    } else {                                        // 성공시
+                        if (p_ajaxSetup.dataType === 'json') result = JSON.parse(body);
+                        result = result || body;
+                        // (result,status,xhr)
+                        p_ajaxSetup.success(result, error, response);
+                    }                
+
+                } catch (err) {
+                    var msg = err.message || err;
+                    _this._model.cbError(msg +' Err:(callback) command='+ _this.name);
+                    _this._onExecuted(_this);     // '실행 종료' 이벤트 발생
+                    // throw err;       // 에러 던지기
+                }             
             }
 
             if (ajax && typeof ajax === 'function') {
@@ -336,11 +347,20 @@
         BindCommandAjax.prototype.execute = function() {
             // if (this._model.isLog) console.log('call : BindCommandAjax.execute()');
             if (this._model.isLog) console.log('call : [%s] BindCommandAjax.execute()', this.name);
+
+            // 콜백 예외처리
+            try {
+
+                this._onExecute(this);  // '실행 시작' 이벤트 발생
+                if (this._execValid()) this._execBind();
             
-            this._onExecute(this);  // '실행 시작' 이벤트 발생
-            if (this._execValid()) this._execBind();
+            } catch (err) {
+                var msg = err.message || err;
+                this._model.cbError(msg +' Err:execue() cmd='+ this.name);
+                this._onExecuted(this);     // '실행 종료' 이벤트 발생
+                // throw err;   // 에러 던지기
+            }            
         };
-        
 
         return BindCommandAjax;
     

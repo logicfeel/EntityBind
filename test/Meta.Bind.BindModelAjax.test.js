@@ -173,6 +173,67 @@
         }
 
         console.log('---------------------------------------------------------------------------');
+        console.log('BindModel.init() 에러 처리');
+        console.log('BindModel.preRegister :: 등록 ');
+        console.log('BindModel.preCheck :: 검사 ');
+        console.log('BindModel.preReady :: 준비 완료 ');
+        var model = new BindModelAjax(Item);
+        model.result = [];
+        model.cbError = function(p_msg, p_status){
+            this.result.push('cbError');
+            console.log('err message = ' + p_msg);
+        };        
+        model.preRegister = function() {
+            throw '에러 preRegister()';       // 에러 던지기
+        };
+        model.preCheck = function() {
+            this.result.push('preCheck');
+            return true;
+        };
+        model.preReady = function() {
+            this.result.push('preReady');
+        };
+        model.init();
+        if (
+                model.result[0] === 'cbError' && 
+                model.result.length === 1 && 
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
+        } else {
+            errorCnt++;
+            console.warn('Result = Fail');
+        }
+
+        console.log('---------------------------------------------------------------------------');
+        console.log('BindModel.init() 에러 처리 : cbError 선언 없을 경우');
+        console.log('BindModel.preRegister :: 등록 ');
+        console.log('BindModel.preCheck :: 검사 ');
+        console.log('BindModel.preReady :: 준비 완료 ');
+        var model = new BindModelAjax(Item);
+        model.result = [];
+        model.preRegister = function() {
+            throw '에러 preRegister()';       // 에러 던지기
+        };
+        model.preCheck = function() {
+            this.result.push('preCheck');
+            return true;
+        };
+        model.preReady = function() {
+            this.result.push('preReady');
+        };
+        model.init();
+        if (
+                model.result.length === 0 && 
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
+        } else {
+            errorCnt++;
+            console.warn('Result = Fail');
+        }
+
+        console.log('---------------------------------------------------------------------------');
         console.log('BindModel.cbFail           :: 실패 발생시 실행 (검사) ');
         var model = new BindModelAjax(Item);
         model.addCommand('create');
@@ -201,12 +262,14 @@
             console.warn('Result = Fail');
         }
 
-        // REVIEW:: URL 오류 메세지로 일단 막아둠
-        if (isCallback && false) {
+
+        if (isCallback ) {
             console.log('---------------------------------------------------------------------------');
-            console.log('BindModel.cbError          :: 오류 발생시 실행 ');
+            console.log('BindModel.cbError          :: 오류 발생시 실행 (html) ');
             var model = new BindModelAjax(Item);
+            model.addCommand('create');
             model.result = [];
+            model.create.addItem('i1', '');
             // model.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
             model.baseUrl = 'http://127.0.0.1:8080/';                 // 오류 1 : 403
             // model.baseUrl = 'http://rtwgs4.cafe24.com/';                 // 오류 1 : 403
@@ -216,6 +279,7 @@
             };
             model.cbError = function(p_msg, p_status){
                 this.result.push('cbError');
+                console.log('err message = ' + p_msg);
             };
             model.onExecuted = function() {
                 console.log('---------------------------------------------------------------------------');
@@ -231,15 +295,81 @@
                     console.warn('Result = Fail');
                 }
             };
-            
-            try {
-                model.create.execute();            
-            } catch (e) {
-                console.warn('Result = Fail');
-            }
-            // model.create.execute();
+
+            model.create.execute();
         }
 
+        if (isCallback ) {
+            console.log('---------------------------------------------------------------------------');
+            console.log('BindModel.cbError          :: 오류 발생시 실행 (local) ');
+            var model = new BindModelAjax(Item);
+            model.addCommand('create');
+            model.result = [];
+            model.create.addItem('i1', '');
+            // model.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
+            // model.baseUrl = 'http://127.0.0.1:8080/';                 // 오류 1 : 403
+            // model.baseUrl = 'http://rtwgs4.cafe24.com/';                 // 오류 1 : 403
+            model.baseUrl = 'sample_row_single2.json';                // 오류 2
+            model.cbFail = function(p_msg, p_code){
+                this.result.push('cbFail');
+            };
+            model.cbError = function(p_msg, p_status){
+                this.result.push('cbError');
+                console.log('err message = ' + p_msg);
+            };
+            model.onExecuted = function() {
+                console.log('---------------------------------------------------------------------------');
+                console.log('BindModel.cbError      :: 콜백 ');
+                if (    
+                        this.result[0] === 'cbError' && 
+                        this.result.length === 1 && 
+                        true) {
+                    taskCnt++;
+                    console.log('Result = Success');
+                } else {
+                    errorCnt++;
+                    console.warn('Result = Fail');
+                }
+            };
+
+            model.create.execute();
+        }
+
+        if (isCallback ) {
+            console.log('---------------------------------------------------------------------------');
+            console.log('BindModel.cbError          :: 오류 발생시 실행 (경로없음:404) ');
+            var model = new BindModelAjax(Item);
+            model.addCommand('create');
+            model.result = [];
+            model.create.addItem('i1', '');
+            model.baseUrl = 'http://127.0.0.1:8080/abc/';                 // 오류 1 : 403
+            // model.baseUrl = 'http://rtwgs4.cafe24.com/';                 // 오류 1 : 403
+            model.cbFail = function(p_msg, p_code){
+                this.result.push('cbFail');
+            };
+            model.cbError = function(p_msg, p_status){
+                this.result.push('cbError');
+                console.log('err message = ' + p_msg);
+            };
+            model.onExecuted = function() {
+                console.log('---------------------------------------------------------------------------');
+                console.log('BindModel.cbError      :: 콜백 ');
+                if (    
+                        this.result[0] === 'cbError' && 
+                        this.result.length === 1 && 
+                        true) {
+                    taskCnt++;
+                    console.log('Result = Success');
+                } else {
+                    errorCnt++;
+                    console.warn('Result = Fail');
+                }
+            };
+
+            model.create.execute();
+        }
+
+        
         console.log('---------------------------------------------------------------------------');
         console.log('BindModel.add(item) :: 전체 cmd에 아이템 등록 (cmd 사용자 추가후) ');
         var model = new BindModelAjax();
@@ -1131,20 +1261,65 @@
         }
 
         console.log('---------------------------------------------------------------------------');
+        console.log('new BindModelAjax( {...} ) :: 생성시 객체 주입 : 에러발생 ');
+        try {
+            var model = new BindModelAjax({
+                prop: {
+                    i3: {
+                        caption: 'C3', 
+                        value: 'V3',
+                        order: 'E',     // 에러 강제 발생
+                    }
+                },
+            });
+            model.error = false;
+        } catch (e) {
+            model.error = true;     // 내부 예외처리로 무시됨
+        }
+        model.result = [];
+        if (
+                model.prop.count === 1 &&
+                model.error === false &&
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
+        } else {
+            errorCnt++;
+            console.warn('Result = Fail');
+        }        
+
+        console.log('---------------------------------------------------------------------------');
         console.log('new BindModelAjax() :: 예외 ');
         try {
             var model = new BindModelAjax();
             model.addCommand('read', 1);
             model.read.addItem('i1', '');
             model.items.i1.value = 'A';
-            model.items.i1.order = 'E';
+            model.items.i1.order = 'E';     // 에러 발생!
         } catch (e) {
             model.error = true;
-            // console.log(e);
         }
         
         if (
                 model.items.i1.value === 'A' &&
+                model.error === true &&
+                true) {
+            console.log('Result = Success');
+        } else {
+            errorCnt++;
+            console.warn('Result = Fail');
+        }
+
+        console.log('---------------------------------------------------------------------------');
+        console.log('new BindModelAjax() :: 예외 ');
+        try {
+            var model = new BindModelAjax();
+            model.baseUrl = 1;          // 에러 발생!
+        } catch (e) {
+            model.error = true;
+        }
+        
+        if (
                 model.error === true &&
                 true) {
             console.log('Result = Success');

@@ -109,7 +109,7 @@
          */
         function BindModelAjax(p_service) {
             _super.call(this);
-            
+
             var __baseAjaxSetup = {
                 url: '',
                 type: 'GET'
@@ -150,20 +150,12 @@
             if (typeof p_service === 'object') {
                 // 서비스 설정
                 this.setService(p_service);
-                
-// POINT:: 테스트후 제거해야 함
-                // 속성 설정
-                // if (typeof p_service['baseUrl'] === 'string') {
-                //     this.baseUrl = p_service['baseUrl'];
-                // }
-                // if (typeof p_service['baseAjaxSetup'] === 'object') {
-                //     this.baseAjaxSetup = p_service['baseAjaxSetup'];
-                // }
             }
 
             // 예약어 등록
             this._symbol = this._symbol.concat(['items', 'baseAjaxSetup', 'baseUrl']);
             this._symbol = this._symbol.concat(['getTypes', 'checkSelector', 'setService']);
+
         }
         util.inherits(BindModelAjax, _super);
     
@@ -392,6 +384,33 @@
             this[p_name] = bindCommand;
 
             return this[p_name];
+        };
+
+
+        /**
+         * 서비스를 설정한다.
+         * @param {IBindModel} p_service 서비스객체
+         * @param {?Boolean} p_isLoadProp 서비스 내의 prop 를 item 으로 로딩힌다. (기본값: true)
+         */
+         BindModelAjax.prototype.setService  = function(p_service, p_isLoadProp) {
+            // 콜백 예외처리
+            try {  
+
+                _super.prototype.setService.call(this, p_service, p_isLoadProp);    // 부모 호출
+
+                // base
+                if (typeof p_service['baseUrl'] === 'string') {
+                    this.baseUrl = p_service['baseUrl'];
+                }
+                if (typeof p_service['baseAjaxSetup'] === 'object') {
+                    this.baseAjaxSetup = p_service['baseAjaxSetup'];
+                }
+
+            } catch (err) {
+                var msg = err.message || err;
+                this.cbError(msg +' Err:(callback) setService()');
+                // throw err;       // 에러 던지기
+            }               
         };
 
         return BindModelAjax;
