@@ -370,7 +370,7 @@
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
          * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
-         * @param {?(Array<String> | String)} p_entities <선택> 추가할 아이템 명령
+         * @param {?(Array<String> | String)} p_entities <선택> 추가할 대상엔티티
          */
         BindModel.prototype.add = function(p_item, p_cmds, p_entities) {
 
