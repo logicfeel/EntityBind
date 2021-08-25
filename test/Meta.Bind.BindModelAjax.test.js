@@ -18,6 +18,7 @@
     var taskCnt = 0;
         
     var util;        
+    var CustomError;
     var Row;
     var Item;
     var ItemDOM;
@@ -29,6 +30,7 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {  
         require('../src/object-implement'); // _implements() : 폴리필
         util                    = require('../src/utils');
+        CustomError             = require('../src/error-custom');
         Row                     = require('../src/entity-row').Row;
         Item                    = require('../src/entity-item').Item;
         ItemDOM                 = require('../src/entity-item-dom');
@@ -38,6 +40,7 @@
         IBindModel              = require('../src/i-bind-model');
     } else {
         util                    = global._W.Common.Util;
+        CustomError             = global._W.Common.CustomError;
         Row                     = global._W.Meta.Entity.Row;
         Item                    = global._W.Meta.Entity.Item;
         ItemDOM                 = global._W.Meta.Entity.ItemDOM;
@@ -234,6 +237,42 @@
         }
 
         console.log('---------------------------------------------------------------------------');
+        console.log('BindModel.init() 에러 처리 : cbError 선언 없을 경우 (외부로 에러 전달)');
+        console.log('BindModel.preRegister :: 등록 ');
+        console.log('BindModel.preCheck :: 검사 ');
+        console.log('BindModel.preReady :: 준비 완료 ');
+        global.isThrow = true;
+        var model = new BindModelAjax(Item);
+        model.result = [];
+        model.preRegister = function() {
+            throw '에러 preRegister()';       // 에러 던지기
+        };
+        model.preCheck = function() {
+            this.result.push('preCheck');
+            return true;
+        };
+        model.preReady = function() {
+            this.result.push('preReady');
+        };
+        try {
+            model.init();
+        } catch (e) {
+            model.error = true;     // 내부 예외처리로 무시됨
+        }
+        
+        if (
+                model.error === true &&
+                model.result.length === 0 && 
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
+        } else {
+            errorCnt++;
+            console.warn('Result = Fail');
+        }
+        global.isThrow = false;
+
+        console.log('---------------------------------------------------------------------------');
         console.log('BindModel.cbFail           :: 실패 발생시 실행 (검사) ');
         var model = new BindModelAjax(Item);
         model.addCommand('create');
@@ -338,6 +377,7 @@
         if (isCallback ) {
             console.log('---------------------------------------------------------------------------');
             console.log('BindModel.cbError          :: 오류 발생시 실행 (경로없음:404) ');
+            // global.isLog = true;
             var model = new BindModelAjax(Item);
             model.addCommand('create');
             model.result = [];
@@ -1261,7 +1301,7 @@
         }
 
         console.log('---------------------------------------------------------------------------');
-        console.log('new BindModelAjax( {...} ) :: 생성시 객체 주입 : 에러발생 ');
+        console.log('new BindModelAjax( {...} ) :: 생성시 객체 주입 : 에러발생 [내부 에러처리]');
         try {
             var model = new BindModelAjax({
                 prop: {
@@ -1287,6 +1327,38 @@
             errorCnt++;
             console.warn('Result = Fail');
         }        
+
+        console.log('---------------------------------------------------------------------------');
+        console.log('new BindModelAjax( {...} ) :: 생성시 객체 주입 : 에러발생 [외부로 에러 전달]');
+        global.isThrow = true;
+        global.isLog = true;
+        try {
+            var model = new BindModelAjax({
+                prop: {
+                    i3: {
+                        caption: 'C3', 
+                        value: 'V3',
+                        order: 'E',     // 에러 강제 발생
+                    }
+                },
+            });
+            model.error = false;
+        } catch (e) {
+            model.error = true;     // 내부 예외처리로 무시됨
+        }
+        model.result = [];
+        if (
+                model.prop.count === 1 &&
+                model.error === true &&
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
+        } else {
+            errorCnt++;
+            console.warn('Result = Fail');
+        }        
+        global.isThrow = false; // 해제
+        global.isLog = false;
 
         console.log('---------------------------------------------------------------------------');
         console.log('new BindModelAjax() :: 예외 ');
@@ -1329,12 +1401,10 @@
         }
 
         //#################################################
-        if (errorCnt > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCnt);    
-        } else {
-            console.log('===========================================================================');
-            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
-        }
+        console.log('===========================================================================');
+        if (errorCnt > 0) console.warn('Error Sub SUM : %dEA', errorCnt);    
+        console.log('단위 테스트 [ %s EA]: SUCCESS', taskCnt);
+
 
         return {
             errorCnt: errorCnt,
@@ -1350,4 +1420,4 @@
         global._W.Test.BindModelAjax = {run: run};
     }
 
-}(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
+}(typeof module === 'object' && typeof module.exports === 'object' ? global : this));

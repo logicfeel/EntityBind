@@ -85,17 +85,23 @@
             totalTaskCnt += typeof tasks[i].result.taskCnt === 'number' ? tasks[i].result.taskCnt : 0; // 전체 태스크 갯수
             totalFileCnt++;
 
-            if (tasks[i].result.errorCnt === 0) {
-                console.log('No: %s, file: %s, task [ %s EA ] = Success', totalFileCnt, task, tasks[i].result.taskCnt);
-            } else {
+            if (tasks[i].result.errorCnt > 0) {
                 console.warn('No: %s, file : %s, ERR_COUNT: [ %s EA ] = Warning', totalFileCnt, task, tasks[i].result.errorCnt);
                 errorCnt++;
             }
+            console.log('No: %s, file: %s, task [ %s EA ] = Success', totalFileCnt, task, tasks[i].result.taskCnt);
+
             console.log('___________________________________________________________________________');
         }
+        
+        if (errorCnt > 0) console.warn('Total: file [ %s EA ], task [ %s EA ] = Error', totalFileCnt, errorCnt);
         console.log('Total: file [ %s EA ], task [ %s EA ] = Success', totalFileCnt, totalTaskCnt);
 
-        return errorCnt;
+        // return errorCnt;
+        return {
+            errorCnt: errorCnt,
+            taskCnt: totalTaskCnt
+        };
     }
     
     //==============================================================

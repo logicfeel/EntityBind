@@ -91,12 +91,9 @@
         }
 
         //#################################################
-        if (errorCnt > 0) {
-            console.warn('Error Sub SUM : %dEA', errorCnt);    
-        } else {
-            console.log('===========================================================================');
-            console.log('단위 테스트 [ %s EA]: OK', taskCnt);
-        }
+        console.log('===========================================================================');
+        if (errorCnt > 0) console.warn('Error Sub SUM : %dEA', errorCnt);    
+        console.log('단위 테스트 [ %s EA]: SUCCESS', taskCnt);
 
         return {
             errorCnt: errorCnt,

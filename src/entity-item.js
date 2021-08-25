@@ -16,17 +16,20 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
+    var CustomError;
     var MetaElement;
     var PropertyCollection;
     var Observer;
     
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         util                = require('util');
+        CustomError         = require('./error-custom');
         MetaElement         = require('./meta-element');
         PropertyCollection  = require('./collection-property');
         Observer            = require('./observer');
     } else {
         util                = global._W.Common.Util;
+        CustomError             = global._W.Common.CustomError;
         MetaElement         = global._W.Meta.MetaElement;
         PropertyCollection  = global._W.Collection.PropertyCollection;
         Observer            = global._W.Common.Observer;
@@ -35,6 +38,7 @@
     //==============================================================
     // 3. 의존성 검사
     if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof CustomError === 'undefined') throw new Error('[CustomError] module load fail...');
     if (typeof MetaElement === 'undefined') throw new Error('[MetaElement] module load fail...');
     if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
     if (typeof Observer === 'undefined') throw new Error('[Observer] module load fail...');
@@ -278,7 +282,7 @@
             {
                 get: function() { return __order; },
                 set: function(newValue) { 
-                    if(typeof newValue !== 'number') throw new Error('Only [order] type "number" can be added');
+                    if(typeof newValue !== 'number') throw new CustomError('Only [order] type "number" can be added', newValue);
                     __order = newValue; 
                 },
                 configurable: true,
@@ -293,7 +297,7 @@
             {
                 get: function() { return __increase; },
                 set: function(newValue) { 
-                    if(typeof newValue !== 'number') throw new Error('Only [increase] type "number" can be added');
+                    if(typeof newValue !== 'number') throw new CustomError('Only [increase] type "number" can be added', newValue);
                     __increase = newValue; 
                 },
                 configurable: true,

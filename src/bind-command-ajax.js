@@ -279,8 +279,8 @@
                 var status = response ? response.statusCode : null;
                 var msg    = response ? response.statusMessage : '';
 
-                // 콜백 예외처리
-                try {   
+                // 콜백
+                try {
 
                     // (xhr,status) : 완료콜백
                     if (p_ajaxSetup && typeof p_ajaxSetup.complete === 'function') p_ajaxSetup.complete(response, status);
@@ -297,10 +297,19 @@
                     }                
 
                 } catch (err) {
-                    var msg = err.message || err;
-                    _this._model.cbError(msg +' Err:(callback) command='+ _this.name);
+                    var _err = {
+                        name: err.name || 'throw',
+                        message: err.message || err,
+                        stack: err.stack || ''
+                    };
+                    _this._model.cbError('Err:callback(cmd='+ _this.name +') message:'+ _err.message);
                     _this._onExecuted(_this);     // '실행 종료' 이벤트 발생
-                    // throw err;       // 에러 던지기
+                    if (global.isLog) {
+                        console.error('NAME : '+ _err.name);
+                        console.error('MESSAGE : '+ _err.message);
+                        console.error('STACK : '+ _err.stack);
+                    }
+                    if (global.isThrow) throw _err;       // 에러 던지기
                 }             
             }
 
@@ -346,19 +355,27 @@
          */
         BindCommandAjax.prototype.execute = function() {
             // if (this._model.isLog) console.log('call : BindCommandAjax.execute()');
-            if (this._model.isLog) console.log('call : [%s] BindCommandAjax.execute()', this.name);
+            if (global.isLog) console.log('call : [%s] BindCommandAjax.execute()', this.name);
 
-            // 콜백 예외처리
             try {
 
                 this._onExecute(this);  // '실행 시작' 이벤트 발생
                 if (this._execValid()) this._execBind();
             
             } catch (err) {
-                var msg = err.message || err;
-                this._model.cbError(msg +' Err:execue() cmd='+ this.name);
+                var _err = {
+                    name: err.name || 'throw',
+                    message: err.message || err,
+                    stack: err.stack || ''
+                };
+                this._model.cbError('Err:execue(cmd='+ _this.name +') message:'+ _err.message);
                 this._onExecuted(this);     // '실행 종료' 이벤트 발생
-                // throw err;   // 에러 던지기
+                if (global.isLog) {
+                    console.error('NAME : '+ _err.name);
+                    console.error('MESSAGE : '+ _err.message);
+                    console.error('STACK : '+ _err.stack);
+                }
+                if (global.isThrow) throw _err;       // 에러 던지기
             }            
         };
 

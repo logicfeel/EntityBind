@@ -289,9 +289,8 @@
          * 내부적으로 preRegister() >>  preCheck() >> preRedy() 실행한다.
          */
         BindModel.prototype.init = function() {
-            if (this.isLog) console.log('call :: BindModel.init()');
+            if (global.isLog) console.log('call :: BindModel.init()');
             
-            // 콜백 예외처리
             try {
 
                 this.preRegister.call(this, this);
@@ -300,9 +299,18 @@
                 }
 
             } catch (err) {
-                var msg = err.message || err;
-                this.cbError(msg +' Err:init() ');
-                // throw err;   // 에러 던지기
+                var _err = {
+                    name: err.name || 'throw',
+                    message: err.message || err,
+                    stack: err.stack || ''
+                };
+                this.cbError('Err:init() message:'+ _err.message);
+                if (global.isLog) {
+                    console.error('NAME : '+ _err.name);
+                    console.error('MESSAGE : '+ _err.message);
+                    console.error('STACK : '+ _err.stack);
+                }
+                if (global.isThrow) throw _err;       // 에러 던지기
             } 
         };
 

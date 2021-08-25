@@ -14,6 +14,7 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
+    var CustomError;
     var BindModel;
     var PropertyCollection;
     var IBindModel;
@@ -23,14 +24,17 @@
 
     if (typeof module === 'object' && typeof module.exports === 'object') {    
         util                    = require('./utils');
+        CustomError             = require('./error-custom');
         BindModel               = require('./bind-model');
         PropertyCollection      = require('./collection-property');
         IBindModel              = require('./i-bind-model');        
         ItemDOM                 = require('./entity-item-dom');
         BindCommandAjax         = require('./bind-command-ajax');
         EntityView              = require('./entity-view').EntityView;
+
     } else {
         util                    = global._W.Common.Util;
+        CustomError             = global._W.Common.CustomError;
         BindModel               = global._W.Meta.Bind.BindModel;
         PropertyCollection      = global._W.Collection.PropertyCollection;
         IBindModel              = global._W.Interface.IBindModel;        
@@ -42,6 +46,7 @@
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === 'undefined') throw new Error('[util] module load fail...');
+    if (typeof CustomError === 'undefined') throw new Error('[CustomError] module load fail...');
     if (typeof BindModel === 'undefined') throw new Error('[BindModel] module load fail...');
     if (typeof PropertyCollection === 'undefined') throw new Error('[PropertyCollection] module load fail...');
     if (typeof IBindModel === 'undefined') throw new Error('[IBindModel] module load fail...');
@@ -393,7 +398,7 @@
          * @param {?Boolean} p_isLoadProp 서비스 내의 prop 를 item 으로 로딩힌다. (기본값: true)
          */
          BindModelAjax.prototype.setService  = function(p_service, p_isLoadProp) {
-            // 콜백 예외처리
+
             try {  
 
                 _super.prototype.setService.call(this, p_service, p_isLoadProp);    // 부모 호출
@@ -407,9 +412,20 @@
                 }
 
             } catch (err) {
-                var msg = err.message || err;
-                this.cbError(msg +' Err:(callback) setService()');
-                // throw err;       // 에러 던지기
+                var _err = {
+                    name: err.name || 'throw',
+                    message: err.message || err,
+                    stack: err.stack || '',
+                    target: err.target || ''
+                };
+                this.cbError('Err:setService() message:'+ _err.message);
+                if (global.isLog) {
+                    console.error('NAME : '+ _err.name);
+                    console.error('MESSAGE : '+ _err.message);
+                    console.error('TARGET : '+ JSON.stringify(_err.target));
+                    console.error('STACK : '+ _err.stack);
+                }
+                if (global.isThrow) throw _err;       // 에러 던지기
             }               
         };
 
