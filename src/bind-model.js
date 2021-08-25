@@ -302,12 +302,14 @@
                 var _err = {
                     name: err.name || 'throw',
                     message: err.message || err,
-                    stack: err.stack || ''
+                    target: err.target || '',
+                    stack: err.stack || '',
                 };
                 this.cbError('Err:init() message:'+ _err.message);
                 if (global.isLog) {
                     console.error('NAME : '+ _err.name);
                     console.error('MESSAGE : '+ _err.message);
+                    console.error('TARGET : '+ JSON.stringify(_err.target));
                     console.error('STACK : '+ _err.stack);
                 }
                 if (global.isThrow) throw _err;       // 에러 던지기
@@ -370,9 +372,9 @@
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
          * @param {?Array<String>} p_cmds <선택> 추가할 아이템 명령
-         * @param {?(Array<String> | String)} p_entities <선택> 추가할 대상엔티티
+         * @param {?(Array<String> | String)} p_views <선택> 추가할 뷰 엔티티
          */
-        BindModel.prototype.add = function(p_item, p_cmds, p_entities) {
+        BindModel.prototype.add = function(p_item, p_cmds, p_views) {
 
             var cmds = [];
             var property = [];      // 속성
@@ -414,18 +416,18 @@
                 this._baseEntity.items.add(p_item); // 기본(_baseEntity)엔티티만 등록
             } else {
                 for (var i = 0; i < property.length; i++) {
-                    this[property[i]].add(p_item, p_entities);
+                    this[property[i]].add(p_item, p_views);
                 }
             }
         };
 
         /**
-         * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
+         * p_name으로 아이템을 p_views(String | String)에 다중 등록한다.
          * @param {String} p_name
          * @param {Object | String | Number | Boolean} p_obj 
-         * @param {?(Array<String> | String)} p_entities <선택> 추가할 아이템 명령
+         * @param {?(Array<String> | String)} p_views <선택> 추가할 뷰 엔티티
          */
-        BindModel.prototype.addItem = function(p_name, p_obj, p_cmds, p_entities) {
+        BindModel.prototype.addItem = function(p_name, p_obj, p_cmds, p_views) {
 
             var item;
             var property = {};
@@ -443,7 +445,7 @@
             
             item = new this.itemType(p_name, null, property);
 
-            this.add(item, p_cmds, p_entities);
+            this.add(item, p_cmds, p_views);
         };
 
         // BindModel.prototype.addItem = function(p_name, p_value, p_cmds, p_entities) {
@@ -466,9 +468,9 @@
         /**
          * 속성을 baseEntiey 또는 지정 Entity에  등록(로딩)한다.
          * @param {?(String | Array<String>)} p_prop 
-         * @param {?String} p_entity 
+         * @param {?String} p_bEntity 기본엔티티 
          */
-        BindModel.prototype.loadProp = function(p_prop, p_entity) {
+        BindModel.prototype.loadProp = function(p_prop, p_bEntity) {
 
             var prop = [];
             var entity;
@@ -483,14 +485,14 @@
             if (typeof p_prop !== 'undefined' && (!Array.isArray(p_prop) || typeof p_prop === 'string')) {
                 throw new Error('Only [p_entities] type "Array | string" can be added');
             }
-            if (typeof p_entity !== 'undefined' && typeof p_entity !== 'string') {
-                throw new Error('Only [p_entity] type "string" can be added');
+            if (typeof p_bEntity !== 'undefined' && typeof p_bEntity !== 'string') {
+                throw new Error('Only [p_bEntity] type "string" can be added');
             }
-            if (typeof p_entity !== 'undefined' && typeof this[p_entity] === 'undefined') {
-                throw new Error(' BindModel에 ['+ p_entity +']의 Entity가 없습니다. ');
+            if (typeof p_bEntity !== 'undefined' && typeof this[p_bEntity] === 'undefined') {
+                throw new Error(' BindModel에 ['+ p_bEntity +']의 Entity가 없습니다. ');
             }
 
-            entity = this[p_entity] || this._baseEntity;
+            entity = this[p_bEntity] || this._baseEntity;
 
             // 3.속성정보 등록
             for(var i = 0; prop.length > i; i++) {
@@ -506,15 +508,15 @@
             }
 
             // 4.매핑
-            this.setMapping(this.mapping, p_entity);
+            this.setMapping(this.mapping, p_bEntity);
         };
 
         /**
          * 아이템을 매핑한다.
          * @param {ProperyCollection | Object} p_mapping Item 에 매핑할 객체 또는 컬렉션
-         * @param {?String} p_entity 대상 엔티티
+         * @param {?String} p_bEntity 대상 기본 엔티티 
          */
-        BindModel.prototype.setMapping = function(p_mapping, p_entity) {
+        BindModel.prototype.setMapping = function(p_mapping, p_bEntity) {
             
             var mappingCollection;
             var entity;
@@ -526,14 +528,14 @@
             if (!(p_mapping instanceof PropertyCollection || typeof p_mapping === 'object')) {
                 throw new Error('Only [p_mapping] type "PropertyCollection | object" can be added');
             }
-            if (typeof p_entity !== 'undefined' && typeof p_entity !== 'string') {
-                throw new Error('Only [p_entity] type "string" can be added');
+            if (typeof p_bEntity !== 'undefined' && typeof p_bEntity !== 'string') {
+                throw new Error('Only [p_bEntity] type "string" can be added');
             }
-            if (typeof p_entity !== 'undefined' && typeof this[p_entity] === 'undefined') {
-                throw new Error(' BindModel에 ['+ p_entity +']의 Entity가 없습니다. ');
+            if (typeof p_bEntity !== 'undefined' && typeof this[p_bEntity] === 'undefined') {
+                throw new Error(' BindModel에 ['+ p_bEntity +']의 Entity가 없습니다. ');
             }
 
-            entity = this[p_entity] || this._baseEntity;
+            entity = this[p_bEntity] || this._baseEntity;
 
             // 2. 임시 매핑 컬렉션에 등록
             if (p_mapping instanceof PropertyCollection) {

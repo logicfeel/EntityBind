@@ -363,9 +363,9 @@
          * 명령 추가
          * @param {*} p_name 
          * @param {*} p_option 
-         * @param {*} p_entities 
+         * @param {*} p_bEntity 기본엔테티
          */
-        BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_entities) {
+        BindModelAjax.prototype.addCommand  = function(p_name, p_option, p_bEntity) {
             
             var bindCommand;
             
@@ -383,7 +383,7 @@
             if (typeof this[p_name] !== 'undefined') throw new Error('에러!! 이름 중복 : ' + p_name);
 
             // 생성 및 이름 설정
-            bindCommand = new BindCommandAjax(this, p_option, p_entities);
+            bindCommand = new BindCommandAjax(this, p_option, p_bEntity);
             bindCommand.name = p_name;  // 인스턴스 이름
 
             this[p_name] = bindCommand;
@@ -415,8 +415,8 @@
                 var _err = {
                     name: err.name || 'throw',
                     message: err.message || err,
+                    target: err.target || '',
                     stack: err.stack || '',
-                    target: err.target || ''
                 };
                 this.cbError('Err:setService() message:'+ _err.message);
                 if (global.isLog) {

@@ -317,11 +317,11 @@
         /**
          * 아이템을 추가하고 명령과 매핑한다.
          * @param {Item} p_item 등록할 아이템
-         * @param {?(Array<String> | String)} p_entities <선택> 추가할 아이템 명령
+         * @param {?(Array<String> | String)} p_views <선택> 추가할 뷰 엔티티
          */
-        BindCommand.prototype.add = function(p_item, p_entities) {
+        BindCommand.prototype.add = function(p_item, p_views) {
 
-            var entities = [];     // 파라메터 변수
+            var views = [];     // 파라메터 변수
             var property = [];      // 속성
             var collection;
 
@@ -329,13 +329,13 @@
             if (!(p_item instanceof Item)) {
                 throw new Error('Only [p_item] type "Item" can be added');
             }
-            if (typeof p_entities !== 'undefined' && (!(Array.isArray(p_entities) || typeof p_entities === 'string'))) {
-                throw new Error('Only [p_entities] type "Array | string" can be added');
+            if (typeof p_views !== 'undefined' && (!(Array.isArray(p_views) || typeof p_views === 'string'))) {
+                throw new Error('Only [p_views] type "Array | string" can be added');
             } 
 
             // 2.초기화 설정
-            if (Array.isArray(p_entities)) entities = p_entities;
-            else if (typeof p_entities === 'string') entities.push(p_entities);
+            if (Array.isArray(p_views)) views = p_views;
+            else if (typeof p_views === 'string') views.push(p_views);
             
             // baseEntity 에 아이템 없으면 등록
             if (!this._baseEntity.items.contains(p_item))  {
@@ -343,16 +343,16 @@
             }
 
             // 3.설정 대상 가져오기
-            if (entities.length > 0) {
-                for (var i = 0; i < entities.length; i++) {
+            if (views.length > 0) {
+                for (var i = 0; i < views.length; i++) {
                     
-                    if (typeof entities[i] !== 'string') throw new Error('Only [String] type instances can be added');
+                    if (typeof views[i] !== 'string') throw new Error('Only [String] type instances can be added');
                    
                     // 속성 유무 검사
-                    if (this[entities[i]]) {
-                        property.push(entities[i]);
+                    if (this[views[i]]) {
+                        property.push(views[i]);
                     } else {
-                        console.warn('Warning!! Param p_entities 에 [' + entities[i] + ']가 없습니다. ');
+                        console.warn('Warning!! Param p_views 에 [' + views[i] + ']가 없습니다. ');
                     }
                 }
             } else {
@@ -379,9 +379,9 @@
          * p_name으로 아이템을 p_entitys(String | String)에 다중 등록한다.
          * @param {String} p_name
          * @param {Object | String | Number | Boolean} p_value
-         * @param {?(Array<String> | String)} p_entities <선택> 추가할 아이템 명령
+         * @param {?(Array<String> | String)} p_views <선택> 추가할 뷰 엔티티
          */
-        BindCommand.prototype.addItem = function(p_name, p_value, p_entities) {
+        BindCommand.prototype.addItem = function(p_name, p_value, p_views) {
 
             var item;
             
@@ -392,16 +392,16 @@
 
             item = this._baseEntity.items.addValue(p_name, p_value);
 
-            this.add(item, p_entities);
+            this.add(item, p_views);
         };
 
         /**
          * 예시>
          * e.read.setEntity(['idx', 'addr'], 'valid');
-         * @param {String | Array} p_names 
-         * @param {?(String | Array<String>)} p_entities 
+         * @param {String | Array} p_names 아이템명
+         * @param {?(String | Array<String>)} p_views 설정할 뷰이름
          */
-        BindCommand.prototype.setItem = function(p_names, p_entities) {
+        BindCommand.prototype.setItem = function(p_names, p_views) {
 
             var names = [];     // 파라메터 변수
             var itemName;
@@ -419,7 +419,7 @@
                 itemName = names[i]; 
                 item = this._model._baseEntity.items[itemName];
                 if (typeof item !== 'undefined') {
-                    this.add(item, p_entities);
+                    this.add(item, p_views);
                 } else {
                     console.warn('baseEntity에 [' + itemName + '] 아이템이 없습니다.');
                 }
@@ -429,14 +429,14 @@
         /**
          * 대상엔티티에서 해제
          * @param {String | Array} p_names 해제할 아이템명
-         * @param {?(String | Array<String>)} p_entities 'valid', 'bind', 'output' 해제할 위치 지정 
+         * @param {?(String | Array<String>)} p_views 'valid', 'bind', 'output' 해제할 뷰 엔티티 지정
          * @example
          * e.read.release(['idx', 'addr'], 'valid');
          */
-        BindCommand.prototype.release = function(p_names, p_entities) {
+        BindCommand.prototype.release = function(p_names, p_views) {
 
             var names = [];         // 파라메터 변수
-            var entities = [];      // 파라메터 변수
+            var views = [];      // 파라메터 변수
             var property = [];      // 속성
             var itemName;
             var item;
@@ -448,25 +448,25 @@
 
             // 1. 유효성 검사
             if (names.length === 0) throw new Error('Only [p_names] type "Array | string" can be added');
-            if (typeof p_entities !== 'undefined' && (!(Array.isArray(p_entities) || typeof p_entities === 'string'))) {
-                throw new Error('Only [p_entities] type "Array | string" can be added');
+            if (typeof p_views !== 'undefined' && (!(Array.isArray(p_views) || typeof p_views === 'string'))) {
+                throw new Error('Only [p_views] type "Array | string" can be added');
             } 
 
             // 2.초기화 설정
-            if (Array.isArray(p_entities)) entities = p_entities;
-            else if (typeof p_entities === 'string') entities.push(p_entities);
+            if (Array.isArray(p_views)) views = p_views;
+            else if (typeof p_views === 'string') views.push(p_views);
             
             // 3.설정 대상 가져오기
-            if (entities.length > 0) {
-                for (var i = 0; i < entities.length; i++) {
+            if (views.length > 0) {
+                for (var i = 0; i < views.length; i++) {
                     
-                    if (typeof entities[i] !== 'string') throw new Error('Only [String] type instances can be added');
+                    if (typeof views[i] !== 'string') throw new Error('Only [String] type instances can be added');
                    
                     // 속성 유무 검사
-                    if (this[entities[i]]) {
-                        property.push(entities[i]);
+                    if (this[views[i]]) {
+                        property.push(views[i]);
                     } else {
-                        console.warn('Warning!! Param p_entities 에 [' + entities[i] + ']가 없습니다. ');
+                        console.warn('Warning!! Param p_views 에 [' + views[i] + ']가 없습니다. ');
                     }
                 }
             } else {

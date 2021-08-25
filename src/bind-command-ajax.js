@@ -300,13 +300,15 @@
                     var _err = {
                         name: err.name || 'throw',
                         message: err.message || err,
-                        stack: err.stack || ''
+                        target: err.target || '',
+                        stack: err.stack || '',
                     };
                     _this._model.cbError('Err:callback(cmd='+ _this.name +') message:'+ _err.message);
                     _this._onExecuted(_this);     // '실행 종료' 이벤트 발생
                     if (global.isLog) {
                         console.error('NAME : '+ _err.name);
                         console.error('MESSAGE : '+ _err.message);
+                        console.error('TARGET : '+ JSON.stringify(_err.target));
                         console.error('STACK : '+ _err.stack);
                     }
                     if (global.isThrow) throw _err;       // 에러 던지기
@@ -366,13 +368,15 @@
                 var _err = {
                     name: err.name || 'throw',
                     message: err.message || err,
-                    stack: err.stack || ''
+                    target: err.target || '',
+                    stack: err.stack || '',
                 };
                 this._model.cbError('Err:execue(cmd='+ _this.name +') message:'+ _err.message);
                 this._onExecuted(this);     // '실행 종료' 이벤트 발생
                 if (global.isLog) {
                     console.error('NAME : '+ _err.name);
                     console.error('MESSAGE : '+ _err.message);
+                    console.error('TARGET : '+ JSON.stringify(_err.target));
                     console.error('STACK : '+ _err.stack);
                 }
                 if (global.isThrow) throw _err;       // 에러 던지기
