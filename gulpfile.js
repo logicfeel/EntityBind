@@ -16,7 +16,7 @@ var paths = {
         // 폴리심 + 확장
         'src/object-implement.js', 'src/array-is_array.slim.js',
         // 공통 유틸리티
-        'src/utils.js', 'src/observer.js',
+        'src/utils.js', 'src/observer.js', 'src/error-custom.js',
         // 인터페이스
         'src/i-object.js', 'src/i-marshal.js', 'src/i-control*.js',
         'src/i-collection.js', 'src/i-collection-property.js', 'src/i-collection-control.js',

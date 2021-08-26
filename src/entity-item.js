@@ -484,7 +484,8 @@
             if (this.codeType) clone['codeType']        = this.codeType;  // 참조값
             if (this.order) clone['order']              = this.order;
             if (this.increase) clone['increase']        = this.increase;
-            if (this.value) clone['value']              = this.value;
+            // if (this.value) clone['value']              = this.value;    // 생성시 계산해서 개선한
+            if (this.__value) clone['__value']          = this.__value;
             if (this.getter) clone['getter']            = this.getter;
             if (this.setter) clone['setter']            = this.setter;
             
