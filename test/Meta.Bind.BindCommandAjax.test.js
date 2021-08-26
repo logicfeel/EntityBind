@@ -126,21 +126,21 @@
             model.read.addItem('i1', 'V1');
             model.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
             model.cbBaseValid = function() {
-                this.result.push('cbBaseValid');
+                this._model.result.push('cbBaseValid');
                 return true;
             };
             model.cbBaseBind = function(p_ajaxSetup) {
-                this.result.push('cbBaseBind');
+                this._model.result.push('cbBaseBind');
             };
             model.cbBaseResult = function(p_result) {
-                this.result.push('cbBaseResult');
+                this._model.result.push('cbBaseResult');
                 return p_result;
             };
             model.cbBaseOutput = function() {
-                this.result.push('cbBaseOutput');
+                this._model.result.push('cbBaseOutput');
             };
             model.cbBaseEnd = function(p_result) {
-                this.result.push('cbBaseEnd');
+                this._model.result.push('cbBaseEnd');
             };
      
             model.onExecuted = function() {

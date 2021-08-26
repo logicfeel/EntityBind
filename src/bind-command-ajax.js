@@ -120,8 +120,8 @@
             var bReturn = true;
 
             // 콜백 검사 (valid)
-            if (typeof this.cbValid  === 'function') bReturn = this.cbValid(this.valid);
-            else if (typeof this._model.cbBaseValid  === 'function') bReturn= this._model.cbBaseValid(this.valid);
+            if (typeof this.cbValid  === 'function') bReturn = this.cbValid.call(this, this.valid);
+            else if (typeof this._model.cbBaseValid  === 'function') bReturn= this._model.cbBaseValid.call(this, this.valid);
 
             // valid 검사 결과
             if (!bReturn) {
@@ -180,8 +180,8 @@
             }
             
             // 콜백 검사 (bind)
-            if (typeof this.cbBind === 'function') this.cbBind(ajaxSetup, this);
-            else if (typeof this._model.cbBaseBind === 'function') this._model.cbBaseBind(ajaxSetup, this);
+            if (typeof this.cbBind === 'function') this.cbBind.call(this, ajaxSetup, this);
+            else if (typeof this._model.cbBaseBind === 'function') this._model.cbBaseBind.call(this, ajaxSetup, this);
             
             this._ajaxAdapter(ajaxSetup);       // Ajax 호출 (web | node)
         };
@@ -200,8 +200,8 @@
             var result = typeof p_result === 'object' ? p_result : JSON.parse(JSON.stringify(p_result));
 
             // 콜백 검사 (Result)
-            if (typeof this.cbResult === 'function' ) result = this.cbResult(result);
-            else if (typeof this._model.cbBaseResult === 'function' ) result = this._model.cbBaseResult(result);
+            if (typeof this.cbResult === 'function' ) result = this.cbResult.call(this, result);
+            else if (typeof this._model.cbBaseResult === 'function' ) result = this._model.cbBaseResult.call(this, result);
 
             // ouputOption = 1,2,3  : 출력모드의 경우
             if (this.outputOption > 0) {
@@ -234,13 +234,13 @@
                 }
 
                 // 콜백 검사 (Output)
-                if (typeof this.cbOutput === 'function' ) this.cbOutput(result);
-                else if (typeof this._model.cbBaseOutput === 'function' ) this._model.cbBaseOutput(result);
+                if (typeof this.cbOutput === 'function' ) this.cbOutput.call(this, result);
+                else if (typeof this._model.cbBaseOutput === 'function' ) this._model.cbBaseOutput.call(this, result);
             }
 
             // 콜백 검사 (End)
-            if (typeof this.cbEnd === 'function' ) this.cbEnd(result, p_status, p_xhr);
-            else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd(result, p_status, p_xhr);
+            if (typeof this.cbEnd === 'function' ) this.cbEnd.call(this, result, p_status, p_xhr);
+            else if (typeof this._model.cbBaseEnd === 'function') this._model.cbBaseEnd.call(this, result, p_status, p_xhr);
             
             this._onExecuted(this, result);  // '실행 종료' 이벤트 발생
         };
@@ -257,7 +257,7 @@
             
             var msg = p_xhr && p_xhr.statusText ? p_xhr.statusText : p_error;
 
-            this._model.cbError(msg, p_status);
+            this._model.cbError.call(this, msg, p_status);
             this._onExecuted(this);     // '실행 종료' 이벤트 발생
         };
 
@@ -356,8 +356,7 @@
          * 실행 
          */
         BindCommandAjax.prototype.execute = function() {
-            // if (this._model.isLog) console.log('call : BindCommandAjax.execute()');
-            if (global.isLog) console.log('call : [%s] BindCommandAjax.execute()', this.name);
+            if (global.isLog) console.log('[BindCommandAjax] %s.execute()', this.name);
 
             try {
 
