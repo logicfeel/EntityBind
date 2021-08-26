@@ -175,6 +175,8 @@
         view.items.addValue('i2', 'V2');
         var view2 = new EntityView('T2');
         view2.items.addEntity(view);
+        // view2.items.add(view);
+
         if (
                 view.name === 'T1' && 
                 view.items.count === 2 &&

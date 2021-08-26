@@ -6,3 +6,5 @@
 /docs3
 /out
 .DS_Store
+/dist/_w-meta-1.4*.*
+/dist/_w-meta-1.5*.*

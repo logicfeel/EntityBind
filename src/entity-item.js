@@ -805,12 +805,19 @@
             var i_value;
 
             if (p_object instanceof Item) {
+                // 아이템 소유자 설정
                 if (p_object.entity === null) p_object.entity = this._onwer;
                 i_name = p_object.name;
                 i_value = p_object;
             } else if (typeof p_object === 'string') {
                 i_name = p_object;
                 i_value = new this.itemType(i_name, this._onwer);
+// POINT::
+            // } else if (p_object instanceof MetaElement && p_object.instanceOf('Entity')) {
+            //     // 아아템 가져오기
+            //     for (var i = 0; p_object.items.count > i; i++) {
+            //         this.add(p_object.items[i]);
+            //     }
             } else {
                 throw new Error('p_object string | Item instance param request fail...');
             }
@@ -843,6 +850,7 @@
 
         /**
          * 엔티티 추가한다.
+         * REVIEW:: 제거 대상 add() 로 합쳐짐
          * @param {Entity} p_entity 
          */
         ItemViewCollection.prototype.addEntity  = function(p_entity) {

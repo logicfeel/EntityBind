@@ -394,325 +394,325 @@
         // }
 
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("BindCommand.add(item) :: 전체 엔티티에 아이템 추가 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('BindCommand.add(item) :: 전체 엔티티에 아이템 추가 ');
         var model = new BindModelAjax();
         model.itemType = Item;
         model.addCommand('create');
-        var i1 = new Item("i1");    // 참조 값으로 넘김
+        var i1 = new Item('i1');    // 참조 값으로 넘김
         model.create.add(i1);
-        model.first.items["i1"].value = "V1";
-        model._baseEntity.items["i1"].value = "V11";    // 실제 적용 위치
-        i1.value = "V111";
+        model.first.items['i1'].value = 'V1';
+        model._baseEntity.items['i1'].value = 'V11';    // 실제 적용 위치
+        i1.value = 'V111';
         if (
                 model.create.valid.items.count === 1 &&
-                model.create.valid.items["i1"].value === "V11" &&
-                model.create.valid.items["i1"].entity.name === "first" &&
+                model.create.valid.items['i1'].value === 'V11' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
                 model.create.bind.items.count === 1 &&
-                model.create.bind.items["i1"].value === "V11" &&
-                model.create.bind.items["i1"].entity.name === "first" &&
+                model.create.bind.items['i1'].value === 'V11' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
                 model.first.items.count === 1 &&
-                model.first.items["i1"].value === "V11" &&
-                model._baseEntity.items["i1"].value === "V11" &&
+                model.first.items['i1'].value === 'V11' &&
+                model._baseEntity.items['i1'].value === 'V11' &&
                 true) {
             taskCnt++;
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
             errorCount++;
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("BindCommand.add(item, entityName) :: [지정된] 엔티티에 아이템 추가 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('BindCommand.add(item, entityName) :: [지정된] 엔티티에 아이템 추가 ');
         var model = new BindModelAjax();
         model.itemType = Item;
         model.addCommand('create');
-        var i1 = new Item("i1");
-        model.create.add(i1, "valid");
-        model.first.items["i1"].value = "V1";
+        var i1 = new Item('i1');
+        model.create.add(i1, 'valid');
+        model.first.items['i1'].value = 'V1';
         if (
                 model.create.valid.items.count === 1 &&
-                model.create.valid.items["i1"].value === "V1" &&
-                model.create.valid.items["i1"].entity.name === "first" &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
                 model.create.bind.items.count === 0 &&
                 model.first.items.count === 1 &&
-                model.first.items["i1"].value === "V1" &&
+                model.first.items['i1'].value === 'V1' &&
                 true) {
             taskCnt++;
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
             errorCount++;
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("BindCommand.add(item, entityNames) :: [지정된] 엔티티[들]에 아이템 추가 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('BindCommand.add(item, entityNames) :: [지정된] 엔티티[들]에 아이템 추가 ');
         var model = new BindModelAjax();
         model.itemType = Item;
         model.addCommand('create');
-        var i1 = new Item("i1");
-        model.create.add(i1, ["valid", "bind"]);
-        // model.create.add(i1, ["valid", "bind"]); 중복 추가 안됨
-        model.first.items["i1"].value = "V1";
+        var i1 = new Item('i1');
+        model.create.add(i1, ['valid', 'bind']);
+        // model.create.add(i1, ['valid', 'bind']); 중복 추가 안됨
+        model.first.items['i1'].value = 'V1';
         if (
                 model.create.valid.items.count === 1 &&
-                model.create.valid.items["i1"].value === "V1" &&
-                model.create.valid.items["i1"].entity.name === "first" &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
                 model.create.bind.items.count === 1 &&
-                model.create.bind.items["i1"].value === "V1" &&
-                model.create.bind.items["i1"].entity.name === "first" &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
                 model.first.items.count === 1 &&
-                model.first.items["i1"].value === "V1" &&
+                model.first.items['i1'].value === 'V1' &&
                 true) {
             taskCnt++;
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("BindCommand.addItem(name, value) :: 아이템 생성 및 [전체] 엔티티에 추가 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('BindCommand.addItem(name, value) :: 아이템 생성 및 [전체] 엔티티에 추가 ');
         var model = new BindModelAjax();
         model.itemType = Item;
         model.addCommand('create');
-        model.create.addItem("i1", "V1");
-        // model.create.addItem("i1", "V2");   // 중복되서 추가 안됨
+        model.create.addItem('i1', 'V1');
+        // model.create.addItem('i1', 'V2');   // 중복되서 추가 안됨
         if (
                 model.create.valid.items.count === 1 &&
-                model.create.valid.items["i1"].value === "V1" &&
-                model.create.valid.items["i1"].entity.name === "first" &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
                 model.create.bind.items.count === 1 &&
-                model.create.bind.items["i1"].value === "V1" &&
-                model.create.bind.items["i1"].entity.name === "first" &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
                 model.first.items.count === 1 &&
-                model.first.items["i1"].value === "V1" &&
+                model.first.items['i1'].value === 'V1' &&
                 true) {
             taskCnt++;
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("BindCommand.addItem(name, value, entityName) :: 아이템 생성 및 [특정] 엔티티에 추가 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('BindCommand.addItem(name, value, entityName) :: 아이템 생성 및 [특정] 엔티티에 추가 ');
         var model = new BindModelAjax();
         model.itemType = Item;
         model.addCommand('create');
-        var i1 = new Item("i1");
-        model.create.addItem("i1", "V1", "valid");
+        var i1 = new Item('i1');
+        model.create.addItem('i1', 'V1', 'valid');
         if (
                 model.create.valid.items.count === 1 &&
-                model.create.valid.items["i1"].value === "V1" &&
-                model.create.valid.items["i1"].entity.name === "first" &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
                 model.create.bind.items.count === 0 &&
                 model.first.items.count === 1 &&
-                model.first.items["i1"].value === "V1" &&
+                model.first.items['i1'].value === 'V1' &&
                 true) {
             taskCnt++;
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
         
-        console.log("---------------------------------------------------------------------------");
-        console.log("BindCommand.addItem(name, value, entityNames) :: 아이템 생성 및 [지정된] 엔티티[들]에 추가 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('BindCommand.addItem(name, value, entityNames) :: 아이템 생성 및 [지정된] 엔티티[들]에 추가 ');
         var model = new BindModelAjax();
         model.itemType = Item;
         model.addCommand('create');
-        var i1 = new Item("i1");
-        model.create.addItem("i1", "V1", ["valid", "bind"]);
+        var i1 = new Item('i1');
+        model.create.addItem('i1', 'V1', ['valid', 'bind']);
         if (
                 model.create.valid.items.count === 1 &&
-                model.create.valid.items["i1"].value === "V1" &&
-                model.create.valid.items["i1"].entity.name === "first" &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
                 model.create.bind.items.count === 1 &&
-                model.create.bind.items["i1"].value === "V1" &&
-                model.create.bind.items["i1"].entity.name === "first" &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
                 model.first.items.count === 1 &&
-                model.first.items["i1"].value === "V1" &&
+                model.first.items['i1'].value === 'V1' &&
                 true) {
             taskCnt++;
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("BindCommand.setItem(name | names) :: baseEntity의 [지정한] 아이템을 [전체] 엔티티에 추가 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('BindCommand.setItem(name | names) :: baseEntity의 [지정한] 아이템을 [전체] 엔티티에 추가 ');
         var model = new BindModelAjax();
         model.itemType = Item;
         model.addCommand('create');
-        model.first.items.add(new Item("i1"));
-        model.first.items["i1"].value = "V1";
-        model.create.setItem("i1", ["valid", "bind"]);
+        model.first.items.add(new Item('i1'));
+        model.first.items['i1'].value = 'V1';
+        model.create.setItem('i1', ['valid', 'bind']);
             if (model.create.valid.items.count === 1 &&
-                model.create.valid.items["i1"].value === "V1" &&
-                model.create.valid.items["i1"].entity.name === "first" &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
                 model.create.bind.items.count === 1 &&
-                model.create.bind.items["i1"].value === "V1" &&
-                model.create.bind.items["i1"].entity.name === "first" &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i1'].entity.name === 'first' &&
                 model.first.items.count === 1 &&
-                model.first.items["i1"].value === "V1" &&
+                model.first.items['i1'].value === 'V1' &&
                 true) {
             taskCnt++;
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("BindCommand.setItem(names, entityName) :: baseEntity의 [지정한] 아이템을 [지정된] 엔티티에 추가 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('BindCommand.setItem(names, entityName) :: baseEntity의 [지정한] 아이템을 [지정된] 엔티티에 추가 ');
         var model = new BindModelAjax();
         model.itemType = Item;
         model.addCommand('create');
-        model.first.items.add(new Item("i1"));
-        model.first.items.add(new Item("i2"));
-        model.first.items["i1"].value = "V1";
-        model.first.items["i2"].value = "V2";
-        model.create.setItem(["i1", "i2"], "valid");
+        model.first.items.add(new Item('i1'));
+        model.first.items.add(new Item('i2'));
+        model.first.items['i1'].value = 'V1';
+        model.first.items['i2'].value = 'V2';
+        model.create.setItem(['i1', 'i2'], 'valid');
         if (
                 model.create.valid.items.count === 2 &&
-                model.create.valid.items["i1"].value === "V1" &&
-                model.create.valid.items["i2"].value === "V2" &&
-                model.create.valid.items["i1"].entity.name === "first" &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i2'].value === 'V2' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
                 model.create.bind.items.count === 0 &&
                 model.first.items.count === 2 &&
-                model.first.items["i1"].value === "V1" &&
-                model.first.items["i2"].value === "V2" &&
+                model.first.items['i1'].value === 'V1' &&
+                model.first.items['i2'].value === 'V2' &&
                 true) {
             taskCnt++;
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("BindCommand.release(names, entityName) :: baseEntity의 [지정한] 아이템을 [지정된] 엔티티에 해제 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('BindCommand.release(names, entityName) :: baseEntity의 [지정한] 아이템을 [지정된] 엔티티에 해제 ');
         var model = new BindModelAjax();
         model.itemType = Item;
         model.addCommand('create');
-        model.items.add(new Item("i1"));
-        model.items.add(new Item("i2"));
-        model.items["i1"].value = "V1";
-        model.items["i2"].value = "V2";
-        model.create.setItem(["i1", "i2"], ["valid", "bind"]);
-        model.create.release("i2", "bind");
+        model.items.add(new Item('i1'));
+        model.items.add(new Item('i2'));
+        model.items['i1'].value = 'V1';
+        model.items['i2'].value = 'V2';
+        model.create.setItem(['i1', 'i2'], ['valid', 'bind']);
+        model.create.release('i2', 'bind');
         if (
                 model.create.valid.items.count === 2 &&
-                model.create.valid.items["i1"].value === "V1" &&
-                model.create.valid.items["i2"].value === "V2" &&
-                model.create.valid.items["i1"].entity.name === "first" &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i2'].value === 'V2' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
                 model.create.bind.items.count === 1 &&
                 model.items.count === 2 &&
-                model.items["i1"].value === "V1" &&
-                model.items["i2"].value === "V2" &&
+                model.items['i1'].value === 'V1' &&
+                model.items['i2'].value === 'V2' &&
                 true) {
             taskCnt++;
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("BindCommand.release(names, entityName) :: baseEntity의 [지정한] 아이템을 [전체] 엔티티에 해제 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('BindCommand.release(names, entityName) :: baseEntity의 [지정한] 아이템을 [전체] 엔티티에 해제 ');
         var model = new BindModelAjax();
         model.itemType = Item;
         model.addCommand('create');
-        model.items.add(new Item("i1"));
-        model.items.add(new Item("i2"));
-        model.items["i1"].value = "V1";
-        model.items["i2"].value = "V2";
-        model.create.setItem(["i1", "i2"], ["valid", "bind"]);
-        model.create.release("i2");
+        model.items.add(new Item('i1'));
+        model.items.add(new Item('i2'));
+        model.items['i1'].value = 'V1';
+        model.items['i2'].value = 'V2';
+        model.create.setItem(['i1', 'i2'], ['valid', 'bind']);
+        model.create.release('i2');
         if (
                 model.create.valid.items.count === 1 &&
-                model.create.valid.items["i1"].value === "V1" &&
-                model.create.valid.items["i1"].entity.name === "first" &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
                 model.create.bind.items.count === 1 &&
                 model.items.count === 2 &&
-                model.items["i1"].value === "V1" &&
-                model.items["i2"].value === "V2" &&
+                model.items['i1'].value === 'V1' &&
+                model.items['i2'].value === 'V2' &&
                 true) {
             taskCnt++;
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("BindCommand.setItem(names, entityNames) :: baseEntity의 [지정한] 아이템을 [지정된] 엔티티[들]에 추가 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('BindCommand.setItem(names, entityNames) :: baseEntity의 [지정한] 아이템을 [지정된] 엔티티[들]에 추가 ');
         var model = new BindModelAjax();
         model.itemType = Item;
         model.addCommand('create');
-        model.first.items.add(new Item("i1"));
-        model.first.items.add(new Item("i2"));
-        model.first.items.add(new Item("i3"));
-        model.first.items["i1"].value = "V1";
-        model.first.items["i2"].value = "V2";
-        model.first.items["i3"].value = "V3";
-        model.create.setItem(["i1", "i2"], ["valid", "bind"]);
+        model.first.items.add(new Item('i1'));
+        model.first.items.add(new Item('i2'));
+        model.first.items.add(new Item('i3'));
+        model.first.items['i1'].value = 'V1';
+        model.first.items['i2'].value = 'V2';
+        model.first.items['i3'].value = 'V3';
+        model.create.setItem(['i1', 'i2'], ['valid', 'bind']);
         if (
                 model.create.valid.items.count === 2 &&
-                model.create.valid.items["i1"].value === "V1" &&
-                model.create.valid.items["i2"].value === "V2" &&
-                model.create.valid.items["i1"].entity.name === "first" &&
+                model.create.valid.items['i1'].value === 'V1' &&
+                model.create.valid.items['i2'].value === 'V2' &&
+                model.create.valid.items['i1'].entity.name === 'first' &&
                 model.create.bind.items.count === 2 &&
-                model.create.bind.items["i1"].value === "V1" &&
-                model.create.bind.items["i2"].value === "V2" &&
+                model.create.bind.items['i1'].value === 'V1' &&
+                model.create.bind.items['i2'].value === 'V2' &&
                 model.first.items.count === 3 &&
-                model.first.items["i1"].value === "V1" &&
-                model.first.items["i2"].value === "V2" &&
-                model.first.items["i3"].value === "V3" &&
+                model.first.items['i1'].value === 'V1' &&
+                model.first.items['i2'].value === 'V2' &&
+                model.first.items['i3'].value === 'V3' &&
                 true) {
             taskCnt++;
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
 
-        console.log("---------------------------------------------------------------------------");
-        console.log("BindCommandAjax.execute() :: 명령 엔티티 실행 ");
+        console.log('---------------------------------------------------------------------------');
+        console.log('BindCommandAjax.execute() :: 명령 엔티티 실행 ');
        
         var model = new BindModelAjax();
         model.itemType = Item;
         model.addCommand('create');
-        model.baseUrl = "http://127.0.0.1:8080/json/sample_row_single.json";       // 가져올 경로
+        model.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
         model. result = [];  
         model.create.cbValid = function() {
-            this._model.result.push("Valid"); 
+            this._model.result.push('Valid'); 
             return true;
         };
         var err = function(p) {
             this.result = [];
-            console.warn("실패! " + p);
+            console.warn('실패! ' + p);
             errorCount++;
         };
         model.cbFail = err;
         model.cbError = err;
         model.create.cbEnd = function(p_result) {
-            if (p_result.entity["return"] !== 0) {
+            if (p_result.entity['return'] !== 0) {
                 errorCount++;
-                console.warn("서버측 처리가 실패하였습니다.");
+                console.warn('서버측 처리가 실패하였습니다.');
             }
         };
-        model.create.addItem("i1", "V1");
+        model.create.addItem('i1', 'V1');
         model.create.execute();             // 실행
         if (
-                model.result.indexOf("Valid") > -1 &&
+                model.result.indexOf('Valid') > -1 &&
                 true) {
             taskCnt++;
-            console.log("Result = Success");
+            console.log('Result = Success');
         } else {
-            console.warn("Result = Fail");
+            console.warn('Result = Fail');
             errorCount++;
         }
         
