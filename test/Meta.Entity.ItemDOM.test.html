@@ -3,7 +3,7 @@
 <body>
 Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
 <script type='text/javascript' src='https://code.jquery.com/jquery-1.12.3.min.js'></script>
-<script src='../dist/_w-meta-1.6.0.js'></script>
+<script src='../dist/_w-meta-1.6.1.js'></script>
 <script>
     var errorCnt = 0;
 </script>
@@ -23,7 +23,7 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
     { // *************************************************
         item.setter = function(val) { return val * 10; };   // setter 에서 return !!
         item.selector = { key: '#t1', type: 'text'};
-        item.filter = function(val) { return val * 2; };
+        item.setFilter = function(val) { return val * 2; };
     } // *************************************************
     
     item.value = 3;
@@ -84,12 +84,15 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
     
     { // *************************************************
         item2_1.setFilter = function(val) { // setFilter 로 변경필요!, return 없음으로.
-            $('input[name=t2_1][value='+ val + ']').prop('checked', true); 
+            $('input[name=t2_1][value='+ val + ']').prop('checked', true);
         };
-        item2_1.selector = { key: 'input[name=t2_1][type=radio]:checked', type: 'value'};
+        item2_1.getFilter = function(val) {
+            return $('input[name=t2_1][type=radio]:checked').val();
+        };
+        item2_1.selector = { key: 'input[name=t2_1][type=radio]', type: 'none'};
     } // *************************************************
     
-    item2_1.value = 2;
+    //item2_1.value = 2;
     radio_event_1(item2_1.value)
 
     function radio_event_1(val) { 
@@ -113,7 +116,7 @@ Meta.Entity.ItemDOM.testk 테스트 : 콘솔창 확인
     
     { // *************************************************
         item3.selector = { key: '#t3', type: 'text'};
-        item3.filter = function(val) { return val * 2; };   
+        item3.setFilter = function(val) { return val * 2; };   
     } // *************************************************
     
     item3.value = 3;

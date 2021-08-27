@@ -289,7 +289,7 @@
          * 내부적으로 preRegister() >>  preCheck() >> preRedy() 실행한다.
          */
         BindModel.prototype.init = function() {
-            if (global.isLog) console.log('call :: BindModel.init()');
+            if (global.isLog) console.log('[BindModel] init()');
             
             try {
 

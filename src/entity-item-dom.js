@@ -235,9 +235,10 @@
                                 }
 
                                 // 필터 적용 : get
-                                if (typeof this.getFilter === 'function') __val = this.getFilter.call(this, __val);
-
+                                // if (typeof this.getFilter === 'function') __val = this.getFilter.call(this, __val);
                             }
+                            // 필터 적용 : get
+                            if (typeof this.getFilter === 'function') __val = this.getFilter.call(this, __val);
                         }
                     
                     // 우선순위 : 3        
@@ -264,10 +265,10 @@
                     return __val; 
                 },
                 set:  function(val) { 
-                    var __val, _val;
+                    var __val, _val, _fVal;
                     var key, type, option;
                     var _oldVal = this.__value;
-                    var _isSetSelector = true;   // selector 설정 여부
+                    // var _isSetFilter = true;   // selector 설정 여부
 
                     if (typeof this.setter === 'function' ) _val = this.setter.call(this, val);
                     
@@ -287,10 +288,16 @@
                         if (typeof module !== 'object') {
 
                             // 필터 적용 : set
+                            // if (typeof this.setFilter === 'function') {
+                            //     __val = this.setFilter.call(this, __val);
+                            //     _isSetFilter = __val ? true : false;
+                            // }
                             if (typeof this.setFilter === 'function') {
-                                __val = this.setFilter.call(this, __val);
-                                _isSetSelector = __val ? true : false;
+                                _fVal = this.setFilter.call(this, __val);
                             }
+                            
+                            // 셀렉터 설정 값 1> 필터값, 2> __value
+                            __val = _fVal || __val;
 
                             // 셀렉터 내부값 저장
                             this.__sValue = String(__val);
@@ -299,7 +306,9 @@
                             type = this.selector.type;
                             option = type.indexOf('.') > -1 ? type.substr(type.indexOf('.') + 1) : '';
 
-                            if (type !== 'none' && type !== '' && _isSetSelector){
+                            // 유효한 셀렉터 이면서, 설정할 ....
+                            // if (type !== 'none' && type !== '' && _isSetFilter){
+                            if (type !== 'none' && type !== ''){
                                 if (type === 'value' || type === 'val') {
                                     jQuery(key).val(__val);
                                 } else if (type === 'text') {
