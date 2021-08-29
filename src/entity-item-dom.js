@@ -197,7 +197,7 @@
 
                     // 우선순위 : 2
                     // } else if (__selector !== null && __filter === null) {
-                    } else if (__selector !== null) {
+                    } else if (__selector !== null || typeof this.getFilter === 'function') {
 
                         // node 에서는 강제 종료함
                         if (typeof module !== 'object') {
@@ -234,12 +234,11 @@
                                     this.__sValue = String(__val);  // sValue 저장
                                 }
 
-                                // 필터 적용 : get
-                                // if (typeof this.getFilter === 'function') __val = this.getFilter.call(this, __val);
                             }
-                            // 필터 적용 : get
-                            if (typeof this.getFilter === 'function') __val = this.getFilter.call(this, __val);
                         }
+
+                        // 필터 적용 : get
+                        if (typeof this.getFilter === 'function') __val = this.getFilter.call(this, __val);
                     
                     // 우선순위 : 3        
                     } else {
@@ -282,7 +281,14 @@
                     }
                     this.__value = __val;   // 내부에 저장
            
-                    if (__selector !== null) {
+                    if (__selector !== null || typeof this.setFilter === 'function') {
+
+                        if (typeof this.setFilter === 'function') {
+                            _fVal = this.setFilter.call(this, __val);
+                        }
+                        
+                        // 셀렉터 설정 값 1> 필터값, 2> __value
+                        __val = _fVal || __val;
 
                         // node 에서는 강제 종료함
                         if (typeof module !== 'object') {
@@ -292,12 +298,13 @@
                             //     __val = this.setFilter.call(this, __val);
                             //     _isSetFilter = __val ? true : false;
                             // }
-                            if (typeof this.setFilter === 'function') {
-                                _fVal = this.setFilter.call(this, __val);
-                            }
+
+                            // if (typeof this.setFilter === 'function') {
+                            //     _fVal = this.setFilter.call(this, __val);
+                            // }
                             
-                            // 셀렉터 설정 값 1> 필터값, 2> __value
-                            __val = _fVal || __val;
+                            // // 셀렉터 설정 값 1> 필터값, 2> __value
+                            // __val = _fVal || __val;
 
                             // 셀렉터 내부값 저장
                             this.__sValue = String(__val);
