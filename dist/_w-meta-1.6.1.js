@@ -6118,6 +6118,7 @@ if (typeof Array.isArray === 'undefined') {
             this._symbol = this._symbol.concat(['getTypes', 'init', 'preRegister', 'preCheck', 'preReady', 'addEntity']);
             this._symbol = this._symbol.concat(['add', 'addItem', 'loadProp', 'setMapping', 'preReady', 'addEntity']);
             this._symbol = this._symbol.concat(['addCommand', 'setService']);
+            this._symbol = this._symbol.concat(['service', 'bindModel', 'command', 'fn']);
         }
         util.inherits(BindModel, _super);
 
@@ -7144,7 +7145,6 @@ if (typeof Array.isArray === 'undefined') {
             // 예약어 등록
             this._symbol = this._symbol.concat(['items', 'baseAjaxSetup', 'baseUrl']);
             this._symbol = this._symbol.concat(['getTypes', 'checkSelector', 'setService']);
-
         }
         util.inherits(BindModelAjax, _super);
     
@@ -7393,6 +7393,14 @@ if (typeof Array.isArray === 'undefined') {
                 }
                 if (typeof p_service['baseAjaxSetup'] === 'object') {
                     this.baseAjaxSetup = p_service['baseAjaxSetup'];
+                }
+
+                for (var prop in p_service) {
+                    if (p_service.hasOwnProperty(prop) && this._symbol.indexOf(prop) < 0) {
+                        // 사용자 객체 설정
+                        console.log(prop);
+                        this[prop] = p_service[prop];
+                    }
                 }
 
             } catch (err) {
