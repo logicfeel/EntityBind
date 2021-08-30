@@ -270,6 +270,7 @@
             this._symbol = this._symbol.concat(['getTypes', 'init', 'preRegister', 'preCheck', 'preReady', 'addEntity']);
             this._symbol = this._symbol.concat(['add', 'addItem', 'loadProp', 'setMapping', 'preReady', 'addEntity']);
             this._symbol = this._symbol.concat(['addCommand', 'setService']);
+            this._symbol = this._symbol.concat(['service', 'bindModel', 'command', 'fn']);
         }
         util.inherits(BindModel, _super);
 
