@@ -3,10 +3,10 @@
       "allowUnknownTags": false
     },
     "source": {
-      "include": ["./src", "./example"],
+      "include": ["./src", "./example/Admin", "./example/Front"],
       "includePattern": ".js$",
       "exclude": ["./src/old"],
-      "excludePattern": "(node_modules/|docs)"
+      "excludePattern": "(^|\\/|\\\\)_"
     },
     "plugins": [
       "plugins/markdown"
