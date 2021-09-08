@@ -41,9 +41,10 @@
 
     var DesignPopupService  = (function (_super) {
         /**
-         * IMarshal 인터페이스는 IObject를 상속함
-         * @abstract 추상클래스
-         * @class
+         * 디자인 :: 팝업 서비스
+         * @constructs _W.Service.Front.DesignPopupService
+         * @extends _W.Service.Front.BaseService
+         * @param {String} p_suffix 셀렉터 접미사
          */
         function DesignPopupService(p_this, p_suffix) {
             _super.call(this, p_this);

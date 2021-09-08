@@ -9,17 +9,14 @@
 
     if (typeof module !== 'object') {                   // Web
         util                = global._W.Common.Util;
-        BindCommandAjax     = global._W.Meta.Bind.BindCommandAjax;
     } else if (typeof module.exports === 'object'){     // node
         // util                = require('util');
-        // BindCommandAjax     = require('./bind-command-ajax');
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === 'undefined') throw new Error('[util] module load fail...');
     if (typeof BaseService === 'undefined') throw new Error('[BaseService] module load fail...');
-    if (typeof BindCommandAjax === 'undefined') throw new Error('[BindCommandAjax] module load fail...');
     if (typeof PageView === 'undefined') throw new Error('[PageView] module load fail...');     // 전역에 선언됨
     if (typeof Handlebars === 'undefined') throw new Error('[Handlebars] module load fail...'); // 전역에 선언됨
 
@@ -29,38 +26,10 @@
 
     var BoardEventService  = (function (_super) {
         /**
-         * FAQ 게시판 서비스
+         * 게시판 :: 이벤트 서비스
          * @constructs _W.Service.Admin.BoardEventService
          * @extends _W.Service.Admin.BaseService
          * @param {String} p_suffix 셀렉터 접미사
-         * @example
-         * <script src="/Common/js/handlebars.js"></script>
-         * <script src="/Common/js/_w-meta-1.6.1.js?<%=g_iRandomID%>"></script>
-         * <script src="/Admin/adm_cmn/Service/base-page-svc.js?<%=g_iRandomID%>"></script>
-         * <script src="/Admin/adm_mod/BOD/Service/board-event-svc.js?<%=g_iRandomID%>"></script>
-         * <script>
-         * // #######################################################################################################
-         *   var evt = new _W.BindModelAjax(new BoardEventService());
-         *   
-         *   this.isLog = true;  // 디버깅 모드
-         *   
-         *   // 속성 설정
-         *   evt.prop["__formUrl"] = "Event_Frm.asp";
-         *   evt.prop['__isGetLoad'] = false;
-         * 
-         *  // 이벤트 바인딩
-         *  $('#btn_Search').click(evt.fn.searchList);
-         *  $('#sel_Pagesize').change(evt.fn.changePagesize);
-         *  $('#btn_Reset').click(evt.fn.resetForm);
-         *  $('#btn_Insert').click(evt.fn.moveForm);
-         *  //--------------------------------------------------------------
-         *  $(document).ready(function () {
-         *      evt.init();
-         *      evt.fn.procList();
-         *  });
-         *  if (this.isLog) console.log("______________ $.ready()");
-         * </script>
-         * 
          */
         function BoardEventService(p_suffix) {
             _super.call(this);

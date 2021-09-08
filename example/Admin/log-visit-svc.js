@@ -26,7 +26,7 @@
 
     var LogVisitService  = (function (_super) {
         /**
-         * FAQ 게시판 서비스
+         * 로그 :: 방문자 서비스
          * @constructs _W.Service.Admin.LogVisitService
          * @extends _W.Service.Admin.BaseService
          * @param {String} p_suffix 셀렉터 접미사

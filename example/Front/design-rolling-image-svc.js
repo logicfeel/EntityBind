@@ -26,7 +26,7 @@
     // 4. 모듈 구현    
     var DesignRollingImageService  = (function (_super) {
         /**
-         * FAQ 게시판 서비스
+         * 디자인 :: 롤링 이미지 서비스
          * @constructs _W.Service.Front.DesignRollingImageService
          * @extends _W.Service.Front.BaseService
          * @param {String} p_suffix 셀렉터 접미사

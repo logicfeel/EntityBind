@@ -29,9 +29,9 @@
 
     var BoardEventService  = (function (_super) {
         /**
-         * FAQ 게시판 서비스
-         * @constructs _W.Service.BoardEventService
-         * @extends _W.Service.BaseService
+         * 게시판 :: 이벤트 서비스
+         * @constructs _W.Service.Front.BoardEventService
+         * @extends _W.Service.Front.BaseService
          * @param {String} p_suffix 셀렉터 접미사
          */
         function BoardEventService(p_suffix) {

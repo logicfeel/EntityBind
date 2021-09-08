@@ -8,21 +8,17 @@
     //==============================================================
     // 1. 모듈 네임스페이스 선언
     var util;
-    var BindCommandAjax;
 
     if (typeof module !== 'object') {                   // Web
         util                = global._W.Common.Util;
-        BindCommandAjax     = global._W.Meta.Bind.BindCommandAjax;
     } else if (typeof module.exports === 'object'){     // node
         // util                = require('util');
-        // BindCommandAjax     = require('./bind-command-ajax');
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === 'undefined') throw new Error('[util] module load fail...');
     if (typeof BaseService === 'undefined') throw new Error('[BaseService] module load fail...');
-    if (typeof BindCommandAjax === 'undefined') throw new Error('[BindCommandAjax] module load fail...');
     if (typeof PageView === 'undefined') throw new Error('[PageView] module load fail...');     // 전역에 선언됨
     if (typeof Handlebars === 'undefined') throw new Error('[Handlebars] module load fail...'); // 전역에 선언됨
 
@@ -39,9 +35,10 @@
 
     var ProductQnaService  = (function (_super) {
         /**
-         * IMarshal 인터페이스는 IObject를 상속함
-         * @abstract 추상클래스
-         * @class
+         * 상품 :: 질문&답변 서비스
+         * @constructs _W.Service.Admin.ProductQnaService
+         * @extends _W.Service.Admin.BaseService
+         * @param {String} p_suffix 셀렉터 접미사
          */
         function ProductQnaService(p_suffix) {
             _super.call(this);

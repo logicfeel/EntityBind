@@ -27,7 +27,7 @@
 
     var OrderManagerService  = (function (_super) {
         /**
-         * FAQ 게시판 서비스
+         * 주문 :: 관리 서비스
          * @constructs _W.Service.Admin.OrderManagerService
          * @extends _W.Service.Admin.BaseService
          * @param {String} p_suffix 셀렉터 접미사

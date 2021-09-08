@@ -5,28 +5,24 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BindCommandAjax;
 
     if (typeof module !== 'object') {                   // Web
         util                = global._W.Common.Util;
-        BindCommandAjax     = global._W.Meta.Bind.BindCommandAjax;
     } else if (typeof module.exports === 'object'){     // node
-        util                = require('util');
-        BindCommandAjax     = require('./bind-command-ajax');
+        // util                = require('util');
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === 'undefined') throw new Error('[util] module load fail...');
     if (typeof BaseService === 'undefined') throw new Error('[BaseService] module load fail...');
-    if (typeof BindCommandAjax === 'undefined') throw new Error('[BindCommandAjax] module load fail...');
     if (typeof Handlebars === 'undefined') throw new Error('[Handlebars] module load fail...'); // 전역에 선언됨
 
     //==============================================================
     // 4. 모듈 구현    
     var SystemImageService  = (function (_super) {
         /**
-         * IMarshal 인터페이스는 IObject를 상속함
+         * 시스템 :: 이미지 서비스
          * @constructs _W.Service.Admin.SystemImageService
          * @extends _W.Service.Admin.BaseService
          * @param {String} p_suffix 셀렉터 접미사

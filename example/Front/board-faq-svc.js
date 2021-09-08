@@ -27,7 +27,7 @@
 
     var BoardFaqService  = (function (_super) {
         /**
-         * FAQ 게시판 서비스
+         * 게시판 :: 자주하는질문(FAQ) 서비스
          * @constructs _W.Service.Front.BoardFaqService
          * @extends _W.Service.Front.BaseService
          * @param {String} p_suffix 셀렉터 접미사

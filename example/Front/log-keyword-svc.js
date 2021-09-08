@@ -23,7 +23,7 @@
 
     var LogKeywordService  = (function (_super) {
         /**
-         * FAQ 게시판 서비스
+         * 로그 :: 키워드 서비스
          * @constructs _W.Service.Front.LogKeywordService
          * @extends _W.Service.Front.BaseService
          * @param {String} p_suffix 셀렉터 접미사

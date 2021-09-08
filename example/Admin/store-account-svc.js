@@ -26,7 +26,7 @@
 
     var StoreAccountService  = (function (_super) {
         /**
-         * FAQ 게시판 서비스
+         * 상점 :: 계정 서비스
          * @constructs _W.Service.Admin.StoreAccountService
          * @extends _W.Service.Admin.BaseService
          * @param {String} p_suffix 셀렉터 접미사

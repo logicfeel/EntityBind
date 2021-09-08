@@ -33,7 +33,7 @@
 
     var BoardNoticeService  = (function (_super) {
         /**
-         * FAQ 게시판 서비스
+         * 게시판 :: 공지사항 서비스
          * @constructs _W.Service.Front.BoardNoticeService
          * @extends _W.Service.Front.BaseService
          * @param {String} p_suffix 셀렉터 접미사

@@ -33,7 +33,7 @@
 
     var ProductDetailService  = (function (_super) {
         /**
-         * FAQ 게시판 서비스
+         * 상품 :: 상품상세 서비스
          * @constructs _W.Service.Front.ProductDetailService
          * @extends _W.Service.Front.BaseService
          * @param {String} p_suffix 셀렉터 접미사

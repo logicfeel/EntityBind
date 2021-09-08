@@ -41,7 +41,7 @@
 
     var PointMasterService  = (function (_super) {
         /**
-         * FAQ 게시판 서비스
+         * 포인트 :: 마스터 서비스
          * @constructs _W.Service.Admin.PointMasterService
          * @extends _W.Service.Admin.BaseService
          * @param {String} p_suffix 셀렉터 접미사

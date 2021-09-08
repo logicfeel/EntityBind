@@ -52,9 +52,10 @@
 
     var ProductOpinionService  = (function (_super) {
         /**
-         * IMarshal 인터페이스는 IObject를 상속함
-         * @abstract 추상클래스
-         * @class
+         * 상품 :: 옵션 서비스
+         * @constructs _W.Service.Front.ProductOpinionService
+         * @extends _W.Service.Front.BaseService
+         * @param {String} p_suffix 셀렉터 접미사
          */
         function ProductOpinionService(p_suffix) {
             _super.call(this);

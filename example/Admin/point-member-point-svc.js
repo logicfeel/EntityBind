@@ -37,7 +37,7 @@
 
     var PointMemberPointService  = (function (_super) {
         /**
-         * FAQ 게시판 서비스
+         * 포인트 :: 회원포인트 서비스
          * @constructs _W.Service.Admin.PointMemberPointService
          * @extends _W.Service.Admin.BaseService
          * @param {String} p_suffix 셀렉터 접미사
