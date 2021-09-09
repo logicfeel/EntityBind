@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Bind.ProductOpinionService
+ * namespace _W.Meta.Bind.ProductOpinionService
  */
 (function(global) {
 
@@ -14,25 +14,17 @@
     //==============================================================
     // 2. 모듈 가져오기 (node | web)
     var util;
-    var BindCommandLookupAjax;
-    var BindCommandEditAjax     =_W.Meta.Bind.BindCommandEditAjax;
-    
     
     if (typeof module === "object" && typeof module.exports === "object") {     
         // util                = require("./utils");
-        // IBindModelCreate    = require("./i-marshal");
     } else {
         util                    = global._W.Common.Util;
-        BindCommandLookupAjax   = global._W.Meta.Bind.BindCommandLookupAjax;
-        BindCommandEditAjax     = global._W.Meta.Bind.BindCommandEditAjax;
     }
 
     //==============================================================
     // 3. 모듈 의존성 검사
     if (typeof util === "undefined") throw new Error("[util] module load fail...");
     if (typeof BaseService === "undefined") throw new Error("[BaseService] module load fail...");
-    if (typeof BindCommandLookupAjax === "undefined") throw new Error("[BindCommandLookupAjax] module load fail...");
-    if (typeof BindCommandEditAjax === "undefined") throw new Error("[BindCommandEditAjax] module load fail...");
     if (typeof PageView === "undefined") throw new Error("[PageView] module load fail...");     // 전역에 선언됨
     if (typeof Handlebars === "undefined") throw new Error("[Handlebars] module load fail..."); // 전역에 선언됨
 

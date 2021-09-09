@@ -202,7 +202,7 @@
              * @type {Object.<String, Function>}
              * @property {Function} searchList 목록 검색
              * @property {Function} changePagesize 목록 페이지 크기 변경
-             * @property {Param} fnchangePagesize.p_num 목록 크기(파라메터)
+             * @property {?Number} changePagesize.p_num 목록 크기(파라메터)
              * @property {Function} resetForm 입력양식 초기화
              * @property {Function} moveList 목록 화면 이동
              * @property {Function} moveForm 입력폼 화면 이동
@@ -214,7 +214,7 @@
              * @example
              * var faq = new BindModelAjax(new BoardFaqService());
              * ...
-             * $("#btn_Search").click(faq.fn.search);   // 검색 버튼 연결
+             * $("#btn_Search").click(faq.fn.searchList);   // 검색 버튼 연결
              * $("#btn_Reset").click(faq.fn.reset);     // 리셋 버튼 연결
              * $("#changePagesize").change(faq.fn.changePagesize);  // 체크리스트 연결
              */

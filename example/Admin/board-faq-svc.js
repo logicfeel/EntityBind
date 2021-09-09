@@ -34,7 +34,7 @@
          * // 2단계 : 사용할 command 기준으로 items들을 셀렉터 설정 (mapping 참조, validSelector() 검사)
          * // 3단계 : 스크립트 로딩 (하단은 목록 예시)
          * 
-         * var faq = new BindModelAjax(new BoardFaqService());
+         * var faq = new _W.BindModelAjax(new BoardFaqService());
          *    
          * // 속성 설정
          * faq.prop['__listUrl']    = 'FAQ_Frm.asp';
@@ -270,7 +270,7 @@
              * @type {Object.<String, Function>}
              * @property {Function} searchList 목록 검색
              * @property {Function} changePagesize 목록 페이지 크기 변경
-             * @property {Param} fnchangePagesize.p_num 목록 크기(파라메터)
+             * @property {?Number} changePagesize.p_num 목록 크기(파라메터)
              * @property {Function} resetForm 입력양식 초기화
              * @property {Function} moveList 목록 화면 이동
              * @property {Function} moveForm 입력폼 화면 이동
@@ -280,10 +280,10 @@
              * @property {Function} procDelete 삭제 처리
              * @property {Function} procList 목록 조회 처리
              * @example
-             * var faq = new BindModelAjax(new BoardFaqService());
+             * var faq = new _W.BindModelAjax(new BoardFaqService());
              * ...
-             * $('#btn_Search').click(faq.fn.search);   // 검색 버튼 연결
-             * $('#btn_Reset').click(faq.fn.reset);     // 리셋 버튼 연결
+             * $('#btn_Search').click(faq.fn.searchList);   // 검색 버튼 연결
+             * $('#btn_Reset').click(faq.fn.resetForm);     // 리셋 버튼 연결
              * $('#changePagesize').change(faq.fn.changePagesize);  // 체크리스트 연결
              */
             this.fn = {
@@ -336,7 +336,8 @@
         /**
          * 전처리 :: 등록 
          * 데코레이션 패턴 : 상위 메소드 호출함
-         * @param {BindModelAjax} p_bindModel 
+         * keyword, page_count 값을 받아서 설정한다.
+         * @param {BindModelAjax} p_bindModel 소유한 바인드 모델
          */
         BoardFaqService.prototype.preRegister = function(p_bindModel) {
             BaseService.prototype.preRegister.call(this, p_bindModel);

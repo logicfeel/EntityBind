@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Bind.ProductOpinionService
+ * namespace _W.Meta.Bind.ProductOpinionService
  */
 (function(global) {
 

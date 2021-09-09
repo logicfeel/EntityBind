@@ -1,5 +1,5 @@
 /**
- * @namespace _W.Meta.Bind.DesignPopupService
+ * namespace _W.Meta.Bind.DesignPopupService
  */
 (function(global) {
 
