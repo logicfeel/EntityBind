@@ -55,6 +55,9 @@
     // tasks.push({ns: '_W.Test.BindModelDI'           , file: './Meta.Bind.BindModelDI.test.js'});
     tasks.push({ns: '_W.Test.DOM_Node'              , file: './Etc.DOM-Node.test.js'});
 
+    // import {Row} from '../src/entity-row';
+    // console.log(Row);
+    
     //==============================================================
     // 4. 테스트 본문 :: run()
     function run() {

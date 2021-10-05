@@ -2,6 +2,8 @@
  * namespace _W.Meta.Entity.Row
  * namespace _W.Meta.Entity.RowCollection
  */
+// var $local = {};
+
 (function(global) {
 
     'use strict';
@@ -159,12 +161,21 @@
 
     //==============================================================
     // 5. 모듈 내보내기 (node | web)
+    $local = {Row: Row, RowCollection: RowCollection};
+
     if (typeof module === 'object' && typeof module.exports === 'object') {     
         module.exports.Row = Row;
         module.exports.RowCollection = RowCollection;
+        // POINT::
+        // module.exports = $local;
     } else {
         global._W.Meta.Entity.Row = Row;
         global._W.Meta.Entity.RowCollection = RowCollection;
     }
 
 }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
+
+// const RowCollection = local.RowCollection;
+// const Row = local.Row;
+
+// export * from $local
