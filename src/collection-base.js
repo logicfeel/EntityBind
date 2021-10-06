@@ -40,38 +40,79 @@
         */
         function BaseCollection(p_onwer) { 
             
+            var __event  = new Observer(this, this);
+            var _onwer = p_onwer || null;
+            var _element = [];
+            var _symbol = [];
             var __elementType   = null;
 
-            /** @private */
-            this.__event        = new Observer(this, this);
-
             /** 
+             * 이벤트 객체
+             * @private 
+             * @member {Object} _W.Collection.BaseCollection#__event  
+             */
+            Object.defineProperty(this, '__event', {
+                enumerable: false,
+                configurable: true,
+                get: function() { 
+                    return __event;
+                }
+            });
+
+             /** 
              * 소유객체
              * @protected 
-             * @member {Object}
+             * @member {Object} _W.Collection.BaseCollection#_onwer  
              */
-            this._onwer         = p_onwer;
+              Object.defineProperty(this, '_onwer', {
+                enumerable: false,
+                configurable: true,
+                get: function() {
+                    return _onwer;
+                },
+                set: function(val) {
+                    _onwer = val;
+                }
+            });
 
             /** 
              * 배열요소
              * @protected 
-             * @member {Array}
+             * @member {Array} _W.Collection.BaseCollection#_element  
              */
-            this._element       = [];
-            
+            Object.defineProperty(this, '_element', {
+                enumerable: false,
+                configurable: true,
+                get: function() {
+                    return _element;
+                },
+                set: function(val) {
+                    _element = val;
+                }
+            });
+
             /** 
              * 심볼 배열입니다. 
              * @protected
-             * @member {Array} 
+             * @member {Array}  _W.Collection.BaseCollection#_symbol  
              */
-            this._symbol        = [];
+             Object.defineProperty(this, '_symbol', {
+                enumerable: false,
+                configurable: true,
+                get: function() { 
+                    return _symbol;
+                },
+                set: function(p_val) {
+                    _symbol = p_val;
+                }
+            });
 
             /** 
              * 요소타입
              * @member {Observer}  _W.Collection.BaseCollection#elementType  
              */
             Object.defineProperty(this, 'elementType', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 get: function() {
                     return __elementType;
@@ -90,7 +131,7 @@
              * @member {Array}  _W.Collection.BaseCollection#list  
              */
             Object.defineProperty(this, 'list', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 get: function() {
                     return this._element;
@@ -102,7 +143,7 @@
              * @member {Number} _W.Collection.BaseCollection#count 
              */
             Object.defineProperty(this, 'count', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 get: function() {
                     return this._element.length;
@@ -114,7 +155,7 @@
              * @event _W.Collection.BaseCollection#onAdd 
              */
             Object.defineProperty(this, 'onAdd', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 set: function(p_fn) {
                     this.__event.subscribe(p_fn, 'add');
@@ -126,7 +167,7 @@
              * @event _W.Collection.BaseCollection#onRemove
              */
             Object.defineProperty(this, 'onRemove', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 set: function(p_fn) {
                     this.__event.subscribe(p_fn, 'remove');
@@ -138,7 +179,7 @@
              * @event _W.Collection.BaseCollection#onClear
              */
             Object.defineProperty(this, 'onClear', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 set: function(p_fn) {
                     this.__event.subscribe(p_fn, 'clear');
@@ -150,7 +191,7 @@
              * @event _W.Collection.BaseCollection#onChanging 
              */
             Object.defineProperty(this, 'onChanging', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 set: function(p_fn) {
                     this.__event.subscribe(p_fn, 'changing');
@@ -162,7 +203,7 @@
              * @event _W.Collection.BaseCollection#onChanged 
              */
             Object.defineProperty(this, 'onChanged', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 set: function(p_fn) {
                     this.__event.subscribe(p_fn, 'changed');

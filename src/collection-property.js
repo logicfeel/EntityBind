@@ -50,10 +50,10 @@
             /** @member {Array} _W.Collection.PropertyCollection#properties 속성들값 */
             Object.defineProperty(this, 'properties', 
             {
-                get: function() { return __properties; },
-                set: function(newValue) { __properties = newValue; },
                 configurable: true,
-                enumerable: true
+                enumerable: false,
+                get: function() { return __properties; },
+                set: function(newValue) { __properties = newValue; }
             });
 
             // 예약어 등록

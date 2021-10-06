@@ -42,10 +42,19 @@ if ((typeof Object.prototype._implements === 'undefined') ||
          * @param {function} args 함수형 인터페이스 목록
          */
         var _implements = function _implements(args) {
-            this._interface = this._interface || [];
 
             var typeName;
             var obj;    
+            var _interface = [];
+
+            Object.defineProperty(this, '_interface', {
+                enumerable: false,
+                configurable: true,
+                get: function() { 
+                    return _interface;
+                }
+            });
+            // this._interface = this._interface || [];
         
             for(var i = 0; i < arguments.length; i++) {
                 if (typeof arguments[i] === 'function') {
@@ -1624,38 +1633,79 @@ if (typeof Array.isArray === 'undefined') {
         */
         function BaseCollection(p_onwer) { 
             
+            var __event  = new Observer(this, this);
+            var _onwer = p_onwer || null;
+            var _element = [];
+            var _symbol = [];
             var __elementType   = null;
 
-            /** @private */
-            this.__event        = new Observer(this, this);
-
             /** 
+             * 이벤트 객체
+             * @private 
+             * @member {Object} _W.Collection.BaseCollection#__event  
+             */
+            Object.defineProperty(this, '__event', {
+                enumerable: false,
+                configurable: true,
+                get: function() { 
+                    return __event;
+                }
+            });
+
+             /** 
              * 소유객체
              * @protected 
-             * @member {Object}
+             * @member {Object} _W.Collection.BaseCollection#_onwer  
              */
-            this._onwer         = p_onwer;
+              Object.defineProperty(this, '_onwer', {
+                enumerable: false,
+                configurable: true,
+                get: function() {
+                    return _onwer;
+                },
+                set: function(val) {
+                    _onwer = val;
+                }
+            });
 
             /** 
              * 배열요소
              * @protected 
-             * @member {Array}
+             * @member {Array} _W.Collection.BaseCollection#_element  
              */
-            this._element       = [];
-            
+            Object.defineProperty(this, '_element', {
+                enumerable: false,
+                configurable: true,
+                get: function() {
+                    return _element;
+                },
+                set: function(val) {
+                    _element = val;
+                }
+            });
+
             /** 
              * 심볼 배열입니다. 
              * @protected
-             * @member {Array} 
+             * @member {Array}  _W.Collection.BaseCollection#_symbol  
              */
-            this._symbol        = [];
+             Object.defineProperty(this, '_symbol', {
+                enumerable: false,
+                configurable: true,
+                get: function() { 
+                    return _symbol;
+                },
+                set: function(p_val) {
+                    _symbol = p_val;
+                }
+            });
 
             /** 
              * 요소타입
              * @member {Observer}  _W.Collection.BaseCollection#elementType  
              */
             Object.defineProperty(this, 'elementType', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 get: function() {
                     return __elementType;
@@ -1674,7 +1724,7 @@ if (typeof Array.isArray === 'undefined') {
              * @member {Array}  _W.Collection.BaseCollection#list  
              */
             Object.defineProperty(this, 'list', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 get: function() {
                     return this._element;
@@ -1686,7 +1736,7 @@ if (typeof Array.isArray === 'undefined') {
              * @member {Number} _W.Collection.BaseCollection#count 
              */
             Object.defineProperty(this, 'count', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 get: function() {
                     return this._element.length;
@@ -1698,7 +1748,7 @@ if (typeof Array.isArray === 'undefined') {
              * @event _W.Collection.BaseCollection#onAdd 
              */
             Object.defineProperty(this, 'onAdd', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 set: function(p_fn) {
                     this.__event.subscribe(p_fn, 'add');
@@ -1710,7 +1760,7 @@ if (typeof Array.isArray === 'undefined') {
              * @event _W.Collection.BaseCollection#onRemove
              */
             Object.defineProperty(this, 'onRemove', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 set: function(p_fn) {
                     this.__event.subscribe(p_fn, 'remove');
@@ -1722,7 +1772,7 @@ if (typeof Array.isArray === 'undefined') {
              * @event _W.Collection.BaseCollection#onClear
              */
             Object.defineProperty(this, 'onClear', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 set: function(p_fn) {
                     this.__event.subscribe(p_fn, 'clear');
@@ -1734,7 +1784,7 @@ if (typeof Array.isArray === 'undefined') {
              * @event _W.Collection.BaseCollection#onChanging 
              */
             Object.defineProperty(this, 'onChanging', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 set: function(p_fn) {
                     this.__event.subscribe(p_fn, 'changing');
@@ -1746,7 +1796,7 @@ if (typeof Array.isArray === 'undefined') {
              * @event _W.Collection.BaseCollection#onChanged 
              */
             Object.defineProperty(this, 'onChanged', {
-                enumerable: true,
+                enumerable: false,
                 configurable: true,
                 set: function(p_fn) {
                     this.__event.subscribe(p_fn, 'changed');
@@ -2102,10 +2152,10 @@ if (typeof Array.isArray === 'undefined') {
             /** @member {Array} _W.Collection.PropertyCollection#properties 속성들값 */
             Object.defineProperty(this, 'properties', 
             {
-                get: function() { return __properties; },
-                set: function(newValue) { __properties = newValue; },
                 configurable: true,
-                enumerable: true
+                enumerable: false,
+                get: function() { return __properties; },
+                set: function(newValue) { __properties = newValue; }
             });
 
             // 예약어 등록
@@ -4090,6 +4140,8 @@ if (typeof Array.isArray === 'undefined') {
  * namespace _W.Meta.Entity.Row
  * namespace _W.Meta.Entity.RowCollection
  */
+// var $local = {};
+
 (function(global) {
 
     'use strict';
@@ -4256,6 +4308,7 @@ if (typeof Array.isArray === 'undefined') {
     }
 
 }(typeof module === 'object' && typeof module.exports === 'object' ? global : window));
+
 /**
  * namespace _W.Meta.Entity.Entity
  */

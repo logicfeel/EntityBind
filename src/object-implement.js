@@ -42,10 +42,19 @@ if ((typeof Object.prototype._implements === 'undefined') ||
          * @param {function} args 함수형 인터페이스 목록
          */
         var _implements = function _implements(args) {
-            this._interface = this._interface || [];
 
             var typeName;
             var obj;    
+            var _interface = [];
+
+            Object.defineProperty(this, '_interface', {
+                enumerable: false,
+                configurable: true,
+                get: function() { 
+                    return _interface;
+                }
+            });
+            // this._interface = this._interface || [];
         
             for(var i = 0; i < arguments.length; i++) {
                 if (typeof arguments[i] === 'function') {
