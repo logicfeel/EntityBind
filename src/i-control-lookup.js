@@ -27,7 +27,7 @@
         }
     
         /**
-         * 유무 검사
+         * 존재 유무 검사
          * @abstract
          */
         ILookupControl.prototype.contains  = function() {

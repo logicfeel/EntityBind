@@ -66,8 +66,8 @@
          * 범위 복사
          * @abstract
          */
-        IControlCollection.prototype.copyTo  = function() {
-            throw new Error('[ copyTo() ] Abstract method definition, fail...');
+        IControlCollection.prototype.copy  = function() {
+            throw new Error('[ copy() ] Abstract method definition, fail...');
         };
 
         /**

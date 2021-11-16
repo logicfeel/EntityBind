@@ -57,7 +57,6 @@
          */
         IMarshal.prototype.getGUID  = function() {
             throw new Error('[ getGUID() ] Abstract method definition, fail...');
-
         };
 
         return IMarshal;

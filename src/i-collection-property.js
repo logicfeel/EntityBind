@@ -42,7 +42,7 @@
         util.inherits(IPropertyCollection, _super);
 
         /**
-         * 조회 : idx 로 이름 조회
+         * 조회 : 인덱스로 이름 조회
          */
         IPropertyCollection.prototype.propertyOf  = function() {
             throw new Error('[ propertyOf() ] Abstract method definition, fail...');

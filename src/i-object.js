@@ -35,7 +35,7 @@
         };
         
         /**
-         * 인스턴스 검사
+         * 인스턴스 여부 검사
          * @returns {Boolean}
          */
         IObject.prototype.instanceOf  = function() {

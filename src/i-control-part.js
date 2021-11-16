@@ -27,7 +27,7 @@
         }
     
         /**
-         * 등록 : 부분
+         * 단일 등록
          * @abstract
          */
         IPartControl.prototype.add  = function() {
@@ -35,7 +35,7 @@
         };
 
         /**
-         * 삭제 : 부분
+         * 단일 삭제
          * @abstract
          */
         IPartControl.prototype.remove  = function() {

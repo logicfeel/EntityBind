@@ -88,6 +88,7 @@
         return _p8() + _p8(true) + _p8(true) + _p8();
     };
 
+
     /**
      * 셀렉터의 유효성 검사 : 대상을 모두 검사하여 결과를 리턴한다.
      * 주의!! DOM(web) 에서만 작동한다.
@@ -146,6 +147,7 @@
         module.exports.inherits = inherits;
         module.exports.getArrayLevel = getArrayLevel;
         module.exports.createGUID = createGUID;
+        // REVIEW:: validSelector는 사용 안함
     } else {
         global._W.Common.Util.inherits = inherits;
         global._W.Common.Util.getArrayLevel = getArrayLevel;

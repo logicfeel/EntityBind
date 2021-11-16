@@ -35,7 +35,9 @@
 
             /**
              * 등록함수의 this 
-             * @member {Object} */
+             * @protected
+             * @member {Object} 
+             * */
             this._this = p_this;    
 
             /** 
@@ -57,13 +59,13 @@
              * 이벤트 전파 설정 (기본값:true)
              * @member {Boolean}
              */
-            this.propagation    = true;
+            this.propagation = true;
 
             /** 
-             * 단일 구독자 모드, 마지막 등록 구독자만 활성화 (기본값:true)  
+             * 구독자 멀티모드, 단일시(false) 마지막 등록 구독자만 활성화 (기본값:true)  
              * @member {Boolean} 
              */
-            this.isMultiMode    = true;
+            this.isMultiMode = true;
         }
 
         /**
@@ -152,7 +154,7 @@
         };
 
         /**
-         * 이벤트 전달을 중단한다.
+         * 이벤트 전달을 중단한다. 기본값 'true'
          */
         Observer.prototype.stopPropagation = function() {
             this.propagation = false;
