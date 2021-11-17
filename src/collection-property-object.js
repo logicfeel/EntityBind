@@ -46,7 +46,7 @@
         util.inherits(PropertyObjectCollection, _super);
 
         /**
-         * 객체속성 컬렉션을 추가한다.
+         * 객체속성 컬렉션을 추가한다. [오버라이딩]
          * @param {String} p_name 
          * @param {*} p_value 
          * @returns {Item} 등록한 아이템을 리턴한다.

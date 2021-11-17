@@ -76,7 +76,7 @@
             });
 
             /** 
-             * 배열요소
+             * 컬랙선 내부값 
              * @protected 
              * @member {Array} _W.Collection.BaseCollection#_element  
              */
@@ -92,7 +92,7 @@
             });
 
             /** 
-             * 심볼 배열입니다. 
+             * 심볼 예약어 목록 
              * @protected
              * @member {Array}  _W.Collection.BaseCollection#_symbol  
              */
@@ -300,7 +300,7 @@
             throw new Error('[ add() ] Abstract method definition, fail...');
         };
         
-        /** 
+        /**
          * 전체삭제(초기화)한다.
          * @abstract 
          * @fires _W.Collection.BaseCollection#onClear 

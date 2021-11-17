@@ -29,7 +29,7 @@
         Observer            = require('./observer');
     } else {
         util                = global._W.Common.Util;
-        CustomError             = global._W.Common.CustomError;
+        CustomError         = global._W.Common.CustomError;
         MetaElement         = global._W.Meta.MetaElement;
         PropertyCollection  = global._W.Collection.PropertyCollection;
         Observer            = global._W.Common.Observer;

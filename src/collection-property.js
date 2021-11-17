@@ -65,7 +65,7 @@
         util.inherits(PropertyCollection, _super);
 
         /**
-         * 속성 컬렉션을 삭제한다. (내부처리)
+         * 속성 컬렉션을 삭제한다. (내부처리) [구현]
          * @protected
          * @param {*} p_name 속성명
          * @returns {number} 삭제한 인덱스
@@ -97,7 +97,7 @@
         };
 
         /**
-         * 속성컬렉션을 등록한다.
+         * 속성컬렉션을 등록한다.[구현]
          * @param {string} p_name [필수] 속성명
          * @param {?any} p_value 속성값
          * @returns {any} 입력 속성 참조값 REVIEW:: 필요성 검토
@@ -146,7 +146,7 @@
         };
 
         /**
-         * 속성컬렉션을 전체 삭제한다.
+         * 속성컬렉션을 전체 삭제한다. [구현]
          */
         PropertyCollection.prototype.clear = function() {
             
@@ -183,7 +183,7 @@
         };
 
         /**
-         * 배열속성 이름 찾는다.
+         * 배열속성 이름 찾는다. [구현]
          * @param {Number} p_idx 인덱스
          * @returns {String}
          */
