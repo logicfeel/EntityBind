@@ -50,3 +50,8 @@ https://www.colorion.co/        : 색 콤비네이션  (어울리는 색깔)
     - https://www.flaticon.com/
 
 # 맥 m1 에서 커밋
+
+# 집에서 맥으로 TV 연결해서 작업중입니다.
+
+무엇이 먼저 일까요?
+
