@@ -183,23 +183,491 @@ var metaModel = {
  *      + 그러면 중복의 문제가 ?? >> meta-lock.json 과 분리하여 해결!!
  */
 var metaModel = {
-    Class: {
+    class: {
         rename: "BOD_Event_Cls",
+        items: {
+            evt_idx: {},
+            title: {}
+        },
+        attr: ['title'],
         method: {
-            read: { 
+            read: {
                 alias: "ReadJson",
                 params: {
                     evt_idx: '12'
                 },
+            },
+            read: {
+                alias: "ReadJson",
                 param: ['evt_idx', 'title']
             },
-            create: { 
+            create: {
                 alias: "CreateJSon",
                 params: [ this.Class.method.params.evt_idx ]    // this 가 전역을 가르킴
             },
         },
-    }
-}
+    },
+    entity: {
+        BOD_Event: {
+            type: "table",
+            items: {
+                evt_idx: {
+                    dataType: "int"
+                },
+                title: {
+                    dataType: "varchar",
+                    size: 10
+                }
+            }
+        },
+    },
+    
+};
+
+/**
+ * meta model JSON 샘플 - f
+ */
+var metaModel = {
+    BOD_Event: {
+        type: "table",
+        item: {
+            faq_idx: { type: "int", caption: "일련번호" },
+            question: { type: "nvarchar", size: 1000, caption: "질문" },
+            answer: { type: "nvarchar", size: 1000, caption: "답변" },
+            create_dt: { type: "smalldatetime", caption: "등록일자" },
+            rank_it: { type: "smallint", caption: "순서" },
+            typeCode: { type: "varchar", size: 5, caption: "질문타입" },
+            __ADD: "",  /** 동적으로 추가되는 위치 */
+        },
+        add: "추가타입에 관련된 조건 및 옵션을 정의한다.item_name=__ADD " /** 코드명령 규칙도 표현 */
+    },
+    BOD_Event_SP_C: {
+        type: "operation",
+        param: [
+            'question', 
+            'answer',
+            'typeCode',
+            'rank_it',
+            '__ADD',
+            { name: 'msgSave_yn', type: "char", size: 1 },
+            { name: 'msgPrint_yn', type: "char", size: 1 },
+        ],
+    },
+    BOD_Event_SP_R: {
+        type: "operation",
+        param: [
+            'faq_idx', 
+            { name: 'xml_yn', type: "char", size: 1 },
+            { name: 'msgSave_yn', type: "char", size: 1 },
+            { name: 'msgPrint_yn', type: "char", size: 1 },
+        ],
+        output: ["question", "answer", "typeCode", "rank_it", '__ADD', "create_dt" ], /** 다수출력시 2차원 배열사용 */
+    },
+    BOD_Event_SP_U: {
+        type: "operation",
+        param: [
+            'faq_idx', 
+            'question', 
+            'answer',
+            'typeCode',
+            'rank_it',
+            '__ADD',
+            { name: 'msgSave_yn', type: "char", size: 1 },
+            { name: 'msgPrint_yn', type: "char", size: 1 },
+        ],
+    },
+    BOD_Event_SP_D: {
+        type: "operation",
+        param: [
+            'faq_idx', 
+            { name: 'xml_yn', type: "char", size: 1 },
+            { name: 'msgSave_yn', type: "char", size: 1 },
+            { name: 'msgPrint_yn', type: "char", size: 1 },
+        ],
+    },
+    BOD_Event_SP_L: {
+        type: "operation",
+        param: [
+            { name: 'keyword', type: "char", size: 1 },
+            { name: 'page_size', type: "int", default: 10 },
+            { name: 'page_count', type: "int", default: 1 },
+            { name: 'sort_cd', type: "int", default: NULL },
+            { name: 'row_total', type: "int", default: 0,  output: true },
+            { name: 'xml_yn', type: "char", size: 1 },
+            { name: 'msgSave_yn', type: "char", size: 1 },
+            { name: 'msgPrint_yn', type: "char", size: 1 },
+        ],
+        output: [ "rouw_count", "create_dt", "question", "answer", "rank_it", "faq_idx", '__ADD' ]
+    },
+
+};
+
+
+/**
+ * meta model JSON 샘플 - g 
+ * super, sub 추가
+ */
+ var metaModel = {
+    name: "BOD_Event",
+    entity: {
+        BOD_Event: {
+            type: "table",
+            item: {
+                faq_idx: { type: "int", caption: "일련번호" },
+                question: { type: "nvarchar", size: 1000, caption: "질문" },
+                answer: { type: "nvarchar", size: 1000, caption: "답변" },
+                create_dt: { type: "smalldatetime", caption: "등록일자" },
+                rank_it: { type: "smallint", caption: "순서" },
+                typeCode: { type: "varchar", size: 5, caption: "질문타입" },
+                __ADD: "",  /** 동적으로 추가되는 위치 */
+            },
+            add: "추가타입에 관련된 조건 및 옵션을 정의한다.item_name=__ADD " /** 코드명령 규칙도 표현 */
+        },
+        BOD_Event_SP_C: {
+            type: "operation",
+            param: [
+                'question', 
+                'answer',
+                'typeCode',
+                'rank_it',
+                '__ADD',
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+        },
+        BOD_Event_SP_R: {
+            type: "operation",
+            param: [
+                'faq_idx', 
+                { name: 'xml_yn', type: "char", size: 1 },
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+            output: ["BOD_Event.question", "answer", "typeCode", "rank_it", '__ADD', "create_dt" ], 
+            /** 
+             * - 다수출력시 2차원 배열사용 
+             * - BOD_Event.question : 엔티티를 지정함
+             * */
+        },
+        BOD_Event_SP_U: {
+            type: "operation",
+            param: [
+                'faq_idx', 
+                'question', 
+                'answer',
+                'typeCode',
+                'rank_it',
+                '__ADD',
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+        },
+        BOD_Event_SP_D: {
+            type: "operation",
+            param: [
+                'faq_idx', 
+                { name: 'xml_yn', type: "char", size: 1 },
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+        },
+        BOD_Event_SP_L: {
+            type: "operation",
+            param: [
+                { name: 'keyword', type: "char", size: 1 },
+                { name: 'page_size', type: "int", default: 10 },
+                { name: 'page_count', type: "int", default: 1 },
+                { name: 'sort_cd', type: "int", default: NULL },
+                { name: 'row_total', type: "int", default: 0,  output: true },
+                { name: 'xml_yn', type: "char", size: 1 },
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+            output: [ "rouw_count", "create_dt", "question", "answer", "rank_it", "faq_idx", '__ADD' ]
+        },
+        BOD_FAQ_Cls: {
+            type: "class",
+            attr: [ 
+                "rouw_count", 
+                "create_dt", 
+                "question",
+                "answer",
+                "rank_it", 
+                "faq_idx",
+                '__ADD' ],
+            /**
+             * - 자체 정의 속성 사용시 배열로 표시
+             * - 이름은 자동 검색 알고니즘이 적용됨
+             * - meta-lock.json 에는 전체이름이 표기됨!
+             */
+            method: {
+                create : {
+                    alias: "Create",
+                    param: [],
+                    ref: [ "BOD_Event.BOD_Event_C" ]
+                    /**
+                     * - 타입 : 배열 | 배열<문자열>
+                     * - 모듈명.엔티티명
+                     */
+                },
+                read: {
+                    rename: "Read",
+                    ref: "BOD_Event_R"
+                },
+                update: {
+                    rename: "Update",
+                    ref: "BOD_Event_U"
+                },
+                delete: {
+                    rename: "Delete",
+                    ref: "BOD_Event_D"
+                },
+                list: {
+                    rename: "List",
+                    ref: "BOD_Event_L"
+                },
+                check: {}
+            }
+        }
+    },
+    super: ['STO_Base'],    /** 상위로 의존성을 받는것 메타모듈명 */
+    sub: ['PRT_Base'],      /** 단일 의존관계가 있는것 메타모듈명 */
+};
+
+
+/**
+ * meta model JSON 샘플 - g'
+ * table, view(가상), opeation, class 추가
+ */
+ var metaModel = {
+    name: "BOD_Event",
+    table: {
+        BOD_Event: {
+            item: {
+                faq_idx: { type: "int", caption: "일련번호" },
+                question: { type: "nvarchar", size: 1000, caption: "질문" },
+                answer: { type: "nvarchar", size: 1000, caption: "답변" },
+                create_dt: { type: "smalldatetime", caption: "등록일자" },
+                rank_it: { type: "smallint", caption: "순서" },
+                typeCode: { type: "varchar", size: 5, caption: "질문타입" },
+                __ADD: "",  /** 동적으로 추가되는 위치 */
+            },
+            add: "추가타입에 관련된 조건 및 옵션을 정의한다.item_name=__ADD " /** 코드명령 규칙도 표현 */
+        },
+    },
+    operation: {
+        BOD_Event_SP_C: {
+            type: "operation",
+            param: [
+                'question', 
+                'answer',
+                'typeCode',
+                'rank_it',
+                '__ADD',
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+        },
+        BOD_Event_SP_R: {
+            type: "operation",
+            param: [
+                'faq_idx', 
+                { name: 'xml_yn', type: "char", size: 1 },
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+            output: ["BOD_Event.question", "answer", "typeCode", "rank_it", '__ADD', "create_dt" ], 
+            /** 
+             * - 다수출력시 2차원 배열사용 
+             * - BOD_Event.question : 엔티티를 지정함
+             * */
+        },
+        BOD_Event_SP_U: {
+            type: "operation",
+            param: [
+                'faq_idx', 
+                'question', 
+                'answer',
+                'typeCode',
+                'rank_it',
+                '__ADD',
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+        },
+        BOD_Event_SP_D: {
+            type: "operation",
+            param: [
+                'faq_idx', 
+                { name: 'xml_yn', type: "char", size: 1 },
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+        },
+        BOD_Event_SP_L: {
+            type: "operation",
+            param: [
+                { name: 'keyword', type: "char", size: 1 },
+                { name: 'page_size', type: "int", default: 10 },
+                { name: 'page_count', type: "int", default: 1 },
+                { name: 'sort_cd', type: "int", default: NULL },
+                { name: 'row_total', type: "int", default: 0,  output: true },
+                { name: 'xml_yn', type: "char", size: 1 },
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+            output: [ "rouw_count", "create_dt", "question", "answer", "rank_it", "faq_idx", '__ADD' ]
+        },
+        
+    },
+    super: ['STO_Base'],    /** 상위로 의존성을 받는것 */
+    sub: ['STO_Base'],  /** 단일 의존관계가 있는것 */
+};
+
+
+/**
+ * meta model JSON 샘플 - h
+ * method는 배열 [] 표시
+ */
+ var metaModel = {
+    name: "BOD_Event",
+    entity: {
+        BOD_Event: {
+            type: "table",
+            item: {
+                faq_idx: { type: "int", caption: "일련번호" },
+                question: { type: "nvarchar", size: 1000, caption: "질문" },
+                answer: { type: "nvarchar", size: 1000, caption: "답변" },
+                create_dt: { type: "smalldatetime", caption: "등록일자" },
+                rank_it: { type: "smallint", caption: "순서" },
+                typeCode: { type: "varchar", size: 5, caption: "질문타입" },
+            },
+            addition: {
+                keyword: "__ADD__",
+                etc: "추가타입에 관련된 조건 및 옵션을 정의한다.item_name=__ADD " 
+            }
+            
+            /** 코드명령 규칙도 표현 */
+        },
+        BOD_Event_SP_C: {
+            type: "operation",
+            tag: ["CREATE"],
+            param: [
+                'question', 
+                'answer',
+                'typeCode',
+                'rank_it',
+                '__ADD__',
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+        },
+        BOD_Event_SP_R: {
+            type: "operation",
+            tag: ["READ"],
+            param: [
+                'faq_idx', 
+                { name: 'xml_yn', type: "char", size: 1 },
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+            output: ["BOD_Event.question", "answer", "typeCode", "rank_it", '__ADD__', "create_dt" ], 
+            /** 
+             * - 다수출력시 2차원 배열사용 
+             * - BOD_Event.question : 엔티티를 지정함
+             * */
+        },
+        BOD_Event_SP_U: {
+            type: "operation",
+            tag: "UPDATE",
+            param: [
+                'faq_idx', 
+                'question', 
+                'answer',
+                'typeCode',
+                'rank_it',
+                '__ADD__',
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+        },
+        BOD_Event_SP_D: {
+            type: "operation",
+            tag: "DELETE",
+            param: [
+                'faq_idx', 
+                { name: 'xml_yn', type: "char", size: 1 },
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+        },
+        BOD_Event_SP_L: {
+            type: "operation",
+            tag: "LIST",
+            param: [
+                { name: 'keyword', type: "char", size: 1 },
+                { name: 'page_size', type: "int", default: 10 },
+                { name: 'page_count', type: "int", default: 1 },
+                { name: 'sort_cd', type: "int", default: NULL },
+                { name: 'row_total', type: "int", default: 0,  output: true },
+                { name: 'xml_yn', type: "char", size: 1 },
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+            ],
+            output: [ "rouw_count", "create_dt", "question", "answer", "rank_it", "faq_idx", '__ADD' ]
+        },
+        BOD_FAQ_Cls: {
+            type: "class",
+            item: {
+                faq_idx: { ref: "faq_idx" },
+                question: { ref: "question" },
+                answer: { ref: "answer" },
+                create_dt: { ref: "create_dt" },
+                rank_it: { ref: "rank_it" },
+                typeCode: { ref: "typeCode" },
+                __ADD: { ref: "__ADD" },  /** 동적으로 추가되는 위치 */
+            },
+            /**
+             * - 자체 정의 속성 사용시 배열로 표시
+             * - 이름은 자동 검색 알고니즘이 적용됨
+             * - meta-lock.json 에는 전체이름이 표기됨!
+             */
+            method: {
+                create: {
+                    name: "Create",
+                    param: [],
+                    ref: [ "BOD_Event.BOD_Event_C" ]
+                    /**
+                     * - 타입 : 배열 | 배열<문자열>
+                     * - 모듈명.엔티티명
+                     */
+                },
+                Read: {
+                    rename: "Read",
+                    ref: "BOD_Event_R"
+                },
+                Update: {
+                    ref: "BOD_Event_U"
+                },
+                Delete: {
+                    ref: "BOD_Event_D"
+                },
+                List: {
+                    param: ['create_dt', ''],
+                    ref: "BOD_Event_L"
+                },
+            }
+            /**
+             * 배열 형식 
+             *  - 단점 : 사용시 참조에 모호성이 있음
+             * 객체 형식 !! 이방식이 맞을듯
+             *  - 단점 : 오버로드 표현시 별칭을 사용해야함
+             */
+        }
+    },
+    super: ['STO_Base'],    /** 상위로 의존성을 받는것 메타모듈명 */
+    sub: ['PRT_Base'],      /** 단일 의존관계가 있는것 메타모듈명 */
+};
 
 
 // ####################################################
