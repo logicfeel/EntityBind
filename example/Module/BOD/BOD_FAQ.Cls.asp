@@ -111,6 +111,8 @@
             End if
         End Property
 
+' __ADD__ : attr 추가위치
+
         '---------------------------------------------------------------------------
         ' 초기화
         '---------------------------------------------------------------------------
@@ -129,6 +131,9 @@
             m_oDicParams.Add "xml_yn",          m_cDBMgr.MakeParam("@xml_yn",           adChar,     adParamInput,       1,      Null)
             m_oDicParams.Add "msgSave_yn",      m_cDBMgr.MakeParam("@msgSave_yn",       adChar,     adParamInput,       1,      Null)
             m_oDicParams.Add "msg_Print_yn",    m_cDBMgr.MakeParam("@msg_Print_yn",     adChar,     adParamInput,       1,      Null)
+            
+            ' __ADD__ : attr 추가위치
+
         End Sub
 
 		'---------------------------------------------------------------------------
@@ -138,7 +143,8 @@
         Public Function Create(ByRef r_Return)
             Dim arrKey, arrParams
 
-            arrKey = Array("RETURN_VALUE", "question", "answer", "typeCode", "rank_it")
+' __ADD__ : attr 추가위치
+            arrKey = Array("RETURN_VALUE", "question", "answer", "typeCode", "rank_it") 
             arrParams = m_cDBMgr.GetDicToArrayParams(m_oDicParams, arrKey)
             Call m_cDBMgr.ExecuteSp("BOD_FAQ_SP_C", arrParams, Nothing)
             r_Return = m_cDBMgr.GetValue(arrParams, "RETURN_VALUE") 
@@ -263,7 +269,8 @@
         Public Function Update(ByRef r_Return)
             Dim arrKey, arrParams
 
-            arrKey = Array("RETURN_VALUE", "faq_idx", "question", "answer", "typeCode", "rank_it")
+' __ADD__ : attr 추가위치
+            arrKey = Array("RETURN_VALUE", "faq_idx", "question", "answer", "typeCode", "rank_it") 
             arrParams = m_cDBMgr.GetDicToArrayParams(m_oDicParams, arrKey)
             Call m_cDBMgr.ExecuteSp("BOD_FAQ_SP_U", arrParams, Nothing)
             r_Return = m_cDBMgr.GetValue(arrParams, "RETURN_VALUE") 

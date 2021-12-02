@@ -114,7 +114,11 @@
 		            <col style="width:auto">
 		            <col style="width:auto">
                     <col style="width:auto">
-		        </colgroup>
+<!-- 
+추가시 빈 공간 추가됨
+<col style="width:auto">
+-->
+				</colgroup>
 		        <!--###############  검색 제목 Block ###############-->
 		        <thead>
 		            <tr>
@@ -133,6 +137,12 @@
 		                <th scope="col">
 		                    <strong>등록일자</strong>
 		                </th>
+<!-- 
+	__ADD__ 추가위치 : 정의파일 참조
+	<th scope="col">
+		<strong>등록일자</strong>
+	</th>
+-->  
                         <th scope="col">
 		                    <strong>처리</strong>
 		                </th>
@@ -142,6 +152,7 @@
 				<!--###############  검색 본문 Block ###############-->
 				<tbody class="center" id="s-area-list">
     				<tr><td colspan='6' align='center'>자료가 없습니다.</td></tr>
+<!-- 추가 아이템만큼 더함 6 + x -->
 				</tbody>
 
                 <script id="s-temp-list" type="text/x-handlebars-template">
@@ -152,7 +163,11 @@
                         <td>{{question}}</td>
                         <td>{{answer}}</td>
                         <td>{{raink_it}}</td>
-                        <td><a href="javascript:faq.fn.moveEdit('{{faq_idx}}');" class='btnNormal'><span> 조회</span></a></td>
+<!-- 
+	__ADD__ 추가위치 : CodeRule 있으면 해당값으로 변환
+	<td>{{raink_it}}</td>
+-->  
+						<td><a href="javascript:faq.fn.moveEdit('{{faq_idx}}');" class='btnNormal'><span> 조회</span></a></td>
                     </tr>
                     {{/rows}} 
                 </script>    

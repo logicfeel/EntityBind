@@ -39,6 +39,8 @@
     Dim msgSave_yn      : msgSave_yn    = Request("msgSave_yn")
     Dim msg_Print_yn    : msg_Print_yn  = Request("msg_Print_yn")
 
+    ' __ADD__ : attr 추가위치 : BOD_FAQ_Cls (item + attr) 추가개념
+
     Dim strContent
 
     Dim cFAQ, oDic, oRs
@@ -63,6 +65,9 @@
             If Len(answer) > 0          Then cFAQ.Answer    = answer
             If Len(typeCode) > 0        Then cFAQ.TypeCode  = typeCode
             If Len(rank_it) > 0         Then cFAQ.Rank_it   = rank_it
+            
+            ' __ADD__ : attr 추가위치
+            
             ' 프로퍼티 <옵션>
             cFAQ.MsgCode        = iMsgCode
 
@@ -114,6 +119,9 @@
             If Len(answer) > 0          Then cFAQ.Answer    = answer
             If Len(typeCode) > 0        Then cFAQ.TypeCode  = typeCode
             If Len(rank_it) > 0         Then cFAQ.Rank_it   = rank_it
+            
+            ' __ADD__ : attr 추가위치
+
             ' 프로퍼티 <옵션>
             cFAQ.MsgCode        = iMsgCode
             

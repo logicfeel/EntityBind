@@ -394,7 +394,8 @@ var metaModel = {
                 "answer",
                 "rank_it", 
                 "faq_idx",
-                '__ADD' ],
+                '__ADD__' 
+            ],
             /**
              * - 자체 정의 속성 사용시 배열로 표시
              * - 이름은 자동 검색 알고니즘이 적용됨
@@ -524,7 +525,7 @@ var metaModel = {
     sub: ['STO_Base'],  /** 단일 의존관계가 있는것 */
 };
 
-
+//########################################################################
 /**
  * meta model JSON 샘플 - h
  * method는 배열 [] 표시
@@ -544,10 +545,8 @@ var metaModel = {
             },
             addition: {
                 keyword: "__ADD__",
-                etc: "추가타입에 관련된 조건 및 옵션을 정의한다.item_name=__ADD " 
-            }
-            
-            /** 코드명령 규칙도 표현 */
+                etc: "추가타입에 관련된 조건 및 옵션을 정의한다." 
+            },
         },
         BOD_Event_SP_C: {
             type: "operation",
@@ -572,10 +571,7 @@ var metaModel = {
                 { name: 'msgPrint_yn', type: "char", size: 1 },
             ],
             output: ["BOD_Event.question", "answer", "typeCode", "rank_it", '__ADD__', "create_dt" ], 
-            /** 
-             * - 다수출력시 2차원 배열사용 
-             * - BOD_Event.question : 엔티티를 지정함
-             * */
+            /** 다수 출력시 다차원 배열사용 */
         },
         BOD_Event_SP_U: {
             type: "operation",
@@ -614,55 +610,89 @@ var metaModel = {
                 { name: 'msgSave_yn', type: "char", size: 1 },
                 { name: 'msgPrint_yn', type: "char", size: 1 },
             ],
-            output: [ "rouw_count", "create_dt", "question", "answer", "rank_it", "faq_idx", '__ADD' ]
+            output: [ "rouw_count", "create_dt", "question", "answer", "rank_it", "faq_idx", '__ADD__' ]
         },
         BOD_FAQ_Cls: {
             type: "class",
             item: {
-                faq_idx: { ref: "faq_idx" },
-                question: { ref: "question" },
-                answer: { ref: "answer" },
-                create_dt: { ref: "create_dt" },
-                rank_it: { ref: "rank_it" },
-                typeCode: { ref: "typeCode" },
-                __ADD: { ref: "__ADD" },  /** 동적으로 추가되는 위치 */
+                rouw_count: { type: "char", size: 1 },
             },
-            /**
-             * - 자체 정의 속성 사용시 배열로 표시
-             * - 이름은 자동 검색 알고니즘이 적용됨
-             * - meta-lock.json 에는 전체이름이 표기됨!
-             */
+            attr: [ 
+                "rouw_count", 
+                "create_dt", 
+                "question",
+                "answer",
+                "rank_it", 
+                "faq_idx",
+                '__ADD__' 
+            ],
             method: {
                 create: {
                     name: "Create",
                     param: [],
-                    ref: [ "BOD_Event.BOD_Event_C" ]
-                    /**
-                     * - 타입 : 배열 | 배열<문자열>
-                     * - 모듈명.엔티티명
-                     */
+                    call: [ "BOD_Event.BOD_Event_C" ]
+                    /**  모듈명.엔티티명  */
                 },
                 Read: {
                     rename: "Read",
-                    ref: "BOD_Event_R"
+                    call: "BOD_Event_R"
                 },
                 Update: {
-                    ref: "BOD_Event_U"
+                    call: "BOD_Event_U"
                 },
                 Delete: {
-                    ref: "BOD_Event_D"
+                    call: "BOD_Event_D"
                 },
                 List: {
                     param: ['create_dt', ''],
-                    ref: "BOD_Event_L"
+                    call: "BOD_Event_L"
+                },
+                List2: {
+                    call: "BOD_FAQ_Cls.List",
+                    /** 내부의 호출을 참조하는 경우 */
                 },
             }
-            /**
-             * 배열 형식 
-             *  - 단점 : 사용시 참조에 모호성이 있음
-             * 객체 형식 !! 이방식이 맞을듯
-             *  - 단점 : 오버로드 표현시 별칭을 사용해야함
-             */
+        },
+        BOD_FAQ_Admin_Callback: {
+            type: "class",
+            item: {     /** 내부적으로 사용하는것 */
+                cmd: {},
+                doctype: {},
+
+            },
+            attr: [     /** 데이터로 사용하는 것 */
+                "question",
+                "answer",
+                "rank_it", 
+                "faq_idx",
+                { name: 'keyword', type: "int", default: 10 },
+                { name: 'page_size', type: "int", default: 10 },
+                { name: 'page_count', type: "int", default: 1 },
+                { name: 'sort_cd', type: "int", default: NULL },
+                { name: 'row_total', type: "int", default: 0,  output: true },
+                { name: 'xml_yn', type: "char", size: 1 },
+                { name: 'msgSave_yn', type: "char", size: 1 },
+                { name: 'msgPrint_yn', type: "char", size: 1 },
+                '__ADD__',
+            ],
+            method: {
+                CREATE: {
+                    call: "BOD_Event_C"
+                },
+                READ: {
+                    call: "BOD_Event_R"
+                },
+                UPDATE: {
+                    call: "BOD_Event_U"
+                },
+                DELET: {
+                    call: "BOD_Event_D"
+                },
+                LIST: {
+                    call: "BOD_Event_L"
+                },
+                
+            }
         }
     },
     super: ['STO_Base'],    /** 상위로 의존성을 받는것 메타모듈명 */

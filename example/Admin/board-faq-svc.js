@@ -145,6 +145,8 @@
                 typeCode:       { selector: { key: '#m-typeCode'+ _SUFF,        type: 'value' } },
                 rank_it:        { selector: { key: '#m-rank_it'+ _SUFF,         type: 'value' } },
                 create_dt:      { selector: { key: '#m-create_dt'+ _SUFF,       type: 'text' } },
+                
+// __ADD__ 추가위치 : BOD_FAQ_Cls.item 기준
             };
 
             /**
@@ -263,6 +265,8 @@
                 typeCode:       { read:     'output',   create: 'bind',             update:  'bind' },
                 rank_it:        { read:     'output',   create: 'bind',             update:  'bind' },
                 create_dt:      { read:     'output',   create: 'bind',             update:  'bind' },
+
+// __ADD__ 추가위치 : 전당한 연산을 하면 가능할듯
             };
 
             /**

@@ -91,7 +91,17 @@
                             <a href="javascript:submitContents(this)"><img src="버튼이미지" border=0></a>
                             -->
                         </td>
-                    </tr>  
+                    </tr>
+                 
+<!-- 
+    '__ADD__' 추가위치 
+    <tr>
+        <th scope="row">코드타입 </th>
+        <td  colspan="3">
+            <input type="text" id="m-typeCode" name="typeCode" value="" class="fText" style="width:200px;" />
+        </td>
+    </tr>      
+-->  
                     </tbody>
                 </table>
             </div>
