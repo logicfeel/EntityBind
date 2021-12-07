@@ -66,7 +66,7 @@
             If Len(typeCode) > 0        Then cFAQ.TypeCode  = typeCode
             If Len(rank_it) > 0         Then cFAQ.Rank_it   = rank_it
             
-            ' __ADD__ : attr 추가위치
+' __ADD__ : attr 추가위치
             
             ' 프로퍼티 <옵션>
             cFAQ.MsgCode        = iMsgCode
@@ -120,7 +120,7 @@
             If Len(typeCode) > 0        Then cFAQ.TypeCode  = typeCode
             If Len(rank_it) > 0         Then cFAQ.Rank_it   = rank_it
             
-            ' __ADD__ : attr 추가위치
+' __ADD__ : attr 추가위치
 
             ' 프로퍼티 <옵션>
             cFAQ.MsgCode        = iMsgCode
