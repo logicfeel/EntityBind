@@ -82,7 +82,7 @@ mm.part.table['M01_Table'].dynamic.add({
 });
 
 
-class ServerSide extends AutoTemplate {
+class ServerTemplate extends AutoTemplate {
     constructor() {
         
         // 템플릿 데이터를 설정한다.
@@ -91,7 +91,7 @@ class ServerSide extends AutoTemplate {
 }
 
 // 템플릿 생성
-var sTemp = new ServerSide();
+var sTemp = new ServerTemplate();
 
 sTemp.build();
 
