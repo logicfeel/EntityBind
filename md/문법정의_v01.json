@@ -1,0 +1,27 @@
+{
+    "EXT": ".asp|.inc",
+    "SKIP_BLOCK": {
+        "reg": "/*",
+        "end": "\\*\/"
+    },
+    "DEPEND": {
+        "reg": "(\\w+)\\s(\\w+)",
+        "pattern": "[a-z]+"
+    },
+    "META": {
+        "reg": "Function|Sub (이름)(매개변수)",
+        "group": {
+            "2": {
+                "symbol": "#Operation"
+            },
+            "3": {
+                "body": "param"
+            }
+        },
+        "end": "End (Function|Sub)"
+    },
+    "param": {
+        "reg": "([a-z]+){}"
+    }
+  
+}
