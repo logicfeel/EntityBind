@@ -114,6 +114,10 @@
 		            <col style="width:auto">
 		            <col style="width:auto">
                     <col style="width:auto">
+<!--
+	제작방법
+    - 추가갯수만큼 inline 블럭이용
+-->					
 		        </colgroup>
 		        <!--###############  검색 제목 Block ###############-->
 		        <thead>
@@ -133,6 +137,11 @@
 		                <th scope="col">
 		                    <strong>등록일자</strong>
 		                </th>
+<!--
+	제작방법
+    - 타이틀 및 필수 여부는 : 속성값을 사용해서 만듬
+-->
+					</tr>
                         <th scope="col">
 		                    <strong>처리</strong>
 		                </th>
@@ -152,6 +161,11 @@
                         <td>{{question}}</td>
                         <td>{{answer}}</td>
                         <td>{{raink_it}}</td>
+<!--
+    제작 방법 
+    - View 에서 설정한것 여부에 따라서 제작함
+	- 값의 표현 방식은 코드명령 규칙을 사용함
+-->  						
                         <td><a href="javascript:faq.fn.moveEdit('{{faq_idx}}');" class='btnNormal'><span> 조회</span></a></td>
                     </tr>
                     {{/rows}} 

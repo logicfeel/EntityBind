@@ -40,6 +40,14 @@
     Dim msg_Print_yn    : msg_Print_yn  = Request("msg_Print_yn")
 
     ' __ADD__ : attr 추가위치 : BOD_FAQ_Cls (item + attr) 추가개념
+    ' 	// 추가 위치
+' 	// each-meta-extend : 메타의 확장 부분만 반복
+'   // union-meta-extend : 메타 그룹 목록의 합집합으로 만듬
+' 	// mssql , oracle, mysql 별로 헬퍼를 관리함
+
+' {{#each-meta-extend  (union-meta-extend meta.group.all.sp) }}
+    ' Dim {{asp-val-name param}}      : {{asp-val-name param}}     = Request("{{param}} ")
+' {{/each-meta-extend}} 
 
     Dim strContent
 
@@ -66,8 +74,10 @@
             If Len(typeCode) > 0        Then cFAQ.TypeCode  = typeCode
             If Len(rank_it) > 0         Then cFAQ.Rank_it   = rank_it
             
-' __ADD__ : attr 추가위치
-            
+        ' {{#each-meta-extend meta.sp.create.params }}
+        ' If Len({{param}}) > 0         Then cFAQ.{{pascal-name param}}   = {{param}}
+        ' {{/each-meta-extend}}
+
             ' 프로퍼티 <옵션>
             cFAQ.MsgCode        = iMsgCode
 
@@ -120,8 +130,10 @@
             If Len(typeCode) > 0        Then cFAQ.TypeCode  = typeCode
             If Len(rank_it) > 0         Then cFAQ.Rank_it   = rank_it
             
-' __ADD__ : attr 추가위치
-
+        ' {{#each-meta-extend meta.sp.update.params }}
+        ' If Len({{param}}) > 0         Then cFAQ.{{pascal-name param}}   = {{param}}
+        ' {{/each-meta-extend}}
+        
             ' 프로퍼티 <옵션>
             cFAQ.MsgCode        = iMsgCode
             

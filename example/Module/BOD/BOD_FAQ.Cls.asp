@@ -105,13 +105,26 @@
             End if
         End Property
 
+' 	// 추가 위치
+' 	// each-meta-extend : 메타의 확장 부분만 반복
+'   // union-meta-extend : 메타 그룹 목록의 합집합으로 만듬
+' 	// meta-name : 메타의 명칭
+' 	// data-type : 데이터 타입 변환 (mssql)
+' 	// mssql , oracle, mysql 별로 헬퍼를 관리함
+
+' {{#each-meta-extend  (union-meta-extend meta.group.all.sp) }}
+        '  Public Property Let {{pascal-name params}}(p_Value) 
+        '      If Not IsEmpty(p_Value) Then
+        '          m_oDicParams("{{column}}") = m_cDBMgr.MakeParam("{{meta-val-name columnn}}", {{asp-data-type dataType}}, {{asp-inOut-type dataType}}, {{length}}, p_Value)
+        '      End if
+        '  End Property
+' {{/each-meta-extend}}
+	
         Public Property Let MsgCode(p_Value) 
             If Not IsEmpty(p_Value) Then
                 m_iMsgCode =  p_Value
             End if
         End Property
-
-' __ADD__ : attr 추가위치
 
         '---------------------------------------------------------------------------
         ' 초기화
@@ -132,7 +145,10 @@
             m_oDicParams.Add "msgSave_yn",      m_cDBMgr.MakeParam("@msgSave_yn",       adChar,     adParamInput,       1,      Null)
             m_oDicParams.Add "msg_Print_yn",    m_cDBMgr.MakeParam("@msg_Print_yn",     adChar,     adParamInput,       1,      Null)
             
-            ' __ADD__ : attr 추가위치
+' create 와 update 합집합으로 만듬
+' {{#each-meta-extend  (union-meta-extend meta.sp.create.params meta.sp.update.params ) }}
+            '   m_oDicParams.Add "{{column}}"   m_cDBMgr.MakeParam("{{meta-val-name columnn}}", {{asp-data-type dataType}}, {{asp-inOut-type dataType}}, {{length}}, Null)
+' {{/each-meta-extend}}
 
         End Sub
 
@@ -144,7 +160,10 @@
             Dim arrKey, arrParams
 
 ' __ADD__ : attr 추가위치
-            arrKey = Array("RETURN_VALUE", "question", "answer", "typeCode", "rank_it") 
+            arrKey = Array("RETURN_VALUE", "question", "answer", "typeCode", "rank_it")
+            ' 공백의 제거
+            ' {{~ #each-meta-extend meta.sp.create.params }}, {{column}}  {{/each-meta-extend}}
+            
             arrParams = m_cDBMgr.GetDicToArrayParams(m_oDicParams, arrKey)
             Call m_cDBMgr.ExecuteSp("BOD_FAQ_SP_C", arrParams, Nothing)
             r_Return = m_cDBMgr.GetValue(arrParams, "RETURN_VALUE") 
@@ -271,6 +290,9 @@
 
 ' __ADD__ : attr 추가위치
             arrKey = Array("RETURN_VALUE", "faq_idx", "question", "answer", "typeCode", "rank_it") 
+            ' 공백의 제거
+            ' {{~ #each-meta-extend meta.sp.update.params }}, {{column}}  {{/each-meta-extend}}
+
             arrParams = m_cDBMgr.GetDicToArrayParams(m_oDicParams, arrKey)
             Call m_cDBMgr.ExecuteSp("BOD_FAQ_SP_U", arrParams, Nothing)
             r_Return = m_cDBMgr.GetValue(arrParams, "RETURN_VALUE") 

@@ -1,7 +1,7 @@
 const { ConsoleLogger } = require("typedoc/dist/lib/utils");
 
-var str1 =
-`-------------------------------------
+var str1 =`
+-------------------------------------
 ' 목록 : String 객체(XML)
 Public Function ListXml(ByRef r_Return, ByRef r_RowTotal)
     Dim str
@@ -44,7 +44,8 @@ Public Function ListJson(ByRef r_Return, ByRef r_RowTotal)
     str = str & "}"
     
     ListJson = str
-End Function`;
+End Function
+`;
 // +++++++++++++++++++++++++++++++++++
 // 실행 과정
 class Automation {
@@ -121,20 +122,18 @@ class AspParser extends RegExpParser {
         // 정의부 파서
         var s1 = new Statement();
         this.DEF.push(s1);
-        this.DEF[0].reg = /(?:Sub|Function)\s+(\w+)/g;
+        this.DEF[0].reg = /(Sub|Function)\s+(\w+)/g;
         this.DEF[0].callback = (list, src) => {
             console.log('Sub.callback().. ');
             
             var ns = new Namespace();
             for(var i = 0; i < list.length; i++) {
-                ns.addDefine(list[i].group[1]);
+                ns.addDefine(list[i].group[2]);
                 // 정의 부분 추가
                 src.define.push({ 
                     filename: src.filename,
-                    index: list[i].group.index,
                     lastIndex: list[i].lastIndex,
-                    namespace: list[i].group[1],
-                    blockLastIndex: list[i].blockLastIndex
+                    namespace: list[i].group[2]
                 });
             }
             this.namespace = ns;
@@ -143,11 +142,7 @@ class AspParser extends RegExpParser {
 
         // 네임스페이스 영역
         this.namespace = null;
-
-        this.SCOPE = {};
-
         
-        // ##################################################
         var s2 = new Statement();
         this.REF = [];
         this.REF.push(s2);        
@@ -171,7 +166,7 @@ class AspParser extends RegExpParser {
             //     });
             // }
         }
-        // ##################################################
+
     }
     view() {
         console.log('AspParser.view()');
@@ -198,70 +193,32 @@ class AspParser extends RegExpParser {
         while(group = reg.exec(strArr[0].content)) {
             list.push({
                 group: group,
-                index: group.index,
-                lastIndex: reg.lastIndex,
-                blockLastIndex: reg.lastIndex
+                lastIndex: reg.lastIndex
             });
-            // 블럭의 마지막 인덱스 삽입
-            if (list.length > 1) {
-                list[list.length - 2].blockLastIndex = group.index - 1
-            }
             // strArr[0].define.push({ lastIndex: reg.lastIndex })
-            console.log(`내용 "${group[1]}". lastIndex: ${reg.lastIndex}.`);
+            console.log(`내용 "${group[2]}". lastIndex: ${reg.lastIndex}.`);
         }
-        // 마지막 처리
-        if (list.length > 1) {
-            list[list.length - 1].blockLastIndex = strArr[0].content.length
-        }
-
         // 콜백 호출
         this.DEF[0].callback.call(this, list, strArr[0]);
 
     }
-    // parsingReference(strArr) {
-    //     var idx = 0;
-
-    //     for (var i = 0; i < this.namespace._meta.length; i++) {
-            
-            
-    //         idx = strArr[0].content.indexOf(this.namespace._meta[i], idx);
-    //         while(idx > 0) {
-    //             idx = strArr[0].content.indexOf(this.namespace._meta[i], idx + 1);
-    //             if (idx > 0) {
-    //                 console.log(`idx : ${idx}, name : ${this.namespace._meta[i]} `);
-
-    //                 strArr[0].ref.push({
-    //                     index: idx,
-    //                     namespace: this.namespace._meta[i]
-    //                 });
-    //             }
-    //         }
-    //         console.log('parss..'); 
-    //     }
-
-    // }
     parsingReference(strArr) {
-        
-        var lastIdx = 0;
-        var reg;
-        var group;
+        var idx = 0;
 
         for (var i = 0; i < this.namespace._meta.length; i++) {
-            
-            reg = RegExp(this.namespace._meta[i], 'gi');
-            
-            while(group = reg.exec(strArr[0].content)) {
-                lastIdx = reg.lastIndex;
-                if (reg.lastIndex > 0) {
-                    console.log(`lastIdx : ${lastIdx}, name : ${this.namespace._meta[i]} `);
+            idx = strArr[0].content.indexOf(this.namespace._meta[i], idx);
+            while(idx > 0) {
+                idx = strArr[0].content.indexOf(this.namespace._meta[i], idx + 1);
+                if (idx > 0) {
+                    console.log(`Inner : ${idx} `);
 
                     strArr[0].ref.push({
-                        lastIdx: reg.lastIndex,
+                        index: idx,
                         namespace: this.namespace._meta[i]
                     });
                 }
             }
-
+            console.log('parss..'); 
         }
 
     }
