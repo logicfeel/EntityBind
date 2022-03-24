@@ -31,7 +31,8 @@ class AutoTemplate {
 
 
 var a = new AutoTemplate();
-var m = MetaModel.getInstance();
+a.model = MetaModel.getInstance();
+a.compile(); // 템플릿 생성
 
 
 console.log(1);

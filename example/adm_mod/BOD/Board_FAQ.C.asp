@@ -39,8 +39,8 @@
     Dim msgSave_yn      : msgSave_yn    = Request("msgSave_yn")
     Dim msg_Print_yn    : msg_Print_yn  = Request("msg_Print_yn")
 
-    ' __ADD__ : attr 추가위치 : BOD_FAQ_Cls (item + attr) 추가개념
-    ' 	// 추가 위치
+' __ADD__ : attr 추가위치 : BOD_FAQ_Cls (item + attr) 추가개념
+' 	// 추가 위치
 ' 	// each-meta-extend : 메타의 확장 부분만 반복
 '   // union-meta-extend : 메타 그룹 목록의 합집합으로 만듬
 ' 	// mssql , oracle, mysql 별로 헬퍼를 관리함
@@ -133,7 +133,7 @@
         ' {{#each-meta-extend meta.sp.update.params }}
         ' If Len({{param}}) > 0         Then cFAQ.{{pascal-name param}}   = {{param}}
         ' {{/each-meta-extend}}
-        
+
             ' 프로퍼티 <옵션>
             cFAQ.MsgCode        = iMsgCode
             

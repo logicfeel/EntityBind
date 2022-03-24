@@ -146,7 +146,8 @@
                 rank_it:        { selector: { key: '#m-rank_it'+ _SUFF,         type: 'value' } },
                 create_dt:      { selector: { key: '#m-create_dt'+ _SUFF,       type: 'text' } },
 /*
-    // __ADD__ 추가위치 : BOD_FAQ_Cls.item 기준
+            // __ADD__ 추가위치 : BOD_FAQ_Cls.item 기준
+            
             {{#each-meta-extend  (union-meta-extend meta.group.all.sp) }}
                 {{columnname}}:      { selector: { key: '#m-{{columnname}}'+ _SUFF,       type: '{{item-type-set data-type}}' } },
                 // 제약조건도 있으면 삽입
@@ -274,7 +275,8 @@
 
 
 /*
-    // __ADD__ 추가위치 : 전당한 연산을 하면 가능할듯
+            // __ADD__ 추가위치 : 전당한 연산을 하면 가능할듯
+
             {{#each-meta-extend  (union-meta-extend meta.group.all.sp) }}
                 {{columnname}}:      {
                     {{#if (is-value meta.sp.read columnname ) }} read:     'output',   // 조건에 따라 구성함 , 함수로 묶을 수도 있음
