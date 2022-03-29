@@ -114,3 +114,95 @@ m.table['FAQ'].columns.extend({ name: 'exter_co2', caption: '확장컬럼' });
 t.model = m;
 // 'publish'폴더에 소스 생성
 t.compile();
+
+
+/**
+ * 오토 인터페이스 참조
+ */
+
+/**
+ * ICrudl 인터페이스
+ */
+class ICrudl {
+    constructor() {
+        /** @type String */
+        this.url = "";
+    }
+}
+// 인터페이스 구현
+class Auto_A extends Automation {
+    constructor() {
+        
+        this.url = "www...";
+
+        this._implements(ICrudl);
+    }
+}
+class Auto_B extends Automation {
+    constructor() {
+        
+        this.url = "WWW...";
+
+        this._implements(ICrudl);
+    }
+}
+// 인터페이스 사용
+class Auto_C extends Automation {
+    constructor() {
+        this.MOD = new Auto_A();
+        // 인터페이스 참조 부분 선언
+        if (!this.auto.isImplementOf(ICrudl)) {
+            this.refURL = this.MOD.url;
+        }
+    }
+}
+// 인터페이스 사용 교체 
+class AutoMain extends Automation {
+    constructor(){
+        this.SUB = Auto_C.getInstance();
+        // 인스턴스 하위 교체(내부적으로 인터페이스를 검사한다.)
+        this.SUB.MOD = new Auto_B();
+    }
+}
+
+/**
+ * 오토컴포넌트
+ */
+class AutoComponent {}
+
+/**
+ * FAQ 기준의 오토 컴포넌트
+ */
+class FAQComponent extends AutoComponent {
+    constructor() {
+        // 메타 모델 정의
+        this.meta = FAQ.getInstance();
+        // 오토 구성
+        this.view = new AutomationFAQ();
+        // 참조 지정
+        this.model = this.view.mod['server'].mod['db'];
+    }
+}
+
+class GroupComponent extends AutoComponent {
+    constructor() {
+        this.group = [];
+        this.group.push(new FAQComponent());  // 타입이 들어감
+    }
+}
+
+/**
+ * 어떤식으로 컴포넌트를 사용할지 .... 자유롭게 
+ */
+class ComponentE1 extends AutoComponent {
+    constructor() {
+        super();
+        // 컴포넌트의 주인 
+        this.owner = new FAQAutomation();
+        // 참조 타입 지정
+        this.model = this.owner.mod['model'];
+    }
+}
+/**
+ * 컴포넌트를 생성해서 오토에 지정하면
+ */
