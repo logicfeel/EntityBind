@@ -214,6 +214,9 @@ class AutoChange extends Automation {
         this.mod.sub('view1', require('view2'));
         // super 로 오토 추가
         this.mod.super('view1', require('view2'));
+        // 즉시 삽입 : 이름은 자동으로 매칭
+        this.mod.add(require('view2'));
+        
 
         // 네임스페이스 지정
         this.namespace = 'logic.component.mssql';
