@@ -132,6 +132,7 @@ var projectA = {
                    file: ['List.asp', 'View.asp'],
                    list: [
                        {
+                           extend: 'NPM_Name<BaseAuto>',   /** 부모 auto 객체 형식으로 상위 표현 */
                            name: 'Control',
                            link: 'super',
                            file: ['prt-adm-svc.js', 'prt-frt-svc.js'],
@@ -153,6 +154,7 @@ var projectA = {
                                                {
                                                    name: 'DB_STO',
                                                    link: 'super',
+                                                   top: true,   /** 최상위 모듈, 비의존 모듈 */
                                                    file: ['sto_table.sql', 'sto_crudl.sql'],
                                                }
                                            ]
