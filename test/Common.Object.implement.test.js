@@ -49,6 +49,80 @@
         }
 
         console.log('---------------------------------------------------------------------------');
+        console.log('this._implements(interface) :: 인터페이스 선언 <- 클래스 구현 ');
+        var ISuper  = (function (_super) {
+            function ISuper() {
+                
+            }
+            ISuper.prototype.m1 = function() { return 'I1'; };
+            return ISuper;
+        }());
+        var CoClass  = (function (_super) {
+            function CoClass() {
+                /** @implements */
+                this._implements(ISuper);    
+            }
+            CoClass.prototype.m1 = function() { return 'C1'; }
+            return CoClass;
+        }());
+
+        var c = new CoClass();
+        if (
+                c.m1() === 'C1' &&
+                c._interface.length === 1 &&
+                c.isImplementOf(ISuper) === true &&
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
+        } else {
+            console.warn('Result = Fail');
+            errorCnt++;
+        }
+
+        console.log('---------------------------------------------------------------------------');
+        console.log('this._implements(interface) :: 인터페이스 선언 <- 클래스 구현 : 타입검사 ');
+        var ISuper  = (function (_super) {
+            function ISuper() {
+                this.str = "S"
+                this.obj = {
+                    n: 1,
+                    s: "s"
+                }
+                this.obj2 = null    // 어떤값이든 허용한다.
+            }
+            ISuper.prototype.m1 = function() { return 'I1'; };
+            return ISuper;
+        }());
+        var CoClass  = (function (_super) {
+            function CoClass() {
+                this.str = "A"
+                this.obj = {
+                    n: 1,
+                    s: ''
+                }
+                this.obj2 = {}  
+
+                /** @implements */
+                this._implements(ISuper);    
+            }
+            CoClass.prototype.m1 = function() { return 'C1'; }
+            return CoClass;
+        }());
+
+        var c = new CoClass();
+        if (
+                c.m1() === 'C1' &&
+                c._interface.length === 1 &&
+                c.isImplementOf(ISuper) === true &&
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
+        } else {
+            console.warn('Result = Fail');
+            errorCnt++;
+        }
+
+        console.log('---------------------------------------------------------------------------');
         console.log('this._implements(interface) :: 다중 인터페이스 선언 <- 클래스 구현 ');
         var ISuper  = (function (_super) {
             function ISuper() {
@@ -80,6 +154,7 @@
                 c.isImplementOf(ISuper) === true &&
                 c.isImplementOf(ISuper2) === true &&
                 true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
@@ -120,6 +195,7 @@
                 c.isImplementOf(ISuper) === true &&
                 c.isImplementOf(ISuper2) === false &&
                 true) {
+            taskCnt++;
             console.log('Result = Success');
         } else {
             console.warn('Result = Fail');
