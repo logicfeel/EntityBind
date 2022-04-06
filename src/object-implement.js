@@ -100,11 +100,12 @@ if ((typeof Object.prototype._implements === 'undefined') ||
                 } else {
                     throw new Error('함수타입만 가능합니다.');
                 }
-                    
+                // 비교 원본 인터페이스 임시 객체 생성    
                 obj = new arguments[i];
         
-                // 객체 타입비교 (값은 아님)
+                // 객체 타입을 비교 (값은 비교 안함)
                 equalType(obj, this);
+
                 // for(var p in obj) {
                 //     typeName = (typeof obj[p] === 'function') ? 'Method' : 'Property';
                     

@@ -80,7 +80,7 @@
         }
 
         console.log('---------------------------------------------------------------------------');
-        console.log('this._implements(interface) :: 인터페이스 선언 <- 클래스 구현 : 타입검사 ');
+        console.log('this._implements(interface) :: 인터페이스 선언 <- 클래스 구현 : 인터페이스 타입검사(깊은) ');
         var ISuper  = (function (_super) {
             function ISuper() {
                 this.str = "S"
