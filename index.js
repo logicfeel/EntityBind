@@ -13,4 +13,13 @@ module.exports = {
     MetaObject: MetaObject,
     MetaElement: MetaElement,
     Observer: Observer,
+    Common: {
+        Interface: null,
+        Collection: null,
+        Meta: {
+            Entity: null,
+            Bind: null,
+            Data: null,
+        }
+    }
 }

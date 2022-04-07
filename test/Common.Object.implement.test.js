@@ -86,7 +86,8 @@
                 this.str = "S"
                 this.obj = {
                     n: 1,
-                    s: "s"
+                    sName: "s",
+                    a: {ff: Function}
                 }
                 this.obj2 = null    // 어떤값이든 허용한다.
             }
@@ -95,10 +96,11 @@
         }());
         var CoClass  = (function (_super) {
             function CoClass() {
-                this.str = "A"
+                this.str = ''
                 this.obj = {
                     n: 1,
-                    s: ''
+                    sName: '',
+                    a: { ff: () => {}}
                 }
                 this.obj2 = {}  
 
