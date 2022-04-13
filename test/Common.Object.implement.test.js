@@ -83,11 +83,28 @@
         console.log('this._implements(interface) :: 인터페이스 선언 <- 클래스 구현 : 인터페이스 타입검사(깊은) ');
         var ISuper  = (function (_super) {
             function ISuper() {
-                this.str = "S"
+                var number = 0
+
+                this.str = "S",
                 this.obj = {
-                    n: 1,
+                    n: 0,
                     sName: "s",
-                    a: {ff: Function}
+                    a: {ff: function() {} },
+                    arr: [],    /** null 또는 공백이면 내용 무관, 0,'', boolean, {객체이면}  */
+                    /** 컬렉션의 경우는... 컬렉션은 생성시점 이후에 추가된다. */
+                    // col: {
+                    //     컬렉션명: '객체타입'
+                    // },
+                    // col2: [new String('')],
+                    // col3: [
+                    //     {
+                    //         key: '',
+                    //         value: {
+
+                    //         }
+                    //     }
+                    // ]
+
                 }
                 this.obj2 = null    // 어떤값이든 허용한다.
             }
@@ -96,11 +113,12 @@
         }());
         var CoClass  = (function (_super) {
             function CoClass() {
-                this.str = ''
+                this.str = '',
                 this.obj = {
                     n: 1,
                     sName: '',
-                    a: { ff: () => {}}
+                    a: { ff: () => {}},
+                    arr: [1],
                 }
                 this.obj2 = {}  
 
@@ -123,6 +141,46 @@
             console.warn('Result = Fail');
             errorCnt++;
         }
+
+        console.log('---------------------------------------------------------------------------');
+        console.log('this._implements(interface) :: 인터페이스 선언 <- 클래스 구현 : 인터페이스 (함수, 클래스함수) ');
+        function Fun2() {
+
+        }
+        var ISuper  = (function (_super) {
+            function ISuper() {
+                var number = 0
+
+                this.fun1 = function(){};
+                this.fun2 = Fun2;
+                // this.obj2 = null    // 어떤값이든 허용한다.
+            }
+            return ISuper;
+        }());
+        var CoClass  = (function (_super) {
+            function CoClass() {
+
+                this.fun1 = function() {};
+                this.fun2 = new Fun2();
+                // this.fun1 = 1;
+
+                /** @implements */
+                this._implements(ISuper);    
+            }
+            return CoClass;
+        }());
+
+        var c = new CoClass();
+        if (
+                c._interface.length === 1 &&
+                c.isImplementOf(ISuper) === true &&
+                true) {
+            taskCnt++;
+            console.log('Result = Success');
+        } else {
+            console.warn('Result = Fail');
+            errorCnt++;
+        }        
 
         console.log('---------------------------------------------------------------------------');
         console.log('this._implements(interface) :: 다중 인터페이스 선언 <- 클래스 구현 ');

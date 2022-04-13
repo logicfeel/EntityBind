@@ -35,19 +35,39 @@ if ((typeof Object.prototype._implements === 'undefined') ||
 
             for (var key in org) {
                 if (org.hasOwnProperty(key)){
-                    // typeName = (typeof org[key] === 'function') ? 'Method' : 'Property';
-                    
+                    // 대상 null 검사
+                    if (org[key] !== null && tar[key] === null) {
+                        console.warn('Warning!! 대상 null ' + orgName + '.' + key );
+                        return false;                    
+                    }
+                    // 대상 여부 검사                
                     if (!(key in tar)) {
                         console.warn('Warning!! 대상 없음 ' + orgName + '.' + key + ' : ' + typeof org[key] + ' ');
                         return false;
                     }
-                    if (typeof org[key] === 'object' && org[key] !== null) {
-                        if (tar[key] === null) {
-                            console.warn('Warning!! null 타입. ' + key + ' :: (' + typeName + ') ');
+                    // arrary 타입 검사
+                    if (Array.isArray(org[key]) && !Array.isArray(org[key])){
+                        console.warn('Warning!! 타입 다름 ' + orgName + '.' + key + ' : array ');
+                        return false;                    
+                    }
+                    // class(function) 타입 검사
+                    if (typeof org[key] === 'function' && typeof tar[key] === 'object') {
+                        if (tar[key] instanceof org[key]) {
+                            continue;   // 통과
+                        } else {
+                            console.warn('Warning!! 클래스 객체 아님 ' + orgName + '.' + key + ' : function ');
                             return false;                    
                         }
+                    }
+                    // function 타입 검사
+                    if (typeof org[key] === 'function' && typeof tar[key] === 'object' && tar[key] instanceof org[key]) {
+                        continue;
+                    }
+                    // object 타입 검사
+                    if (typeof org[key] === 'object' && org[key] !== null) {
                         if (equalType(org[key], tar[key], orgName +'.'+ key) === false) return false;
                     }
+                    // stiring, number, boolean, function 타입 검사 (null 아니면서)
                     if (org[key] !== null && !(typeof org[key] === typeof tar[key])) {  /** 원본 null 비교 안함 */
                         console.warn('Warning!! 타입 다름 ' + orgName + '.' + key + ' : ' + typeof org[key] + ' ');
                         return false;
