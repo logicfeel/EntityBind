@@ -28,7 +28,7 @@ class Sub1 extends Singleton {
 
 
 class Sub2 extends Singleton {
-    static instance
+    // static instance
     constructor() {
         super();
         this.ab2 = "!!"
