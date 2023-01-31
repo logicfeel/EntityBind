@@ -115,9 +115,13 @@
         function BindModelAjax(p_service) {
             _super.call(this);
 
+            // 기본값 설정
             var __baseAjaxSetup = {
                 url: '',
-                type: 'GET'
+                type: 'GET',
+                dataType: 'json',
+                async: true,
+                crossDomain: false,
             };
             
             this._baseEntity                = this.addEntity('first');   // Entity 추가 및 baseEntity 설정

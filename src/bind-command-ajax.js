@@ -161,10 +161,19 @@
             var ajaxSetup = {};
             var complete = this.ajaxSetup.complete || this._model.baseAjaxSetup.complete || null;
             
+            // ajaxSetup.url           = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
+            // ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type || 'GET';
+            // ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType || 'json';
+            // ajaxSetup.async         = this.ajaxSetup.async || this._model.baseAjaxSetup.async || true;      
+            // ajaxSetup.crossDomain   = this.ajaxSetup.crossDomain || this._model.baseAjaxSetup.crossDomain || false;
+            // 기본값 못가져오는 오류 변경함 
             ajaxSetup.url           = this.ajaxSetup.url || this._model.baseAjaxSetup.url;
             ajaxSetup.type          = this.ajaxSetup.type || this._model.baseAjaxSetup.type || 'GET';
             ajaxSetup.dataType      = this.ajaxSetup.dataType || this._model.baseAjaxSetup.dataType || 'json';
-            ajaxSetup.async         = this.ajaxSetup.async || this._model.baseAjaxSetup.async || true;
+            ajaxSetup.async         = typeof this.ajaxSetup.async  === 'boolean' ? this.ajaxSetup.async : this._model.baseAjaxSetup.async;
+            ajaxSetup.crossDomain   = typeof this.ajaxSetup.crossDomain === 'boolean' ? this.ajaxSetup.crossDomain : this._model.baseAjaxSetup.crossDomain;
+
+            
             ajaxSetup.crossDomain   = this.ajaxSetup.crossDomain || this._model.baseAjaxSetup.crossDomain || false;
             ajaxSetup.complete      = (typeof complete === 'function') ? complete.bind(this) : null;
             ajaxSetup.success       = this._execSuccess.bind(this);

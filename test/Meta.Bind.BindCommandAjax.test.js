@@ -58,6 +58,10 @@
             model.addCommand('read', 1);
             model.read.addItem('i1', 'V1');
             model.baseUrl = 'http://127.0.0.1:8080/json/sample_row_single.json';       // 가져올 경로
+            // 비동기 처리에 대한 이슈가 있음, command 에서 _this 를 리턴하지 않음
+            // model.baseAjaxSetup.async = false;  // 비동기 처리
+            // model.read.ajaxSetup.async = false;
+            // model.baseAjaxSetup.async
             // model.baseUrl = 'http://rtwgs4.cafe24.com/';                 // 오류 1 : 403
             // model.baseUrl = 'sample_row_single.json';                    // 오류 2
             // model.baseAjaxSetup.async = false;                           // 동기화로 변경
