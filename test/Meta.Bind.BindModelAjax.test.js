@@ -482,6 +482,7 @@
         model.addCommand('create');
         model.addCommand('create2');
         model.add(new Item('i1'), 'create2');
+        // model.columns.add(new Item('i1'), 'create2');    // 개선 문법
         model.first.items['i1'].value = 'V1';
         if (    // create 
                 model.create.valid.items.count === 0 &&
