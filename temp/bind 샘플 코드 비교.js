@@ -52,7 +52,7 @@ board.command['read'].onExecute = ()=>{};
 board.cmd['read'].cbBind = ()=>{}; // alias 을 통한 접
 board.fn.add('search', ()=>{});
 
-// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// ______________________________
 // 서비스 객체를 통한 설정
 var board = new BindModelAjax({
     baseUrl: '../Boad.C.asp',       // 객체 속성 설정
