@@ -82,6 +82,7 @@
                 sub:       {
                     outputOption: 1,
                     onExecute: function(p_bindCommand) { _this.bindModel.items['cmd'].value = 'SUB'; },
+                    // cbBegin: function(p_bindCommand) { _this.bindModel.items['cmd'].value = 'SUB'; },
                     cbOutput: function(p_result) {
                         if (global.isLog) console.log("[Service] sub.cbOutput() : 목록출력");
                         
