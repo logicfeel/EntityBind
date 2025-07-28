@@ -1,0 +1,11 @@
+CREATE TABLE BOD_Event (
+    evt_idx INT AUTO_INCREMENT PRIMARY KEY,
+    writer VARCHAR(10),
+    title VARCHAR(20) NOT NULL,
+    contents TEXT,
+    create_dt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    del_yn CHAR(1) NOT NULL DEFAULT 'N',
+    active_yn CHAR(1) NOT NULL DEFAULT 'Y',
+    begin_dt DATETIME DEFAULT NULL,
+    close_dt DATETIME DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
