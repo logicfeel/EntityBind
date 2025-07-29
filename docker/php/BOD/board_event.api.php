@@ -52,12 +52,11 @@ switch ($method) {
 
 /*
 _________________________________________________________________
-GET /board_event.api.php?page=1&size=10&keyword=이벤트
-
+GET board_event.api.php/1
 {
   "rows": [
     {
-      "evt_idx": 123,
+      "evt_idx": 1,
       "title": "신규 이벤트 등록",
       "writer": "관리자",
       "begin_dt": "2025-08-01",

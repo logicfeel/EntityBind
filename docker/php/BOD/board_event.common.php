@@ -1,11 +1,11 @@
 <?php
 // board_event.common.php
-require_once './BodEvent.php';
+require_once './BoardEvent.php';
 
 header('Content-Type: application/json');
 
 try {
-    $db = new PDO("mysql:host=localhost;dbname=yourdb;charset=utf8mb4", "user", "pass", [
+    $db = new PDO("mysql:host=db;dbname=mall;charset=utf8mb4", "testuser", "testpw", [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
     $event = new BodEvent($db);

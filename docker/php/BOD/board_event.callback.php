@@ -55,7 +55,7 @@ switch ($cmd) {
 
     default:
         http_response_code(400);
-        echo json_encode(['error' => 'Invalid command']);
+        echo json_encode(['error' => $cmd]);
 }
 
 /*
@@ -65,7 +65,7 @@ GET /Board_Event.php?cmd=list&keyword=test&page_count=1&page_size=2
 
 [
   {
-    "ntc_idx": 1234,
+    "evt_idx": 1,
     "title": "Test Event",
     "writer": "admin",
     "begin_dt": "2025-07-28 10:00:00",
@@ -74,7 +74,7 @@ GET /Board_Event.php?cmd=list&keyword=test&page_count=1&page_size=2
     "active_yn": "Y"
   },
   {
-    "ntc_idx": 1233,
+    "evt_idx": 2,
     "title": "Another Event",
     "writer": "admin",
     "begin_dt": "2025-07-25 10:00:00",
